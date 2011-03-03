@@ -1,0 +1,4 @@
+XTerm*foreground: white
+XTerm*background: grey11
+XTerm*faceName:   ProggyClean
+XTerm*faceSize:   9
