@@ -1,0 +1,5 @@
+[user]
+	email = michon1992@gmail.com
+	name = Michon van Dooren
+[core]
+	excludesfile = /home/michon/.gitignoreglobal
