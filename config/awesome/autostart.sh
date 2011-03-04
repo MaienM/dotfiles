@@ -15,7 +15,7 @@ xscreensaver &
 numlockx &
 
 # Volume control.
-#(sleep 30 && obmixer) &
+(sleep 30 && DISPLAY=:0.0 obmixer) &
 
 # Apply .Xresources.
 xrdb -merge ~/.Xresources &
@@ -29,10 +29,10 @@ g15macro &
 # Autostart programs.
 DISPLAY=:0.0 pidgin & 
 DISPLAY=:0.0 transmission-gtk & 
-#DISPLAY=:0.0 keeprunning quodlibet &
+DISPLAY=:0.0 quodlibet &
 
-DISPLAY=:0.1 keeprunning xchat &
-#DISPLAY=:0.1 firefox &
+DISPLAY=:0.1 xchat &
+DISPLAY=:0.1 firefox &
 
 # Start playing quodlibet after 30 seconds.
-#(sleep 30 && quodlibet --play) &
+(sleep 30 && quodlibet --play) &
