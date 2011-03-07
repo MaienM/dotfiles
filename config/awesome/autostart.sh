@@ -1,7 +1,8 @@
 # Restore the backgrounds.
 nitrogen --restore &
 
-# Stop here if the autorun file has been run before this session. Everything after this is "run-once", so to say.
+# Stop here if the autorun file has been run before this session. Everything
+# after this is "run-once", so to say.
 if ! [ -e ~/.config/awesome/doautostart ];
 then
   exit 0;
@@ -9,7 +10,11 @@ fi;
 rm ~/.config/awesome/doautostart
 
 # Screensaver/lock screen.
-xscreensaver &
+xscreensaver --no-splash &
+
+# Caffeine, to stop xscreensaver from messing around while certain applications
+# are running.
+caffeine &
 
 # Numlock.
 numlockx &
