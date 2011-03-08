@@ -10,3 +10,6 @@ alias gitrb='git rebase --interactive --autosquash origin/master'
 
 # Lock the screen.
 alias lock='xscreensaver-command -lock'
+
+# Mute/unmute the system+tottle playing in quidlibet.
+alias mute='mute && quodlibet --play-pause'
