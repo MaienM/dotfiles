@@ -1,5 +1,5 @@
 " Part of my modulized vimrc file.
-" Last change: Thu, 03 Mar 2011 17:04:37 +0100
+" Last change: Mon, 14 Mar 2011 14:58:22 +0100
 
 " If VMS is enabled disable backup files and use versions instead.
 if has("vms")
@@ -20,8 +20,8 @@ endif
 " General settings.
 set title                     " set the title of the window/terminal to 
                               " filename (path) - VIM
-set history=50                " keep 50 lines of command line history
-set undolevels=1000           " have a big undo history
+set history=100               " keep 100 lines of command line history
+set undolevels=2000           " have a big undo history
 set incsearch                 " do incremental searching
 set ignorecase smartcase      " ignore case when using a search pattern,
                               " except when upper case letters are used
@@ -32,7 +32,7 @@ set shiftwidth=2              " each indent step is 2 spaces*
                               " <F7> can be used to easily change these 
                               "      settings on the fly.
 set autoindent                " automatically indent
-set smartindent               " smarter auto-indent
+"set smartindent               " smarter auto-indent
 set smarttab                  " delete shiftwidth amount of spaces with <BS>
 set modeline                  " allow files to specify the indent settings
 set linebreak                 " break long lines into pieces
@@ -44,7 +44,9 @@ set scrolloff=5               " set the minium number of lines to keep
 set listchars=tab:>-,trail:-  " make displaying tabs look like >---
 set wildignore=*~             " ignore certain files when tab-completing
 set tags+=./tags;             " search upwards from the current directory for 
-set tags+=./TAGS;             " tag files.
+set tags+=./TAGS;             " tag files
+set splitright                " when vertically splitting, open new stuff at
+                              " the right side instead of at the left side
 
 " Version-specific stuff, doesn't work in older versions, sadly.
 if v:version >= 600

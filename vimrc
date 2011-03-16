@@ -1,7 +1,7 @@
 " My customized .vimrc
 " I'm quite surprised at how much (useful) crap I've managed to gather in here
 " over the years.
-" Last change: Thu, 03 Mar 2011 16:56:36 +0100
+" Last change: Tue, 15 Mar 2011 17:16:23 +0100
 
 " When started as "evim", evim.vim will already have done these settings. Not
 " that I EVER use evim, but whatever :P
@@ -14,4 +14,4 @@ endif
 set nocompatible
 
 " Load the rc files responsible for the rest of the initialisation.
-runtime! rc/*.vim
+runtime! rc/**.vim
