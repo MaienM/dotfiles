@@ -48,3 +48,6 @@ _complete_supdate()
   fi
 }
 complete -F _complete_supdate -X '!&*' supdate
+
+# Completion for gitlv.
+complete -C 'git remote; echo &> /dev/null <' -X '!&*' gitlv

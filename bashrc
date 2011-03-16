@@ -1,4 +1,3 @@
-
 # Check for an interactive session
 [ -z "$PS1" ] && return
 
@@ -12,5 +11,5 @@ export EDITOR="vim"
 # Enable tab-completion for sudo.
 complete -cf sudo
 
-# Load the aliases from .bash_aliases.
-source ~/.bash_aliases
+# Load the aliases.
+[[ -e ~/.bash_aliases ]] && . ~/.bash_aliases
