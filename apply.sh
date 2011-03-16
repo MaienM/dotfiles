@@ -76,7 +76,8 @@ function process()
 }
 
 echo > cmds
-for FILE in *[^~]
+for FILE in ${@:-*[^~]}
 do
   process "$FILE"
 done
+echo rm cmds >> cmds
