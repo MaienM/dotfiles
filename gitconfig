@@ -3,3 +3,6 @@
 	name = Michon van Dooren
 [core]
 	excludesfile = /home/michon/.gitignoreglobal
+[color]
+	diff = auto
+	branch = auto
