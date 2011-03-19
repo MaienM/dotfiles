@@ -1,5 +1,5 @@
 " Part of my modulized vimrc file.
-" Last change: Mon, 14 Mar 2011 15:06:12 +0100
+" Last change: Wed, 16 Mar 2011 15:25:11 +0100
 " Updates the first timestamp found in the specified range.
 
 ""
@@ -121,15 +121,10 @@ let s:formats = [s:CR('%a, %d %b %Y %T %z'),
 " Do the actual updating.
 ""
 function! UpdateTimestamp() range
-  let i = a:firstline
-  while i <= a:lastline
-    call cursor(i, 1)
-    for [l:format, l:regexp] in s:formats
-      if search('\v'.l:regexp, 'n', i)
-        execute ':s/\v'.l:regexp.'/'.strftime(l:format).'/'
-        return
-      endif
-    endfor
-    let i += 1
-  endwhile
+  for [l:format, l:regexp] in s:formats
+    if search('\v'.l:regexp, '', a:lastline)
+      execute ':s/\v'.l:regexp.'/'.strftime(l:format).'/'
+      return
+    endif
+  endfor
 endfunction

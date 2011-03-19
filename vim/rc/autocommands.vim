@@ -1,5 +1,5 @@
 " Part of my modulized vimrc file.
-" Last change: Tue, 15 Mar 2011 17:04:10 +0100
+" Last change: Wed, 16 Mar 2011 14:38:36 +0100
 
 if has("autocmd") 
   " Define the autocmd group, so we can delete all of these when reloading the
@@ -10,7 +10,7 @@ if has("autocmd")
   au!
 
   " Load autocommand rc files.
-  runtime! rc/autocommands/*.vim
+  runtime! rc/autocommands/**/*.vim
   
   " Close the autocmd group.
   augroup END

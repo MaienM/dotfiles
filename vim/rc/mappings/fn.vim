@@ -71,6 +71,9 @@ function! WrongIndentHighlight(refresh)
   endif
 endfunction
 
+" F11: Toggle gundo.
+Map <silent> <F11> :GundoToggle <CR>
+
 " F12: Show the taglist + jump to it.
 " Ctrl_F12: Close the taglist.
 Map <silent> <F12> :TlistOpen <CR>
