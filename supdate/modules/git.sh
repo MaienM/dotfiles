@@ -2,7 +2,7 @@ import 'versioncontrol'
 
 CMDS[check]='
 T=$(git log --oneline HEAD..origin/master) &&
-N=$(echo $T | wc -l)'
+N=$(echo -ne $T | wc -l)'
 CMDS[refresh]='git fetch -q >> /dev/null'
 CMDS[download]='
 C=$(git log --oneline HEAD..origin/master) &&
