@@ -1,5 +1,5 @@
 " Part of my modulized vimrc file.
-" Last change: Thu, 03 Mar 2011 16:52:47 +0100
+" Last change: Sun, 10 Apr 2011 12:13:31 +0200
 
 " F1-F4: Mappings to assist lazy me in being lazy.
 " F1: Disabled. If I want help, I'll use :help, tyvm.
@@ -34,8 +34,12 @@ command! -nargs=+ Indent
 
 " F8: Save the file.
 " Ctrl_F8: Force-save the file.
+" Shift_F8: Save and exit.
+" Ctrl_Shift_F8: Force-save and exit.
 Map <silent> <F8> :w <CR>
 Map <silent> <C-F8> :w! <CR>
+Map <silent> <S-F8> :wq <CR>
+Map <silent> <C-S-F8> :wq! <CR>
 
 " F9-F12: Stuff that displays points of attention in the current file.
 " F9: Toggle highlighting of too long lines.
