@@ -1,5 +1,5 @@
 " Part of my modulized vimrc file.
-" Last change: Wed, 16 Mar 2011 15:25:11 +0100
+" Last change: Wed, 16 Mar 2011 15:25:09 +0100
 " Updates the first timestamp found in the specified range.
 
 ""
@@ -115,7 +115,8 @@ endfunction
 " Define the timestamp formats we know/care about.
 ""
 let s:formats = [s:CR('%a, %d %b %Y %T %z'),  
-                \s:CR('%d-%m-%Y %R %Z')]
+                \s:CR('%d-%m-%Y %R %Z'),
+                \s:CR('%Y\/%m\/%d %T')]
               
 ""
 " Do the actual updating.
