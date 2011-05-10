@@ -40,20 +40,10 @@ function ask()
   A=${A,,}
 }
 
-# Compare two files/folders.
-function inode()
+# Get the full path of a file.
+function fullpath()
 {
-  echo $(stat -L -c%i "$1")
-}
-function cmp()
-{
-  [[ $(inode "$1") == $(inode "$2") ]] && echo 1
-}
-
-# Compare the age of two files/folders.
-function lastmod()
-{
-  echo $(stat -L -c%Z "$1")
+  echo "$PWD/$1"
 }
 
 
@@ -81,6 +71,13 @@ function process()
     D=$(grep -cE "^$OF$" .virtualdirs)
   fi
 
+  # If a file does not exist, but yet it is a symbolic link (what) it is a broken symbolic link.
+  if [[ ! -e $NF && -h $NF ]]
+  then
+    echo "Removing broken symblic link $NF."
+    cmd rm "$NF"
+  fi
+
   if [[ -e $NF ]]
   then
     if [[ -d $NF && -d $OF ]]
@@ -89,7 +86,7 @@ function process()
       then
         traverse "$OF"
       else
-        if [[ $(cmp "$OF" "$NF") -eq 1 ]]
+        if [[ $NF -ef $OF ]]
         then
           :
         else
@@ -99,7 +96,7 @@ function process()
       fi
     elif [[ -f $NF && -f $OF ]]
     then
-      if [[ $(cmp "$OF" "$NF") -eq 1 ]]
+      if [[ $NF -ef $OF ]]
       then
         :
       elif [[ -z $(diff -q "$OF" "$NF") ]]
@@ -107,12 +104,9 @@ function process()
         ln -f "$OF" "$NF"
       else
         echo "The file $NF already exists."
-        if [[ $(lastmod "$NF") -lt $(lastmod "$OF") ]]
-        then
-          echo "$NF has been changed more recently than $OF."
-        else
-          echo "$OF has been changed more recently than $NF."
-        fi
+        [[ $NF -nt $OF ]] \
+          && echo "$NF has been changed more recently than $OF." \
+          || echo "$OF has been changed more recently than $NF."
 
         echo "What do you want to do?"
         echo "[m]ove $NF to $OF and create a link, [r]emove $NF and link $OF to $NF, show [D]iff, [i]gnore conflict."
@@ -146,7 +140,7 @@ function process()
         cmd mkdir "$NF"
         traverse "$OF"
       else
-        ln -s "$OF" "$NF"
+        ln -s "$(fullpath "$OF")" "$NF"
       fi
     else
       ln "$OF" "$NF"
