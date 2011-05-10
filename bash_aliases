@@ -42,8 +42,11 @@ alias gits='git status'
 
 # Log.
 alias gitlv='git log --oneline --name-status'
-alias gitlvuc='gitlv origin/master..'
+alias gitlvu='gitlv origin/master..'
 
-# Other.
+# Rebasing.
 alias gitrb='git rebase --interactive'
 alias gitrbu='gitrb origin/master..'
+
+# Diff.
+alias gitd='git diff'
