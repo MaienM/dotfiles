@@ -1,14 +1,20 @@
 # Make sudo recognize aliases. Don't ask me how it works, I don't have a clue.
 alias sudo='A=`alias` sudo  '
 
-# Make ls colorize it's output. Nice to distinguis executable files, folders, broken links, etc.
+# Make ls colorize it's output. Nice to distinguish executable files, folders, broken links, etc.
 alias ls='ls --color=auto'
 
 # Lock the screen.
 alias lock='xscreensaver-command -lock'
 
-# Mute/unmute the system+tottle playing in quidlibet.
+# Mute/unmute the system+toggle playing in quidlibet.
 alias mute='mute && quodlibet --play-pause'
+
+# Find a file in a folder structure.
+function ffind()
+{
+  find $1 -type f -regex ".*/$2"
+}
 
 # Print $1 or, when $1 is empty, $2.
 function echoe()
