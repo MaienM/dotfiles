@@ -10,6 +10,20 @@ alias lock='xscreensaver-command -lock'
 # Mute/unmute the system+toggle playing in quidlibet.
 alias mute='mute && quodlibet --play-pause'
 
+# Untar and delete a (number of) file(s).
+function tarxf()
+{
+  if [[ ${1::1} == '-' ]]
+  then
+    ARG=${1:1}
+    shift
+  fi
+  for file in "$@"
+  do 
+    tar -x"$ARG"f "$file" && rm "$file"
+  done
+}
+
 # Find a file in a folder structure.
 function ffind()
 {
