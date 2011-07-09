@@ -1,0 +1,78 @@
+#########################
+# General               #
+#########################
+
+# Crashes when used while nothing has focus.
+".*"
+Super_L,    Left,     Super_R|Left
+Super_L,    Right,    Super_R|Right
+Super_L,    Thumb1,   Super_R|J
+Super_L,    Thumb2,   Super_R|K
+Super_L,    ExtBt7,   Super_R|Shift_L|C
+Super_L,    ExtBt8,   Super_R|Return
+
+#########################
+# Vim                   #
+#########################
+
+"- VIM$"
+None,       Left,     Control_L|Page_Up
+None,       Right,    Control_L|Page_Down
+
+#########################
+# File managers         #
+#########################
+
+"^Thunar$"
+# "History".
+None,       Thumb1,   Alt_L|Right
+None,       Thumb2,   Alt_L|Left
+
+#########################
+# Browsers              #
+#########################
+
+# History.
+"^(Firefox|Chromium|Opera)$"
+None,       Thumb1,   Escape|-Escape|Alt_L|Right
+None,       Thumb2,   Escape|-Escape|Alt_L|Left
+
+# Closing tabs.
+None,       ExtBt7,   Escape|-Escape|Control_L|W
+Shift_L,    ExtBt7,   Escape|-Escape|Control_L|Shift_L|T
+Control_L,  ExtBt7,   Escape|-Escape|Control_L|Alt_L|S|-Alt_L|W # FF only.
+
+# Switching tabs.
+"^(Firefox|Chromium)$"
+None,       Left,     Escape|-Escape|Control_L|Page_Up
+None,       Right,    Escape|-Escape|Control_L|Page_Down
+"^Opera$"
+None,       Left,     Escape|-Escape|1
+None,       Right,    Escape|-Escape|2
+
+# Tab overview.
+"^Firefox$"
+None,       ExtBt8,   Escape|-Escape|Control_L|Shift_L|E
+
+#########################
+# Instant Messaging     #
+#########################
+
+# XChat
+"^Xchat$"
+None,       Left,     Control_L|Page_Down
+None,       Right,    Control_L|Page_Up
+None,       ExtBt8,   Control_L|D
+
+#########################
+# Games                 #
+#########################
+
+# World of Warcraft
+"^World of Warcraft$"
+,           Left,     Alt_L|Left
+,           Right,    Alt_L|Right
+,           Thumb1,   Alt_L|Up
+,           Thumb2,   Alt_L|Down
+,           ExtBt8,   Insert
+
