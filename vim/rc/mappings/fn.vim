@@ -10,15 +10,23 @@ Map <silent> <F4> :noh <CR>
 
 " F5-F8: Stuff that edits/alters/works on the current file in any way.
 " F5: Toggle paste mode.
-Map <silent> <F5> :let &paste=!&paste <CR>
+Map <silent> <F5>
+  \ :let &paste = !&paste <Bar>
+  \ if exists('oldshowbreak') <Bar>
+  \   let &showbreak = oldshowbreak <Bar>
+  \   unlet oldshowbreak <Bar>
+  \ else <Bar>
+  \   let oldshowbreak = &showbreak <Bar>
+  \   set showbreak= <Bar>
+  \ endif <CR>
 set pastetoggle=<F5>
 
-" F7: Rotate indent width 2 -> 3 -> 4 -> 6 -> 8.
-" Shift_F7: Toggle expandting tabs into spaces.
-" Ctrl_F7: Specify whether to use tabs or spaces, and the width of a tab.
-Map <silent> <F7> :Indent (&sw+1)+(&sw>3)-((&sw==8)*8) &expandtab <CR>
-Map <silent> <S-F7> :Indent &sw !&expandtab <CR>
-Map <silent> <C-F7> :Indent float2nr(pow(confirm("","&2\n&3\n&4\n&6\n&8")+1,1.1607)) !(confirm("","&\ Space\n&\tTab")-1) <CR>
+" F6: Rotate indent width 2 -> 3 -> 4 -> 6 -> 8.
+" Shift_F6: Toggle expandting tabs into spaces.
+" Ctrl_F6: Specify whether to use tabs or spaces, and the width of a tab.
+Map <silent> <F6> :Indent (&sw+1)+(&sw>3)-((&sw==8)*8) &expandtab <CR>
+Map <silent> <S-F6> :Indent &sw !&expandtab <CR>
+Map <silent> <C-F6> :Indent float2nr(pow(confirm("","&2\n&3\n&4\n&6\n&8")+1,1.1607)) !(confirm("","&\ Space\n&\tTab")-1) <CR>
 command! -nargs=+ Indent 
   \ :let r = [<f-args>] <Bar>
   \ let &sw = eval(r[0]) <Bar>
@@ -31,6 +39,11 @@ command! -nargs=+ Indent
   \   let &ts = &sw <Bar>
   \ endif <Bar>
   \ call WrongIndentHighlight(1)
+
+" F7: Reload the file.
+" Ctrl_F7: Force-reload the file.
+Map <silent> <F7> :e <CR>
+Map <silent> <C-F7> :e! <CR>
 
 " F8: Save the file.
 " Ctrl_F8: Force-save the file.
