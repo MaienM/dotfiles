@@ -27,3 +27,9 @@ au BufWrite *.js silent!
 " Reload vimrc files when saving a vimrc file.
 au BufWritePost *.vim normal \r
 
+" Reload conky when saving a conky-related file.
+au BufWritePost ~/.conkyrc silent! !pkill -USR1 conky
+au BufWritePost ~/.conky/lua/* silent! !pkill -USR1 conky
+
+" Restart imwheel when saving .imwheelrc.
+au BufWritePost .imwheelrc silent! !~/bin/imwheelstart &> /dev/null
