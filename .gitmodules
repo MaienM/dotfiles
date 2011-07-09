@@ -16,3 +16,6 @@
 [submodule "vim/bundle/repeat"]
 	path = vim/bundle/repeat
 	url = https://github.com/tpope/vim-repeat.git
+[submodule "vim/bundle/publish"]
+	path = vim/bundle/publish
+	url = https://github.com/MaienM/vim-publish.git
