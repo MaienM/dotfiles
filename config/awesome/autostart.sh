@@ -1,5 +1,27 @@
+#
+# Helper functions.
+#
+
+# This function runs a command delayed.
+function delay()
+{
+  sleep $1 && eval ${@:2}
+}
+
+# This function runs a command on a display.
+function disp()
+{
+  DISPLAY=:0.$1 ${@:2}
+}
+
+
+#
+# Start of the autostart part.
+#
+
 # Restore the backgrounds.
-nitrogen --restore &
+delay 30 nitrogen --restore &
+
 
 # Stop here if the autorun file has been run before this session. Everything
 # after this is "run-once", so to say.
@@ -9,8 +31,12 @@ then
 fi;
 rm ~/.config/awesome/doautostart
 
+#
+# Start of the run-once part.
+#
+
 # Screensaver/lock screen.
-xscreensaver --no-splash &
+xscreensaver -no-splash &
 
 # Caffeine, to stop xscreensaver from messing around while certain applications
 # are running.
@@ -20,24 +46,31 @@ caffeine &
 numlockx &
 
 # Volume control.
-(sleep 30 && DISPLAY=:0.0 obmixer) &
+delay 30 disp 0 obmixer &
 
 # Apply .Xresources.
 xrdb -merge ~/.Xresources &
 
 # Apply .Xmodmap
-(sleep 10 && xmodmap .Xmodmap) &
+delay 10 xmodmap .Xmodmap &
 
 # G15 keys.
 g15macro &
 
-# Autostart programs.
-DISPLAY=:0.0 pidgin & 
-DISPLAY=:0.0 transmission-gtk & 
-DISPLAY=:0.0 quodlibet &
+# R.A.T. 9 mouse bindings.
+delay 30 imwheelstart &
 
-DISPLAY=:0.1 xchat &
-DISPLAY=:0.1 firefox &
+# ZNC
+znc > /dev/null &
+
+# Autostart programs.
+disp 0 quodlibet &
+disp 0 pidgin & 
+disp 0 skype &
+disp 0 tweetdeck &
+
+disp 1 keeprunning xchat &
+disp 1 keeprunning firefox &
 
 # Start playing quodlibet after 30 seconds.
-(sleep 30 && quodlibet --play) &
+delay 30 quodlibet --play &
