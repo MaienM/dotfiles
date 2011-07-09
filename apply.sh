@@ -154,3 +154,8 @@ do
   process "$FILE"
 done
 echo rm cmds >> cmds
+
+echo Please confirm the following commands are correct:
+head -n-1 cmds
+echo
+echo To execute these commands type . cmds
