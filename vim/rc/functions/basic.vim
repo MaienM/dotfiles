@@ -1,11 +1,11 @@
 " Part of my modulized vimrc file.
-" Last change: Tue, 15 Mar 2011 18:06:51 +0100
+" Last change: Sun, 15 May 2011 19:19:37 +0200
 
 " Open one of the rc files for editing.
 command! -bang -nargs=+ -complete=custom,EditRCComplete EditRC
   \ :let cmd = ':'.['e', 'tabe'][strlen("<bang>")].' ~/.vim/rc/' <Bar>
   \ let args = split("<args>", '\W\+') <Bar>
-  \ let _ = system('mkdir -p '.join(args[:-2], '/')) <Bar>
+  \ let _ = system('mkdir -p ~/.vim/rc/'.join(args[:-2], '/')) <Bar>
   \ exe cmd.join(args, '/').'.vim'
 function! EditRCComplete(ArgLead, CmdLine, CursorPos)
   let l = split(a:CmdLine, '\W\+')
