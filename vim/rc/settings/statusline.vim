@@ -41,13 +41,14 @@ function! E(arg, ...)
     return ''
   endif
 endfunction
+
 function! TagName()
   return E(Tlist_Get_Tagname_By_Line(), '{_@_}')
 endfunction
 function! SpecialModes()
   let retvals = []
   if &paste
-    let retvals += ['PO']
+    let retvals += ['CP']
   endif
   return E(retvals)
 endfunction 
