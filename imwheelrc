@@ -29,6 +29,16 @@ None,       Thumb1,   Alt_L|Right
 None,       Thumb2,   Alt_L|Left
 
 #########################
+# Multimedia            #
+#########################
+
+# Quod Libet.
+"^Quodlibet.py$"
+None,       ExtBt7,   Control_L|Space
+None,       Left,     Control_L|,
+None,       Right,    Control_L|.
+
+#########################
 # Browsers              #
 #########################
 
@@ -63,6 +73,11 @@ None,       ExtBt8,   Escape|-Escape|Control_L|Shift_L|E
 None,       Left,     Control_L|Page_Down
 None,       Right,    Control_L|Page_Up
 None,       ExtBt8,   Control_L|D
+
+# Pidgin.
+"^Pidgin$"
+None,       Left,     Control_L|Page_Up
+None,       Right,    Control_L|Page_Down
 
 #########################
 # Games                 #

@@ -25,3 +25,4 @@ map <silent> <C-A-s> :execute ':sav /mnt/Media/Pictures/Queue/' + /\/([^\/]+$)/.
 
 autocmd! ShellCmdPost .*wallbase.*#noredirect :execute ':open ' + buffer.URI
 autocmd! ShellCmdPost .*wallbase.* :execute ':open http://wallbase.net/wallpaper/' + (/\/wallpaper-([0-9]+)\..{3,4}$/.exec(buffer.URI)[1]) + '#noredirect'
+autocmd! ShellCmdPost .*allmusic.*/album/.* :execute ':open nzbm ' + /^(.*) \| AllMusic$/.exec(buffer.title)[1]

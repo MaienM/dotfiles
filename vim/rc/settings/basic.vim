@@ -1,13 +1,6 @@
 " Part of my modulized vimrc file.
 " Last change: Mon, 14 Mar 2011 14:58:22 +0100
 
-" If VMS is enabled disable backup files and use versions instead.
-if has("vms")
-  set nobackup  " do not keep a backup file, use versions instead
-else
-  set backup    " keep a backup file
-endif
-
 " Allow backspacing over everything in insert mode.
 set backspace=indent,eol,start
 
@@ -49,6 +42,7 @@ set splitright                  " when vertically splitting, open new stuff at
                                 " the right side instead of at the left side
 set wildmode=longest,list,full  " bash-like completion
 set wildmenu                    " ^^^
+set nobackup                    " don't let vim write backups
 
 " Version-specific stuff, doesn't work in older versions, sadly.
 if v:version >= 600

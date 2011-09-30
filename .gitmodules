@@ -19,3 +19,9 @@
 [submodule "vim/bundle/publish"]
 	path = vim/bundle/publish
 	url = https://github.com/MaienM/vim-publish.git
+[submodule "vim/bundle/command-t"]
+	path = vim/bundle/command-t
+	url = git://git.wincent.com/command-t.git
+[submodule "vim/bundle/matchit"]
+	path = vim/bundle/matchit
+	url = https://github.com/tsaleh/vim-matchit.git

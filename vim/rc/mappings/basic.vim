@@ -1,7 +1,11 @@
 " Part of my modulized vimrc file.
-" Last change: Thu, 03 Mar 2011 19:26:15 +0100
+" Last change: Fri, 30 Sep 2011 13:27:20 +0200
 
-" Use A-j and A-k to move up/down visual lines.
+" Remap ; to :. Saves a keystroke on an often used key.
+nnoremap ; :
+nnoremap : <nop>
+
+" Use Alt-j and Alt-k to move up/down visual lines.
 Map <A-j> gj
 Map <A-k> gk
 

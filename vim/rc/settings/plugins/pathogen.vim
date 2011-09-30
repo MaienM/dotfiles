@@ -7,3 +7,4 @@ let &runtimepath = &runtimepath . ',' . finddir('repos/pathogen', &runtimepath)
 
 " Start pathogen.
 call pathogen#runtime_append_all_bundles() 
+call pathogen#helptags()
