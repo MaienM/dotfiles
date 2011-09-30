@@ -18,7 +18,7 @@
 	url = https://github.com/tpope/vim-repeat.git
 [submodule "vim/bundle/publish"]
 	path = vim/bundle/publish
-	url = https://github.com/MaienM/vim-publish.git
+	url = git@github.com:MaienM/vim-publish.git
 [submodule "vim/bundle/command-t"]
 	path = vim/bundle/command-t
 	url = git://git.wincent.com/command-t.git
