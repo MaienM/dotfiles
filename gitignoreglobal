@@ -6,3 +6,6 @@
 
 # Ignore compiled python files.
 *\.py[co]
+
+# Ignore vim tags files.
+doc/tags
