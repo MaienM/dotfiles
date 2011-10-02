@@ -1,9 +1,9 @@
 " Part of my modulized vimrc file.
-" Last change: Fri, 30 Sep 2011 13:27:20 +0200
+" Last change: Sun, 02 Oct 2011 10:36:47 +0200
 
 " Remap ; to :. Saves a keystroke on an often used key.
 nnoremap ; :
-nnoremap : <nop>
+" This breaks a lot of stuff. nnoremap : <nop>
 
 " Use Alt-j and Alt-k to move up/down visual lines.
 Map <A-j> gj
