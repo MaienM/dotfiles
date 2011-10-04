@@ -1,19 +1,20 @@
 " Part of my modulized vimrc file.
-" Last change: Sun, 15 May 2011 19:19:37 +0200
+" Last change: Tue, 04 Oct 2011 22:21:12 +0200
 
 " Open one of the rc files for editing.
-command! -bang -nargs=+ -complete=custom,EditRCComplete EditRC
+command! -bang -nargs=+ -complete=custom,s:EditRCComplete EditRC
   \ :let cmd = ':'.['e', 'tabe'][strlen("<bang>")].' ~/.vim/rc/' <Bar>
   \ let args = split("<args>", '\W\+') <Bar>
   \ let _ = system('mkdir -p ~/.vim/rc/'.join(args[:-2], '/')) <Bar>
   \ exe cmd.join(args, '/').'.vim'
-function! EditRCComplete(ArgLead, CmdLine, CursorPos)
+
+function! s:EditRCComplete(ArgLead, CmdLine, CursorPos)
   let l = split(a:CmdLine, '\W\+')
   let l = l[1:]
   if strlen(a:ArgLead) > 0
     unlet l[len(l)-1]
   endif
-  return system('ls ~/.vim/rc/'.join(l, '/').' 2> /dev/null | grep -oE "[^/]+" | grep -oP "^[^.]+(?=.vim$)|^[^.]+$"')
+  return system('ls ~/.vim/rc/'.join(l, '/').' 2> /dev/null | grep -oE "[^/]+" | grep -oP "^[^.]+(?=.vim$)|^[^.]+$" | uniq')
 endfunction
 
 " Sort stuff by date.
