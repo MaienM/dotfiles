@@ -30,8 +30,3 @@ function! s:ealign()
   endif
 endfunction
 
-" Pattern for @param and @return in phpdoc (and other doc formats).
-AddTabularPattern! paramlist /\v\s+[*]\s+(\@(param|return)\s+\S+)\zs/l1
-AddTabularPattern! paramlist2 /\v\s+[*]\s+(\@(param|return)\s+\S+)?\zs/l1
-inoremap <silent> <CR> <Esc>:Tabularize paramlist<CR>gq}:Tabularize paramlist2<CR>A<CR>
-
