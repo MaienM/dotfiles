@@ -1,5 +1,5 @@
 " Part of my modulized vimrc file.
-" Last change: Sun, 02 Oct 2011 23:15:11 +0200
+" Last change: Tue, 04 Oct 2011 14:31:03 +0200
 
 " Mapping for tabular.
 nmap <Leader>a :Tabularize /
@@ -20,8 +20,8 @@ endfunction
 " Auto-(re)align equals characters.
 inoremap <silent> = =<Esc>:call <SID>ealign()<CR>a
 function! s:ealign()
-  let p = '^.*=.*$'
-  if exists(':Tabularize') && getline('.') =~# '^.*=' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+  let p = '^[^(]*=.*$'
+  if exists(':Tabularize') && getline('.') =~# '^[^(]*=' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
     let column = strlen(substitute(getline('.')[0:col('.')],'[^=]','','g'))
     let position = strlen(matchstr(getline('.')[0:col('.')],'.*=\s*\zs.*'))
     Tabularize/=/l1
@@ -29,4 +29,9 @@ function! s:ealign()
     call search(repeat('[^=]*=',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
   endif
 endfunction
+
+" Pattern for @param and @return in phpdoc (and other doc formats).
+AddTabularPattern! paramlist /\v\s+[*]\s+(\@(param|return)\s+\S+)\zs/l1
+AddTabularPattern! paramlist2 /\v\s+[*]\s+(\@(param|return)\s+\S+)?\zs/l1
+inoremap <silent> <CR> <Esc>:Tabularize paramlist<CR>gq}:Tabularize paramlist2<CR>A<CR>
 
