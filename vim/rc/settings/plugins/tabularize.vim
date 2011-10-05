@@ -20,13 +20,13 @@ endfunction
 " Auto-(re)align equals characters.
 inoremap <silent> = =<Esc>:call <SID>ealign()<CR>a
 function! s:ealign()
-  let p = '^[^(]*=.*$'
-  if exists(':Tabularize') && getline('.') =~# '^[^(]*=' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+  let p = '^[^(]*\s=\s.*$'
+  if exists(':Tabularize') && getline('.') =~# '^[^(]*\s=' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
     let column = strlen(substitute(getline('.')[0:col('.')],'[^=]','','g'))
-    let position = strlen(matchstr(getline('.')[0:col('.')],'.*=\s*\zs.*'))
-    Tabularize/=/l1
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*\s=\s*\zs.*'))
+    Tabularize/\s\zs=\ze\s/l1
     normal! 0
-    call search(repeat('[^=]*=',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+    call search(repeat('[^=]*\s=',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
   endif
 endfunction
 
