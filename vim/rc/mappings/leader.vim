@@ -15,14 +15,16 @@ function! TwiddleCase(str)
   return result
 endfunction
 
-" <Leader>r: Reload the vimrc file.
-map <silent> <Leader>r :source $MYVIMRC <CR>
+" <Leader>rl: Reload the vimrc file.
+" <Leader>re: Edit an vimrc file (command-t on the .vim directory).
+map <silent> <Leader>rl :source $MYVIMRC<CR>
+map <silent> <Leader>re :CommandT ~/.vim<CR>
 
-" <Leader>h: Open the help page for the tag under the cursor, if any.
-"map <silent> <Leader>h 
+" <Leader>f: Command-t (Find file).
+map <silent> <Leader>f :CommandT<CR>
 
 " <Leader>c: Comment the selected lines.
-vnoremap <Leader>c :call Comment() <CR>
+vnoremap <Leader>c :call Comment()<CR>
 function! Comment() range
   " Process the 'comments' setting to find out which characters we have to use
   " for comments.
