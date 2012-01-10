@@ -1,4 +1,6 @@
-XTerm*foreground: white
-XTerm*background: grey11
-XTerm*faceName:   Dina
-XTerm*faceSize:   10
+XTerm*foreground:        white
+XTerm*background:        grey11
+XTerm*faceName:          Dina
+XTerm*faceSize:          10
+XTerm*eightBitInput:     false
+XTerm*metaSendsEscape:   true
