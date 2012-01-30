@@ -1,0 +1,27 @@
+startup_message off
+term xterm
+#term screen-256color
+
+# Allow bold colors - necessary for some reason.
+attrcolor b ".I"
+
+# Tell screen how to set colors. AB = background, AF=foreground
+termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+
+# Use current bg color for erased chars
+defbce on
+
+# Allow screen to set the title.
+termcapinfo xterm 'hs:ts=\E]2;screen - :fs=\007:ds=\E]2;screen\007'
+
+termcapinfo xterm* ti@:te@ 
+
+# Bottom status bar.
+caption always 
+caption string '%{= wk}[%{k}%c:%s %{b} %d/%m %{k}][%= %{= wk}%?%-Lw%?%{r}(%{r}%n*%f%t%?(%u)%?%{r})%{k}%?%+Lw%?%?%= %{k}][ %{k}%H %{k}]'
+
+#bindkey -k k5 prev # F5 for previous window
+#bindkey -k k6 next # F6 for next window
+
+# Enable UTF8
+defutf8 on
