@@ -60,16 +60,21 @@ g15macro &
 # R.A.T. 9 mouse bindings.
 delay 30 imwheelstart &
 
+# Key bindings.
+delay 30 xbindkeys &
+
 # ZNC
-znc > /dev/null &
+#znc > /dev/null &
+
+# BitlBee.
+keeprunning bitlbee -n -d ~/.bitlbee &> /dev/null &
 
 # Autostart programs.
 disp 0 quodlibet &
 disp 0 pidgin & 
 disp 0 skype &
-disp 0 tweetdeck &
 
-disp 1 keeprunning xchat &
+disp 1 xterm -e "screen irssi" &
 disp 1 keeprunning firefox &
 
 # Start playing quodlibet after 30 seconds.
