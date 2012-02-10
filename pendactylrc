@@ -1,20 +1,21 @@
-" My customized .vimperatorrc
-" Last change: Sat, 12 Feb 2011 19:38:23 +0100
+" My customized .pentadactylrc
+" Last change: Mon, 12 Dec 2011 11:39:01 +0100
 
 set history=50
-set complete=sfbtlS
+"set complete=sfbtlS
 set defsearch=g
 set editor=xterm\ -e\ vim
 set errorbells
-set ignorecase smartcase
-set incsearch
-set hlsearch
+"set smartcase
+"set incsearch
+"set hlsearch
 set newtab=all
 set shell=xterm
 set shellcmdflag=\-e
 set wildmode=list:full
 set activate-=downloads
 
+map Q @q
 map <silent> <F3> :js window.content.document.toggleImageSize(); <CR>
 map <silent> <F4> :do ShellCmdPost <CR>
 map <silent> <F5> gT
@@ -23,6 +24,9 @@ map <silent> <F7> <C-A-s><F6>
 map <silent> <F8> gt
 map <silent> <C-A-s> :execute ':sav /mnt/Media/Pictures/Queue/' + /\/([^\/]+$)/.exec(buffer.URL)[1] <CR> 
 
+" 
+" F4 actions for various pages.
+"
 autocmd! ShellCmdPost .*wallbase.*#noredirect :execute ':open ' + buffer.URI
 autocmd! ShellCmdPost .*wallbase.* :execute ':open http://wallbase.net/wallpaper/' + (/\/wallpaper-([0-9]+)\..{3,4}$/.exec(buffer.URI)[1]) + '#noredirect'
 autocmd! ShellCmdPost .*allmusic.*/album/.* :execute ':open nzbm ' + /^(.*) \| AllMusic$/.exec(buffer.title)[1]
