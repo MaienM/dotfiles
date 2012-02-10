@@ -1,4 +1,14 @@
 #########################
+# Buttons               #
+#########################
+# Left    -> Scroll Left
+# Right   -> Scroll Right
+# Thumb1  -> Forward
+# Thumb2  -> Backward
+# ExtBt7  -> Thumb Button
+# ExtBt8  -> Decrease DPI
+
+#########################
 # General               #
 #########################
 
@@ -12,12 +22,20 @@ Super_L,    ExtBt7,   Super_R|Shift_L|C
 Super_L,    ExtBt8,   Super_R|Return
 
 #########################
+# Screen                #
+#########################
+Control_L,  Left,     Control_L|A|-A|P
+Control_L,  Right,    Control_L|A|-A|N
+Control_L,  ExtBt7,   Control_L|A|-A|-Control_L|Control_L|A
+
+#########################
 # Vim                   #
 #########################
 
 "- VIM$"
 None,       Left,     Control_L|Page_Up
 None,       Right,    Control_L|Page_Down
+None,       ExtBt7,   :|-:|w|-w|Return
 
 #########################
 # File managers         #
@@ -72,12 +90,18 @@ None,       ExtBt8,   Escape|-Escape|Control_L|Shift_L|E
 "^Xchat$"
 None,       Left,     Control_L|Page_Down
 None,       Right,    Control_L|Page_Up
-None,       ExtBt8,   Control_L|D
+#None,       ExtBt8,   Control_L|D
+
+# Irssi.
+"- Irssi$"
+None,       Left,     Alt_L|Left
+None,       Right,    Alt_L|Right
 
 # Pidgin.
 "^Pidgin$"
 None,       Left,     Control_L|Page_Up
 None,       Right,    Control_L|Page_Down
+None,       ExtBt7,   Escape
 
 #########################
 # Games                 #
