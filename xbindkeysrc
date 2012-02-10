@@ -1,0 +1,13 @@
+# Media keys. Fuckers.
+"quodlibet --play-pause"
+  XF86AudioPlay
+"quodlibet --pause"
+  XF86AudioStop
+"quodlibet --next"
+  XF86AudioNext
+"quodlibet --previous"
+  XF86AudioPrev
+"quodlibet --volume-up"
+  XF86AudioRaiseVolume
+"quodlibet --volume-down"
+  XF86AudioLowerVolume
