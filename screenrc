@@ -2,6 +2,9 @@ startup_message off
 term xterm
 #term screen-256color
 
+# FUCK visual bells. Like that actually works for getting my attention.
+vbell off
+
 # Allow bold colors - necessary for some reason.
 attrcolor b ".I"
 
