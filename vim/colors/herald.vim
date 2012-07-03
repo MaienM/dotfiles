@@ -297,7 +297,7 @@ elseif &t_Co == 8
   hi CursorLine     ctermbg=0             cterm=none
 
   " -> Folding
-  hi FoldColumn     ctermbg=0  ctermf-g=1  cterm=none
+  hi FoldColumn     ctermbg=0  ctermfg=1  cterm=none
   hi Folded         ctermbg=0  ctermfg=1  cterm=none
 
   " -> Line info  

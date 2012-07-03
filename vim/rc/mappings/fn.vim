@@ -1,9 +1,12 @@
 " Part of my modulized vimrc file.
-" Last change: Sun, 10 Apr 2011 12:13:31 +0200
+" Last change: Sat, 24 Mar 2012 17:14:10 +0100
 
 " F1-F4: Mappings to assist lazy me in being lazy.
 " F1: Disabled. If I want help, I'll use :help, tyvm.
 Map <silent> <F1> <nop>
+
+" F3: Swap between absolute and relative numbers.
+Map <silent> <F3> :if &number <Bar> set relativenumber <Bar> else <Bar> set number <Bar> endif <CR>
 
 " F4: Clear the highlighting of the current search.
 Map <silent> <F4> :noh <CR>
@@ -91,8 +94,7 @@ endfunction
 " F11: Toggle gundo.
 Map <silent> <F11> :GundoToggle <CR>
 
-" F12: Show the taglist + jump to it.
+" F12: Toggle the taglist.
 " Ctrl_F12: Close the taglist.
-Map <silent> <F12> :TlistOpen <CR>
-Map <silent> <C-F12> :TlistClose <CR>
+Map <silent> <F12> :TlistToggle <CR>
 

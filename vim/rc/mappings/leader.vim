@@ -23,6 +23,13 @@ map <silent> <Leader>re :CommandT ~/.vim<CR>
 " <Leader>f: Command-t (Find file).
 map <silent> <Leader>f :CommandT<CR>
 
+" <Leader>pb: Paste bold.
+" <Leader>pi: Paste italic.
+" <Leader>pu: Paste underlined.
+map <silent> <Leader>pb i<C-B><Esc>'+pi<C-F><Esc>
+map <silent> <Leader>pi i<C-I><Esc>'+pi<C-F><Esc>
+map <silent> <Leader>pu i<C-U><Esc>'+pi<C-F><Esc>
+
 " <Leader>c: Comment the selected lines.
 vnoremap <Leader>c :call Comment()<CR>
 function! Comment() range

@@ -17,14 +17,13 @@ defbce on
 # Allow screen to set the title.
 termcapinfo xterm 'hs:ts=\E]2;screen - :fs=\007:ds=\E]2;screen\007'
 
-termcapinfo xterm* ti@:te@ 
+termcapinfo xterm ti@:te@ 
 
 # Bottom status bar.
+backtick 1 600 600 sh -c "uptime | cut -d' ' -f4"
+backtick 2 5 5 sh -c "uptime | cut -d' ' -f13-16 | sed 's/,//g'"
 caption always 
-caption string '%{= wk}[%{k}%c:%s %{b} %d/%m %{k}][%= %{= wk}%?%-Lw%?%{r}(%{r}%n*%f%t%?(%u)%?%{r})%{k}%?%+Lw%?%?%= %{k}][ %{k}%H %{k}]'
-
-#bindkey -k k5 prev # F5 for previous window
-#bindkey -k k6 next # F6 for next window
+caption string '%{= wk}[%{k}%c:%s %{b} %d/%m%{k}][%?%E --ESC-- %:         %?%= %{= wk}%?%-Lw%?%{r}(%{r}%n*%f%t%?(%u)%?%{r})%{k}%?%+Lw%?%?%= %{k}         ][%2`][%{b}%S%{k}  %1` days@%H%{k}]'
 
 # Enable UTF8
 defutf8 on

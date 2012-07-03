@@ -14,14 +14,12 @@ function disp()
   DISPLAY=:0.$1 ${@:2}
 }
 
-
 #
 # Start of the autostart part.
 #
 
 # Restore the backgrounds.
 delay 30 nitrogen --restore &
-
 
 # Stop here if the autorun file has been run before this session. Everything
 # after this is "run-once", so to say.
@@ -46,7 +44,10 @@ caffeine &
 numlockx &
 
 # Volume control.
-delay 30 disp 0 obmixer &
+delay 20 disp 0 obmixer &
+
+# Fix the microphone.
+fixmic &
 
 # Apply .Xresources.
 xrdb -merge ~/.Xresources &
@@ -58,23 +59,25 @@ delay 10 xmodmap .Xmodmap &
 g15macro &
 
 # R.A.T. 9 mouse bindings.
-delay 30 imwheelstart &
+delay 25 imwheelstart &
 
 # Key bindings.
-delay 30 xbindkeys &
+delay 25 xbindkeys &
 
 # ZNC
 #znc > /dev/null &
 
 # BitlBee.
-keeprunning bitlbee -n -d ~/.bitlbee &> /dev/null &
+#keeprunning bitlbee -n -d ~/.bitlbee &> /dev/null &
+
+# Start irssi in a screen session.
+disp 1 xterm -e "screen irssi" &
 
 # Autostart programs.
 disp 0 quodlibet &
 disp 0 pidgin & 
 disp 0 skype &
 
-disp 1 xterm -e "screen irssi" &
 disp 1 keeprunning firefox &
 
 # Start playing quodlibet after 30 seconds.

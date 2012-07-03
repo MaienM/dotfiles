@@ -24,6 +24,7 @@ Super_L,    ExtBt8,   Super_R|Return
 #########################
 # Screen                #
 #########################
+"$screen -"
 Control_L,  Left,     Control_L|A|-A|P
 Control_L,  Right,    Control_L|A|-A|N
 Control_L,  ExtBt7,   Control_L|A|-A|-Control_L|Control_L|A
@@ -36,6 +37,27 @@ Control_L,  ExtBt7,   Control_L|A|-A|-Control_L|Control_L|A
 None,       Left,     Control_L|Page_Up
 None,       Right,    Control_L|Page_Down
 None,       ExtBt7,   :|-:|w|-w|Return
+
+#########################
+# Instant Messaging     #
+#########################
+
+# XChat
+"^Xchat$"
+None,       Left,     Control_L|Page_Down
+None,       Right,    Control_L|Page_Up
+#None,       ExtBt8,   Control_L|D
+
+# Irssi.
+"- Irssi$"
+None,       Left,     Alt_L|Left
+None,       Right,    Alt_L|Right
+
+# Pidgin.
+"^Pidgin$"
+None,       Left,     Control_L|Page_Up
+None,       Right,    Control_L|Page_Down
+None,       ExtBt7,   Escape
 
 #########################
 # File managers         #
@@ -61,7 +83,7 @@ None,       Right,    Control_L|.
 #########################
 
 # History.
-"^(Firefox|Chromium|Opera)$"
+"^(Firefox|Aurora|Nightly|Chromium|Opera)$"
 None,       Thumb1,   Escape|-Escape|Alt_L|Right
 None,       Thumb2,   Escape|-Escape|Alt_L|Left
 
@@ -71,7 +93,7 @@ Shift_L,    ExtBt7,   Escape|-Escape|Control_L|Shift_L|T
 Control_L,  ExtBt7,   Escape|-Escape|Control_L|Alt_L|S|-Alt_L|W # FF only.
 
 # Switching tabs.
-"^(Firefox|Chromium)$"
+"^(Firefox|Aurora|Nightly|Chromium)$"
 None,       Left,     Escape|-Escape|Control_L|Page_Up
 None,       Right,    Escape|-Escape|Control_L|Page_Down
 "^Opera$"
@@ -79,29 +101,8 @@ None,       Left,     Escape|-Escape|1
 None,       Right,    Escape|-Escape|2
 
 # Tab overview.
-"^Firefox$"
+"^(Firefox|Aurora|Nightly)$"
 None,       ExtBt8,   Escape|-Escape|Control_L|Shift_L|E
-
-#########################
-# Instant Messaging     #
-#########################
-
-# XChat
-"^Xchat$"
-None,       Left,     Control_L|Page_Down
-None,       Right,    Control_L|Page_Up
-#None,       ExtBt8,   Control_L|D
-
-# Irssi.
-"- Irssi$"
-None,       Left,     Alt_L|Left
-None,       Right,    Alt_L|Right
-
-# Pidgin.
-"^Pidgin$"
-None,       Left,     Control_L|Page_Up
-None,       Right,    Control_L|Page_Down
-None,       ExtBt7,   Escape
 
 #########################
 # Games                 #
@@ -113,5 +114,6 @@ None,       ExtBt7,   Escape
 ,           Right,    Alt_L|Right
 ,           Thumb1,   Alt_L|Up
 ,           Thumb2,   Alt_L|Down
+,           ExtBt7,   Delete
 ,           ExtBt8,   Insert
 

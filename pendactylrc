@@ -1,5 +1,7 @@
 " My customized .pentadactylrc
-" Last change: Mon, 12 Dec 2011 11:39:01 +0100
+" Last change: Tue, 21 Feb 2012 17:18:03 +0100
+
+group! default
 
 set history=50
 "set complete=sfbtlS
@@ -17,7 +19,7 @@ set activate-=downloads
 
 map Q @q
 map <silent> <F3> :js window.content.document.toggleImageSize(); <CR>
-map <silent> <F4> :do ShellCmdPost <CR>
+map <silent> <F4> :! <CR>
 map <silent> <F5> gT
 map <silent> <F6> :tabc <CR>
 map <silent> <F7> <C-A-s><F6>
@@ -27,6 +29,6 @@ map <silent> <C-A-s> :execute ':sav /mnt/Media/Pictures/Queue/' + /\/([^\/]+$)/.
 " 
 " F4 actions for various pages.
 "
-autocmd! ShellCmdPost .*wallbase.*#noredirect :execute ':open ' + buffer.URI
-autocmd! ShellCmdPost .*wallbase.* :execute ':open http://wallbase.net/wallpaper/' + (/\/wallpaper-([0-9]+)\..{3,4}$/.exec(buffer.URI)[1]) + '#noredirect'
-autocmd! ShellCmdPost .*allmusic.*/album/.* :execute ':open nzbm ' + /^(.*) \| AllMusic$/.exec(buffer.title)[1]
+autocmd! ShellCmdPost   .*wallbase.*#noredirect     :execute ':open ' + buffer.URL.specIgnoringRef
+autocmd! ShellCmdPost   .*wallpaper-.*              :execute ':open http://wallbase.net/wallpaper/' + (/\/wallpaper-([0-9]+)\..{3,4}$/.exec(buffer.URL)[1]) + '#noredirect'
+autocmd! ShellCmdPost   .*allmusic.*/album/.*       :execute ':open nzbm ' + /^(.*) \| AllMusic$/.exec(buffer.title)[1]

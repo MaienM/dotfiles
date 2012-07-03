@@ -43,6 +43,13 @@ set splitright                  " when vertically splitting, open new stuff at
 set wildmode=longest,list,full  " bash-like completion
 set wildmenu                    " ^^^
 set nobackup                    " don't let vim write backups
+set tabpagemax=15
+set relativenumber              " there be numbers, mon
+
+" Screen compatibility.
+if match($TERM, "screen")!=-1
+  set term=xterm
+endif
 
 " Version-specific stuff, doesn't work in older versions, sadly.
 if v:version >= 600

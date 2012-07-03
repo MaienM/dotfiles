@@ -24,12 +24,21 @@ au BufWrite *.js silent!
 \   endif |
 \ endif
 
+" ----------------------------------------------------------------------
+" -                   Reload (RC) files when saving.                   -
+" ----------------------------------------------------------------------
+
 " Reload vimrc files when saving a vimrc file.
-au BufWritePost *.vim normal \r
+au BufWritePost *.vim normal \rl
 
 " Reload conky when saving a conky-related file.
 au BufWritePost ~/.conkyrc silent! !pkill -USR1 conky
 au BufWritePost ~/.conky/lua/* silent! !pkill -USR1 conky
 
 " Restart imwheel when saving .imwheelrc.
-au BufWritePost .imwheelrc silent! !~/bin/imwheelstart &> /dev/null
+au BufWritePost ~/.imwheelrc silent! !~/bin/imwheelstart &> /dev/null
+
+" Source screens when saving .screenrc.
+"au BufWritePost ~/.screenrc silent! !DISPLAY=:0.0 xdotool search -name 'screen -' key ctrl+a type --delay 0 :source' ' ~/.screenrc &&
+"                                   \ DISPLAY=:0.0 xdotool search -name 'screen -' key Return
+

@@ -1,6 +1,5 @@
 " Part of my modulized vimrc file.
-" Last change: Sat, 19 Nov 2011 15:54:54 +0100
-
+" Last change: Mon, 19 Mar 2012 20:16:34 +0100
 
 " Jump to the position we were at when we exited.
 au BufRead * '"
@@ -16,3 +15,5 @@ au BufReadPre,BufNewFile ~/Coding/School/OGO/* call DisableBackup()
 
 " Set the filetype to asm for casm files.
 au BufRead *.casm set ft=asm
+
+

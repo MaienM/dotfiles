@@ -49,10 +49,12 @@ layouts =
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
 tags = {
-  names =  {'main',    'im',       'vim',      'www',      'office',
-            6,          7,          8,          9},
-  layout = {layouts[2], layouts[2], layouts[2], layouts[10], layouts[2],
-            layouts[2], layouts[2], layouts[2], layouts[2]}
+  names =  {'main',    'im',       'vim',      'www',       'office',
+            6,          7,          8,          9,          10,
+            11,         12,         13,         14,         15},
+  layout = {layouts[2], layouts[2], layouts[2], layouts[2], layouts[2],
+            layouts[2], layouts[2], layouts[2], layouts[2], layouts[2],
+            layouts[2], layouts[2], layouts[2], layouts[2], layouts[2]}
 }
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
