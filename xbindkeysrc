@@ -7,9 +7,9 @@
   XF86AudioNext
 "quodlibet --previous"
   XF86AudioPrev
-"amixer -- sset Master playback $(calc -- "$(amixer -- sget Master | grep -oE '[-0-9.]+dB' | grep -oE '[-0-9.]+')+2")dB"
+"amixer -- sset Master playback $(echo "$(amixer -- sget Master | grep -oE '[-0-9.]+dB' | grep -oE '[-0-9.]+')+2" | bc)dB"
   XF86AudioRaiseVolume
-"amixer -- sset Master playback $(calc -- "$(amixer -- sget Master | grep -oE '[-0-9.]+dB' | grep -oE '[-0-9.]+')-2")dB"
+"amixer -- sset Master playback $(echo "$(amixer -- sget Master | grep -oE '[-0-9.]+dB' | grep -oE '[-0-9.]+')-2" | bc)dB"
   XF86AudioLowerVolume
 "amixer -- sset Master togglemute"
   XF86AudioMute

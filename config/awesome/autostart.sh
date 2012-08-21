@@ -36,10 +36,6 @@ rm ~/.config/awesome/doautostart
 # Screensaver/lock screen.
 xscreensaver -no-splash &
 
-# Caffeine, to stop xscreensaver from messing around while certain applications
-# are running.
-caffeine &
-
 # Numlock.
 numlockx &
 
@@ -64,21 +60,18 @@ delay 25 imwheelstart &
 # Key bindings.
 delay 25 xbindkeys &
 
-# ZNC
-#znc > /dev/null &
-
-# BitlBee.
-#keeprunning bitlbee -n -d ~/.bitlbee &> /dev/null &
-
 # Start irssi in a screen session.
-disp 1 xterm -e "screen irssi" &
+disp 1 xterm -e "screen -DR irssi irssi" &
 
 # Autostart programs.
 disp 0 quodlibet &
 disp 0 pidgin & 
 disp 0 skype &
 
-disp 1 keeprunning firefox &
+#disp 1 keeprunning firefox &
 
 # Start playing quodlibet after 30 seconds.
 delay 30 quodlibet --play &
+
+# Start the quodlibet g15 display.
+#delay 45 Coding/Local/g15quodlibet/g15quodlibet &
