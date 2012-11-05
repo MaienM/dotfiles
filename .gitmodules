@@ -37,3 +37,6 @@
 [submodule "vim/bundle/neocomplcache"]
 	path = vim/bundle/neocomplcache
 	url = https://github.com/Shougo/neocomplcache.git
+[submodule "vim/bundle/securemodelines"]
+	path = vim/bundle/securemodelines
+	url = https://github.com/ciaranm/securemodelines.git
