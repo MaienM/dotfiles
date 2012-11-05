@@ -4,9 +4,6 @@
 [submodule "vim/bundle/detectindent"]
 	path = vim/bundle/detectindent
 	url = https://github.com/ciaranm/detectindent.git
-[submodule "vim/bundle/snipmate"]
-	path = vim/bundle/snipmate
-	url = https://github.com/msanders/snipmate.vim.git
 [submodule "vim/bundle/surround"]
 	path = vim/bundle/surround
 	url = https://github.com/tpope/vim-surround.git
@@ -34,15 +31,9 @@
 [submodule "vim/bundle/tabular"]
 	path = vim/bundle/tabular
 	url = https://github.com/godlygeek/tabular.git
-[submodule "vim/bundle/fugitive"]
-	path = vim/bundle/fugitive
-	url = https://github.com/tpope/vim-fugitive.git
 [submodule "vim/bundle/indent-guides"]
 	path = vim/bundle/indent-guides
 	url = https://github.com/nathanaelkane/vim-indent-guides.git
 [submodule "vim/bundle/neocomplcache"]
 	path = vim/bundle/neocomplcache
 	url = https://github.com/Shougo/neocomplcache.git
-[submodule "config/awesome/scratch-repo"]
-	path = config/awesome/scratch-repo
-	url = http://git.sysphere.org/awesome-configs
