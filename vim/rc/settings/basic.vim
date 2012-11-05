@@ -27,7 +27,6 @@ set shiftwidth=2                " each indent step is 2 spaces*
 set autoindent                  " automatically indent
 "set smartindent                 " smarter auto-indent
 set smarttab                    " delete shiftwidth amount of spaces with <BS>
-set modeline                    " allow files to specify the indent settings
 set linebreak                   " break long lines into pieces
 set showbreak=>>\               " start continued lines with '>> '
 set foldmethod=marker           " automatically fold

@@ -27,7 +27,7 @@ nnoremap <silent> <Leader>f :CommandT<CR>
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 function! AppendModeline()
   let l:et = {0: 'net', 1: 'et'}
-  let l:modeline = printf(" vim:ts=%d:sw=%d::ts=%d:tw=%d:%s",
+  let l:modeline = printf("vim:ts=%d:sw=%d:ts=%d:tw=%d:%s",
         \ &tabstop, &shiftwidth, &softtabstop, &textwidth, l:et[&expandtab])
   let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
   call append(line("$"), l:modeline)
