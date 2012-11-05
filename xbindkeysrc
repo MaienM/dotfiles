@@ -1,15 +1,42 @@
 # Media keys. Fuckers.
 "quodlibet --play-pause"
-  XF86AudioPlay
+  c:203
 "quodlibet --pause"
-  XF86AudioStop
-"quodlibet --next"
-  XF86AudioNext
+  c:204
 "quodlibet --previous"
-  XF86AudioPrev
-"amixer -- sset Master playback $(echo "$(amixer -- sget Master | grep -oE '[-0-9.]+dB' | grep -oE '[-0-9.]+')+2" | bc)dB"
+  c:205
+"quodlibet --next"
+  c:206
+"amixer set PCM 1dB+"
   XF86AudioRaiseVolume
-"amixer -- sset Master playback $(echo "$(amixer -- sget Master | grep -oE '[-0-9.]+dB' | grep -oE '[-0-9.]+')-2" | bc)dB"
+"amixer set PCM 2dB+"
+  c:207
+"amixer set PCM 1dB-"
   XF86AudioLowerVolume
-"amixer -- sset Master togglemute"
-  XF86AudioMute
+"amixer set PCM 2dB-"
+  c:208
+"amixer set PCM togglemute"
+  c:209
+
+# Key state stuff.
+# Keyboard light on/off.
+"numlockx on"
+  c:210
+"numlockx off && lock"
+  c:202
+
+# Headphone mute.
+"amixer set PCM mute"
+  c:211
+"amixer set PCM unmute"
+  c:212
+
+# Microphone mute.
+"amixer set Mic nocap"
+  c:213
+"amixer set Mic cap"
+  c:214
+
+# Printscreen.
+"import -window $(xdotool getactivewindow) /mnt/Media/Pictures/Screenshots/$(xprop -id $(xdotool getactivewindow) | grep CLASS | grep -oE '\".+?\"' | grep -oE '[A-Za-z]+' | head -n1)-$(date +%d_%m_%Y-%H_%M_%S).jpg"
+  c:107

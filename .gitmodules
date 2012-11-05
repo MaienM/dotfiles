@@ -40,9 +40,9 @@
 [submodule "vim/bundle/indent-guides"]
 	path = vim/bundle/indent-guides
 	url = https://github.com/nathanaelkane/vim-indent-guides.git
-[submodule "vim/bundle/indent-guides"]
-	path = vim/bundle/indent-guides
-	url = https://github.com/nathanaelkane/vim-indent-guides
 [submodule "vim/bundle/neocomplcache"]
 	path = vim/bundle/neocomplcache
-	url = https://github.com/Shougo/neocomplcache
+	url = https://github.com/Shougo/neocomplcache.git
+[submodule "config/awesome/scratch-repo"]
+	path = config/awesome/scratch-repo
+	url = http://git.sysphere.org/awesome-configs

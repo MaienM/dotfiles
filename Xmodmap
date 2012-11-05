@@ -1,4 +1,4 @@
-!pointer = 1 2 3 4 5 6 7 8 9 10 11 12 0 0 0 16 17 18 19 20 21
+!pointer = 1 2 3 4 5 8 9 10 11 12 16 17
 
 ! Remap 5 to contain the EUR sign.
 keycode 14 = 5 percent 5 percent EuroSign sterling
@@ -18,33 +18,39 @@ keycode 94 = backslash bar backslash bar backslash bar
 ! Remap the numpad Enter to Return.
 keycode 104 = Return
 
-! Map the G/M keys.
-keycode 175 = F13
-keycode 176 = F14
-keycode 177 = F15
-keycode 178 = F16
-keycode 179 = F17
-keycode 180 = F18
+! Map the special keys of my G510 (G keys, M keys, L keys, Media keys).
 !keycode 175 = G1
 !keycode 176 = G2
 !keycode 177 = G3
 !keycode 178 = G4
 !keycode 179 = G5
 !keycode 180 = G6
-keycode 181 = G7
-keycode 182 = G8
-keycode 183 = G9
-keycode 184 = G10
-keycode 185 = G11
-keycode 186 = G12
-keycode 187 = G13
-keycode 188 = G14
-keycode 189 = G15
-keycode 190 = G16
-keycode 191 = G17
-keycode 192 = G18
-
-keycode 193 = M1
-keycode 194 = M2
-keycode 195 = M3
-keycode 196 = MR
+!keycode 181 = G7
+!keycode 182 = G8
+!keycode 183 = G9
+!keycode 184 = G10
+!keycode 185 = G11
+!keycode 186 = G12
+!keycode 187 = G13
+!keycode 188 = G14
+!keycode 189 = G15
+!keycode 190 = G16
+!keycode 191 = G17
+!keycode 192 = G18
+!keycode 193 = M1
+!keycode 194 = M2
+!keycode 195 = M3
+!keycode 196 = MR
+!keycode 197 = L1
+!keycode 198 = L2
+!keycode 199 = L3
+!keycode 200 = L4
+!keycode 201 = L5
+!keycode 202 = G15_LIGHT
+keycode 203 = XF86AudioPlay
+keycode 204 = XF86AudioStop
+keycode 205 = XF86AudioPrev
+keycode 206 = XF86AudioNext
+keycode 207 = XF86AudioRaiseVolume
+keycode 208 = XF86AudioLowerVolume
+keycode 209 = XF86AudioMute

@@ -11,7 +11,8 @@ function delay()
 # This function runs a command on a display.
 function disp()
 {
-  DISPLAY=:0.$1 ${@:2}
+  #DISPLAY=:0.$1 ${@:2}
+  ${@:2}
 }
 
 #
@@ -58,7 +59,7 @@ g15macro &
 delay 25 imwheelstart &
 
 # Key bindings.
-delay 25 xbindkeys &
+#delay 25 xbindkeys &
 
 # Start irssi in a screen session.
 disp 1 xterm -e "screen -DR irssi irssi" &

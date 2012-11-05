@@ -22,8 +22,5 @@ au!
   " Reload previews (in zathura) when saving files.
   au BufWritePost *.tex silent! call DoIfExists(expand('%:p:r') . '.pdf', 'xdotool search -name "'.expand("<afile>:r").'" key R', 0)
 
-  " Keep my school files on dropbox as well.
-  au BufWritePost MB*.tex silent! call DoIfExists(expand('<afile>:r') . '.pdf', 'cp "'.expand('<afile>:r').'.pdf" ~/Dropbox/School/2IL05/', 5)
-
 augroup END
 

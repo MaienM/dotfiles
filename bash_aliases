@@ -10,9 +10,8 @@ alias lock='xscreensaver-command -lock'
 # Mute/unmute the system+toggle playing in quidlibet.
 alias mute='mute && quodlibet --play-pause'
 
-# Mount/unmount my S3.
-alias android-connect="sudo mtpfs -o allow_other /media/S3"
-alias android-disconnect="sudo umount /media/S3"
+# Tmux.
+alias tmux='tmux -2'
 
 # Untar and delete a (number of) file(s).
 function tarxf()

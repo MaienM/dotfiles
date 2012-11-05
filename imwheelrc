@@ -18,16 +18,16 @@ Super_L,    Left,     Super_R|Left
 Super_L,    Right,    Super_R|Right
 Super_L,    Thumb1,   Super_R|J
 Super_L,    Thumb2,   Super_R|K
-Super_L,    ExtBt7,   Super_R|Shift_L|C
-Super_L,    ExtBt8,   Super_R|Return
+Super_L,    Task,     Super_R|Shift_L|C
+#Super_L,    ExtBt8,   Super_R|Return
 
 #########################
 # Screen                #
 #########################
-"$screen -"
+"$(screen|tmux) -"
 Control_L,  Left,     Control_L|A|-A|P
 Control_L,  Right,    Control_L|A|-A|N
-Control_L,  ExtBt7,   Control_L|A|-A|-Control_L|Control_L|A
+Control_L,  Task,     Control_L|A|-A|-Control_L|Control_L|A
 
 #########################
 # Vim                   #
@@ -36,7 +36,7 @@ Control_L,  ExtBt7,   Control_L|A|-A|-Control_L|Control_L|A
 "- VIM$"
 None,       Left,     Control_L|Page_Up
 None,       Right,    Control_L|Page_Down
-None,       ExtBt7,   :|-:|w|-w|Return
+None,       Task,     :|-:|w|-w|Return
 
 #########################
 # Instant Messaging     #
@@ -57,7 +57,7 @@ None,       Right,    Alt_L|Right
 "^Pidgin$"
 None,       Left,     Control_L|Page_Up
 None,       Right,    Control_L|Page_Down
-None,       ExtBt7,   Escape
+None,       Task,     Escape
 
 #########################
 # File managers         #
@@ -74,7 +74,7 @@ None,       Thumb2,   Alt_L|Left
 
 # Quod Libet.
 "^Quodlibet.py$"
-None,       ExtBt7,   Control_L|Space
+None,       Task,     Control_L|Space
 None,       Left,     Control_L|,
 None,       Right,    Control_L|.
 
@@ -88,9 +88,9 @@ None,       Thumb1,   Escape|-Escape|Alt_L|Right
 None,       Thumb2,   Escape|-Escape|Alt_L|Left
 
 # Closing tabs.
-None,       ExtBt7,   Escape|-Escape|Control_L|W
-Shift_L,    ExtBt7,   Escape|-Escape|Control_L|Shift_L|T
-Control_L,  ExtBt7,   Escape|-Escape|Control_L|Alt_L|S|-Alt_L|W # FF only.
+None,       Task,     Escape|-Escape|Control_L|W
+Shift_L,    Task,     Escape|-Escape|Control_L|Shift_L|T
+Control_L,  Task,     Escape|-Escape|Control_L|Alt_L|S|-Alt_L|W # FF only.
 
 # Switching tabs.
 "(Firefox|Aurora|Nightly|Chromium)$"
@@ -102,18 +102,18 @@ None,       Right,    Escape|-Escape|2
 
 # Tab overview.
 "(Firefox|Aurora|Nightly)$"
-None,       ExtBt8,   Escape|-Escape|Control_L|Shift_L|E
+#None,       ExtBt8,   Escape|-Escape|Control_L|Shift_L|E
 
 #########################
 # Games                 #
 #########################
 
-# World of Warcraft
-"^World of Warcraft$"
+# World of Warcraft, Diablo III
+"^World of Warcraft|Diablo III$"
 ,           Left,     Alt_L|Left
 ,           Right,    Alt_L|Right
 ,           Thumb1,   Alt_L|Up
 ,           Thumb2,   Alt_L|Down
-,           ExtBt7,   Delete
-,           ExtBt8,   Insert
+,           Task,     Delete
+#,           ExtBt8,   Insert
 

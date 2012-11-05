@@ -42,3 +42,5 @@ au BufWritePost ~/.imwheelrc silent! !~/bin/imwheelstart &> /dev/null
 "au BufWritePost ~/.screenrc silent! !DISPLAY=:0.0 xdotool search -name 'screen -' key ctrl+a type --delay 0 :source' ' ~/.screenrc &&
 "                                   \ DISPLAY=:0.0 xdotool search -name 'screen -' key Return
 
+" Scss files.
+au BufWritePost *.scss silent! !sass --scss --style compressed --update <afile> &> /dev/null

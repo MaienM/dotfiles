@@ -13,3 +13,6 @@ complete -cf sudo
 
 # Load the aliases.
 [[ -e ~/.bash_aliases ]] && . ~/.bash_aliases
+
+# Load drush completion.
+[[ -e ~/.bash_drush ]] && . ~/.bash_drush

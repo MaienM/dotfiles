@@ -16,4 +16,5 @@ au BufReadPre,BufNewFile ~/Coding/School/OGO/* call DisableBackup()
 " Set the filetype to asm for casm files.
 au BufRead *.casm set ft=asm
 
+au BufRead *.tpl set ft=html
 

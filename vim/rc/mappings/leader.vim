@@ -17,18 +17,21 @@ endfunction
 
 " <Leader>rl: Reload the vimrc file.
 " <Leader>re: Edit an vimrc file (command-t on the .vim directory).
-map <silent> <Leader>rl :source $MYVIMRC<CR>
-map <silent> <Leader>re :CommandT ~/.vim<CR>
+nnoremap <silent> <Leader>rl :source $MYVIMRC<CR>
+nnoremap <silent> <Leader>re :CommandT ~/.vim<CR>
 
 " <Leader>f: Command-t (Find file).
-map <silent> <Leader>f :CommandT<CR>
+nnoremap <silent> <Leader>f :CommandT<CR>
 
-" <Leader>pb: Paste bold.
-" <Leader>pi: Paste italic.
-" <Leader>pu: Paste underlined.
-map <silent> <Leader>pb i<C-B><Esc>'+pi<C-F><Esc>
-map <silent> <Leader>pi i<C-I><Esc>'+pi<C-F><Esc>
-map <silent> <Leader>pu i<C-U><Esc>'+pi<C-F><Esc>
+" <Leader>ml: Insert indentation modeline, based on current settings.
+nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
+function! AppendModeline()
+  let l:et = {0: 'net', 1: 'et'}
+  let l:modeline = printf(" vim:ts=%d:sw=%d::ts=%d:tw=%d:%s",
+        \ &tabstop, &shiftwidth, &softtabstop, &textwidth, l:et[&expandtab])
+  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+  call append(line("$"), l:modeline)
+endfunction
 
 " <Leader>c: Comment the selected lines.
 vnoremap <Leader>c :call Comment()<CR>
