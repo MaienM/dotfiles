@@ -40,3 +40,6 @@
 [submodule "vim/bundle/securemodelines"]
 	path = vim/bundle/securemodelines
 	url = https://github.com/ciaranm/securemodelines.git
+[submodule "vim/bundle/twig"]
+	path = vim/bundle/twig
+	url = https://github.com/beyondwords/vim-twig.git

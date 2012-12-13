@@ -51,3 +51,9 @@ complete -F _complete_supdate -X '!&*' supdate
 
 # Completion for gitlv.
 complete -C 'git remote; echo &> /dev/null <' -X '!&*' gitlv
+
+# Drush.
+[[ -e ~/.bash_drush ]] && . ~/.bash_drush
+
+# Tmuxinator.
+[[ -s $HOME/.tmuxinator/scripts/tmuxinator ]] && source $HOME/.tmuxinator/scripts/tmuxinator

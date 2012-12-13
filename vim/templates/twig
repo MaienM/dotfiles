@@ -1,0 +1,7 @@
+{% extends 'LifeAchievedBundle:Core:main.html.twig' %}
+
+{% block title %} {% endblock %}
+{% block pageid %} {% endblock %}
+
+{% block content %}
+{% endblock %}

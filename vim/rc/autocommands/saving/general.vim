@@ -24,6 +24,10 @@ au BufWrite *.js silent!
 \   endif |
 \ endif
 
+" Run the "Save" command when saving a file. Check the mappings/leader file
+" for details on this workflow.
+au BufWritePost * Save
+
 " ----------------------------------------------------------------------
 " -                   Reload (RC) files when saving.                   -
 " ----------------------------------------------------------------------
@@ -42,5 +46,8 @@ au BufWritePost ~/.imwheelrc silent! !~/bin/imwheelstart &> /dev/null
 "au BufWritePost ~/.screenrc silent! !DISPLAY=:0.0 xdotool search -name 'screen -' key ctrl+a type --delay 0 :source' ' ~/.screenrc &&
 "                                   \ DISPLAY=:0.0 xdotool search -name 'screen -' key Return
 
+" Reload the tmux config when saving it.
+au BufWritePost ~/.tmux.conf silent! !tmux source-file ~/.tmux.conf
+
 " Scss files.
-au BufWritePost *.scss silent! !sass --scss --style compressed --update <afile> &> /dev/null
+"au BufWritePost *.scss silent! !sass --scss --style compressed --update <afile> &> /dev/null

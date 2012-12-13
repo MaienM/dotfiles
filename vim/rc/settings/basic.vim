@@ -20,9 +20,9 @@ set ignorecase smartcase        " ignore case when using a search pattern,
                                 " except when upper case letters are used
 set showcmd                     " display incomplete commands
 set expandtab                   " use spaces instead of tabs*
-set softtabstop=2               " tabs have a width of 2 spaces*
-set shiftwidth=2                " each indent step is 2 spaces*
-                                " <F7> can be used to easily change these 
+set softtabstop=4               " tabs have a width of 4 spaces*
+set shiftwidth=4                " each indent step is 4 spaces*
+                                " <F6> can be used to easily change these 
                                 "      settings on the fly.
 set autoindent                  " automatically indent
 "set smartindent                 " smarter auto-indent
@@ -44,11 +44,7 @@ set wildmenu                    " ^^^
 set nobackup                    " don't let vim write backups
 set tabpagemax=15
 set relativenumber              " there be numbers, mon
-
-" Screen compatibility.
-if match($TERM, "screen")!=-1
-  set term=xterm
-endif
+set exrc                        " basic per-project config file
 
 " Version-specific stuff, doesn't work in older versions, sadly.
 if v:version >= 600

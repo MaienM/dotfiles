@@ -111,7 +111,7 @@ elseif &t_Co == 256
   hi SpecialKey     ctermbg=234  ctermfg=176   cterm=none
   hi VertSplit      ctermbg=234  ctermfg=227   cterm=none
   hi SignColumn     ctermbg=234  ctermfg=141   cterm=none
-  hi NonText        ctermbg=234  ctermfg=204   cterm=none
+  hi NonText        ctermbg=233  ctermfg=204   cterm=none
   hi Directory      ctermbg=234  ctermfg=227   cterm=none 
   hi Title          ctermbg=234  ctermfg=84    cterm=bold
 

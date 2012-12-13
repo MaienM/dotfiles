@@ -15,3 +15,9 @@ if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis 
       \ | wincmd p | diffthis | wincmd h
 endif
+
+" Call, if the file exists.
+function! ShellIfExists(file, command, delay)
+  execute '!sleep ' . a:delay . ' && bash -c "if [[ -f \"' . a:file . '\" ]]; then ' . a:command . ' &> /dev/null; fi &> /dev/null &" &> /dev/null &'
+endfunction
+

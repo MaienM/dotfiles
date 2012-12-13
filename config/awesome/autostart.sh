@@ -62,7 +62,7 @@ delay 25 imwheelstart &
 #delay 25 xbindkeys &
 
 # Start irssi in a screen session.
-disp 1 xterm -e "screen -DR irssi irssi" &
+disp 1 xterm -e "tmux new -s irssi irssi" &
 
 # Autostart programs.
 disp 0 quodlibet &

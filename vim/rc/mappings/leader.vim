@@ -26,15 +26,29 @@ nnoremap <silent> <Leader>f :CommandT<CR>
 " <Leader>ml: Insert indentation modeline, based on current settings.
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 function! AppendModeline()
-  let l:et = {0: 'net', 1: 'et'}
-  let l:modeline = printf("vim:ts=%d:sw=%d:ts=%d:tw=%d:%s",
-        \ &tabstop, &shiftwidth, &softtabstop, &textwidth, l:et[&expandtab])
+  let l:modeline = "vim"
+
+  if &expandtab
+    let l:modeline .= ":et"
+    let l:modeline .= ":sw=" . &shiftwidth
+  else
+    let l:modeline .= ":net"
+    let l:modeline .= ":ts=" . &tabstop
+    if &softtabstop > 0
+      let l:modeline .= ":sts=" . &softtabstop
+    endif
+  endif
+
+  if &textwidth > 0
+    let l:modeline .= ":tw=" . &textwidth
+  endif 
+
   let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
   call append(line("$"), l:modeline)
 endfunction
 
 " <Leader>c: Comment the selected lines.
-vnoremap <Leader>c :call Comment()<CR>
+vnoremap <Leader>" :call Comment()<CR>
 function! Comment() range
   " Process the 'comments' setting to find out which characters we have to use
   " for comments.
@@ -77,3 +91,33 @@ function! Comment() range
   endif
   noh
 endfunction
+
+" Example of the following actions for an android app:
+" Compile: Compile the code to an APK.
+" Preview: Install/run the latest apk on an emulator.
+" Deploy: Install/run the latest apk on a phone.
+" Refresh: Not implemented.
+" Save: Do nothing.
+
+" Example for an latex file:
+" Compile: Compiles the file into a PDF.
+" Preview: Open's the PDF.
+" Deploy: Same as preview.
+" Refresh: Refreshes the currently running preview.
+" Save: Compile + Refresh.
+
+" Depending on how heavy this all is, it can be set to auto compile/refresh
+" automatically when saving (for latex files this might be appropriate, to
+" have a "live" preview), or to only do this when told to do so manually.
+
+" <Leader>bc: Compile the current file.
+map <Leader>bc :Compile<CR>
+
+" <Leader>bp: Preview the current file.
+map <Leader>bp :Preview<CR>
+
+" <Leader>bd: Deploy the current file.
+map <Leader>bd :Deploy<CR>
+
+" <Leader>br: Refresh the current file. 
+map <Leader>br :Refresh<CR>

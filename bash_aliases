@@ -5,7 +5,7 @@ alias sudo='A=`alias` sudo  '
 alias ls='ls --color=auto'
 
 # Lock the screen.
-alias lock='xscreensaver-command -lock'
+alias lock='xscreensaver-command -lock || (xscreensaver & sleep 2 && xscreensaver-command -lock)'
 
 # Mute/unmute the system+toggle playing in quidlibet.
 alias mute='mute && quodlibet --play-pause'
@@ -66,4 +66,13 @@ alias gitrb='git rebase --interactive'
 alias gitrbu='gitrb origin/master..'
 
 # Diff.
-alias gitd='git diff'
+function gitd()
+{
+    GIT_PAGER='' git diff --minimal $@
+    read message
+    if [[ -n $message ]];
+    then
+        git commit $@ -m "$message"
+    fi
+    gits
+}

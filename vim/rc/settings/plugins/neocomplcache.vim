@@ -33,7 +33,7 @@ endfunction"}}
 function! s:hasCommon()"{{{
   return len(<SID>getCommon())
 endfunction"}}
-function s:getCommon()"{{{
+function! s:getCommon()"{{{
   " Get the completion.
   let command = neocomplcache#complete_common_string()
 
