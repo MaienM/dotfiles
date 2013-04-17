@@ -117,3 +117,7 @@ None,       Right,    Escape|-Escape|2
 ,           Task,     Delete
 #,           ExtBt8,   Insert
 
+# Skyrim.
+"^Skyrim$"
+# Quickly saving.
+, 	    Task,    Escape|-Escape|E|-E|S|-S|E|-E

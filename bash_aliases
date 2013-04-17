@@ -1,5 +1,5 @@
 # Make sudo recognize aliases. Don't ask me how it works, I don't have a clue.
-alias sudo='A=`alias` sudo  '
+#alias sudo='A=`alias` sudo  '
 
 # Make ls colorize it's output. Nice to distinguish executable files, folders, broken links, etc.
 alias ls='ls --color=auto'
@@ -11,7 +11,7 @@ alias lock='xscreensaver-command -lock || (xscreensaver & sleep 2 && xscreensave
 alias mute='mute && quodlibet --play-pause'
 
 # Tmux.
-alias tmux='tmux -2'
+#alias tmux='tmux -2'
 
 # Untar and delete a (number of) file(s).
 function tarxf()
@@ -25,12 +25,6 @@ function tarxf()
   do 
     tar -x"$ARG"f "$file" && rm "$file"
   done
-}
-
-# Find a file in a folder structure.
-function ffind()
-{
-  find $1 -type f -regex ".*/$2"
 }
 
 # Print $1 or, when $1 is empty, $2.

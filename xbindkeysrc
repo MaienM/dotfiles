@@ -15,8 +15,8 @@
   XF86AudioLowerVolume
 "amixer set PCM 2dB-"
   c:208
-"amixer set PCM togglemute"
-  c:209
+"amixer set Master togglemute"
+  XF86AudioMute
 
 # Key state stuff.
 # Keyboard light on/off.
@@ -26,15 +26,15 @@
   c:202
 
 # Headphone mute.
-"amixer set PCM mute"
+"amixer -c 'V2000' set PCM mute"
   c:211
-"amixer set PCM unmute"
+"amixer -c 'V2000' set PCM unmute"
   c:212
 
 # Microphone mute.
-"amixer set Mic nocap"
+"amixer -c 'V2000' set Mic nocap"
   c:213
-"amixer set Mic cap"
+"amixer -c 'V2000' set Mic cap"
   c:214
 
 # Printscreen.

@@ -80,8 +80,10 @@ function process()
 
   if [[ -e $NF ]]
   then
+    # Directory.
     if [[ -d $NF && -d $OF ]]
     then
+      # If it is a virtual directory (that is, we don't link the directory itself, but it's contents)
       if [[ $D -gt 0 ]]
       then
         traverse "$OF"
@@ -94,6 +96,8 @@ function process()
           echo "automatically (yet), but you should look at it."
         fi
       fi
+
+    # File
     elif [[ -f $NF && -f $OF ]]
     then
       if [[ $NF -ef $OF ]]
@@ -148,14 +152,50 @@ function process()
   fi
 }
 
+function processLinks()
+{
+  cat .links | while read line
+  do
+    line=($line)
+    source=$(realpath -sm ${line[0]})
+    target=$(realpath -sm $HOME/${line[1]})
+    if [[ $source -ef $target ]]
+    then
+      :
+    else
+      if [[ -f $source ]]
+      then
+        ln -f $source $target
+      elif [[ -d $source ]]
+      then
+        ln -sf $source $target
+      else
+        echo "File does not exists: $source."
+        echo "Invalid link entry: $source $target."
+        echo
+      fi
+    fi
+  done
+}
+
+# Clear commands file.
 echo > cmds
+
+# Process file links into commands file.
 for FILE in ${@:-*[^~]}
 do
   process "$FILE"
 done
+
+# Process links.
+processLinks
+
+# Add a cleanup line to the commands file.
 echo rm cmds >> cmds
 
 echo Please confirm the following commands are correct:
 head -n-1 cmds
 echo
-echo To execute these commands type . cmds
+echo To execute these commands type 'source cmds'
+
+#vim:et:sw=2

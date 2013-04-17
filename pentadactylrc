@@ -1,0 +1,72 @@
+" Last change: Sun, 31 Mar 2013 13:42:16 +0200
+
+group! default
+
+set history=50
+"set complete=sfbtlS
+set defsearch=g
+set editor=urxvt\ -e\ vim
+set errorbells
+"set smartcase
+"set incsearch
+"set hlsearch
+set newtab=all
+set shell=urxvt
+set shellcmdflag=\-e
+set wildmode=list:full
+set activate-=downloads
+
+map Q @q
+map <silent> <F3> :js window.content.document.toggleImageSize(); <CR>
+map <silent> <F4> :! <CR>
+map <silent> <F5> gT
+map <silent> <F6> :tabc <CR>
+map <silent> <F7> <C-A-s><F6>
+map <silent> <F8> gt
+map <silent> <C-A-s> wallbase-save <CR>
+
+" 
+" F4 actions for various pages.
+"
+autocmd! ShellCmdPost   .*wallbase.*#noredirect     :wallbase-pic
+autocmd! ShellCmdPost   .*wallpaper-.*              :wallbase-page
+autocmd! ShellCmdPost   .*allmusic.*/album/.*       :execute ':open nzbm ' + /^(.*) \| AllMusic$/.exec(buffer.title)[1]
+
+" Convenience function.
+command! bufdoifmatch   -nargs=+ -description="For all pages: executes $2 if the page url matches regex given in $1."
+    \ bufdo ifmatch <q-args[1]> <q-args[2]>
+command! ifmatch        -nargs=+ -description="Executes $2 if the page url matches regex given in $1."
+    \ if ((new Regex(<q-args[1]>)).exec(buffer.URL) != null)
+        \ <args[2]>
+    \ endif
+
+" Shuffle tabs.
+command! shuffle-tab                        :execute ':tabm -' + (Math.floor(Math.random() * 20).toString())
+
+" Whimventory.
+command! whim :javascript (function(){try{var d=content.document,b=d.body,s=d.createElement('script'),l=d.createElement('div'),t=l.style,x='undefined',u='http://www.whimventory.com';s.setAttribute('src',u+'/scripts/b.php');l.id='wvtyld';l.innerHTML='Loading%20Whimventory...';t.background='#ff3f11';t.color='white';t.textAlign='center';t.position='absolute';t.top='0px';b.appendChild(l);b.appendChild(s);}catch (e) {alert('Please wait until the page has finished loading' + e);}})()
+
+" Google translate.
+command! translate :execute ':open http://translate.google.com/translate?sl=auto&tl=en&u=' + buffer.URL
+
+" Wallbase commands.
+command! wallbase-shuffle   -description="Randomly shuffles all wallbase pages."
+    \ bufdoifmatch 'wallpaper'                  'shuffle-tab'
+    \ bufdoifmatch 'wallbase.cc/(?!wallpaper)'  'tabm 0'
+
+command! wallbase-page      -description="Convert the current wallbase picture to the corresponding page."
+    \ silent execute ':open http://wallbase.net/wallpaper/' + (/\/wallpaper-([0-9]+)\..{3,4}$/.exec(buffer.URL)[1]) + '#noredirect'
+command! wallbase-pages     -description="Converts all open wallbase pictures to the corresponding pages."
+    \ bufdoifmatch '/wallpaper-'                'wallbase-page'
+
+command! wallbase-pic       -description="Convert the current wallbaese page to the corresponding picture."
+    \ silent execute ':open ' + buffer.URL.specIgnoringRef
+command! wallbase-pics      -description="Converts all open wallbase pages to the corresponding pictures."
+    \ bufdoifmatch 'wallbase.cc/wallpaper'      'wallbase-pic'
+
+command! wallbase-save      -description="Save current picture to the queue."
+    \ execute ':sav /mnt/Media/Pictures/Queue/' + /\/([^\/]+$)/.exec(buffer.URL)[1]
+command! wallbase-saveall   -description="Save all open pics to the queue."
+    \ bufdoifmatch '/wallpaper-'                'wallbase-save'
+command! wallbase-closeall  -description="Close all open wallbase pics."
+    \ bufdoifmatch '/wallpaper-'                'tabclose'

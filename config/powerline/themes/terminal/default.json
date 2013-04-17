@@ -1,0 +1,23 @@
+{
+	"segments": {
+		"left": [
+			{
+				"name": "hostname",
+				"before": " "
+			},
+			{
+				"name": "user"
+			},
+			{
+				"name": "branch",
+				"before": " "
+			},
+			{
+				"name": "cwd",
+				"args": {
+					"dir_limit_depth": 3
+				}
+			}
+		]
+	}
+}

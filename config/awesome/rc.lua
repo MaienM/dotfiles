@@ -31,7 +31,7 @@ beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 io.popen("bash " .. awful.util.getdir("config") .. "/autostart.sh")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "xterm"
+terminal = "urxvt"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -269,7 +269,7 @@ globalkeys = awful.util.table.join(
               "Toggle dropdown terminal"),
 
     -- Android keyboard.
-    awful.key({ modkey }, "Tab",              function() dropdown(terminal .. ' -e android-type') end,
+    awful.key({ modkey }, "Tab",              function() dropdown('xterm -e android-type') end,
               "Toggle android-type")
 
     -- Multimedia keys.

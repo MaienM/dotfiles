@@ -28,3 +28,6 @@ complete -cf sudo
 
 # Load the aliases.
 [ -e ~/.bash_aliases ] && . ~/.bash_aliases
+
+# Load the completion stuff.
+[ -e ~/.bash_completion ] && . ~/.bash_completion

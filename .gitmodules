@@ -43,3 +43,27 @@
 [submodule "vim/bundle/twig"]
 	path = vim/bundle/twig
 	url = https://github.com/beyondwords/vim-twig.git
+[submodule "powerline"]
+	path = powerline
+	url = git://github.com/Lokaltog/powerline.git
+[submodule "solarized/tmux"]
+	path = solarized/tmux
+	url = git://github.com/seebi/tmux-colors-solarized.git
+[submodule "zprezto"]
+	path = zprezto
+	url = https://github.com/sorin-ionescu/prezto.git
+[submodule "vim/bundle/syntastic"]
+	path = vim/bundle/syntastic
+	url = https://github.com/scrooloose/syntastic.git
+[submodule "vim/bundle/commentary"]
+	path = vim/bundle/commentary
+	url = https://github.com/tpope/vim-commentary.git
+[submodule "solarized/vim"]
+	path = solarized/vim
+	url = https://github.com/altercation/vim-colors-solarized.git
+[submodule "vim/bundle/supertab"]
+	path = vim/bundle/supertab
+	url = https://github.com/ervandew/supertab
+[submodule "vim/bundle/ultisnips"]
+	path = vim/bundle/ultisnips
+	url = https://github.com/SirVer/ultisnips

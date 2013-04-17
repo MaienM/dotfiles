@@ -1,5 +1,7 @@
 " Part of my modulized vimrc file.
-" Last change: Tue, 03 Jul 2012 16:50:35 +0200
+" Last change: Sat, 23 Feb 2013 15:42:23 +0100
+
+finish
 
 " Make the popup look decent.
 hi Pmenu ctermbg=235 ctermfg=252 cterm=none

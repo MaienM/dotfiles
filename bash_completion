@@ -1,6 +1,7 @@
 # Completion for vim -t
 # From http://vim.wikia.com/wiki/Using_bash_completion_with_ctags_and_Vim
-_vim_ctags() {
+_vim_ctags() 
+{
   local cur prev
 
   COMPREPLY=()
@@ -34,23 +35,16 @@ _vim_ctags() {
 excludelist='*.@(o|O|so|SO|so.!(conf)|SO.!(CONF)|a|A|rpm|RPM|deb|DEB|gif|GIF|jp?(e)g|JP?(E)G|mp3|MP3|mp?(e)g|MP?(E)G|avi|AVI|as'
 complete -F _vim_ctags -f -X "${excludelist}" vi vim gvim rvim view rview rgvim rgview gview
 
-# Completion for supdate.
-_complete_supdate() 
-{
-  if [[ ${2::1} == '-' ]]
-  then
-    COMPREPLY=('-h' '-v' '-q' '-c' '-r' '-f' '-s')
-  elif [[ $COMP_CWORD -eq 1 ]]
-  then
-    COMPREPLY=(check refresh download apply)
-  else
-    COMPREPLY=($(ls ~/.supdate/sites/*.sh | grep -oP '[^/]+(?=.sh$)'))
-  fi
-}
-complete -F _complete_supdate -X '!&*' supdate
-
 # Completion for gitlv.
 complete -C 'git remote; echo &> /dev/null <' -X '!&*' gitlv
+
+# QEMU management script.
+_qemu() 
+{
+    COMMANDS="start stop restart kill ssh cd mount monitor"
+    COMPREPLY=( $(compgen -W "$COMMANDS") )
+}
+complete -F _qemu windows
 
 # Drush.
 [[ -e ~/.bash_drush ]] && . ~/.bash_drush

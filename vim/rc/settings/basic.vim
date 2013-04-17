@@ -7,6 +7,8 @@ set backspace=indent,eol,start
 " Theme.
 if &t_Co>2
   set t_Co=256
+  set background=dark
+  "colorscheme solarized 	" Bundles are not yet loaded at this point.
   colorscheme herald          " set the theme
 endif
 
@@ -19,9 +21,9 @@ set incsearch                   " do incremental searching
 set ignorecase smartcase        " ignore case when using a search pattern,
                                 " except when upper case letters are used
 set showcmd                     " display incomplete commands
-set expandtab                   " use spaces instead of tabs*
-set softtabstop=4               " tabs have a width of 4 spaces*
-set shiftwidth=4                " each indent step is 4 spaces*
+"set expandtab                   " use spaces instead of tabs*
+"set softtabstop=4               " tabs have a width of 4 spaces*
+"set shiftwidth=4                " each indent step is 4 spaces*
                                 " <F6> can be used to easily change these 
                                 "      settings on the fly.
 set autoindent                  " automatically indent
@@ -42,7 +44,7 @@ set splitright                  " when vertically splitting, open new stuff at
 set wildmode=longest,list,full  " bash-like completion
 set wildmenu                    " ^^^
 set nobackup                    " don't let vim write backups
-set tabpagemax=15
+set tabpagemax=25
 set relativenumber              " there be numbers, mon
 set exrc                        " basic per-project config file
 

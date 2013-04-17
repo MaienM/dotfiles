@@ -26,7 +26,7 @@ function! MarkdownPreview()
     " **************************************************************
     " Configurable settings
 
-    let MARKDOWN_COMMAND = 'markdown'
+    let MARKDOWN_COMMAND = 'markdown_py -x extra'
 
     if has('win32')
         " note important extra pair of double-quotes

@@ -2,3 +2,4 @@
 "
 
 au BufNewFile,BufRead *.pde setlocal filetype=arduino
+au BufNewFile,BufRead *.ino setlocal filetype=arduino
