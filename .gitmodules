@@ -51,7 +51,7 @@
 	url = git://github.com/seebi/tmux-colors-solarized.git
 [submodule "zprezto"]
 	path = zprezto
-	url = https://github.com/sorin-ionescu/prezto.git
+	url = https://github.com/MaienM/prezto.git
 [submodule "vim/bundle/syntastic"]
 	path = vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
