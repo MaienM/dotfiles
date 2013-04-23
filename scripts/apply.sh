@@ -157,8 +157,8 @@ function processLinks()
   cat .links | while read line
   do
     line=($line)
-    source=$(realpath -sm ${line[0]})
-    target=$(realpath -sm $HOME/${line[1]})
+    source=$(realpath -s ${line[0]})
+    target=$(realpath -s $HOME/${line[1]})
     if [[ $source -ef $target ]]
     then
       :
