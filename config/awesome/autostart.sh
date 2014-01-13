@@ -19,9 +19,6 @@ function disp()
 # Start of the autostart part.
 #
 
-# Restore the backgrounds.
-delay 30 nitrogen --restore &
-
 # Stop here if the autorun file has been run before this session. Everything
 # after this is "run-once", so to say.
 if ! [ -e /tmp/awesomedoautostart ];
@@ -37,17 +34,14 @@ rm /tmp/awesomedoautostart
 # Apply .Xresources.
 xrdb -merge ~/.Xresources &
 
+# Pulseaudio.
+pulseaudio -start &
+
 # Screensaver/lock screen.
 xscreensaver -no-splash &
 
 # Numlock.
 numlockx &
-
-# Volume control.
-#delay 20 disp 0 obmixer &
-
-# Fix the microphone.
-#~/bin/fixmic &
 
 # Apply .Xmodmap
 delay 10 xmodmap .Xmodmap &
@@ -65,8 +59,5 @@ delay 25 xbindkeys &
 disp 1 xterm -e "tmux new -s irssi irssi" &
 
 # Autostart programs.
-disp 0 quodlibet &
+disp 0 spotify &
 disp 0 skype &
-
-# Start the quodlibet g15 display.
-#delay 45 Coding/Local/g15quodlibet/g15quodlibet &

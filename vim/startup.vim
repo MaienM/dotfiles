@@ -5,17 +5,10 @@
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
-" Load pathogen.
-" This too had to happen before anything else, so we can be sure that all
+" Load vundle.
+" This too has to happen before anything else, so we can be sure that all
 " plugins and such are available for use in the vimrc files.
-
-" Add the pathogen path to the runtime path.
-set runtimepath&
-let &runtimepath = &runtimepath . ',' . finddir('bundle/pathogen', &runtimepath)
-
-" Start pathogen.
-call pathogen#infect()
-Helptags
+runtime! vundle.vim
 
 " Load the rc files responsible for the rest of the initialisation.
 runtime! rc/**.vim

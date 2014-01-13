@@ -21,11 +21,10 @@ set incsearch                   " do incremental searching
 set ignorecase smartcase        " ignore case when using a search pattern,
                                 " except when upper case letters are used
 set showcmd                     " display incomplete commands
-"set expandtab                   " use spaces instead of tabs*
-"set softtabstop=4               " tabs have a width of 4 spaces*
-"set shiftwidth=4                " each indent step is 4 spaces*
-                                " <F6> can be used to easily change these 
-                                "      settings on the fly.
+set noexpandtab                 " default indent settings.
+set tabstop=4                   "
+set softtabstop=4               " <F6> can be used to easily change these 
+set shiftwidth=4                "      settings on the fly. 
 set autoindent                  " automatically indent
 "set smartindent                 " smarter auto-indent
 set smarttab                    " delete shiftwidth amount of spaces with <BS>
@@ -43,10 +42,12 @@ set splitright                  " when vertically splitting, open new stuff at
                                 " the right side instead of at the left side
 set wildmode=longest,list,full  " bash-like completion
 set wildmenu                    " ^^^
-set nobackup                    " don't let vim write backups
 set tabpagemax=25
 set relativenumber              " there be numbers, mon
 set exrc                        " basic per-project config file
+set nobackup                    " don't let vim write backups
+set noswapfile                  " or swap files
+set ttimeoutlen=50              " make it more snappy
 
 " Version-specific stuff, doesn't work in older versions, sadly.
 if v:version >= 600

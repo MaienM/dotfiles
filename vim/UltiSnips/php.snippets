@@ -1,0 +1,19 @@
+snippet /** "Doxygen"
+/** @brief
+ * $1
+ */
+endsnippet 
+
+snippet /*** "Doxygen group header"
+/*********************************//**@name
+ * $1
+ *****************************************/
+endsnippet 
+
+snippet ///t "Unit test function"
+/// @see DolAuth#$1
+public function test_${1/.+/\L$0\E/}()
+{
+    $da = $this->dolauth;
+}
+endsnippet

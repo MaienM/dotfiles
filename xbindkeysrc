@@ -1,42 +1,20 @@
 # Media keys. Fuckers.
-"quodlibet --play-pause"
-  c:203
-"quodlibet --pause"
-  c:204
-"quodlibet --previous"
-  c:205
-"quodlibet --next"
-  c:206
-"amixer set PCM 1dB+"
+"spotify-controller play-pause"
+  XF86AudioPlay
+"spotify-controller stop"
+  XF86AudioStop
+"spotify-controller previous"
+  XF86AudioPrev
+"spotify-controller next"
+  XF86AudioNext
+"pamixer -s 'alsa_output.pci-0000_00_14.2.analog-stereo' --increase 1 && pamixer -s 'alsa_output.usb-Corsair_Vengeance_2100-00-V2100.analog-stereo' --increase 1"
   XF86AudioRaiseVolume
-"amixer set PCM 2dB+"
-  c:207
-"amixer set PCM 1dB-"
+"pamixer -s 'alsa_output.pci-0000_00_14.2.analog-stereo' --decrease 1 && pamixer -s 'alsa_output.usb-Corsair_Vengeance_2100-00-V2100.analog-stereo' --decrease 1"
   XF86AudioLowerVolume
-"amixer set PCM 2dB-"
-  c:208
-"amixer set Master togglemute"
+"pamixer -s 'alsa_output.pci-0000_00_14.2.analog-stereo' --toggle-mute 1 && pamixer -s 'alsa_output.usb-Corsair_Vengeance_2100-00-V2100.analog-stereo' --toggle-mute 1"
   XF86AudioMute
-
-# Key state stuff.
-# Keyboard light on/off.
-"numlockx on"
-  c:210
-"numlockx off && lock"
-  c:202
-
-# Headphone mute.
-"amixer -c 'V2000' set PCM mute"
-  c:211
-"amixer -c 'V2000' set PCM unmute"
-  c:212
-
-# Microphone mute.
-"amixer -c 'V2000' set Mic nocap"
-  c:213
-"amixer -c 'V2000' set Mic cap"
-  c:214
 
 # Printscreen.
 "import -window $(xdotool getactivewindow) /mnt/Media/Pictures/Screenshots/$(xprop -id $(xdotool getactivewindow) | grep CLASS | grep -oE '\".+?\"' | grep -oE '[A-Za-z]+' | head -n1)-$(date +%d_%m_%Y-%H_%M_%S).jpg"
-  c:107
+  Print
+

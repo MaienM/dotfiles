@@ -1,4 +1,4 @@
-" Last change: Sun, 31 Mar 2013 13:42:16 +0200
+" Last change: Fri, 18 Oct 2013 01:07:45 +0200
 
 group! default
 
@@ -23,7 +23,7 @@ map <silent> <F5> gT
 map <silent> <F6> :tabc <CR>
 map <silent> <F7> <C-A-s><F6>
 map <silent> <F8> gt
-map <silent> <C-A-s> wallbase-save <CR>
+map <silent> <C-A-s> :wallbase-save <CR>
 
 " 
 " F4 actions for various pages.
@@ -55,7 +55,7 @@ command! wallbase-shuffle   -description="Randomly shuffles all wallbase pages."
     \ bufdoifmatch 'wallbase.cc/(?!wallpaper)'  'tabm 0'
 
 command! wallbase-page      -description="Convert the current wallbase picture to the corresponding page."
-    \ silent execute ':open http://wallbase.net/wallpaper/' + (/\/wallpaper-([0-9]+)\..{3,4}$/.exec(buffer.URL)[1]) + '#noredirect'
+    \ silent execute ':open http://wallbase.cc/wallpaper/' + (/\/wallpaper-([0-9]+)\..{3,4}$/.exec(buffer.URL)[1]) + '#noredirect'
 command! wallbase-pages     -description="Converts all open wallbase pictures to the corresponding pages."
     \ bufdoifmatch '/wallpaper-'                'wallbase-page'
 
