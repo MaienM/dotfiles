@@ -5,8 +5,6 @@ set laststatus=2
 set statusline=                         " statusline
 set statusline+=%<%f                    " relative filename
 set statusline+=\                       " 
-set statusline+=%{TagName()}%*          " the name of the current tag, if any
-set statusline+=\                       " 
 set statusline+=%h                      " [Help] if this is a help buffer
 set statusline+=%m                      " [+] if modified, [-] if not modifiable
 set statusline+=%r                      " [RO] if readonly
@@ -42,9 +40,6 @@ function! E(arg, ...)
   endif
 endfunction
 
-function! TagName()
-  return E(Tlist_Get_Tagname_By_Line(), '{_@_}')
-endfunction
 function! SpecialModes()
   let retvals = []
   if &paste

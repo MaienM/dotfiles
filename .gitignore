@@ -1,5 +1,6 @@
 vim/spell
 vim/.netrwhist
 vim/doc/tags
+vim/bundle/*
 irssi/scripts/autorun
 putty/output
