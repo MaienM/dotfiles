@@ -1,10 +1,6 @@
 " Part of my modulized vimrc file.
 " Last change: Sun, 02 Oct 2011 10:36:47 +0200
 
-" Remap ; to :. Saves a keystroke on an often used key.
-nnoremap ; :
-" This breaks a lot of stuff. nnoremap : <nop>
-
 " Use Alt-j and Alt-k to move up/down visual lines.
 Map <A-j> gj
 Map <A-k> gk
@@ -36,3 +32,6 @@ vnoremap # :<C-u>call <SID>VSetSearch()<CR>??<CR>
 " so that you can undo CTRL-U after inserting a line break. Same for CTRL-W.
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
+
+" Map jj to esc in insert mode. Esc is too far away.
+inoremap jj <Esc>

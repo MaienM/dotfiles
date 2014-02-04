@@ -17,25 +17,48 @@ call vundle#rc()
 " Load vundle.
 Bundle 'gmarik/vundle'
 
-" Load all bundles.
-Bundle 'tpope/vim-commentary'
+" Settings dependant on loaded files.
 Bundle 'ciaranm/detectindent'
-Bundle 'sjl/gundo.vim'
-Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'tsaleh/vim-matchit'
-Bundle 'Shougo/neocomplcache'
-Bundle 'kien/rainbow_parentheses.vim'
-Bundle 'tpope/vim-repeat'
 Bundle 'ciaranm/securemodelines'
-Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-Bundle 'ervandew/supertab'
-Bundle 'tpope/vim-surround'
-Bundle 'scrooloose/syntastic'
-Bundle 'godlygeek/tabular'
+
+" Easy commenting.
+Bundle 'tpope/vim-commentary'
+
+" Lists.
+Bundle 'sjl/gundo.vim'
 Bundle 'majutsushi/tagbar'
+Bundle 'shougo/unite.vim'
+
+" Visual clues.
+Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'kien/rainbow_parentheses.vim'
+
+" Movement.
+Bundle 'justinmk/vim-sneak'
+Bundle 'tsaleh/vim-matchit'
+
+" Editing.
+Bundle 'tpope/vim-repeat'
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-abolish'
+Bundle 'tpope/vim-speeddating'
+Bundle 'godlygeek/tabular'
+Bundle 'mattn/emmet-vim'
+
+" Snippets.
+Bundle 'sirver/ultiSnips'
+
+" Tab complete.
+Bundle 'ervandew/supertab'
+Bundle 'shougo/neocomplcache'
+
+" Syntax checks (lint, etc).
+Bundle 'scrooloose/syntastic'
+
+" Syntax highlighting.
 Bundle 'beyondwords/vim-twig'
-Bundle 'UltiSnips'
-Bundle 'unite.vim'
+
+" Colorscheme.
 Bundle 'altercation/vim-colors-solarized'
 
 " Turn filetype back on.

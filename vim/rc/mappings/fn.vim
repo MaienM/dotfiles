@@ -5,9 +5,6 @@
 " F1: Disabled. If I want help, I'll use :help, tyvm.
 Map <silent> <F1> <nop>
 
-" F3: Swap between absolute and relative numbers.
-Map <silent> <F3> :if &number <Bar> set relativenumber <Bar> else <Bar> set number <Bar> endif <CR>
-
 " F4: Clear the highlighting of the current search.
 Map <silent> <F4> :noh <CR>
 
@@ -94,7 +91,8 @@ endfunction
 " F11: Toggle gundo.
 Map <silent> <F11> :GundoToggle <CR>
 
-" F12: Toggle the taglist.
+" F12: Toggle the tagbar.
 " Ctrl_F12: Close the taglist.
-Map <silent> <F12> :TlistToggle <CR>
+Map <silent> <F12> :TagbarToggle <CR>
+Map <silent> <C-F12> :TagbarClose <CR>
 

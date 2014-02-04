@@ -1,15 +1,14 @@
 " Part of my modulized vimrc file.
-" Last change: Mon, 14 Mar 2011 14:58:22 +0100
+" Last change: 
 
 " Allow backspacing over everything in insert mode.
 set backspace=indent,eol,start
 
 " Theme.
-if &t_Co>2
+if &t_Co > 2
   set t_Co=256
   set background=dark
-  "colorscheme solarized 	" Bundles are not yet loaded at this point.
-  colorscheme herald          " set the theme
+  colorscheme solarized
 endif
 
 " General settings.
@@ -26,7 +25,6 @@ set tabstop=4                   "
 set softtabstop=4               " <F6> can be used to easily change these 
 set shiftwidth=4                "      settings on the fly. 
 set autoindent                  " automatically indent
-"set smartindent                 " smarter auto-indent
 set smarttab                    " delete shiftwidth amount of spaces with <BS>
 set linebreak                   " break long lines into pieces
 set showbreak=>>\               " start continued lines with '>> '
@@ -45,9 +43,9 @@ set wildmenu                    " ^^^
 set tabpagemax=25
 set relativenumber              " there be numbers, mon
 set exrc                        " basic per-project config file
-set nobackup                    " don't let vim write backups
-set noswapfile                  " or swap files
+set noswapfile                  " no swap files
 set ttimeoutlen=50              " make it more snappy
+set backupdir=$TEMP//,$TMP//,.  " don't clutter $PWD
 
 " Version-specific stuff, doesn't work in older versions, sadly.
 if v:version >= 600

@@ -11,3 +11,10 @@ imap <up> <nop>
 imap <down> <nop>
 imap <left> <nop>
 imap <right> <nop>
+vmap <up> <nop>
+vmap <down> <nop>
+vmap <left> <nop>
+vmap <right> <nop>
+
+" Disable escape, to force myself to get used to using jj.
+imap <Esc> <nop>
