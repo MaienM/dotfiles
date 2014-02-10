@@ -34,4 +34,4 @@ inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
 
 " Map jj to esc in insert mode. Esc is too far away.
-inoremap jj <Esc>
+inoremap jj <C-C>
