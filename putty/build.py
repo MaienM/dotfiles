@@ -38,7 +38,7 @@ def save(path, settings):
 	"""
 	Save settings to a puttytray file.
 	"""
-	with open(path, 'w') as f:
+	with open(path, 'wb') as f:
 		for k, v in settings.items():
 			f.write('{}\\{}\n'.format(k, v))
 
