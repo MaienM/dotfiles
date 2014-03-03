@@ -6,3 +6,9 @@ NoMouseReporting\1\
 PublicKeyFile\C:%5CUsers%5CMichon%5C.ssh%5Cid_rsa.ppk\
 AuthKI\0\
 UserName\maienm\
+FontVTMode\4\
+FontQuality\3\
+FontHeight\10\
+FontCharSet\0\
+FontIsBold\0\
+Font\Inconsolata-dz%20for%20Powerline\
