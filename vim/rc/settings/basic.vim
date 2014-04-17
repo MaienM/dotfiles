@@ -8,7 +8,8 @@ set backspace=indent,eol,start
 if &t_Co > 2
   set t_Co=256
   set background=dark
-  colorscheme solarized
+  "colorscheme solarized
+  colorscheme herald
 endif
 
 " General settings.

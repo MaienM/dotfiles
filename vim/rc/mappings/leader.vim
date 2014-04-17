@@ -1,5 +1,9 @@
 " Part of my modulized vimrc file.
-" Last change: Mon, 14 Mar 2011 15:20:07 +0100
+" Last change: Tue, 15 Apr 2014 23:55:04 +0000
+
+" Leader key.
+nnoremap <Space> <nop>
+let mapleader="\<Space>"
 
 " <Leader>`: Switch between 'Proper Capitalisation', 'ALL CAPS', and
 " 'all lowercase'.
