@@ -5,10 +5,10 @@
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
-" Load vundle.
+" Load neobundle.
 " This too has to happen before anything else, so we can be sure that all
 " plugins and such are available for use in the vimrc files.
-runtime! vundle.vim
+runtime! neobundle.vim
 
 " Load the rc files responsible for the rest of the initialisation.
 runtime! rc/**.vim
