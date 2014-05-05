@@ -14,7 +14,7 @@ let s:neobundle_path = s:vimdir_path . '/bundle/neobundle'
 
 " Download neobundle if it does not exists.
 if !isdirectory(s:neobundle_path)
-	echom "Your plugins seem to be missing, installing them now.\n This may take a while, and you need to relaunch vim after this."
+	echom "Your plugins seem to be missing, installing them now. This may take a while, and you need to relaunch vim after this."
     let s:first_run = 1
     call delete(s:vimdir_path . '/.VimballRecord')
     silent! execute '!git clone https://github.com/Shougo/neobundle.vim.git ' . s:neobundle_path
@@ -25,7 +25,15 @@ endif
 " Load neobundle.
 let &runtimepath = &runtimepath . ',' . s:neobundle_path
 call neobundle#rc(s:vimdir_path . '/bundle')
-NeoBundle 'gmarik/neobundle'
+NeoBundle 'Shougo/neobundle.vim'
+
+" Vimproc.
+NeoBundle 'Shougo/vimproc', {
+    \'build' : {
+	\'windows' : 'make -f make_mingw.mak',
+	\'unix' : 'make -f make_unix.mak',
+    \},
+\}
 
 " Settings dependant on loaded files.
 NeoBundle 'ciaranm/detectindent'
@@ -45,7 +53,7 @@ NeoBundle 'kien/rainbow_parentheses.vim'
 
 " Movement.
 NeoBundle 'justinmk/vim-sneak'
-NeoBundle 'tsaleh/vim-matchit'
+NeoBundle 'vim-scripts/matchit.zip'
 
 " Editing.
 NeoBundle 'tpope/vim-repeat'
