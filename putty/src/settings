@@ -12,3 +12,6 @@ FontHeight\10\
 FontCharSet\0\
 FontIsBold\0\
 Font\Inconsolata-dz%20for%20Powerline\
+WarnOnClose\0\
+FailureReconnect\1\
+WakeupReconnect\1\
