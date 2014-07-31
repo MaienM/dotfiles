@@ -10,7 +10,7 @@ filetype off
 
 " Determine the path to neobundle.
 let s:vimdir_path = fnamemodify(resolve(expand('<sfile>:p')), ':h')
-let s:neobundle_path = s:vimdir_path . '/bundle/neobundle'
+let s:neobundle_path = s:vimdir_path . '/bundle/neobundle.vim'
 
 " Download neobundle if it does not exists.
 if !isdirectory(s:neobundle_path)
@@ -29,9 +29,9 @@ NeoBundle 'Shougo/neobundle.vim'
 
 " Vimproc.
 NeoBundle 'Shougo/vimproc', {
-    \'build' : {
-	\'windows' : 'make -f make_mingw.mak',
-	\'unix' : 'make -f make_unix.mak',
+    \'build': {
+		\'windows': 'make -f make_msvc.mak',
+		\'unix': 'make -f make_unix.mak',
     \},
 \}
 
@@ -42,7 +42,7 @@ NeoBundle 'ciaranm/securemodelines'
 " Easy commenting.
 NeoBundle 'tpope/vim-commentary'
 
-" Lists.
+" Information lists.
 NeoBundle 'sjl/gundo.vim'
 NeoBundle 'majutsushi/tagbar'
 NeoBundle 'Shougo/unite.vim'
@@ -62,19 +62,26 @@ NeoBundle 'tpope/vim-abolish'
 NeoBundle 'tpope/vim-speeddating'
 NeoBundle 'godlygeek/tabular'
 NeoBundle 'mattn/emmet-vim'
+NeoBundle 'AndrewRadev/splitjoin.vim'
 
 " Snippets.
 NeoBundle 'SirVer/ultisnips'
 
 " Tab complete.
-NeoBundle 'ervandew/supertab'
-NeoBundle 'Shougo/neocomplcache'
+"NeoBundle 'ervandew/supertab'
+"NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'Valloric/YouCompleteMe', {
+	\'build' : {
+		\'unix' : './install.sh --clang-completer --omnisharp-completer',
+    \},
+\}
 
 " Syntax checks (lint, etc).
 NeoBundle 'scrooloose/syntastic'
 
 " Syntax highlighting.
 NeoBundle 'beyondwords/vim-twig'
+NeoBundle 'vim-scripts/nginx.vim'
 
 " Colorscheme.
 NeoBundle 'altercation/vim-colors-solarized'

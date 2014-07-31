@@ -44,9 +44,9 @@ function! FindAndList(scope, mode, ...)
   elseif a:mode ==? "prev"
     if neobundle#is_sourced('unite.vim')
       if (a:scope ==? "local")
-        execute 'Unite -toggle -buffer-name=Local -no-quit grep:% -resume'
+        execute 'Unite -toggle -buffer-name=Search grep:% -resume'
       elseif (a:scope ==? "global")
-        execute 'Unite -toggle -buffer-name=Global -no-quit grep:$buffers -resume'
+        execute 'Unite -toggle -buffer-name=Search grep:$buffers -resume'
       endif
       return
     endif
@@ -65,9 +65,9 @@ function! FindAndList(scope, mode, ...)
   " Use Unite if available
   if neobundle#is_sourced('unite.vim')
     if (a:scope ==? "local")
-      execute 'Unite -toggle -buffer-name=Local -no-quit grep:%::' . term
+      execute 'Unite -toggle -buffer-name=Search grep:%::' . term
     elseif (a:scope ==? "global")
-      execute 'Unite -toggle -buffer-name=Global -no-quit grep:$buffers::' . term
+      execute 'Unite -toggle -buffer-name=Search grep:$buffers::' . term
     endif
   else
     if (a:scope ==? "local")

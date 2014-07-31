@@ -4,6 +4,7 @@ vim/doc/tags
 vim/bundle/*
 irssi/scripts/autorun
 putty/output
+vim/eclim
 
 *.un~
 *.sw[po]
