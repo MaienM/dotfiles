@@ -92,5 +92,8 @@ if s:first_run
     NeoBundleInstall
 endif
 
+" Powerline.
+set rtp+=$POWERLINE_REPO/powerline/bindings/vim
+
 " Turn filetype back on.
 filetype plugin indent on
