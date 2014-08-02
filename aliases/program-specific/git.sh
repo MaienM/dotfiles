@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Some shortcuts.
 alias gits='git status'
 
@@ -11,13 +9,21 @@ alias gitlvu='gitlv origin/master..'
 alias gitrb='git rebase --interactive'
 alias gitrbu='gitrb origin/master..'
 
-# Update.
-alias gitup='git stash && (git pull --rebase || echo Pull failed) && git stash pop'
-
 # Diff.
-function gitd()
+alias gitd="GIT_PAGER='less' git diff --minimal"
+
+# Diff/add.
+gitda()
 {
-    GIT_PAGER='less' git diff --minimal $@
+    gitd $@
+    prompt_confirm "Add to index?" "Y" && git add $@
+    gits
+}
+
+# Diff/commit.
+gitdc()
+{
+    gitd $@
     read message
     if [[ -n $message ]];
     then
