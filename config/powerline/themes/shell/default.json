@@ -1,0 +1,46 @@
+{
+	"default_module": "powerline.segments.common",
+	"segment_data": {
+		"virtualenv": {
+			"before": "\u00A1  "
+		},
+		"branch": {
+			"before": " "
+		}
+	},
+	"segments": {
+		"left": [
+			{
+				"module": "powerline.segments.shell",
+				"name": "mode"
+			},
+			{
+				"name": "user"
+			},
+			{
+				"name": "virtualenv"
+			},
+			{
+				"name": "cwd",
+				"args": {
+					"dir_limit_depth": 3,
+					"use_path_separator": true,
+					"ellipsis": "\u2026"
+				}
+			},
+			{
+				"module": "powerline.segments.shell",
+				"name": "jobnum"
+			}
+		],
+		"right": [
+			{
+				"module": "powerline.segments.shell",
+				"name": "last_pipe_status"
+			},
+			{
+				"name": "branch"
+			}
+		]
+	}
+}
