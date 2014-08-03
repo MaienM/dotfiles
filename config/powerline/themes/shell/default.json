@@ -38,6 +38,10 @@
 		],
 		"right": [
 			{
+				"module": "maienm.shell",
+				"name": "shell_level"
+			},
+			{
 				"module": "powerline.segments.shell",
 				"name": "last_pipe_status"
 			},

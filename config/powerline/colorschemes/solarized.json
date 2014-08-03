@@ -16,9 +16,10 @@
 		"system_load":				 { "fg": "oldlace", "bg": "green", "attr": [] },
 		"system_load_gradient":		 { "fg": "green_yellow_orange_red", "bg": "gray0", "attr": [] },
 		"time":                      { "fg": "oldlace", "bg": "royalblue5", "attr": ["bold"] },
-		"time:divider":              { "fg": "oldlace", "bg": "royalblue5", "attr": [] },
+		"time:divider":              { "fg": "gray6", "bg": "royalblue5", "attr": [] },
 		"uptime":					 { "fg": "oldlace", "bg": "green", "attr": [] },
 		"user":						 { "fg": "oldlace", "bg": "blue", "attr": ["bold"] },
-		"virtualenv":				 { "fg": "oldlace", "bg": "green", "attr": [] }
+		"virtualenv":				 { "fg": "oldlace", "bg": "green", "attr": [] },
+		"maienm.shell.shell_level":  { "fg": "oldlace", "bg": "blue", "attr": [] }
 	}
 }
