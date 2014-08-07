@@ -54,6 +54,7 @@ NeoBundle 'kien/rainbow_parentheses.vim'
 " Movement.
 NeoBundle 'justinmk/vim-sneak'
 NeoBundle 'vim-scripts/matchit.zip'
+NeoBundle 'bkad/CamelCaseMotion'
 
 " Editing.
 NeoBundle 'tpope/vim-repeat'

@@ -2,7 +2,7 @@
 	"default_module": "powerline.segments.common",
 	"segment_data": {
 		"virtualenv": {
-			"before": "\u00A1 "
+			"before": "\u2021 "
 		},
 		"branch": {
 			"before": "\uE0A0 "
