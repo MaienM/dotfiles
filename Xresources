@@ -6,9 +6,9 @@
 *background:        grey11
 
 ! Font
-*faceName:          Inconsolata for Powerline, Menlo for Powerline
+*faceName:          Inconsolata\-dz for Powerline
 *faceSize:          10
-*font:              xft:Inconsolata for Powerline:pixelsize=13,xft:Menlo for Powerline:pixelsize=13
+*font:              xft:Inconsolata\-dz for Powerline:style=dz:pixelsize=13
 
 ! Alt-* input
 *eightBitInput:     false

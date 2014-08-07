@@ -8,3 +8,5 @@ vim/eclim
 
 *.un~
 *.sw[po]
+
+*.pyc

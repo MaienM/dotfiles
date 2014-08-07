@@ -68,6 +68,7 @@ endif
 if has('mouse')
   set mouse=a
 endif
+set mouse=
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.

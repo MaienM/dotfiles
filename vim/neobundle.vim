@@ -69,8 +69,6 @@ NeoBundle 'AndrewRadev/splitjoin.vim'
 NeoBundle 'SirVer/ultisnips'
 
 " Tab complete.
-"NeoBundle 'ervandew/supertab'
-"NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Valloric/YouCompleteMe', {
 	\'build' : {
 		\'unix' : './install.sh --clang-completer --omnisharp-completer',
@@ -86,6 +84,9 @@ NeoBundle 'vim-scripts/nginx.vim'
 
 " Colorscheme.
 NeoBundle 'altercation/vim-colors-solarized'
+
+" Debugging.
+NeoBundle "joonty/vdebug"
 
 " If this is the first run (that is, if we had to download neobundle), download
 " all bundles.
