@@ -1,7 +1,7 @@
 {
 	"segment_data": {
 		"branch": {
-			"before": " "
+			"before": "\uE0A0 "
 		},
 		"modified_indicator": {
 			"args": { "text": "+" }
@@ -11,7 +11,7 @@
 			"after": "%"
 		},
 		"line_current_symbol": {
-			"contents": " "
+			"contents": "\uE0A1 "
 		}
 	},
 	"segments": {
@@ -22,7 +22,7 @@
 			},
 			{
 				"name": "visual_range",
-				"exclude_modes": ["nc"],
+				"exclude_modes": ["n", "i", "r", "nc"],
 				"priority": 10
 			},
 			{
@@ -36,40 +36,26 @@
 				"priority": 30
 			},
 			{
-				"name": "readonly_indicator",
-				"draw_soft_divider": false,
-				"after": " "
-			},
-			{
 				"name": "file_directory",
 				"priority": 40,
 				"draw_soft_divider": false
 			},
 			{
 				"name": "file_name",
+				"draw_soft_divider": false,
+				"after": " "
+			},
+			{
+				"name": "readonly_indicator",
 				"draw_soft_divider": false
 			},
 			{
 				"name": "file_vcs_status",
-				"before": " ",
-				"draw_soft_divider": false
-			},
-			{
-				"name": "modified_indicator",
-				"before": " "
-			},
-			{
-				"exclude_modes": ["nc"],
-				"module": "powerline.segments.plugin.syntastic",
-				"name": "syntastic",
-				"priority": 50
-			},
-			{
-				"exclude_modes": ["nc"],
-				"module": "powerline.segments.plugin.tagbar",
-				"name": "current_tag",
 				"draw_soft_divider": false,
-				"priority": 50
+				"highlight_group": ["file_vcs_status"]
+			},
+			{
+				"name": "modified_indicator"
 			},
 			{
 				"type": "string",
