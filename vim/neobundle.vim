@@ -88,6 +88,9 @@ NeoBundle 'altercation/vim-colors-solarized'
 " Debugging.
 NeoBundle "joonty/vdebug"
 
+" Interacting with outside programs.
+NeoBundle "jaxbot/browserlink.vim"
+
 " If this is the first run (that is, if we had to download neobundle), download
 " all bundles.
 if s:first_run
