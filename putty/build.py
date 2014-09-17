@@ -1,16 +1,19 @@
 import os, shutil
 
-# Determine the base directory.
-basedir = os.path.dirname(os.path.abspath(__file__))
-sourcedir = os.path.join(basedir, 'src')
-outputdir = os.path.join(basedir, 'output')
+
+# Determine the directories.
+BASEDIR = os.path.dirname(os.path.abspath(__file__))
+SOURCEDIR = os.path.join(BASEDIR, 'src')
+OUTPUTDIR = os.path.join(BASEDIR, 'output')
+
 
 def merge(base, override):
 	"""
-	Merge two settins dicts.
+	Merge two settings dicts.
 	"""
 	for k, v in override.items():
 		base[k] = v
+
 
 def load(path, isSub = False):
 	"""
@@ -21,6 +24,8 @@ def load(path, isSub = False):
 	with open(path, 'r') as f:
 		for line in f:
 			line = line.strip()
+			if line.startswith('#') or not line.strip():
+				continue
 			if line.startswith('@ignore') and not isSub:
 				return
 			elif line.startswith('@extend'):
@@ -49,12 +54,11 @@ def process(path):
 	settings = load(path)
 	if not settings:
 		return
-	newpath = os.path.join(outputdir, os.path.basename(path))
+	newpath = os.path.join(OUTPUTDIR, os.path.basename(path))
 	save(newpath, settings)
 
-if os.path.exists(outputdir):
-	shutil.rmtree(outputdir)
-if not os.path.exists(outputdir):
-	os.mkdir(outputdir)
-for path in os.listdir(sourcedir):
-	process(os.path.join(sourcedir, path))
+if os.path.exists(OUTPUTDIR):
+	shutil.rmtree(OUTPUTDIR)
+os.mkdir(OUTPUTDIR)
+for path in os.listdir(SOURCEDIR):
+	process(os.path.join(SOURCEDIR, path))

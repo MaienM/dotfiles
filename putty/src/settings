@@ -1,17 +1,35 @@
 @ignore
+
+# Encoding.
 LineCodePage\UTF-8\
+
+# Normal beep.
 Beep\2\
+
+# Easy full screen.
 FullScreenOnAltEnter\1\
+
+# No mouse reporting so we can select text to copy.
 NoMouseReporting\1\
-PublicKeyFile\C:%5CUsers%5CMichon%5C.ssh%5Cid_rsa.ppk\
+
+# Report the numpad keys as numbers instead of escape codes.
+NoApplicationKeys\1\
+
+# Authentication.
 AuthKI\0\
 UserName\maienm\
+PublicKeyFile\C:%5CUsers%5CMichon%5C.ssh%5Cid_rsa.ppk\
+
+# Font
 FontVTMode\4\
 FontQuality\3\
 FontHeight\10\
 FontCharSet\0\
 FontIsBold\0\
 Font\Inconsolata-dz%20for%20Powerline\
+
+# Don't whine when being closed.
 WarnOnClose\0\
-FailureReconnect\1\
+
+# Auto-reconnect.
 WakeupReconnect\1\
