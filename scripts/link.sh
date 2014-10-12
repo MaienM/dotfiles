@@ -46,7 +46,6 @@ function fullpath()
   echo "$PWD/$1"
 }
 
-
 # Traverse into a directory.
 function traverse()
 {
@@ -61,14 +60,14 @@ function process()
   OF="$1"
   NF=$(echo ~/.$1)
 
-  if [[ $(grep -cE "^$OF$" .applyignore) -gt 0 ]]
+  if [[ $(grep -cE "^$OF$" scripts/config/ignore) -gt 0 ]]
   then
     continue
   fi
  
   if [[ -d $OF ]]
   then
-    D=$(grep -cE "^$OF$" .virtualdirs)
+    D=$(grep -cE "^$OF$" scripts/config/virtualdirs)
   fi
 
   # If a file does not exist, but yet it is a symbolic link (what) it is a broken symbolic link.
@@ -154,7 +153,7 @@ function process()
 
 function processLinks()
 {
-  cat .links | while read line
+  cat scripts/config/links | while read line
   do
     line=($line)
     source=$(realpath -s ${line[0]})
@@ -163,6 +162,10 @@ function processLinks()
     then
       :
     else
+      if [[ ! -d $(dirname $target) ]]
+      then
+        cmd mkdir -p $(dirname $target)
+      fi
       if [[ -f $source ]]
       then
         ln -f $source $target
@@ -177,6 +180,9 @@ function processLinks()
     fi
   done
 }
+
+# Go to the dotfiles directory.
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 # Clear commands file.
 echo > cmds
@@ -196,6 +202,6 @@ echo rm cmds >> cmds
 echo Please confirm the following commands are correct:
 head -n-1 cmds
 echo
-echo To execute these commands type 'source cmds'
+echo To execute these commands type "'"source $(realpath cmds)"'"
 
 #vim:et:sw=2
