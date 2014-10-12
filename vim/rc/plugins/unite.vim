@@ -14,27 +14,29 @@ let s:ignores = [
 	\'*.egg',
 	\'*.egg-info',
 	\'*.pyc',
-	\'*\~',
+	\'*~',
 	\'.*sw.[po]',
-	\'.*un\~',
+	\'.*un~',
 \]
 
 " Convert globs to regexes. {{{2
 function! s:to_regex(globs)
 	let l:patterns = []
 	for l:glob in a:globs
-		let l:glob = substitute(l:glob, '\.', '\\.', 'g')
+		let l:glob = substitute(l:glob, '[.~]', '\\\1', 'g')
 		let l:glob = substitute(l:glob, '\*', '.*', 'g')
 		let l:patterns = l:patterns + [l:glob]
 	endfor
 	return join(l:patterns, '\|')
 endfunction
 
-" Set ignores {{{2
-call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep', 'ignore_pattern', s:to_regex(s:ignores))
+" File name search. {{{1
+call unite#custom_source('file_rec/async', 'ignore_pattern', s:to_regex(s:ignores))
+nnoremap <Leader>f :<C-u>Unite -buffer-name=files -start-insert file_rec/async:!<CR>
 
-" File/buffer name search. {{{1
-nnoremap <Leader>f :<C-u>Unite -buffer-name=unite-files -start-insert buffer file_rec/async:!<CR>
+" Buffer switching. {{{1
+call unite#custom_source('file_rec/async', 'sorters', ['sorter_rank'])
+nnoremap <Leader>b :<C-u>Unite -buffer-name=buffers -quick-match buffer<CR>
 
 " Grep. {{{1
 if executable('ag')
@@ -43,11 +45,13 @@ if executable('ag')
 else
 	echoe "The 'ag' executable seems to be missing. Please install the 'silversearcher-ag' package to increase search performance."
 end
-nnoremap <Leader>/ :<C-u>Unite -buffer-name=unite-grep grep:!<CR>
+call unite#custom_source('grep', 'ignore_pattern', s:to_regex(s:ignores))
+nnoremap <Leader>/ :<C-u>Unite -buffer-name=grep grep:!<CR>
 
 " Yanks. {{{1
 let g:unite_source_history_yank_enable = 1
-nnoremap <Leader>p :<C-u>Unite -buffer-name=unite-yank history/yank<CR>
+call unite#custom#source('history/yank', 'sorters', 'sorter_nothing')
+nnoremap <Leader>p :<C-u>Unite -buffer-name=yank history/yank<CR>
 
 " Some settings for unite buffers. {{{1
 autocmd FileType unite call s:unite_settings()
