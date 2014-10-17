@@ -71,6 +71,8 @@ set home=%USERPROFILE%
 set dotf=%USERPROFILE%\dotfiles
 if not exist %df% (
 	git clone git@github.com:MaienM/dotfiles.git %df%
+	cd %df%
+	git submodule update --init --recursive
 ) 
 cd %df%
 

@@ -73,7 +73,8 @@ rm packages
 echo "Getting dotfiles."
 if [[ ! -d ~/dotfiles ]]
 then
-	git clone git@github.com:MaienM/dotfiles.git ~/dotfiles
+  git clone git@github.com:MaienM/dotfiles.git ~/dotfiles
+  git submodule update --init --recursive
 fi
 
 # Setup links.
