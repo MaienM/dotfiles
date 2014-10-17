@@ -32,10 +32,10 @@ endfunction
 
 " File name search. {{{1
 call unite#custom_source('file_rec/async', 'ignore_pattern', s:to_regex(s:ignores))
+call unite#custom_source('file_rec/async', 'sorters', ['sorter_rank'])
 nnoremap <Leader>f :<C-u>Unite -buffer-name=files -start-insert file_rec/async:!<CR>
 
 " Buffer switching. {{{1
-call unite#custom_source('file_rec/async', 'sorters', ['sorter_rank'])
 nnoremap <Leader>b :<C-u>Unite -buffer-name=buffers -quick-match buffer<CR>
 
 " Grep. {{{1
@@ -71,3 +71,7 @@ function! s:unite_settings()
 	" So I can spam C-C to get out, now. {{{2
 	nmap <buffer> <C-C> <Plug>(unite_exit)
 endfunction
+
+" Easily moving though unite matches.
+nnoremap <Leader>. :<C-u>UniteNext<CR>
+nnoremap <Leader>, :<C-u>UnitePrevious<CR>
