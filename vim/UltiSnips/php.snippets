@@ -10,10 +10,26 @@ snippet /*** "Doxygen group header"
  *****************************************/
 endsnippet 
 
-snippet ///t "Unit test function"
-/// @see DolAuth#$1
-public function test_${1/.+/\L$0\E/}()
-{
-    $da = $this->dolauth;
-}
+snippet public
+/**
+ *
+ * @var $1
+ */
+public $$2
+endsnippet
+
+snippet protected
+/**
+ *
+ * @var $1
+ */
+protected $$2
+endsnippet
+
+snippet private
+/**
+ *
+ * @var $1
+ */
+private $$2
 endsnippet
