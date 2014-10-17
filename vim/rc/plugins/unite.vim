@@ -23,7 +23,7 @@ let s:ignores = [
 function! s:to_regex(globs)
 	let l:patterns = []
 	for l:glob in a:globs
-		let l:glob = substitute(l:glob, '[.~]', '\\\1', 'g')
+		let l:glob = substitute(l:glob, '[.~]', '\\&', 'g')
 		let l:glob = substitute(l:glob, '\*', '.*', 'g')
 		let l:patterns = l:patterns + [l:glob]
 	endfor
