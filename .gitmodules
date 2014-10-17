@@ -29,7 +29,7 @@
 	path = vim/bundle/indent-guides
 	url = https://github.com/nathanaelkane/vim-indent-guides.git
 [submodule "vim/bundle/rainbow_parentheses.vim"]
-	path = vim/bundle/rainbow_parentheses
+	path = vim/bundle/rainbow-parentheses
 	url = https://github.com/kien/rainbow_parentheses.vim.git
 [submodule "vim/bundle/vim-sneak"]
 	path = vim/bundle/sneak
@@ -74,7 +74,7 @@
 	path = vim/bundle/nginx
 	url = https://github.com/vim-scripts/nginx.vim.git
 [submodule "vim/bundle/vim-colors-solarized"]
-	path = vim/bundle/colors-solarized
+	path = vim/bundle/solarized
 	url = https://github.com/altercation/vim-colors-solarized.git
 [submodule "vim/bundle/vdebug"]
 	path = vim/bundle/vdebug
@@ -94,3 +94,9 @@
 [submodule "vim/bundle/youcompleteme"]
 	path = vim/bundle/youcompleteme
 	url = https://github.com/Valloric/YouCompleteMe.git
+[submodule "vim/bundle/local-vimrc"]
+	path = vim/bundle/local-vimrc
+	url = https://github.com/LucHermitte/local_vimrc.git
+[submodule "vim/bundle/lh-vim-lib"]
+	path = vim/bundle/lh-vim-lib
+	url = https://github.com/vim-scripts/lh-vim-lib.git
