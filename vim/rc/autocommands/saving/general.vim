@@ -1,10 +1,10 @@
 " Part of my modulized vimrc file.
-" Last change: Wed, 16 Mar 2011 15:40:02 +0100
+" Last change: Fri, 05 Sep 2014 11:12:26 +0200
 
 " Update the first timestamp found in the top 10 lines of a file.
-if exists("*strftime")
-  au BufWrite * mark ' | silent! 0,/\%<11l/call UpdateTimestamp() | ''
-endif
+" if exists("*strftime")
+"   au BufWrite * mark ' | silent! 0,/\%<11l/call UpdateTimestamp() | ''
+" endif
 
 " Make files that start with a shebang (#!...) executable.
 au BufWritePost * 

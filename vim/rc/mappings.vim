@@ -10,4 +10,3 @@ command! -nargs=+ -complete=mapping Map
 
 " load all mappings files.
 runtime! rc/mappings/**.vim
-runtime! rc/mappings/plugins/**.vim
