@@ -1,12 +1,12 @@
 [submodule "powerline"]
 	path = powerline
-	url = git://github.com/Lokaltog/powerline.git
+	url = https://github.com/Lokaltog/powerline.git
 [submodule "solarized/tmux"]
 	path = solarized/tmux
-	url = git://github.com/seebi/tmux-colors-solarized.git
+	url = https://github.com/seebi/tmux-colors-solarized.git
 [submodule "zprezto"]
 	path = zprezto
-	url = https://github.com/MaienM/prezto.git
+	url = git@github.com:MaienM/prezto.git
 [submodule "vim/bundle/detectindent"]
 	path = vim/bundle/detectindent
 	url = https://github.com/ciaranm/detectindent.git
@@ -100,3 +100,6 @@
 [submodule "vim/bundle/lh-vim-lib"]
 	path = vim/bundle/lh-vim-lib
 	url = https://github.com/vim-scripts/lh-vim-lib.git
+[submodule "vim/bundle/QQ"]
+	path = vim/bundle/QQ
+	url = https://github.com/nicwest/QQ.vim.git
