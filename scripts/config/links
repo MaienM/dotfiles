@@ -14,6 +14,7 @@ irssi/scripts/trackbar.pl                   .irssi/scripts/autorun/trackbar.pl
 irssi/scripts/usercount.pl                  .irssi/scripts/autorun/usercount.pl
 solarized/tmux/tmuxcolors-dark.conf         .tmux-colors.conf
 solarized/vim                               .vim/bundle/theme-solarized
+powerline/powerline/bindings/vim			.vim/bundle/powerline
 zprezto/runcoms/zlogin                      .zlogin
 zprezto/runcoms/zlogout                     .zlogout
 zprezto/runcoms/zpreztorc                   .zpreztorc

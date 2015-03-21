@@ -1,9 +1,10 @@
-vim/spell
-vim/.netrwhist
-vim/doc/tags
 irssi/scripts/autorun
 putty/output
+vim/.netrwhist
+vim/bundle/powerline
+vim/doc/tags
 vim/eclim
+vim/spell
 
 *.un~
 *.sw[po]
