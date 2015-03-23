@@ -103,3 +103,6 @@
 [submodule "vim/bundle/QQ"]
 	path = vim/bundle/QQ
 	url = https://github.com/nicwest/QQ.vim.git
+[submodule "vim/bundle/snippets"]
+	path = vim/bundle/snippets
+	url = https://github.com/honza/vim-snippets.git
