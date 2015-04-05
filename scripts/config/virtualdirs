@@ -3,3 +3,5 @@ config/awesome
 irssi
 xbmc
 xbmc/userdata
+ipython
+ipython/profile_default
