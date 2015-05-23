@@ -39,3 +39,6 @@ inoremap jj <C-C>
 " H -> start of line, L -> end of line
 nnoremap H ^
 nnoremap L $
+
+" When would I ever want this? Tip: the answer is FUCKING NEVER
+nnoremap q: <nop>
