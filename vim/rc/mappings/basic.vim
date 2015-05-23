@@ -35,3 +35,7 @@ inoremap <C-W> <C-G>u<C-W>
 
 " Map jj to esc in insert mode. Esc is too far away.
 inoremap jj <C-C>
+
+" H -> start of line, L -> end of line
+nnoremap H ^
+nnoremap L $
