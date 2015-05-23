@@ -47,6 +47,7 @@ set exrc                        " basic per-project config file
 set noswapfile                  " no swap files
 set ttimeoutlen=50              " make it more snappy
 set backupdir=$TEMP//,$TMP//,.  " don't clutter $PWD
+set wrap                        " fuck sidescrolling
 
 " Version-specific stuff, doesn't work in older versions, sadly.
 if v:version >= 600
