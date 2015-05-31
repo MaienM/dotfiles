@@ -106,9 +106,6 @@
 [submodule "vim/bundle/snippets"]
 	path = vim/bundle/snippets
 	url = https://github.com/honza/vim-snippets.git
-[submodule "vim/bundle/python-mode"]
-	path = vim/bundle/python-mode
-	url = https://github.com/klen/python-mode
 [submodule "vim/bundle/indent-line"]
 	path = vim/bundle/indent-line
 	url = https://github.com/Yggdroot/indentLine.git
