@@ -2,9 +2,6 @@
 	"segments": {
 		"left": [
 			{
-				"function": "powerline.segments.shell.mode"
-			},
-			{
 				"function": "powerline.segments.common.env.user",
 				"args": {
 					"hide_user": "maienm"
