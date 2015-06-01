@@ -28,7 +28,7 @@ au BufWrite *.js silent!
 " ----------------------------------------------------------------------
 
 " Reload vimrc files when saving a vimrc file.
-au BufWritePost *.vim normal \rl
+au BufWritePost *.vim silent! source $MYVIMRC
 
 " Reload conky when saving a conky-related file.
 au BufWritePost ~/.conkyrc silent! !pkill -USR1 conky
@@ -38,7 +38,7 @@ au BufWritePost ~/.conky/lua/* silent! !pkill -USR1 conky
 au BufWritePost ~/.imwheelrc silent! !~/bin/imwheelstart &> /dev/null
 
 " Reload the tmux config when saving it.
-au BufWritePost ~/.tmux.conf silent! !tmux source-file ~/.tmux.conf
+au BufWritePost ~/.tmux.conf silent! !tmux source-file ~/.tmux.conf &> /dev/null
 
 " Scss files.
 au BufWritePost *.sass silent! !sass --style compressed --update <afile> &> /dev/null
