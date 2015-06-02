@@ -97,9 +97,6 @@
 [submodule "vim/bundle/lh-vim-lib"]
 	path = vim/bundle/lh-vim-lib
 	url = https://github.com/vim-scripts/lh-vim-lib.git
-[submodule "vim/bundle/QQ"]
-	path = vim/bundle/QQ
-	url = https://github.com/nicwest/QQ.vim.git
 [submodule "vim/bundle/snippets"]
 	path = vim/bundle/snippets
 	url = https://github.com/honza/vim-snippets.git
