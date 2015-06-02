@@ -67,9 +67,6 @@
 [submodule "vim/bundle/syntastic"]
 	path = vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
-[submodule "vim/bundle/vim-twig"]
-	path = vim/bundle/twig
-	url = https://github.com/beyondwords/vim-twig.git
 [submodule "vim/bundle/nginx.vim"]
 	path = vim/bundle/nginx
 	url = https://github.com/vim-scripts/nginx.vim.git
@@ -109,3 +106,6 @@
 [submodule "vim/bundle/indent-line"]
 	path = vim/bundle/indent-line
 	url = https://github.com/Yggdroot/indentLine.git
+[submodule "vim/bundle/polyglot"]
+	path = vim/bundle/polyglot
+	url = https://github.com/sheerun/vim-polyglot.git
