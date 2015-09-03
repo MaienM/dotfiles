@@ -10,6 +10,13 @@ export PATH="$HOME/local:$PATH"
 export XDG_DATA_DIRS="$HOME/local:$XDG_DATA_DIRS"
 
 #
+# If present, setup RVM.
+#
+if [ -d $HOME/.rvm ]; then
+	source $HOME/.rvm/scripts/rvm;
+fi
+
+#
 # If present, load the profile file for this specific computer.
 #
 if [ -f $HOME/.profile_local ]; then

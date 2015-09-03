@@ -32,4 +32,8 @@ complete -cf sudo
 # Load the completion stuff.
 [ -e ~/.bash_completion ] && . ~/.bash_completion
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+# Go into ZSH.
+if [ -n $(which zsh) ]; then
+    clear
+    exec zsh
+fi
