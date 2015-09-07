@@ -14,15 +14,6 @@ au BufWritePost *
 \   endif |
 \ endif
 
-" Warn me when saving an userscript with an improper version.
-au BufWrite *.js silent! 
-\ if search('@version', 'n') != 0 |
-\   if search('@version\s\+\([0-9.]\+\)\_.*changelog.*\n.*version \1$', 'n') == 0 |
-\     echoerr "The version of the script seems to be incorrect." |
-\     exe 'normal \<Esc' |
-\   endif |
-\ endif
-
 " ----------------------------------------------------------------------
 " -                   Reload (RC) files when saving.                   -
 " ----------------------------------------------------------------------
@@ -39,7 +30,3 @@ au BufWritePost ~/.imwheelrc silent! !~/bin/imwheelstart &> /dev/null
 
 " Reload the tmux config when saving it.
 au BufWritePost ~/.tmux.conf silent! !tmux source-file ~/.tmux.conf &> /dev/null
-
-" Scss files.
-au BufWritePost *.sass silent! !sass --style compressed --update <afile> &> /dev/null
-au BufWritePost *.scss silent! !sass --scss --style compressed --update <afile> &> /dev/null
