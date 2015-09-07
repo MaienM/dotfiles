@@ -8,8 +8,11 @@ call unite#filters#sorter_default#use(['sorter_length', 'sorter_rank'])
 " Ignore certain files/folders. {{{1
 let s:ignores = [
 	\'build/',
-	\'tmp/',
+	\'bower_components/',
 	\'cache/',
+	\'doc/',
+	\'node_modules/',
+	\'tmp/',
 	\'.svn',
 	\'.git',
 	\'.hg',
