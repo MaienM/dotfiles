@@ -1,2 +1,5 @@
 [MESSAGES CONTROL]
-disable=C0103, W0312
+disable=locally-disabled,star-args,unused-argument,bare-except,no-init,too-few-public-methods
+
+[FORMAT]
+max-line-length = 120
