@@ -40,7 +40,6 @@ do
     awesome.connect_signal('debug::error', function (err)
         if in_error then return end
         in_error = true
-
         naughty.notify({ preset = naughty.config.presets.critical,
                          title = 'Oops, an error happened!',
                          text = err })
@@ -54,10 +53,10 @@ end
 beautiful.init('/usr/share/awesome/themes/default/theme.lua')
 
 -- Run the autostart.sh file.
-io.popen('bash ' .. awful.util.getdir('config') .. '/autostart.sh')
+-- io.popen('bash ' .. awful.util.getdir('config') .. '/autostart.sh')
 
 -- This is used later as the default terminal and editor to run.
-terminal = 'urxvt'
+terminal = 'xterm'
 terminal_run = terminal .. ' -e '
 editor = os.getenv('EDITOR') or 'vim'
 editor_cmd = terminal_run .. editor
@@ -89,11 +88,6 @@ layouts = {
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
 tagconfig = {
-    'spot',
-    'irc',
-    {'skype', awful.layout.suit.tile},
-    'ts',
-    'web',
     1, 2, 3, 4, 5, 6, 7, 8, 9
 }
 tags = {}
@@ -331,15 +325,11 @@ globalkeys = awful.util.table.join(
 
     -- Quake terminal.
     awful.key({ modkey }, '`',                function() scratch.drop(terminal) end,
-              'Toggle dropdown terminal'),
-
-    -- Android keyboard.
-    awful.key({ modkey }, 'Tab',              function() scratch.drop(terminal_run .. 'android-type') end,
-              'Toggle android-type'),
+              'Toggle dropdown terminal')
 
     -- Volume control.
-    awful.key({ modkey }, 'v',                function() scratch.drop('pavucontrol', 'top', 'right', 0.3, 1) end,
-              'Toggle volume control')
+    -- awful.key({ modkey }, 'v',                function() scratch.drop('pavucontrol', 'top', 'right', 0.3, 1) end,
+    --           'Toggle volume control')
 )
 
 clientkeys = awful.util.table.join(
