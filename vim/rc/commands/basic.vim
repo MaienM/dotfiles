@@ -4,4 +4,4 @@
 command! W :w
 command! Q :q
 command! WQ :wq
-command! W!! w !sudo tee > /dev/null %
+command! Wsudo w !sudo tee > /dev/null %
