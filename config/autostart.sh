@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Numlock
+numlockx &
