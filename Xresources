@@ -2,9 +2,9 @@
 *scrollBar:         false
 
 ! Font
-*faceName:          Inconsolata for Powerline, Menlo for Powerline
+*faceName:          InconsolataM, Menlo for Powerline
 *faceSize:          9
-*font:              xft:Inconsolata for Powerline:pixelsize=11,xft:Menlo for Powerline:pixelsize=11
+*font:              xft:InconsolataM:pixelsize=11,xft:Menlo for Powerline:pixelsize=11
 
 ! Alt-* input
 *eightBitInput:     false
