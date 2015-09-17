@@ -4,9 +4,6 @@
 [submodule "zprezto"]
 	path = zprezto
 	url = git@github.com:MaienM/prezto.git
-[submodule "vim/bundle/detectindent"]
-	path = vim/bundle/detectindent
-	url = https://github.com/ciaranm/detectindent.git
 [submodule "vim/bundle/securemodelines"]
 	path = vim/bundle/securemodelines
 	url = https://github.com/ciaranm/securemodelines.git
@@ -106,3 +103,18 @@
 [submodule "vim/bundle/vimtex"]
 	path = vim/bundle/vimtex
 	url = https://github.com/lervag/vimtex.git
+[submodule "vim/bundle/unite-rails"]
+	path = vim/bundle/unite-rails
+	url = https://github.com/basyura/unite-rails.git
+[submodule "vim/bundle/sleuth"]
+	path = vim/bundle/sleuth
+	url = https://github.com/tpope/vim-sleuth.git
+[submodule "vim/bundle/rails"]
+	path = vim/bundle/rails
+	url = https://github.com/tpope/vim-rails.git
+[submodule "vim/bundle/easytags"]
+	path = vim/bundle/easytags
+	url = https://github.com/xolox/vim-easytags
+[submodule "vim/bundle/vim-misc"]
+	path = vim/bundle/vim-misc
+	url = https://github.com/xolox/vim-misc
