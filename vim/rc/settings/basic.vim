@@ -46,8 +46,11 @@ set relativenumber              " there be numbers, mon
 set exrc                        " basic per-project config file
 set noswapfile                  " no swap files
 set ttimeoutlen=50              " make it more snappy
-set backupdir=$TEMP//,$TMP//,.  " don't clutter $PWD
 set wrap                        " fuck sidescrolling
+
+" don't clutter $PWD
+set backupdir=$TEMPDIR/vim//,$TMPDIR/vim//,.
+set directory=$TEMPDIR/vim//,$TMPDIR/vim//,.
 
 " Version-specific stuff, doesn't work in older versions, sadly.
 if v:version >= 600
