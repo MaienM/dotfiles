@@ -24,9 +24,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import os.path
+import subprocess
+
+from libqtile import layout, bar, widget, hook
 from libqtile.config import Key, Screen, Group, Drag, Click
 from libqtile.command import lazy
-from libqtile import layout, bar, widget
 
 mod = "mod4"
 
@@ -110,7 +113,8 @@ groups = [g for l, g in groups]
 
 layouts = [
     layout.Max(),
-    layout.Stack(num_stacks=2)
+    layout.Stack(num_stacks=2),
+    layout.VerticalTile(),
 ]
 
 widget_defaults = dict(
@@ -124,7 +128,10 @@ screens = [
         top=bar.Bar(
             [
                 widget.GroupBox(),
-                widget.WindowTabs(),
+                widget.Prompt(),
+                widget.TaskList(),
+                widget.Notify(),
+                widget.Systray(),
                 widget.Clock(format='%Y-%m-%d %a %H:%M'),
             ],
             30,
@@ -134,9 +141,7 @@ screens = [
         top=bar.Bar(
             [
                 widget.GroupBox(),
-                widget.Prompt(),
-                widget.WindowTabs(),
-                widget.Systray(),
+                widget.TaskList(),
                 widget.Clock(format='%Y-%m-%d %a %H:%M'),
             ],
             30,
@@ -161,6 +166,53 @@ bring_front_click = False
 cursor_warp = False
 floating_layout = layout.Floating()
 auto_fullscreen = True
+
+# Autostart scripts.
+home = os.path.expanduser('~')
+@hook.subscribe.startup_once
+def autostart_once():
+    subprocess.call([os.path.join(home, '.config', 'autostart_once.sh')])
+@hook.subscribe.startup
+def autostart():
+    subprocess.call([os.path.join(home, '.config', 'autostart.sh')])
+
+# If the screen layout changes, restart qtile.
+@hook.subscribe.screen_change
+def screen_change_restart(qtile, ev):
+    qtile.cmd_restart()
+
+# Automatically assign certain programs to certain screens.
+def togroup(c, s):
+    c.togroup(s)
+    lazy.group[s].toscreen()()
+@hook.subscribe.client_managed
+def client_managed_assign(c):
+    # Chrome. Web 1 or Web 2.
+    if c.match(wmclass='google-chrome'):
+        if not c.info()['group'].startswith('Web'):
+            togroup(c, 'Web')
+
+    # Thunderbird. Communications 1.
+    elif c.match(wmclass='Thunderbird'):
+        togroup(c, 'Com')
+
+    # Skype. Communications 2.
+    elif c.match(wmclass='skype'):
+        togroup(c, 'Com2')
+
+    # Keepass. Misc 1.
+    elif c.match(wmclass='KeePass2'):
+        togroup(c, 'Msc')
+
+    # Teamviewer. Misc 2.
+    elif c.match(wmclass='TeamViewer.exe'):
+        # Kill the f-ing sponsored session popup.
+        if c.name == 'Sponsored session':
+            c.kill()
+        else:
+            # Whenever a new thing opens, it should probably go straight to the top.
+            togroup(c, 'Msc2')
+            c.bring_to_front()
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
