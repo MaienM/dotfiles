@@ -12,8 +12,13 @@ export XDG_DATA_DIRS="$HOME/local:$XDG_DATA_DIRS"
 #
 # If present, setup RVM.
 #
-if [ -d $HOME/.rvm ]; then
-	source $HOME/.rvm/scripts/rvm;
+
+#
+# If present, setup rbenv.
+#
+if [ -d $HOME/.rbenv ]; then
+	export PATH="$HOME/.rbenv/bin:$PATH"
+	eval "$(rbenv init -)"
 fi
 
 #
