@@ -118,3 +118,12 @@
 [submodule "vim/bundle/vim-misc"]
 	path = vim/bundle/vim-misc
 	url = https://github.com/xolox/vim-misc
+[submodule "vim/bundle/ruby"]
+	path = vim/bundle/ruby
+	url = https://github.com/vim-ruby/vim-ruby
+[submodule "vim/bundle/projectroot"]
+	path = vim/bundle/projectroot
+	url = https://github.com/dbakker/vim-projectroot.git
+[submodule "vim/bundle/dispatch"]
+	path = vim/bundle/dispatch
+	url = git@github.com:MaienM/vim-dispatch.git

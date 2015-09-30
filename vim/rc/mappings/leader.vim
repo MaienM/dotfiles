@@ -24,9 +24,6 @@ endfunction
 nnoremap <silent> <Leader>rl :source $MYVIMRC<CR>
 nnoremap <silent> <Leader>re :CommandT ~/.vim<CR>
 
-" <Leader>f: Command-t (Find file).
-nnoremap <silent> <Leader>f :CommandT<CR>
-
 " <Leader>ml: Insert indentation modeline, based on current settings.
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 function! AppendModeline()
@@ -51,3 +48,8 @@ function! AppendModeline()
   call append(line("$"), l:modeline)
 endfunction
 
+" <Leader>c?: Quickfix list stuff.
+nnoremap <silent> <Leader>cc :cw <Bar> cc<CR>
+nnoremap <silent> <Leader>c, :cp<CR>
+nnoremap <silent> <Leader>c. :cn<CR>
+nnoremap <silent> <Leader>cd :ccl<CR>
