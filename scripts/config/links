@@ -1,9 +1,8 @@
-solarized/tmux/tmuxcolors-dark.conf         .tmux-colors.conf
-solarized/vim                               .vim/bundle/theme-solarized
-powerline/powerline/bindings/vim			.vim/bundle/powerline
-zprezto/runcoms/zlogin                      .zlogin
-zprezto/runcoms/zlogout                     .zlogout
-zprezto/runcoms/zpreztorc                   .zpreztorc
-zprezto/runcoms/zprofile                    .zprofile
-zprezto/runcoms/zshenv                      .zshenv
-zprezto/runcoms/zshrc                       .zshrc
+solarized/tmux/tmuxcolors-dark.conf								.tmux-colors.conf
+../.local/lib/python2.7/site-packages/powerline/bindings/vim/	.vim/bundle/powerline
+zprezto/runcoms/zlogin											.zlogin
+zprezto/runcoms/zlogout											.zlogout
+zprezto/runcoms/zpreztorc										.zpreztorc
+zprezto/runcoms/zprofile										.zprofile
+zprezto/runcoms/zshenv											.zshenv
+zprezto/runcoms/zshrc											.zshrc
