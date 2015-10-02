@@ -3,8 +3,9 @@
 # Screensaver/lock screen
 xscreensaver -no-splash &
 
-# Apply .Xmodmap
-delay 10 xmodmap .Xmodmap &
+# Apply .Xmodmap and xbindkeys
+xmodmap .Xmodmap &
+xbindkeys &
 
 # Startup often-needed programs
 thunderbird &
