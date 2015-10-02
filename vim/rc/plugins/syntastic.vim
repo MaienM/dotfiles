@@ -9,4 +9,4 @@ let g:syntastic_coffee_checkers = ['coffeelint', 'coffee']
 let g:syntastic_cpp_compiler_options = ' -std=gnu++0x'
 let g:syntastic_php_checkers = ['php', 'phpmd']
 
-map <Leader>s :SyntasticToggleMode<CR>
+map <Leader>ss :SyntasticToggleMode<CR>

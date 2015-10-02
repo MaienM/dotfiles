@@ -49,7 +49,10 @@ function! AppendModeline()
 endfunction
 
 " <Leader>c?: Quickfix list stuff.
-nnoremap <silent> <Leader>cc :cw <Bar> cc<CR>
+nnoremap <silent> <Leader>cc :cw <bar> cc<CR>
 nnoremap <silent> <Leader>c, :cp<CR>
 nnoremap <silent> <Leader>c. :cn<CR>
 nnoremap <silent> <Leader>cd :ccl<CR>
+
+" <Leader>w: Write file.
+nnoremap <silent> <Leader>w :w<CR>

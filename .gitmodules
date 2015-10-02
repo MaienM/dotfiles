@@ -10,9 +10,6 @@
 [submodule "vim/bundle/vim-commentary"]
 	path = vim/bundle/commentary
 	url = https://github.com/tpope/vim-commentary.git
-[submodule "vim/bundle/gundo.vim"]
-	path = vim/bundle/gundo
-	url = https://github.com/sjl/gundo.vim.git
 [submodule "vim/bundle/tagbar"]
 	path = vim/bundle/tagbar
 	url = https://github.com/majutsushi/tagbar.git
@@ -46,9 +43,6 @@
 [submodule "vim/bundle/vim-speeddating"]
 	path = vim/bundle/speeddating
 	url = https://github.com/tpope/vim-speeddating.git
-[submodule "vim/bundle/tabular"]
-	path = vim/bundle/tabular
-	url = https://github.com/godlygeek/tabular.git
 [submodule "vim/bundle/emmet-vim"]
 	path = vim/bundle/emmet
 	url = https://github.com/mattn/emmet-vim.git
@@ -127,3 +121,18 @@
 [submodule "vim/bundle/dispatch"]
 	path = vim/bundle/dispatch
 	url = git@github.com:MaienM/vim-dispatch.git
+[submodule "vim/bundle/easy-align"]
+	path = vim/bundle/easy-align
+	url = https://github.com/junegunn/vim-easy-align.git
+[submodule "vim/bundle/GoldenView"]
+	path = vim/bundle/GoldenView
+	url = https://github.com/zhaocai/GoldenView.Vim.git
+[submodule "vim/bundle/undotree"]
+	path = vim/bundle/undotree
+	url = https://github.com/mbbill/undotree.git
+[submodule "vim/bundle/signature"]
+	path = vim/bundle/signature
+	url = https://github.com/kshenoy/vim-signature.git
+[submodule "vim/bundle/gitgutter"]
+	path = vim/bundle/gitgutter
+	url = https://github.com/airblade/vim-gitgutter.git

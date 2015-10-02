@@ -60,8 +60,8 @@ call unite#custom#source('history/yank', 'sorters', 'sorter_nothing')
 nnoremap <Leader>p :<C-u>Unite -buffer-name=yank history/yank<CR>
 
 " Some settings for unite buffers. {{{1
-autocmd FileType unite call s:unite_settings()
-function! s:unite_settings()
+autocmd FileType unite call s:settings()
+function! s:settings()
   " No supertab. {{{2
   let b:SuperTabDisabled=1
 

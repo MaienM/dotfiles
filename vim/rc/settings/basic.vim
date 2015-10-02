@@ -49,8 +49,8 @@ set ttimeoutlen=50              " make it more snappy
 set wrap                        " fuck sidescrolling
 
 " don't clutter $PWD
-set backupdir=$TEMPDIR/vim//,$TMPDIR/vim//,.
-set directory=$TEMPDIR/vim//,$TMPDIR/vim//,.
+set backupdir=$HOME/.vimstuff//,$TEMPDIR/vim//,$TMPDIR/vim//,.
+set directory=$HOME/.vimstuff//,$TEMPDIR/vim//,$TMPDIR/vim//,.
 
 " Version-specific stuff, doesn't work in older versions, sadly.
 if v:version >= 600
