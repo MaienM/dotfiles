@@ -55,9 +55,6 @@
 [submodule "vim/bundle/syntastic"]
 	path = vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
-[submodule "vim/bundle/nginx.vim"]
-	path = vim/bundle/nginx
-	url = https://github.com/vim-scripts/nginx.vim.git
 [submodule "vim/bundle/vim-colors-solarized"]
 	path = vim/bundle/solarized
 	url = https://github.com/altercation/vim-colors-solarized.git
@@ -118,9 +115,6 @@
 [submodule "vim/bundle/projectroot"]
 	path = vim/bundle/projectroot
 	url = https://github.com/dbakker/vim-projectroot.git
-[submodule "vim/bundle/dispatch"]
-	path = vim/bundle/dispatch
-	url = git@github.com:MaienM/vim-dispatch.git
 [submodule "vim/bundle/easy-align"]
 	path = vim/bundle/easy-align
 	url = https://github.com/junegunn/vim-easy-align.git
@@ -136,3 +130,6 @@
 [submodule "vim/bundle/gitgutter"]
 	path = vim/bundle/gitgutter
 	url = https://github.com/airblade/vim-gitgutter.git
+[submodule "vim/bundle/dispatch"]
+	path = vim/bundle/dispatch
+	url = https://github.com/tpope/vim-dispatch.git
