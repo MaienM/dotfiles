@@ -16,6 +16,9 @@ function! s:settings()
   " No supertab.
   let b:SuperTabDisabled=1
 
+  " No folding.
+  setlocal nofoldenable
+
   " So I can spam C-C to get out, now.
   nmap <buffer> <C-C> :<C-U>q<CR>
 endfunction
