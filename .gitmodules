@@ -133,3 +133,9 @@
 [submodule "vim/bundle/dispatch"]
 	path = vim/bundle/dispatch
 	url = https://github.com/tpope/vim-dispatch.git
+[submodule "irssi-powerline"]
+	path = irssi-powerline
+	url = https://github.com/darac/irssi-powerline.git
+[submodule "dotsecrets"]
+	path = dotsecrets
+	url = https://github.com/oohlaf/dotsecrets.git

@@ -1,0 +1,9 @@
+!Filter
+name: irssi
+rules:
+- !Secret
+  key: ident
+  description: Nickserv ident passwords
+  numbered: false
+  regex: nickserv identify [^ ]+
+  substitute: nickserv identify (?#Key)
