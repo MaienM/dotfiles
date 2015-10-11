@@ -1,6 +1,13 @@
 " Part of my modulized vimrc file.
 " Last change: Sun, 02 Oct 2011 10:36:47 +0200
 
+" command Map to map and imap at the same time.
+command! -nargs=+ -complete=mapping Map 
+  \ :let [start; end] = split('<expr> '.<q-args>, printf('\(\s\+\)\(<%s>\)\@!', join(['buffer', 'silent', 'special', 'script', 'expr', 'unique'], '>\|<'))) <Bar>
+  \ let start = strpart(start, 7) <Bar>
+  \ execute(printf(':map %s', <q-args>)) <Bar>
+  \ execute(printf(':imap %s %s <LT>C-O>%s', start, end[0], end[0]))
+
 " Use Alt-j and Alt-k to move up/down visual lines.
 Map <A-j> gj
 Map <A-k> gk
@@ -42,3 +49,21 @@ nnoremap L $
 
 " When would I ever want this? Tip: the answer is FUCKING NEVER
 nnoremap q: <nop>
+
+" F1: Disabled. If I want help, I'll use :help, tyvm.
+Map <silent> <F1> <nop>
+
+" F4: Clear the highlighting of the current search.
+Map <silent> <F4> :noh<CR>
+
+" F5: Toggle paste mode.
+Map <silent> <F5>
+  \ :let &paste = !&paste <Bar>
+  \ if exists('oldshowbreak') <Bar>
+  \   let &showbreak = oldshowbreak <Bar>
+  \   unlet oldshowbreak <Bar>
+  \ else <Bar>
+  \   let oldshowbreak = &showbreak <Bar>
+  \   set showbreak= <Bar>
+  \ endif <CR>
+set pastetoggle=<F5>

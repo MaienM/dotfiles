@@ -41,6 +41,10 @@ call unite#custom_source('file_rec/async', 'ignore_pattern', s:to_regex(s:ignore
 call unite#custom_source('file_rec/async', 'sorters', ['sorter_rank'])
 nnoremap <Leader>f :<C-u>Unite -buffer-name=files -start-insert file_rec/async:!<CR>
 
+function! Unite_create_file_mapping(binding, directory)
+  exe 'nnoremap ' . a:binding . ' :<C-u>Unite -buffer-name=files -start-insert file_rec/async:' . a:directory . '<CR>'
+endfunction
+
 " Buffer switching. {{{1
 nnoremap <Leader>b :<C-u>Unite -buffer-name=buffers -quick-match buffer<CR>
 
