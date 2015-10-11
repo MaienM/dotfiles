@@ -139,3 +139,6 @@
 [submodule "dotsecrets"]
 	path = dotsecrets
 	url = https://github.com/oohlaf/dotsecrets.git
+[submodule "vim/bundle/tmux-navigator"]
+	path = vim/bundle/tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator.git
