@@ -67,3 +67,6 @@ Map <silent> <F5>
   \   set showbreak= <Bar>
   \ endif <CR>
 set pastetoggle=<F5>
+
+" Just... don't.
+nnoremap <S-K> <nop>

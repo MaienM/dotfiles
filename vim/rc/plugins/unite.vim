@@ -13,6 +13,7 @@ let s:ignores = [
   \'doc/',
   \'node_modules/',
   \'tmp/',
+  \'coverage/',
   \'.svn',
   \'.git',
   \'.hg',

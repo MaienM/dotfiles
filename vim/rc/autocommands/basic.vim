@@ -25,4 +25,4 @@ au BufWritePost *
 \ endif
 
 " Reload vimrc files when saving a vimrc file.
-au BufWritePost *.vim silent! source $MYVIMRC
+au BufWritePost vimrc,*.vim silent! source $MYVIMRC
