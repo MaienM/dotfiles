@@ -9,3 +9,6 @@
 
 # Ignore vim tags files.
 doc/tags
+
+# Project-specific vimrc.
+_vimrc_local.vim
