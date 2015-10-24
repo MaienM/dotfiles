@@ -160,3 +160,6 @@
 [submodule "vim/bundle/quickrun"]
 	path = vim/bundle/quickrun
 	url = http://github.com/thinca/vim-quickrun
+[submodule "fzf"]
+	path = fzf
+	url = https://github.com/junegunn/fzf.git
