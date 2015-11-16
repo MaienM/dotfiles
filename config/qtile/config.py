@@ -26,6 +26,7 @@
 
 import os.path
 import subprocess
+import collections
 
 from libqtile import layout, bar, widget, hook
 from libqtile.config import Key, Screen, Group, Drag, Click
@@ -76,44 +77,75 @@ keys = [
     ),
     Key([mod], "Return", lazy.spawn("xterm")),
 
+    # Focus screen
+    Key([mod], "1", lazy.to_screen(1)),
+    Key([mod], "2", lazy.to_screen(0)),
+
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout()),
     Key([mod, "shift"], "Tab", lazy.previous_layout()),
-    Key([mod, "shift"], "c", lazy.window.kill()),
 
+    # Window management
+    Key([mod], "w", lazy.window.kill()),
+
+    # QTile management
     Key([mod, "control"], "r", lazy.restart()),
     Key([mod, "control"], "q", lazy.shutdown()),
+
+    # Execute commands
     Key([mod], "r", lazy.spawncmd()),
 ]
 
-groups = (
-    ('a', 'Web'),
-    ('s', 'Cod'),
-    ('d', 'Com'),
-    ('f', 'Msc'),
-    ('u', 'Web2'),
-    ('i', 'Cod2'),
-    ('o', 'Com2'),
-    ('p', 'Msc2'),
-)
-groups = [(l, Group(n)) for l, n in groups]
+groups = collections.OrderedDict()
+# Web/docs
+groups['a'] =  'Web/Documentation 0'
+groups['z'] =  'Web/Documentation 1'
+groups['^a'] = 'Web/Documentation 2'
+groups['^z'] = 'Web/Documentation 3'
+# Development
+groups['s'] =  'Development 0'
+groups['x'] =  'Development 1'
+groups['^s'] = 'Development 2'
+groups['^x'] = 'Development 3'
+# Communication
+groups['d'] =  'Communication 0'
+groups['c'] =  'Communication 1'
+groups['^d'] = 'Communication 2'
+groups['^c'] = 'Communication 3'
+# Misc
+groups['f'] =  'Miscellaneous 0'
+groups['v'] =  'Miscellaneous 1'
+groups['^f'] = 'Miscellaneous 2'
+groups['^v'] = 'Miscellaneous 3'
 
-for l, g in groups:
+for letter, name in groups.items():
+    # Create the group
+    first = name.endswith('0')
+    first = True
+    groups[letter] = group = Group(name, persist=first, init=first)
+
+    # Split letter into mods + letter
+    mods = [mod]
+    if letter.startswith("^"):
+        mods.append("control")
+        letter = letter[1:]
+
     # mod1 + letter of group = switch to group
     keys.append(
-        Key([mod], l, lazy.group[g.name].toscreen())
+        Key(mods, letter, lazy.group[group.name].toscreen())
     )
 
     # mod1 + shift + letter of group = switch to & move focused window to group
     keys.append(
-        Key([mod, "shift"], l, lazy.window.togroup(g.name))
+        Key(mods + ["shift"], letter, lazy.window.togroup(group.name))
     )
 
-groups = [g for l, g in groups]
+groups = list(groups.values())
 
 layouts = [
     layout.Max(),
     layout.Stack(num_stacks=2),
+    layout.Stack(num_stacks=3),
     layout.VerticalTile(),
 ]
 
@@ -127,7 +159,7 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.GroupBox(),
+                widget.AGroupBox(),
                 widget.Prompt(),
                 widget.TaskList(),
                 widget.Notify(),
@@ -140,7 +172,7 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.GroupBox(),
+                widget.AGroupBox(),
                 widget.TaskList(),
                 widget.Clock(format='%Y-%m-%d %a %H:%M'),
             ],
@@ -150,13 +182,13 @@ screens = [
 ]
 
 # Drag floating layouts.
-mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(),
-        start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(),
-        start=lazy.window.get_size()),
-    Click([mod], "Button2", lazy.window.bring_to_front())
-]
+# mouse = [
+#     Drag([mod], "Button1", lazy.window.set_position_floating(),
+#         start=lazy.window.get_position()),
+#     Drag([mod], "Button3", lazy.window.set_size_floating(),
+#         start=lazy.window.get_size()),
+#     Click([mod], "Button2", lazy.window.bring_to_front())
+# ]
 
 dgroups_key_binder = None
 dgroups_app_rules = []
@@ -187,32 +219,36 @@ def togroup(c, s):
     lazy.group[s].toscreen()()
 @hook.subscribe.client_managed
 def client_managed_assign(c):
-    # Chrome. Web 1 or Web 2.
+    # Chrome.
     if c.match(wmclass='google-chrome'):
         if not c.info()['group'].startswith('Web'):
-            togroup(c, 'Web')
+            togroup(c, 'Web/Documentation 0')
 
-    # Thunderbird. Communications 1.
+    # Thunderbird.
     elif c.match(wmclass='Thunderbird'):
-        togroup(c, 'Com')
+        togroup(c, 'Communication 0')
 
-    # Skype. Communications 2.
+    # Skype.
     elif c.match(wmclass='skype'):
-        togroup(c, 'Com2')
+        togroup(c, 'Communication 2')
 
-    # Keepass. Misc 1.
+    # Keepass.
     elif c.match(wmclass='KeePass2'):
-        togroup(c, 'Msc')
+        togroup(c, 'Miscellaneous 1')
 
-    # Teamviewer. Misc 2.
+    # Teamviewer.
     elif c.match(wmclass='TeamViewer.exe'):
         # Kill the f-ing sponsored session popup.
         if c.name == 'Sponsored session':
             c.kill()
         else:
             # Whenever a new thing opens, it should probably go straight to the top.
-            togroup(c, 'Msc2')
+            togroup(c, 'Miscellaneous 2')
             c.bring_to_front()
+
+# Default groups
+# lazy.group['Development 0'].toscreen(0)()
+# lazy.group['Web/Documentation 0'].toscreen(1)()
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
