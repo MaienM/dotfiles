@@ -9,6 +9,5 @@ function! s:settings()
     nnoremap <buffer> <Leader>ga :A<CR>
     nnoremap <buffer> <Leader>rtt :.Rake<CR>
     nnoremap <buffer> <Leader>rtf :Rake<CR>
-    nnoremap <buffer> <Leader>rr :Dispatch -<CR>
   endif
 endfunction

@@ -14,6 +14,7 @@ let s:ignores = [
   \'node_modules/',
   \'tmp/',
   \'coverage/',
+  \'dist/',
   \'.svn',
   \'.git',
   \'.hg',
@@ -37,10 +38,20 @@ function! s:to_regex(globs)
   return join(l:patterns, '\|')
 endfunction
 
+" Convert globs to arguments. {{{2
+function! s:to_arglist(argname, sep, globs)
+  let l:patterns = []
+  for l:glob in a:globs
+    let l:patterns = l:patterns + [a:argname . l:glob]
+  endfor
+  return join(l:patterns, a:sep)
+endfunction
+
 " File name search. {{{1
 call unite#custom_source('file_rec/async', 'ignore_pattern', s:to_regex(s:ignores))
-call unite#custom_source('file_rec/async', 'sorters', ['sorter_rank'])
-nnoremap <Leader>f :<C-u>Unite -buffer-name=files -start-insert file_rec/async:!<CR>
+call unite#custom_source('file_rec/git,file_rec/async', 'sorters', ['sorter_rank'])
+nnoremap <Leader>f :<C-u>Unite -buffer-name=files -start-insert file_rec/git:--cached:--others:--exclude-standard<CR>
+nnoremap <Leader>F :<C-u>Unite -buffer-name=files -start-insert file_rec/async:!<CR>
 
 function! Unite_create_file_mapping(binding, directory)
   exe 'nnoremap ' . a:binding . ' :<C-u>Unite -buffer-name=files -start-insert file_rec/async:' . a:directory . '<CR>'
@@ -52,11 +63,11 @@ nnoremap <Leader>b :<C-u>Unite -buffer-name=buffers -quick-match buffer<CR>
 " Grep. {{{1
 if executable('ag')
   let g:unite_source_grep_command = 'ag' " Is faster than ack/grep, and respects .gitignore files.
-  let g:unite_source_grep_default_opts = '-in --nocolor --noheading'
+  let g:unite_source_grep_default_opts = '-i --vimgrep --hidden ' .  s:to_arglist('--ignore=', ' ', s:ignores)
 else
   echoe "The 'ag' executable seems to be missing. Please install the 'silversearcher-ag' package to increase search performance."
 end
-call unite#custom_source('grep', 'ignore_pattern', s:to_regex(s:ignores))
+" call unite#custom_source('grep', 'ignore_pattern', s:to_regex(s:ignores))
 nnoremap <Leader>/ :<C-u>Unite -buffer-name=grep grep:!<CR>
 
 " Yanks. {{{1

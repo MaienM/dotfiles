@@ -47,6 +47,7 @@ set exrc                        " basic per-project config file
 set noswapfile                  " no swap files
 set ttimeoutlen=50              " make it more snappy
 set wrap                        " fuck sidescrolling
+set bufhidden=hide              " lemme switch buffers without saving
 
 " don't clutter $PWD
 set backupdir=$HOME/.vimstuff//,$TEMPDIR/vim//,$TMPDIR/vim//,.

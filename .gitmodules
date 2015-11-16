@@ -142,3 +142,21 @@
 [submodule "vim/bundle/tmux-navigator"]
 	path = vim/bundle/tmux-navigator
 	url = https://github.com/christoomey/vim-tmux-navigator.git
+[submodule "vim/bundle/vimux"]
+	path = vim/bundle/vimux
+	url = https://github.com/benmills/vimux
+[submodule "vim/bundle/unite-giti"]
+	path = vim/bundle/unite-giti
+	url = https://github.com/kmnk/vim-unite-giti.git
+[submodule "vim/bundle/quickrun-markdown-gfm"]
+	path = vim/bundle/quickrun-markdown-gfm
+	url = http://github.com/superbrothers/vim-quickrun-markdown-gfm
+[submodule "vim/bundle/open-browser"]
+	path = vim/bundle/open-browser
+	url = http://github.com/tyru/open-browser.vim
+[submodule "vim/bundle/webapi-vim"]
+	path = vim/bundle/webapi-vim
+	url = http://github.com/mattn/webapi-vim
+[submodule "vim/bundle/quickrun"]
+	path = vim/bundle/quickrun
+	url = http://github.com/thinca/vim-quickrun
