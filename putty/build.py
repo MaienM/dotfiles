@@ -12,7 +12,8 @@ def merge(base, override):
 	Merge two settings dicts.
 	"""
 	for k, v in override.items():
-		base[k] = v
+		if k not in base:
+			base[k] = v
 
 
 def load(path, isSub = False):

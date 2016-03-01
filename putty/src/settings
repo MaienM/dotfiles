@@ -9,6 +9,9 @@ Beep\2\
 # Easy full screen.
 FullScreenOnAltEnter\1\
 
+# XTerm mouse behavior (middle/right button).
+MouseIsXterm\1\
+
 # No mouse reporting so we can select text to copy.
 NoMouseReporting\1\
 
@@ -33,3 +36,10 @@ WarnOnClose\0\
 
 # Auto-reconnect.
 WakeupReconnect\1\
+
+# X11 forwarding.
+X11Display\localhost:0\
+X11Forward\1\
+
+# https://blog.nytsoi.net/2015/07/13/putty-kex-error
+KEX\dh-group14-sha1,dh-group1-sha1,rsa,WARN,dh-gex-sha1\

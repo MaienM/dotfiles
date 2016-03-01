@@ -1,0 +1,4 @@
+@extends settings
+@extends solarized_dark
+UserName\michon\
+HostName\192.168.1.83\

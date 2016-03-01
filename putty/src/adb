@@ -1,3 +1,5 @@
 @extends settings
 @extends solarized_dark
-HostName\188.226.234.208\
+HostName\\
+PortNumber\5037\
+Protocol\adb\
