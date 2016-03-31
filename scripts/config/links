@@ -13,3 +13,6 @@ irssi/scripts/history_search.pl									.irssi/scripts/autorun/history_search.pl
 irssi/scripts/nickcolor.pl										.irssi/scripts/autorun/nickcolor.pl
 irssi/scripts/queryresume.pl									.irssi/scripts/autorun/queryresume.pl
 irssi/scripts/trackbar.pl										.irssi/scripts/autorun/trackbar.pl
+irssi/scripts/nicklist.pl										.irssi/scripts/autorun/nicklist.pl
+irssi/scripts/notes.pl											.irssi/scripts/autorun/notes.pl
+irssi/scripts/tmux_auto_resize.pl								.irssi/scripts/autorun/tmux_auto_resize.pl

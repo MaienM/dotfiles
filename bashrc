@@ -37,3 +37,5 @@ if [ -n $(which zsh) ]; then
     clear
     exec zsh
 fi
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

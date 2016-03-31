@@ -10,6 +10,7 @@ let s:ignores = [
   \'build/',
   \'bower_components/',
   \'cache/',
+  \'dist/',
   \'doc/',
   \'node_modules/',
   \'tmp/',
