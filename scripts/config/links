@@ -6,13 +6,3 @@ zprezto/runcoms/zpreztorc										.zpreztorc
 zprezto/runcoms/zprofile										.zprofile
 zprezto/runcoms/zshenv											.zshenv
 zprezto/runcoms/zshrc											.zshrc
-irssi-powerline/solarized-powerline.theme						.irssi/solarized-powerline.theme
-irssi-powerline/scripts/autorun/adv_windowlist.pl				.irssi/scripts/autorun/adv_windowlist.pl
-irssi/scripts/hilightwin.pl										.irssi/scripts/autorun/hilightwin.pl
-irssi/scripts/history_search.pl									.irssi/scripts/autorun/history_search.pl
-irssi/scripts/nickcolor.pl										.irssi/scripts/autorun/nickcolor.pl
-irssi/scripts/queryresume.pl									.irssi/scripts/autorun/queryresume.pl
-irssi/scripts/trackbar.pl										.irssi/scripts/autorun/trackbar.pl
-irssi/scripts/nicklist.pl										.irssi/scripts/autorun/nicklist.pl
-irssi/scripts/notes.pl											.irssi/scripts/autorun/notes.pl
-irssi/scripts/tmux_auto_resize.pl								.irssi/scripts/autorun/tmux_auto_resize.pl
