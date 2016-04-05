@@ -10,6 +10,15 @@ export PATH="$HOME/local:$PATH"
 export XDG_DATA_DIRS="$HOME/local:$XDG_DATA_DIRS"
 
 #
+# If present, setup pyenv.
+#
+if [ -d $HOME/.pyenv ]; then
+	export PYENV_ROOT="$HOME/.pyenv"
+	export PATH="$PYENV_ROOT/bin:$PATH"
+	eval "$(pyenv init -)"
+fi
+
+#
 # If present, setup rbenv.
 #
 if [ -d $HOME/.rbenv ]; then
