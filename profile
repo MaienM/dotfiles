@@ -15,6 +15,7 @@ export XDG_DATA_DIRS="$HOME/local:$XDG_DATA_DIRS"
 if [ -d $HOME/.pyenv ]; then
 	export PYENV_ROOT="$HOME/.pyenv"
 	export PATH="$PYENV_ROOT/bin:$PATH"
+	export PYTHON_CONFIGURE_OPTS="--enable-shared"
 	eval "$(pyenv init -)"
 fi
 
@@ -22,7 +23,8 @@ fi
 # If present, setup rbenv.
 #
 if [ -d $HOME/.rbenv ]; then
-	export PATH="$HOME/.rbenv/bin:$PATH"
+	export RBENV_ROOT="$HOME/.rbenv"
+	export PATH="$RBENV_ROOT/bin:$PATH"
 	eval "$(rbenv init -)"
 fi
 
