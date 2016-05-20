@@ -29,7 +29,7 @@
 	path = vim/bundle/matchit
 	url = https://github.com/vim-scripts/matchit.zip.git
 [submodule "vim/bundle/CamelCaseMotion"]
-	path = vim/bundle/CamelCaseMotion
+	path = vim/bundle/camel-case-motion
 	url = https://github.com/bkad/CamelCaseMotion.git
 [submodule "vim/bundle/vim-repeat"]
 	path = vim/bundle/repeat
@@ -61,9 +61,6 @@
 [submodule "vim/bundle/vdebug"]
 	path = vim/bundle/vdebug
 	url = https://github.com/joonty/vdebug.git
-[submodule "vim/bundle/browserlink.vim"]
-	path = vim/bundle/browserlink
-	url = https://github.com/jaxbot/browserlink.vim.git
 [submodule "vim/bundle/vim-fugitive"]
 	path = vim/bundle/fugitive
 	url = https://github.com/tpope/vim-fugitive.git
@@ -76,42 +73,21 @@
 [submodule "vim/bundle/youcompleteme"]
 	path = vim/bundle/youcompleteme
 	url = https://github.com/Valloric/YouCompleteMe.git
-[submodule "vim/bundle/local-vimrc"]
-	path = vim/bundle/local-vimrc
-	url = https://github.com/LucHermitte/local_vimrc.git
-[submodule "vim/bundle/lh-vim-lib"]
-	path = vim/bundle/lh-vim-lib
-	url = https://github.com/vim-scripts/lh-vim-lib.git
 [submodule "vim/bundle/snippets"]
 	path = vim/bundle/snippets
 	url = https://github.com/honza/vim-snippets.git
 [submodule "vim/bundle/polyglot"]
 	path = vim/bundle/polyglot
 	url = https://github.com/sheerun/vim-polyglot.git
-[submodule "vim/bundle/python-mode"]
-	path = vim/bundle/python-mode
-	url = https://github.com/klen/python-mode.git
-[submodule "vim/bundle/vimtex"]
-	path = vim/bundle/vimtex
-	url = https://github.com/lervag/vimtex.git
-[submodule "vim/bundle/unite-rails"]
-	path = vim/bundle/unite-rails
-	url = https://github.com/basyura/unite-rails.git
 [submodule "vim/bundle/sleuth"]
 	path = vim/bundle/sleuth
 	url = https://github.com/tpope/vim-sleuth.git
 [submodule "vim/bundle/rails"]
 	path = vim/bundle/rails
 	url = https://github.com/tpope/vim-rails.git
-[submodule "vim/bundle/easytags"]
-	path = vim/bundle/easytags
-	url = https://github.com/xolox/vim-easytags
 [submodule "vim/bundle/vim-misc"]
 	path = vim/bundle/vim-misc
 	url = https://github.com/xolox/vim-misc
-[submodule "vim/bundle/ruby"]
-	path = vim/bundle/ruby
-	url = https://github.com/vim-ruby/vim-ruby
 [submodule "vim/bundle/projectroot"]
 	path = vim/bundle/projectroot
 	url = https://github.com/dbakker/vim-projectroot.git
@@ -119,7 +95,7 @@
 	path = vim/bundle/easy-align
 	url = https://github.com/junegunn/vim-easy-align.git
 [submodule "vim/bundle/GoldenView"]
-	path = vim/bundle/GoldenView
+	path = vim/bundle/golden-view
 	url = https://github.com/zhaocai/GoldenView.Vim.git
 [submodule "vim/bundle/undotree"]
 	path = vim/bundle/undotree
@@ -145,18 +121,18 @@
 [submodule "vim/bundle/vimux"]
 	path = vim/bundle/vimux
 	url = https://github.com/benmills/vimux
-[submodule "vim/bundle/unite-giti"]
-	path = vim/bundle/unite-giti
-	url = https://github.com/kmnk/vim-unite-giti.git
-[submodule "vim/bundle/quickrun-markdown-gfm"]
-	path = vim/bundle/quickrun-markdown-gfm
-	url = http://github.com/superbrothers/vim-quickrun-markdown-gfm
-[submodule "vim/bundle/open-browser"]
-	path = vim/bundle/open-browser
-	url = http://github.com/tyru/open-browser.vim
-[submodule "vim/bundle/webapi-vim"]
-	path = vim/bundle/webapi-vim
-	url = http://github.com/mattn/webapi-vim
-[submodule "vim/bundle/quickrun"]
-	path = vim/bundle/quickrun
-	url = http://github.com/thinca/vim-quickrun
+[submodule "vim/bundle/sort-motion"]
+	path = vim/bundle/sort-motion
+	url = https://github.com/christoomey/vim-sort-motion
+[submodule "vim/bundle/ReplaceWithRegister"]
+	path = vim/bundle/replace-with-register
+	url = https://github.com/vim-scripts/ReplaceWithRegister
+[submodule "vim/bundle/targets.vim"]
+	path = vim/bundle/targets.vim
+	url = https://github.com/wellle/targets.vim
+[submodule "vim/bundle/vim-indent-object"]
+	path = vim/bundle/indent-object
+	url = https://github.com/michaeljsmith/vim-indent-object
+[submodule "vim/bundle/argwrap"]
+	path = vim/bundle/argwrap
+	url = https://github.com/FooSoft/vim-argwrap
