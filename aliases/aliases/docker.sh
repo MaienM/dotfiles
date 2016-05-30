@@ -1,7 +1,7 @@
 #!/bin/sh
 
 alias docker='sudo -E docker'
-alias dockps='docker ps --format="table {{.Names}}\t{{.ID}}\t{{.Image}}\t{{.Status}}"'
+alias dockps='docker ps --format="table {{.Names}}\t{{.ID}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}" | less'
 
 dockbuild() {
     name="docker.waxd.nl/${1:-$(basename $(realpath .))}"
