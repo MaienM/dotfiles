@@ -1,0 +1,84 @@
+Windows Registry Editor Version 5.00
+
+; Edit with vim
+
+[-HKEY_CLASSES_ROOT\*\shell\vim]
+
+[HKEY_CLASSES_ROOT\*\shell\vim]
+@="Edit with Vim"
+
+[HKEY_CLASSES_ROOT\*\shell\vim\Command]
+@="C:\\Program Files\\Vim\\gvim.exe \"%1\""
+
+; Edit with vim (admin)
+
+[-HKEY_CLASSES_ROOT\*\shell\vimadmin]
+
+[HKEY_CLASSES_ROOT\*\shell\vimadmin]
+@="Edit with Vim (admin)"
+"Extended"=""
+"HasLUAShield"=""
+
+[HKEY_CLASSES_ROOT\*\shell\vimadmin\Command]
+@="C:\\Program Files\\Vim\\gvim.exe \"%1\""
+
+; Open vim here
+
+[-HKEY_CLASSES_ROOT\Directory\shell\vimhere]
+
+[HKEY_CLASSES_ROOT\Directory\shell\vimhere]
+@="Open Vim here"
+"Extended"=""
+
+[HKEY_CLASSES_ROOT\Directory\shell\vimhere\command]
+@="C:\\Program Files\\Vim\\gvim.exe"
+
+[-HKEY_CLASSES_ROOT\Directory\Background\shell\vimhere]
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\vimhere]
+@="Open Vim here"
+"Extended"=""
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\vimhere\command]
+@="C:\\Program Files\\Vim\\gvim.exe"
+
+[-HKEY_CLASSES_ROOT\Drive\shell\vimhere]
+
+[HKEY_CLASSES_ROOT\Drive\shell\vimhere]
+@="Open Vim here"
+"Extended"=""
+
+[HKEY_CLASSES_ROOT\Drive\shell\vimhere\command]
+@="C:\\Program Files\\Vim\\gvim.exe"
+
+; Open vim here (admin)
+
+[-HKEY_CLASSES_ROOT\Directory\shell\vimhereadmin]
+
+[HKEY_CLASSES_ROOT\Directory\shell\vimhereadmin]
+@="Open Vim here (admin)"
+"Extended"=""
+"HasLUAShield"=""
+
+[HKEY_CLASSES_ROOT\Directory\shell\vimhereadmin\command]
+@="C:\\Program Files\\Vim\\gvim.exe"
+
+[-HKEY_CLASSES_ROOT\Directory\Background\shell\vimhereadmin]
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\vimhereadmin]
+@="Open Vim here (admin)"
+"Extended"=""
+"HasLUAShield"=""
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\vimhereadmin\command]
+@="C:\\Program Files\\Vim\\gvim.exe"
+
+[-HKEY_CLASSES_ROOT\Drive\shell\vimhereadmin]
+
+[HKEY_CLASSES_ROOT\Drive\shell\vimhereadmin]
+@="Open Vim here (admin)"
+"Extended"=""
+"HasLUAShield"=""
+
+[HKEY_CLASSES_ROOT\Drive\shell\vimhereadmin\command]
+@="C:\\Program Files\\Vim\\gvim.exe"
