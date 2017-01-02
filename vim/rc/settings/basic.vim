@@ -5,7 +5,7 @@
 set backspace=indent,eol,start
 
 " Theme.
-if &t_Co > 2
+if &t_Co > 2 || has("gui_running")
   set t_Co=256
   set background=dark
   colorscheme solarized
