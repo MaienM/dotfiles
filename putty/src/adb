@@ -1,5 +1,0 @@
-@extends settings
-@extends solarized_dark
-HostName\\
-PortNumber\5037\
-Protocol\adb\
