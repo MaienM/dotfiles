@@ -139,3 +139,15 @@
 [submodule "vim/bundle/syntax-graphql"]
 	path = vim/bundle/syntax-graphql
 	url = https://github.com/jparise/vim-graphql.git
+[submodule "vim/bundle-vim/neocomplete"]
+	path = vim/bundle-vim/neocomplete
+	url = https://github.com/Shougo/neocomplete.vim
+[submodule "vim/bundle-nvim/deoplete"]
+	path = vim/bundle-nvim/deoplete
+	url = https://github.com/Shougo/deoplete.nvim
+[submodule "vim/bundle-nvim/airline"]
+	path = vim/bundle-nvim/airline
+	url = https://github.com/vim-airline/vim-airline
+[submodule "vim/bundle-nvim/airline-themes"]
+	path = vim/bundle-nvim/airline-themes
+	url = https://github.com/vim-airline/vim-airline-themes

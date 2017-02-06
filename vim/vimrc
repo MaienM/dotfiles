@@ -9,7 +9,11 @@ set nocompatible
 " This too has to happen before anything else, so we can be sure that all
 " plugins and such are available for use in the vimrc files.
 let &runtimepath = &runtimepath . ',' . finddir('bundle/pathogen', &runtimepath)
-call pathogen#infect()
+if has('nvim')
+	execute pathogen#infect('bundle/{}', 'bundle-nvim/{}')
+else
+	execute pathogen#infect('bundle/{}', 'bundle-vim/{}')
+endif
 
 " Load the rc files responsible for the rest of the initialisation.
 runtime! rc/**.vim

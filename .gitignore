@@ -1,5 +1,6 @@
 irssi/scripts/autorun
 putty/output
+vim/init.vim
 vim/.netrwhist
 vim/bundle/powerline
 vim/doc/tags
