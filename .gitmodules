@@ -70,9 +70,6 @@
 [submodule "vim/bundle/vimproc"]
 	path = vim/bundle/vimproc
 	url = https://github.com/Shougo/vimproc.vim.git
-[submodule "vim/bundle/youcompleteme"]
-	path = vim/bundle/youcompleteme
-	url = https://github.com/Valloric/YouCompleteMe.git
 [submodule "vim/bundle/snippets"]
 	path = vim/bundle/snippets
 	url = https://github.com/honza/vim-snippets.git
@@ -136,3 +133,9 @@
 [submodule "vim/bundle/argwrap"]
 	path = vim/bundle/argwrap
 	url = https://github.com/FooSoft/vim-argwrap
+[submodule "vim/bundle/localvimrc"]
+	path = vim/bundle/localvimrc
+	url = https://github.com/embear/vim-localvimrc
+[submodule "vim/bundle/syntax-graphql"]
+	path = vim/bundle/syntax-graphql
+	url = https://github.com/jparise/vim-graphql.git
