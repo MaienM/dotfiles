@@ -7,6 +7,10 @@ elif [[ -n $(which zypper) && $? == 0 ]]; then
     alias PMi='sudo zypper in'
     alias PMr='sudo zypper rm'
     alias PMs='zypper se'
+elif [[ -n $(which pacman) && $? == 0 ]]; then
+    alias PMi='sudo pacman -S'
+    alias PMr='sudo pacman -R'
+    alias PMs='pacman -Ss'
 else
     echo "Unable to detect package manager. Some aliases will be unavailable."
 fi
