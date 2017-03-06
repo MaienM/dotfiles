@@ -151,3 +151,9 @@
 [submodule "vim/bundle-nvim/airline-themes"]
 	path = vim/bundle-nvim/airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes
+[submodule "vim/bundle/neco-look"]
+	path = vim/bundle/neco-look
+	url = https://github.com/ujihisa/neco-look
+[submodule "vim/bundle/asciidoc-superfold"]
+	path = vim/bundle/asciidoc-superfold
+	url = https://github.com/blablatros/vim-asciidoc-superfold
