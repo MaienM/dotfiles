@@ -2,12 +2,18 @@
 # Force English as language.
 #
 export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 
 #
 # Add local folder to the path.
 #
 export PATH="$HOME/local:$PATH"
 export XDG_DATA_DIRS="$HOME/local:$XDG_DATA_DIRS"
+
+#
+# If present, load the profile file for this specific computer.
+#
+[ -f $HOME/.profile_local ] && source $HOME/.profile_local;
 
 #
 # If present, setup pyenv.
@@ -31,19 +37,12 @@ fi
 #
 # If present, setup java environment variables.
 #
-if [ -n "$(which java)" ]; then
-	export JAVA_HOME=$(readlink -f "$(which java)" | sed "s:/bin/java::")
-fi
-if [ -n "$(which javac)" ]; then
-	export JDK_HOME=$(readlink -f "$(which javac)" | sed "s:/bin/javac::")
-fi
-if [ -d "$HOME/.local/share/android-sdk-linux" ]; then
-	export ANDROID_HOME="$HOME/.local/share/android-sdk-linux" 
-fi
+[ -n "$(which java)" ] && export JAVA_HOME=$(readlink -f "$(which java)" | sed "s:/bin/java::")
+[ -n "$(which javac)" ] && export JDK_HOME=$(readlink -f "$(which javac)" | sed "s:/bin/javac::")
+[ -x /usr/libexec/java_home ] && export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+[ -d "$HOME/.local/share/android-sdk-linux" ] && export ANDROID_HOME="$HOME/.local/share/android-sdk-linux" 
 
 #
-# If present, load the profile file for this specific computer.
+# If present, load the post profile file for this specific computer.
 #
-if [ -f $HOME/.profile_local ]; then
-	source $HOME/.profile_local;
-fi
+[ -f $HOME/.profile_local_post ] && source $HOME/.profile_local_post;
