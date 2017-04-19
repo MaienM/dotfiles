@@ -19,13 +19,14 @@ gitda() {
     gits
 }
 
-# Commit
+# Commit with branch name
+alias gitc="git commit -m"
 gitcb() {
     if [[ -z $1 ]]; then
         echo "Please add a commit message!"
         exit 1
     fi
-    git commit -m "$(git rev-parse --abbrev-ref HEAD | sed 's/.*\///') $@"
+    gitc "$(git rev-parse --abbrev-ref HEAD | sed 's/.*\///') $@"
 }
 
 # Push
@@ -39,7 +40,7 @@ gitpb() {
 # Branching
 gitbdevelop() {
     git checkout -b $1
-    gitpb
+    gitpb $2
     git checkout -b $1-develop
-    gitpb
+    gitpb $2
 }
