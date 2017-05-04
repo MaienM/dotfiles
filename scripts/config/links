@@ -8,3 +8,4 @@ zprezto/runcoms/zpreztorc										.zpreztorc
 zprezto/runcoms/zprofile										.zprofile
 zprezto/runcoms/zshenv											.zshenv
 zprezto/runcoms/zshrc											.zshrc
+bin/ssh-ident/ssh-ident											.local/bin/ssh

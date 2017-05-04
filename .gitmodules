@@ -157,3 +157,6 @@
 [submodule "vim/bundle/asciidoc-superfold"]
 	path = vim/bundle/asciidoc-superfold
 	url = https://github.com/blablatros/vim-asciidoc-superfold
+[submodule "bin/ssh-ident"]
+	path = bin/ssh-ident
+	url = https://github.com/ccontavalli/ssh-ident
