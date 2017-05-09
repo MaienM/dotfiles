@@ -1,5 +1,5 @@
 # Some shortcuts.
-alias gits='git status'
+alias gits='rm -f \\ && git status'
 
 # Log.
 alias gitlv='git log --oneline --name-status'
