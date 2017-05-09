@@ -2,3 +2,16 @@
 " Last change: Thu, 01 Jan 1970 01:00:00 +0100
 
 nnoremap <silent> <Leader>t :TagbarToggle <CR>
+
+let g:tagbar_type_asciidoc = {
+    \ 'ctagstype' : 'asciidoc',
+    \ 'kinds' : [
+        \ 'h:table of contents',
+        \ 'a:anchors:1',
+        \ 't:titles:1',
+        \ 'n:includes:1',
+        \ 'i:images:1',
+        \ 'I:inline images:1'
+    \ ],
+    \ 'sort' : 0
+\ }
