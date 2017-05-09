@@ -11,7 +11,7 @@ export PATH="$HOME/local:$PATH"
 export XDG_DATA_DIRS="$HOME/local:$XDG_DATA_DIRS"
 
 # (Neo)vim. Need I say more?
-which -s nvim && export EDITOR="nvim" || export EDITOR="vim"
+which nvim &> /dev/null && export EDITOR="nvim" || export EDITOR="vim"
 
 #
 # If present, load the profile file for this specific computer.
