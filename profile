@@ -38,6 +38,15 @@ if [ -d $HOME/.rbenv ]; then
 fi
 
 #
+# If present, setup nodenv.
+#
+if [ -d $HOME/.nodenv ]; then
+	export NODENV_ROOT="$HOME/.nodenv"
+	export PATH="$NODENV_ROOT/bin:$PATH"
+	eval "$(nodenv init -)"
+fi
+
+#
 # If present, setup java environment variables.
 #
 [ -n "$(which java)" ] && export JAVA_HOME=$(readlink -f "$(which java)" | sed "s:/bin/java::")
