@@ -26,7 +26,7 @@ gitcb() {
         echo "Please add a commit message!"
         exit 1
     fi
-    gitc "$(git rev-parse --abbrev-ref HEAD | sed 's/.*\///') $@"
+    gitc "$(git rev-parse --abbrev-ref HEAD | sed 's/.*\///' | sed 's/-develop$//') $@"
 }
 
 # Push
