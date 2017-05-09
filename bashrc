@@ -17,9 +17,6 @@ then
 fi
 PS1="${PS1}\u \033[01;34m\]\W\033[00m\]]$E "
 
-# Vim. Need I say more?
-export EDITOR="vim"
-
 # Enable tab-completion for sudo.
 complete -cf sudo
 
