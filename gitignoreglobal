@@ -13,6 +13,11 @@ doc/tags
 
 # Project-specific vimrc.
 _vimrc_local.vim
+.lvimrc
+.vimprj
 
 # Ignore virtualenv files.
 .venv
+
+# Ignore stupid OSX garbage
+.DS_STORE
