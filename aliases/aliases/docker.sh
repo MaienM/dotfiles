@@ -7,7 +7,7 @@ alias docker='sudo -E docker'
 # A prettier and somewhat slimmer `docker ps` table
 dockps() {
     # Format the most pertinent information
-    result=$(docker ps --format='table {{.Names}}\t{{.Image}}\t{{.Status}}' "$@")
+    result=$(docker ps --format='table {{.Names}}\t{{"-" | or (.Label "com.docker.compose.project")}}\t{{.Image}}\t{{.Status}}' "$@")
 
     # Sort by name and color the header row
     result=$(echo "$result" | (read h; echo "$COLOR_BLUE$h$COLOR_RESET"; sort))
@@ -16,13 +16,16 @@ dockps() {
     # result=$(echo "$result" | sed "s/^\(\S\+-\)/$COLOR_BOLD_GREEN\1$COLOR_RESET/")
 
     # Color the image repository bold green
-    result=$(echo "$result" | sed "s/\(\S\+\.\S\+\/\)/$COLOR_BOLD_GREEN\1$COLOR_RESET/")
+    result=$(echo "$result" | sed "s/\(\/\S\+\)/$COLOR_BOLD_GREEN\1$COLOR_RESET/")
 
     # Color the image version tag green
     result=$(echo "$result" | sed "s/\(:\S\+\)/$COLOR_GREEN\1$COLOR_RESET/")
 
     # Color the status number bold yellow
     result=$(echo "$result" | sed "s/Up \([0-9]\+\)/Up $COLOR_BOLD_YELLOW\1$COLOR_RESET/")
+
+    # Fix the casing for non-numeric status text
+    result=$(echo "$result" | sed "s/Up \(.*\)/Up \L\1/")
 
     echo $result
 }
@@ -31,7 +34,12 @@ dockps() {
 alias dockpss='dockps -f status=created -f status=restarting -f status=paused -f status=exited -f status=dead'
 
 # Ordered
-alias dockpsi='dockps | (read h; echo "$h"; sort -k2)'
+alias dockpsp='dockps | (read h; echo "$h"; LC_ALL=C sort -s -k2 -b)'
+alias dockpsi='dockps | (read h; echo "$h"; sort -k3)'
+
+### Logs ###
+
+alias docklogs='docker logs --tail 30'
 
 ### Running ###
 
