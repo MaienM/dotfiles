@@ -3,7 +3,7 @@
 
 " Default matcher and sorter. {{{1
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_length', 'sorter_rank'])
+call unite#filters#sorter_default#use(['sorter_selecta', '!sorter_ftime'])
 
 " Ignore certain files/folders. {{{1
 let s:ignores = [
@@ -50,7 +50,7 @@ endfunction
 
 " File name search. {{{1
 call unite#custom_source('file_rec/async', 'ignore_pattern', s:to_regex(s:ignores))
-call unite#custom_source('file_rec/git,file_rec/async', 'sorters', ['sorter_rank'])
+" call unite#custom_source('file_rec/git,file_rec/async', 'sorters', ['sorter_rank'])
 nnoremap <Leader>f :<C-u>Unite -buffer-name=files -start-insert file_rec/git:--cached:--others:--exclude-standard<CR>
 nnoremap <Leader>F :<C-u>Unite -buffer-name=files -start-insert file_rec/async:!<CR>
 
@@ -94,6 +94,9 @@ function! s:settings()
   " So I can spam C-C to get out, now. {{{2
   nmap <buffer> <C-C> <Plug>(unite_exit)
 endfunction
+
+" Menu
+nnoremap <Leader>m :Unite menu<CR>
 
 " Easily moving though unite matches.
 nnoremap <Leader>. :<C-u>UniteNext<CR>
