@@ -44,3 +44,24 @@ gitbdevelop() {
     git checkout -b $1-develop
     gitpb $2
 }
+gitbjira() {
+    story="$1"
+    description="$(jira show -o summary $story)"
+    if [ -z $description ]; then
+        echo "Cannot find story $story";
+        exit 1
+    fi
+    branch="$(\
+        echo "feature/$story $description" |\
+        sed 's/As //' |\
+        sed 's/[Ii] //' |\
+        sed 's/want to be able to //' |\
+        sed 's/need to be able to //' |\
+        sed 's/ a / /g' |\
+        sed 's/ an / /g' |\
+        sed 's/,\s\+/ /g' |\
+        tr ' ' '-'\
+    )"
+    echo "$story $description"
+    gitbdevelop $branch
+}
