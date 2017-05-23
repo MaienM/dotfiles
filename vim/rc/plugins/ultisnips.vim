@@ -17,7 +17,9 @@ function! UltiSnipsAddLocalDirectory(dir)
 	if !exists("b:UltiSnipsSnippetDirectories")
 		let b:UltiSnipsSnippetDirectories=g:UltiSnipsSnippetDirectories
 	endif
+	if index(b:UltiSnipsSnippetDirectories, a:dir) >= 0
+		return
+	end
 	let b:UltiSnipsSnippetDirectories=b:UltiSnipsSnippetDirectories+[a:dir]
 endfunction
-
-au BufRead * exe "call UltiSnipsAddLocalDirectory(ProjectRootGet())"
+au BufRead * if !empty(ProjectRootGet()) | exe "call UltiSnipsAddLocalDirectory(ProjectRootGet() . \"/.lvim/UltiSnips\")" | endif
