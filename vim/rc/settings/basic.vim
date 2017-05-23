@@ -42,7 +42,7 @@ set splitright                  " when vertically splitting, open new stuff at
 set wildmode=longest,list,full  " bash-like completion
 set wildmenu                    " ^^^
 set tabpagemax=25
-set relativenumber              " there be numbers, mon
+set number relativenumber       " there be numbers, mon
 set exrc                        " basic per-project config file
 set noswapfile                  " no swap files
 set ttimeoutlen=50              " make it more snappy
