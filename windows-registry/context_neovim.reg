@@ -1,0 +1,84 @@
+Windows Registry Editor Version 5.00
+
+; Edit with neovim
+
+[-HKEY_CLASSES_ROOT\*\shell\neovim]
+
+[HKEY_CLASSES_ROOT\*\shell\neovim]
+@="Edit with Neovim"
+
+[HKEY_CLASSES_ROOT\*\shell\neovim\Command]
+@="C:\\Program Files\\Neovim-qt\\bin\\nvim-qt.exe \"%1\""
+
+; Edit with neovim (admin)
+
+[-HKEY_CLASSES_ROOT\*\shell\neovimadmin]
+
+[HKEY_CLASSES_ROOT\*\shell\neovimadmin]
+@="Edit with Vim (admin)"
+"Extended"=""
+"HasLUAShield"=""
+
+[HKEY_CLASSES_ROOT\*\shell\neovimadmin\Command]
+@="C:\\Program Files\\Neovim-qt\\bin\\nvim-qt.exe \"%1\""
+
+; Open neovim here
+
+[-HKEY_CLASSES_ROOT\Directory\shell\neovimhere]
+
+[HKEY_CLASSES_ROOT\Directory\shell\neovimhere]
+@="Open Vim here"
+"Extended"=""
+
+[HKEY_CLASSES_ROOT\Directory\shell\neovimhere\command]
+@="C:\\Program Files\\Neovim-qt\\bin\\nvim-qt.exe"
+
+[-HKEY_CLASSES_ROOT\Directory\Background\shell\neovimhere]
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\neovimhere]
+@="Open Vim here"
+"Extended"=""
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\neovimhere\command]
+@="C:\\Program Files\\Neovim-qt\\bin\\nvim-qt.exe"
+
+[-HKEY_CLASSES_ROOT\Drive\shell\neovimhere]
+
+[HKEY_CLASSES_ROOT\Drive\shell\neovimhere]
+@="Open Vim here"
+"Extended"=""
+
+[HKEY_CLASSES_ROOT\Drive\shell\neovimhere\command]
+@="C:\\Program Files\\Neovim-qt\\bin\\nvim-qt.exe"
+
+; Open neovim here (admin)
+
+[-HKEY_CLASSES_ROOT\Directory\shell\neovimhereadmin]
+
+[HKEY_CLASSES_ROOT\Directory\shell\neovimhereadmin]
+@="Open Vim here (admin)"
+"Extended"=""
+"HasLUAShield"=""
+
+[HKEY_CLASSES_ROOT\Directory\shell\neovimhereadmin\command]
+@="C:\\Program Files\\Neovim-qt\\bin\\nvim-qt.exe"
+
+[-HKEY_CLASSES_ROOT\Directory\Background\shell\neovimhereadmin]
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\neovimhereadmin]
+@="Open Vim here (admin)"
+"Extended"=""
+"HasLUAShield"=""
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\neovimhereadmin\command]
+@="C:\\Program Files\\Neovim-qt\\bin\\nvim-qt.exe"
+
+[-HKEY_CLASSES_ROOT\Drive\shell\neovimhereadmin]
+
+[HKEY_CLASSES_ROOT\Drive\shell\neovimhereadmin]
+@="Open Vim here (admin)"
+"Extended"=""
+"HasLUAShield"=""
+
+[HKEY_CLASSES_ROOT\Drive\shell\neovimhereadmin\command]
+@="C:\\Program Files\\Neovim-qt\\bin\\nvim-qt.exe"
