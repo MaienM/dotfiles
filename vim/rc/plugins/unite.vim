@@ -7,15 +7,15 @@ call unite#filters#sorter_default#use(['sorter_selecta', '!sorter_ftime'])
 
 " Ignore certain files/folders. {{{1
 let s:ignores = [
-  \'build/',
   \'bower_components/',
+  \'build/',
   \'cache/',
-  \'dist/',
   \'doc/',
   \'node_modules/',
   \'tmp/',
   \'coverage/',
   \'dist/',
+  \'Libs/',
   \'.svn',
   \'.git',
   \'.hg',
@@ -26,7 +26,7 @@ let s:ignores = [
   \'*~',
   \'.*sw.[po]',
   \'.*un~',
-\]
+  \]
 
 " Convert globs to regexes. {{{2
 function! s:to_regex(globs)
@@ -63,8 +63,10 @@ nnoremap <Leader>b :<C-u>Unite -buffer-name=buffers -quick-match buffer<CR>
 
 " Grep. {{{1
 if executable('ag')
-  let g:unite_source_grep_command = 'ag' " Is faster than ack/grep, and respects .gitignore files.
-  let g:unite_source_grep_default_opts = '-i --vimgrep --hidden ' .  s:to_arglist('--ignore=', ' ', s:ignores)
+  " Is faster than ack/grep, and respects .gitignore files.
+  let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup --hidden -g ""'
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts = '-in --nocolor --noheading' .  s:to_arglist('--ignore=', ' ', s:ignores)
 else
   echoe "The 'ag' executable seems to be missing. Please install the 'silversearcher-ag' package to increase search performance."
 end

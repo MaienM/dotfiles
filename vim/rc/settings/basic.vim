@@ -7,9 +7,15 @@ set backspace=indent,eol,start
 " Theme.
 if &t_Co > 2 || has("gui_running")
   set t_Co=256
+  set guioptions=0
   set background=dark
   colorscheme solarized
-  "colorscheme herald
+  let g:solarized_italic=0
+endif
+
+" Font
+if has("gui_running")
+	set guifont=Inconsolata-dz\ for\ Powerline:h10
 endif
 
 " General settings.
@@ -50,8 +56,13 @@ set wrap                        " fuck sidescrolling
 set bufhidden=hide              " lemme switch buffers without saving
 
 " don't clutter $PWD
-set backupdir=$HOME/.vimstuff//,$TEMPDIR/vim//,$TMPDIR/vim//,.
-set directory=$HOME/.vimstuff//,$TEMPDIR/vim//,$TMPDIR/vim//,.
+if has("win32") || has("win16")
+  set backupdir=$TEMP\\vim//,$TMP\\vim//,.
+  set directory=$TEMP\\vim//,$TMP\\vim//,.
+else
+  set backupdir=$TEMPDIR/vim//,$TMPDIR/vim//,.
+  set directory=$TEMPDIR/vim//,$TMPDIR/vim//,.
+endif
 
 " Version-specific stuff, doesn't work in older versions, sadly.
 if v:version >= 600
