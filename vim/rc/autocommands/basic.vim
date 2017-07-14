@@ -6,7 +6,7 @@
 "
 
 " Jump to the position we were at when we exited.
-au BufRead * '"
+au BufRead * :silent! normal `"
 
 " Open all folds.
 au BufRead * :normal zR
