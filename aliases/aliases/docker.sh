@@ -133,5 +133,5 @@ dockportashost() {
 ### Utility ###
 
 docker_cleanup() {
-    docker rmi $(docker images | grep '^<none>' | awk '{print $3}')
+    docker rmi $(docker images -aq --filter dangling=true)
 }
