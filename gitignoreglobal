@@ -18,6 +18,7 @@ _vimrc_local.vim
 
 # Ignore virtualenv files.
 .venv
+.node-version
 
 # Ignore stupid OSX garbage
 .DS_STORE
