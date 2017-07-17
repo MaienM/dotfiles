@@ -13,4 +13,4 @@ let g:syntastic_php_checkers = ['php', 'phpmd']
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 " let g:syntastic_ruby_rubocop_exec = '$HOME/.rbenv/shims/rubocop'
 
-map <Leader>ss :SyntasticToggleMode<CR>
+" map <Leader>ss :SyntasticToggleMode<CR>
