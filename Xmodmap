@@ -1,56 +1,7 @@
-!pointer = 1 2 3 4 5 8 9 10 11 12 16 17
+! Repurpose caps lock
+keycode 66 = Control_L
+clear Lock
+add Control = Control_L
 
-! Remap 5 to contain the EUR sign.
-keycode 14 = 5 percent 5 percent EuroSign sterling
-
-! Remap the meta key to be... the meta key.
-keycode 133 = Super_L
-
-! Remap caps to alt.
-keycode 66 = Alt_L
-
-! Remap the right Alt key to compose.
-keycode 108 = Multi_key
-
-! Fix the mapping of the left \| key.
-keycode 94 = backslash bar backslash bar backslash bar 
-
-! Remap the numpad Enter to Return.
-keycode 104 = Return
-
-! Map the special keys of my G510 (G keys, M keys, L keys, Media keys).
-keycode 175 = XF86Launch1
-keycode 176 = XF86Launch2
-keycode 177 = XF86Launch3
-keycode 178 = XF86Launch4
-keycode 179 = XF86Launch5
-keycode 180 = XF86Launch6
-keycode 181 = XF86Launch7
-keycode 182 = XF86Launch8
-keycode 183 = XF86Launch9
-keycode 184 = XF86LaunchA
-keycode 185 = XF86LaunchB
-keycode 186 = XF86LaunchC
-keycode 187 = XF86LaunchD
-keycode 188 = XF86LaunchE
-keycode 189 = XF86LaunchF
-keycode 190 = F16
-keycode 191 = F17
-keycode 192 = F18
-!keycode 193 = M1
-!keycode 194 = M2
-!keycode 195 = M3
-!keycode 196 = MR
-!keycode 197 = L1
-!keycode 198 = L2
-!keycode 199 = L3
-!keycode 200 = L4
-!keycode 201 = L5
-!keycode 202 = G15_LIGHT
-keycode 203 = XF86AudioPlay
-keycode 204 = XF86AudioStop
-keycode 205 = XF86AudioPrev
-keycode 206 = XF86AudioNext
-keycode 207 = XF86AudioRaiseVolume
-keycode 208 = XF86AudioLowerVolume
-keycode 209 = XF86AudioMute
+! Make the extra mouse button of the Microsoft Sculpt mouse useful
+keycode 134 = XF86Forward
