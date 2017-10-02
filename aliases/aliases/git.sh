@@ -19,7 +19,7 @@ gitda() {
     gits
 }
 
-# Commit with branch name
+# Commit
 alias gitc="git commit -m"
 gitcb() {
     if [[ -z $1 ]]; then
@@ -37,31 +37,19 @@ gitpb() {
     gitp --set-upstream "$@" "$remote" $(git rev-parse --abbrev-ref HEAD)
 }
 
-# Branching
-gitbdevelop() {
-    git checkout -b $1
-    gitpb $2
-    git checkout -b $1-develop
-    gitpb $2
-}
-gitbjira() {
-    story="$1"
-    description="$(jira show -o summary $story)"
-    if [ -z $description ]; then
-        echo "Cannot find story $story";
-        exit 1
-    fi
-    branch="$(\
-        echo "feature/$story $description" |\
-        sed 's/As //' |\
-        sed 's/[Ii] //' |\
-        sed 's/want to be able to //' |\
-        sed 's/need to be able to //' |\
-        sed 's/ a / /g' |\
-        sed 's/ an / /g' |\
-        sed 's/,\s\+/ /g' |\
-        tr ' ' '-'\
-    )"
-    echo "$story $description"
-    gitbdevelop $branch
+# View status of multiple repositories
+gitsdir() {
+    (
+        echo "REPO | BRANCH | STATUS"
+        for dir in *; do
+            [[ ! -d "$dir" ]] && continue
+
+            pushd "$dir"
+            branch="$(git rev-parse --abbrev-ref HEAD)"
+            _status="$(git diff --shortstat | tr -cd '[0-9 ]' | awk '{ print $1 " files +" $2 " -" $3 }')"
+            popd
+
+            echo "$dir | $branch | $_status"
+        done
+    ) | column -t -s '|'
 }
