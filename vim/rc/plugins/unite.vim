@@ -66,7 +66,7 @@ if executable('ag')
   " Is faster than ack/grep, and respects .gitignore files.
   let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup --hidden -g ""'
   let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts = '-in --nocolor --noheading' .  s:to_arglist('--ignore=', ' ', s:ignores)
+  let g:unite_source_grep_default_opts = '-in --nocolor --noheading --nobreak ' .  s:to_arglist('--ignore=', ' ', s:ignores)
 else
   echoe "The 'ag' executable seems to be missing. Please install the 'silversearcher-ag' package to increase search performance."
 end
