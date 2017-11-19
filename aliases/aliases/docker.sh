@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 alias docker='sudo -E docker'
+alias dockc='sudo -E docker-compose'
 
 ### Viewing running containers ###
 
@@ -65,6 +66,13 @@ _dockrun() {
 docksh() {
     name=${1:-$(docker ps -lq)}; shift &> /dev/null
     docker exec -it "$name" "${@:-/bin/bash}"
+}
+
+### Attaching ###
+
+docka() {
+    name=${1:-$(docker ps -lq)}; shift &> /dev/null
+    docker attach --sig-proxy=false "$name"
 }
 
 ### Building ###
