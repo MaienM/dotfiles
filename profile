@@ -4,12 +4,6 @@
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-#
-# Add local folder to the path.
-#
-export PATH="$HOME/local:$PATH"
-export XDG_DATA_DIRS="$HOME/local:$XDG_DATA_DIRS"
-
 # (Neo)vim. Need I say more?
 which nvim &> /dev/null && export EDITOR="nvim" || export EDITOR="vim"
 
