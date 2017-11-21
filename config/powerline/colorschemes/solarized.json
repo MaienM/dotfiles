@@ -30,6 +30,7 @@
 		"system_load":             { "fg": "solarized:base1", "bg": "solarized:base03", "attrs": [] },
 		"weather_temp_gradient":   { "fg": "blue_red", "bg": "solarized:base03", "attrs": [] },
 		"weather":                 { "fg": "solarized:base1", "bg": "solarized:base03", "attrs": [] },
-		"uptime":                  { "fg": "solarized:base1", "bg": "solarized:base03", "attrs": [] }
+		"uptime":                  { "fg": "solarized:base1", "bg": "solarized:base02", "attrs": [] },
+		"battery":                 { "fg": "solarized:base1", "bg": "solarized:base02", "attrs": [] }
 	}
 }
