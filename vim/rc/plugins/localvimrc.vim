@@ -6,6 +6,3 @@ let g:localvimrc_persistent = 1
 
 " Use a directory for vim stuff
 let g:localvimrc_name = [".lvim/init.vim", ".lvimrc"]
-
-" After loading the file, reapply the indent guides
-au User LocalVimRCPost * :IndentGuidesEnable<CR>
