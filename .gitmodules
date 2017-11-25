@@ -50,7 +50,7 @@
 	path = vim/bundle/splitjoin
 	url = https://github.com/AndrewRadev/splitjoin.vim.git
 [submodule "vim/bundle/vim-colors-solarized"]
-	path = vim/bundle-vim/solarized
+	path = vim/bundle/solarized
 	url = https://github.com/altercation/vim-colors-solarized.git
 [submodule "vim/bundle/vdebug"]
 	path = vim/bundle/vdebug
