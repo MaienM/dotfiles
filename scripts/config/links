@@ -1,10 +1,5 @@
-vim																.config/nvim
-vim/vimrc														.config/nvim/init.vim
-tmux/tmux.conf													.tmux.conf
-zprezto/runcoms/zlogin											.zlogin
-zprezto/runcoms/zlogout											.zlogout
-zprezto/runcoms/zpreztorc										.zpreztorc
-zprezto/runcoms/zprofile										.zprofile
-zprezto/runcoms/zshenv											.zshenv
-zprezto/runcoms/zshrc											.zshrc
-bin/ssh-ident/ssh-ident											.local/bin/ssh
+vim                                                .config/nvim
+vim/vimrc                                          .config/nvim/init.vim
+tmux/tmux.conf                                     .tmux.conf
+zsh/init.zsh                                       .zshrc
+bin/ssh-ident/ssh-ident                            .local/bin/ssh
