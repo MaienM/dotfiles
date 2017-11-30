@@ -169,3 +169,6 @@
 [submodule "zsh/bundle/zilsh"]
 	path = zsh/bundle/zilsh
 	url = https://github.com/zilsh/zilsh
+[submodule "zsh/bundle/powerlevel9k"]
+	path = zsh/bundle/powerlevel9k
+	url = https://github.com/bhilburn/powerlevel9k.git
