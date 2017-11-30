@@ -1,6 +1,3 @@
-[submodule "solarized/tmux"]
-	path = solarized/tmux
-	url = https://github.com/seebi/tmux-colors-solarized.git
 [submodule "zprezto"]
 	path = zprezto
 	url = git@github.com:MaienM/prezto.git
@@ -163,3 +160,6 @@
 [submodule "vim/bundle-nvim/solarized"]
 	path = vim/bundle-nvim/solarized
 	url = https://github.com/frankier/neovim-colors-solarized-truecolor-only
+[submodule "vim/bundle/tmuxline"]
+	path = vim/bundle/tmuxline
+	url = https://github.com/edkolev/tmuxline.vim

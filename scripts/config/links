@@ -1,6 +1,6 @@
-solarized/tmux/tmuxcolors-dark.conf								.tmux-colors.conf
 vim																.config/nvim
 vim/vimrc														.config/nvim/init.vim
+tmux/tmux.conf													.tmux.conf
 zprezto/runcoms/zlogin											.zlogin
 zprezto/runcoms/zlogout											.zlogout
 zprezto/runcoms/zpreztorc										.zpreztorc
