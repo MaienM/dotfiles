@@ -8,6 +8,7 @@ let g:tmuxline_preset = {
 		\'#I',
 		\'#W',
 	\],
+	\'x': '#(~/.tmux/scripts/battery.sh)',
 	\'y':    [
 		\'%Y-%m-%d',
 		\'%H:%M',
