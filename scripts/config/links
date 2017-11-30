@@ -1,5 +1,4 @@
 solarized/tmux/tmuxcolors-dark.conf								.tmux-colors.conf
-../.local/lib/python2.7/site-packages/powerline/bindings/vim/	.vim/bundle-vim/powerline
 vim																.config/nvim
 vim/vimrc														.config/nvim/init.vim
 zprezto/runcoms/zlogin											.zlogin

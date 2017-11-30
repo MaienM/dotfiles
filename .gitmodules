@@ -140,10 +140,10 @@
 	path = vim/bundle-nvim/deoplete
 	url = https://github.com/Shougo/deoplete.nvim
 [submodule "vim/bundle-nvim/airline"]
-	path = vim/bundle-nvim/airline
+	path = vim/bundle/airline
 	url = https://github.com/vim-airline/vim-airline
 [submodule "vim/bundle-nvim/airline-themes"]
-	path = vim/bundle-nvim/airline-themes
+	path = vim/bundle/airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes
 [submodule "vim/bundle/asciidoc-superfold"]
 	path = vim/bundle/asciidoc-superfold
