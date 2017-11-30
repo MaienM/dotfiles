@@ -172,3 +172,6 @@
 [submodule "zsh/bundle/syntax-highlighting"]
 	path = zsh/bundle/syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting
+[submodule "zsh/bundle/history-substring-search"]
+	path = zsh/bundle/history-substring-search
+	url = https://github.com/zsh-users/zsh-history-substring-search
