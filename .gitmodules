@@ -175,3 +175,6 @@
 [submodule "zsh/bundle/history-substring-search"]
 	path = zsh/bundle/history-substring-search
 	url = https://github.com/zsh-users/zsh-history-substring-search
+[submodule "zsh/bundle/autosuggestions"]
+	path = zsh/bundle/autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions
