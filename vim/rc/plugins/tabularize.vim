@@ -1,6 +1,3 @@
-" Part of my modulized vimrc file.
-" Last change: Tue, 04 Oct 2011 14:31:03 +0200
-
 " Mapping for tabular.
 nmap <Leader>a :Tabularize /
 

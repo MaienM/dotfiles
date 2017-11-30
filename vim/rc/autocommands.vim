@@ -1,6 +1,3 @@
-" Part of my modulized vimrc file.
-" Last change: Wed, 16 Mar 2011 14:38:36 +0100
-
 if has("autocmd") 
   " Define the autocmd group, so we can delete all of these when reloading the
   " file.

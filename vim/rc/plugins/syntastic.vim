@@ -1,6 +1,3 @@
-" Part of my modulized vimrc file.
-" Last change: Thu, 31 Jul 2014 19:59:41 +0200
-
 let g:syntastic_check_on_wq = 0
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_auto_jump = 1

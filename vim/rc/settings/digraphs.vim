@@ -1,6 +1,3 @@
-" Part of my modulized vimrc file.
-" Last change: Thu, 03 Mar 2011 17:03:49 +0100
-
 " More digraph characters.
 " Digraph characters can be entered using <C-K> when in insert mode.
 if has("digraphs")

@@ -1,6 +1,3 @@
-" Part of my modulized vimrc file.
-" Last change: Sun, 02 Oct 2011 10:36:47 +0200
-
 " command Map to map and imap at the same time.
 command! -nargs=+ -complete=mapping Map 
   \ :let [start; end] = split('<expr> '.<q-args>, printf('\(\s\+\)\(<%s>\)\@!', join(['buffer', 'silent', 'special', 'script', 'expr', 'unique'], '>\|<'))) <Bar>

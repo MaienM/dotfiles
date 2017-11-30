@@ -1,6 +1,3 @@
-" Part of my modulized vimrc file.
-" Last change: Tue, 29 Jan 2013 16:37:47 +0100
-
 set tabline=%!MyTabLine()  " custom tab pages line
 function! MyTabLine()
     let line = ''

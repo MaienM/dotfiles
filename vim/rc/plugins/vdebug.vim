@@ -1,6 +1,3 @@
-" Part of my modulized vimrc file.
-" Last change: Thu, 07 Aug 2014 17:38:26 +0200
-
 let g:vdebug_keymap = {
     \"run": "<Leader>dr",
     \"run_to_cursor": "<Leader>dtc",

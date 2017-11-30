@@ -1,6 +1,3 @@
-" Part of my modulized vimrc file.
-" Last change: Sun, 24 Feb 2013 16:08:08 +0100
-
 " Force 256 colors with Screen/Tmux 
 if match($TERM, "screen-256color")!=-1
   set t_Co=256

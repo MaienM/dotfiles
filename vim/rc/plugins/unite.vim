@@ -1,6 +1,3 @@
-" Part of my modulized vimrc file.
-" Last change: Tue, 19 Aug 2014 00:12:50 +0200
-
 " Default matcher and sorter. {{{1
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_selecta', '!sorter_ftime'])

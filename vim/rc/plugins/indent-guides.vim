@@ -1,6 +1,3 @@
-" Part of my modulized vimrc file.
-" Last change: Fri, 08 Jun 2012 14:45:26 +0200
-
 " Enable by default.
 let g:indent_guides_enable_on_vim_startup=1
 

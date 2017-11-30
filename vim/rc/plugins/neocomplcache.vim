@@ -1,6 +1,3 @@
-" Part of my modulized vimrc file.
-" Last change: Sat, 23 Feb 2013 15:42:23 +0100
-
 finish
 
 " Make the popup look decent.
