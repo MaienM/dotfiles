@@ -166,3 +166,6 @@
 [submodule "tmux/bundle/battery"]
 	path = tmux/bundle/battery
 	url = https://github.com/tmux-plugins/tmux-battery
+[submodule "zsh/bundle/zilsh"]
+	path = zsh/bundle/zilsh
+	url = https://github.com/zilsh/zilsh
