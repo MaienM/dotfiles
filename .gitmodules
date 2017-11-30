@@ -169,3 +169,6 @@
 [submodule "zsh/bundle/powerlevel9k"]
 	path = zsh/bundle/powerlevel9k
 	url = https://github.com/bhilburn/powerlevel9k.git
+[submodule "zsh/bundle/syntax-highlighting"]
+	path = zsh/bundle/syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting
