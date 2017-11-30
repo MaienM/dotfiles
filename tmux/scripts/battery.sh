@@ -3,11 +3,12 @@
 source ~/.tmux/bundle/battery/scripts/helpers.sh
 
 # Get the battery status
-status="$(battery_status)"
-[[ $status =~ (attached) ]] && status='A'
-[[ $status =~ (discharging) ]] && status='D'
-[[ $status =~ (charging) ]] && status='C'
-[[ $status =~ (charged) ]] && status='F'
+_status="$(battery_status 2>&1)"
+[[ $_status =~ (attached) ]] && status='A'
+[[ $_status =~ (discharging) ]] && status='D'
+[[ $_status =~ (charging) ]] && status='C'
+[[ $_status =~ (charged) ]] && status='F'
+[[ -z $status ]] && exit 0
 
 # Print the icon
 [ $status == 'A' ] && echo -n "!▼"
