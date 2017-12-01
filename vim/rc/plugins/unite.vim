@@ -61,7 +61,7 @@ nnoremap <Leader>b :<C-u>Unite -buffer-name=buffers -quick-match buffer<CR>
 " Grep. {{{1
 if executable('ag')
   " Is faster than ack/grep, and respects .gitignore files.
-  let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup --hidden -g ""'
+  let g:unite_source_rec_async_command = ['ag', '--follow', '--nocolor', '--nogroup', '--hidden', '-g', '""']
   let g:unite_source_grep_command = 'ag'
   let g:unite_source_grep_default_opts = '-in --nocolor --noheading --nobreak ' .  s:to_arglist('--ignore=', ' ', s:ignores)
 else
