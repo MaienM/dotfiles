@@ -62,7 +62,7 @@ function process()
 
   if [[ $(grep -cE "^$OF$" scripts/config/ignore) -gt 0 ]]
   then
-    continue
+    return
   fi
  
   if [[ -d $OF ]]
