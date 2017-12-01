@@ -6,4 +6,6 @@ source ~/.zsh/bundle/syntax-highlighting/fast-syntax-highlighting.plugin.zsh # S
 source ~/.zsh/bundle/history-substring-search/zsh-history-substring-search.zsh
 
 # Load the rc files responsible for the rest of the initialisation.
-source ~/.zsh/rc/**/*.zsh
+for file in ~/.zsh/rc/**/*.zsh; do
+	source "$file"
+done
