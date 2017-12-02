@@ -3,4 +3,4 @@ if &rtp !~ ".*indent-guides.*"
 endif
 
 " After loading the file, reapply the indent guides
-au User LocalVimRCPost * :IndentGuidesEnable<CR>
+au User LocalVimRCPost :IndentGuidesEnable
