@@ -2,14 +2,25 @@ if [ -z "$key_info[Escape]" ]; then
 	return 1;
 fi
 
-# Insert 'sudo ' at the beginning of the line
-function prepend-sudo {
-	if [[ "$BUFFER" != su(do|)\ * ]]; then
-		BUFFER="sudo $BUFFER"
-		(( CURSOR += 5 ))
+# Easily sudo(edit)
+function toggle-sudo {
+	# If nothing has been typed, use the last command
+	[[ -z $BUFFER ]] && zle up-history
+
+	# Toggle between sudoedit and $EDITOR
+	if [[ "$BUFFER" == $EDITOR\ * ]]; then
+		LBUFFER="sudoedit ${LBUFFER#$EDITOR }"
+	elif [[ "$BUFFER" == sudoedit\ * ]]; then
+		LBUFFER="$EDITOR ${LBUFFER#sudoedit }"
+
+	# Toggle between running regularly and running with sudo
+	elif [[ "$BUFFER" == sudo\ * ]]; then
+		LBUFFER="${LBUFFER#sudo }"
+	else
+		LBUFFER="sudo $LBUFFER"
 	fi
 }
-zle -N prepend-sudo
+zle -N toggle-sudo
 for key in "$key_info[Escape]"{s,S}; do
-	bindkey "$key" prepend-sudo
+	bindkey "$key" toggle-sudo
 done
