@@ -7,6 +7,9 @@ export LC_ALL=en_US.UTF-8
 # (Neo)vim. Need I say more?
 which nvim &> /dev/null && export EDITOR="nvim" || export EDITOR="vim"
 
+# Add local elements to path
+PATH="$HOME/.local/bin:$PATH"
+
 #
 # If present, load the profile file for this specific computer.
 #
