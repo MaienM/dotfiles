@@ -1,10 +1,11 @@
-# Stop if tmux is not available, or we're in a session nested in something
+# Stop if tmux is not available, we're in a session nested in something, or we're not connected through SSH
 if (
 	[ ! $+commands[tmux] ] ||
 	[ -n "$TMUX" ] ||
 	[ -n "$EMACS" ] || 
 	[ -n "$VIM" ] ||
 	[ -n "$INSIDE_EMACS" ]
+	[ -z "$SSH_TTY" ]
 ); then
 	return 1
 fi
