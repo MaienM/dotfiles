@@ -6,6 +6,10 @@ key_info=(
 	'ControlLeft'     '\e[1;5D \e[5D \e\e[D \eOd'
 	'ControlRight'    '\e[1;5C \e[5C \e\e[C \eOc'
 	'Escape'          '\e'
+	'Home'            "$terminfo[khome]"
+	'End'             "$terminfo[kend]"
+	'Insert'          "$terminfo[kich1]"
+	'Delete'          "$terminfo[kdch1]"
 	'Up'              "$terminfo[kcuu1]"
 	'Left'            "$terminfo[kcub1]"
 	'Down'            "$terminfo[kcud1]"
