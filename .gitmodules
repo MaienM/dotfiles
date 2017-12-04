@@ -43,9 +43,6 @@
 [submodule "vim/bundle/splitjoin.vim"]
 	path = vim/bundle/splitjoin
 	url = https://github.com/AndrewRadev/splitjoin.vim.git
-[submodule "vim/bundle/vim-colors-solarized"]
-	path = vim/bundle/solarized
-	url = https://github.com/altercation/vim-colors-solarized.git
 [submodule "vim/bundle/vdebug"]
 	path = vim/bundle/vdebug
 	url = https://github.com/joonty/vdebug.git
@@ -154,9 +151,6 @@
 [submodule "vim/bundle/ale"]
 	path = vim/bundle/ale
 	url = https://github.com/w0rp/ale
-[submodule "vim/bundle-nvim/solarized"]
-	path = vim/bundle-nvim/solarized
-	url = https://github.com/frankier/neovim-colors-solarized-truecolor-only
 [submodule "vim/bundle/tmuxline"]
 	path = vim/bundle/tmuxline
 	url = https://github.com/edkolev/tmuxline.vim
@@ -175,3 +169,9 @@
 [submodule "zsh/bundle/syntax-highlighting"]
 	path = zsh/bundle/syntax-highlighting
 	url = https://github.com/zdharma/fast-syntax-highlighting
+[submodule "zsh/bundle/base16"]
+	path = zsh/bundle/base16
+	url = https://github.com/chriskempson/base16-shell
+[submodule "vim/bundle/base16"]
+	path = vim/bundle/base16
+	url = https://github.com/chriskempson/base16-vim

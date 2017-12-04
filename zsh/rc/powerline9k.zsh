@@ -6,7 +6,10 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status command_execution_time root_indicator
 POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
-POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%{%B%F{yellow}%K{black}%} $user_symbol%{%b%f%k%F{black}%} %{%f%}"
+POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%{%B%F{yellow}%K{18}%}  $user_symbol%{%b%f%k%F{18}%} %{%f%}"
+
+# Color for the context with base16
+POWERLEVEL9K_CONTEXT_DEFAULT_BACKGROUND='18'
 
 # Status of last command if needed
 POWERLEVEL9K_STATUS_OK=false

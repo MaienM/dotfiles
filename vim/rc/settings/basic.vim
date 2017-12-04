@@ -1,13 +1,20 @@
 " Allow backspacing over everything in insert mode.
 set backspace=indent,eol,start
 
+function! Base16()
+  if filereadable(expand("~/.vimrc_background"))
+    source ~/.vimrc_background
+  endif
+endfunction
+command Base16 :call Base16()<CR>
+
 " Theme.
 if &t_Co > 2 || has("gui_running")
   set t_Co=256
   set guioptions=0
   set background=dark
-  colorscheme solarized
-  let g:solarized_italic=0
+  let base16colorspace=256
+  call Base16()
 endif
 
 " Font
