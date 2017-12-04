@@ -1,3 +1,7 @@
+if [ -z "$key_info[Escape]" ]; then
+	return 1;
+fi
+
 # Insert 'sudo ' at the beginning of the line
 function prepend-sudo {
 	if [[ "$BUFFER" != su(do|)\ * ]]; then
