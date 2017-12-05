@@ -5,8 +5,8 @@ source ~/.tmux/bundle/battery/scripts/helpers.sh
 # Get the battery status
 _status="$(battery_status 2>&1)"
 [[ $_status =~ (attached) ]] && status='A'
-[[ $_status =~ (discharging) ]] && status='D'
 [[ $_status =~ (charging) ]] && status='C'
+[[ $_status =~ (discharging) ]] && status='D'
 [[ $_status =~ (charged) ]] && status='F'
 [[ -z $status ]] && exit 0
 
