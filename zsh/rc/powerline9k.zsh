@@ -20,8 +20,8 @@ POWERLEVEL9K_SHORTEN_STRATEGY='truncate_from_right'
 POWERLEVEL9K_DIR_SHOW_WRITABLE=true
 
 # Default user can be any of these, so check which exist on this system
-local possible=(michon maienm)
-local existing=()
+possible=(michon maienm)
+existing=()
 for user in ${possible[@]}; do
 	if id -u $user &> /dev/null; then
 		existing+=($user)
