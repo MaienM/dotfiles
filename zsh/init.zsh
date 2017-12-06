@@ -1,3 +1,7 @@
+# Source profile
+source ~/.profile
+
+# Load version checking function, for version guards in the plugins
 autoload -Uz is-at-least
 
 # Load plugins
