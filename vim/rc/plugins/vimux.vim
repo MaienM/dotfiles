@@ -1,2 +1,2 @@
 " Re-run last command
-nnoremap <Leader>RR :VimuxRunLastCommand<CR>
+nnoremap <Leader>RR :VimuxInterruptRunner<CR>:VimuxRunLastCommand<CR>
