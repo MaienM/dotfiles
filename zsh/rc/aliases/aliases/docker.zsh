@@ -47,8 +47,8 @@ alias docklogs='docker logs --tail 30'
 dockrunsh() {
     latest=$(docker ps -lq)
     _dockrun -d "$@"
-    name=$(docker ps -lq -f "since=$latest")
-    [[ -n "$name" ]] || return 1
+    name=$(docker ps -lq)
+    [[ -n "$name" || "$latest" == "$name" ]] || return 1
     docksh "$name"
     docker rm -f "$name"
 }
