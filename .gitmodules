@@ -178,3 +178,6 @@
 [submodule "vim/bundle/deoplete-ternjs"]
 	path = vim/bundle-nvim/deoplete-ternjs
 	url = https://github.com/carlitux/deoplete-ternjs
+[submodule "vim/bundle-nvim/ghost"]
+	path = vim/bundle-nvim/ghost
+	url = https://github.com/raghur/vim-ghost
