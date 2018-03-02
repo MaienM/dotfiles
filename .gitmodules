@@ -76,9 +76,6 @@
 [submodule "vim/bundle/easy-align"]
 	path = vim/bundle/easy-align
 	url = https://github.com/junegunn/vim-easy-align.git
-[submodule "vim/bundle/GoldenView"]
-	path = vim/bundle/golden-view
-	url = https://github.com/zhaocai/GoldenView.Vim.git
 [submodule "vim/bundle/undotree"]
 	path = vim/bundle/undotree
 	url = https://github.com/mbbill/undotree.git
@@ -181,3 +178,6 @@
 [submodule "vim/bundle-nvim/ghost"]
 	path = vim/bundle-nvim/ghost
 	url = https://github.com/raghur/vim-ghost
+[submodule "vim/bundle/golden-ratio"]
+	path = vim/bundle/golden-ratio
+	url = https://github.com/roman/golden-ratio
