@@ -2,7 +2,17 @@
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_on_insert_leave = 1
 
+let g:ale_fixers = {
+\	'javascript': ['eslint'],
+\}
+
 map <Leader>ss :ALEToggle<CR>
+
+map <Leader>cn :ALENextWrap<CR>
+map <Leader>cp :ALEPreviousWrap<CR>
+map <Leader>cg :ALEFirst<CR>
+map <Leader>cG :ALELast<CR>
+map <Leader>cf :ALEFix<CR>
 
 " Mapping to ignore the current eslint error(s)
 function! ALEIgnore()
@@ -15,4 +25,4 @@ function! ALEIgnore()
 	endfor
 	execute 'normal A // eslint-disable-line ' . join(toIgnore, ', ')
 endfunction
-map <Leader>si :call ALEIgnore()<CR>
+map <Leader>ci :call ALEIgnore()<CR>
