@@ -187,3 +187,6 @@
 [submodule "vim/bundle/lsc"]
 	path = vim/bundle/lsc
 	url = https://github.com/natebosch/vim-lsc
+[submodule "vim/bundle/syntax-renpy"]
+	path = vim/bundle/syntax-renpy
+	url = https://github.com/chaimleib/vim-renpy
