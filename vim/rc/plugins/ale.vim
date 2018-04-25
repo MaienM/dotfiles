@@ -26,3 +26,4 @@ function! ALEIgnore()
 	execute 'normal A // eslint-disable-line ' . join(toIgnore, ', ')
 endfunction
 map <Leader>ci :call ALEIgnore()<CR>
+

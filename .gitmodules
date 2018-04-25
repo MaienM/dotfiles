@@ -181,3 +181,9 @@
 [submodule "vim/bundle/golden-ratio"]
 	path = vim/bundle/golden-ratio
 	url = https://github.com/roman/golden-ratio
+[submodule "vim/bundle/tbone"]
+	path = vim/bundle/tbone
+	url = https://github.com/tpope/vim-tbone
+[submodule "vim/bundle/lsc"]
+	path = vim/bundle/lsc
+	url = https://github.com/natebosch/vim-lsc
