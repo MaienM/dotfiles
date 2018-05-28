@@ -7,8 +7,26 @@ export LC_ALL=en_US.UTF-8
 # (Neo)vim. Need I say more?
 which nvim &> /dev/null && export EDITOR="nvim" || export EDITOR="vim"
 
+# Helper method to add things to path
+in-path() {
+	case ":$PATH:" in
+		*":$1:"*)
+			return 0  # zero return code -> success
+		;;
+		*)
+			return 1  # non-zero return code -> failure
+		;;
+	esac
+}
+prepend-to-path() {
+	in-path "$1" || export PATH="$1:$PATH"
+}
+append-to-path() {
+	in-path "$1" || export PATH="$PATH:$1"
+}
+
 # Add local elements to path
-PATH="$HOME/.local/bin:$PATH"
+prepend-to-path "$HOME/.local/bin"
 
 #
 # If present, load the profile file for this specific computer.
@@ -20,9 +38,12 @@ PATH="$HOME/.local/bin:$PATH"
 #
 if [ -d $HOME/.pyenv ]; then
 	export PYENV_ROOT="$HOME/.pyenv"
-	export PATH="$PYENV_ROOT/bin:$PATH"
-	export PYTHON_CONFIGURE_OPTS="--enable-shared"
-	eval "$(pyenv init -)"
+	bindir="$PYENV_ROOT/bin"
+	if ! in-path "$bindir"; then
+		prepend-to-path "$bindir"
+		export PYTHON_CONFIGURE_OPTS="--enable-shared"
+		eval "$(pyenv init -)"
+	fi
 fi
 
 #
@@ -30,8 +51,11 @@ fi
 #
 if [ -d $HOME/.rbenv ]; then
 	export RBENV_ROOT="$HOME/.rbenv"
-	export PATH="$RBENV_ROOT/bin:$PATH"
-	eval "$(rbenv init -)"
+	bindir="$RBENV_ROOT/bin"
+	if ! in-path "$bindir"; then
+		prepend-to-path "$bindir"
+		eval "$(rbenv init -)"
+	fi
 fi
 
 #
@@ -39,8 +63,11 @@ fi
 #
 if [ -d $HOME/.nodenv ]; then
 	export NODENV_ROOT="$HOME/.nodenv"
-	export PATH="$NODENV_ROOT/bin:$PATH"
-	eval "$(nodenv init -)"
+	bindir="$NODENV_ROOT/bin"
+	if ! in-path "$bindir"; then
+		prepend-to-path "$bindir"
+		eval "$(nodenv init -)"
+	fi
 fi
 
 #
