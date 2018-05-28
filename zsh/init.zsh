@@ -7,6 +7,7 @@ autoload -Uz is-at-least
 # Load plugins
 source ~/.zsh/bundle/autosuggestions.zsh
 source ~/.zsh/bundle/base16.zsh
+source ~/.zsh/bundle/fzf.zsh
 source ~/.zsh/bundle/powerlevel9k/powerlevel9k.zsh-theme
 source ~/.zsh/bundle/prezto-history/init.zsh
 source ~/.zsh/bundle/syntax-highlighting.zsh # Should be behind most other plugins
