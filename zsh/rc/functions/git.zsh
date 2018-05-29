@@ -40,16 +40,17 @@ gitpb() {
 # View status of multiple repositories
 gitsdir() {
     (
-        echo "REPO | BRANCH | STATUS"
+        echo "DIR | BRANCH | STATUS"
         for dir in *; do
             [[ ! -d "$dir" ]] && continue
+            [[ ! -d "$dir/.git" ]] && continue
 
             pushd "$dir"
-            branch="$(git rev-parse --abbrev-ref HEAD)"
-            _status="$(git diff --shortstat | tr -cd '[0-9 ]' | awk '{ print $1 " files +" $2 " -" $3 }')"
+            gitbranch="$(git rev-parse --abbrev-ref HEAD)"
+            gitstatus="$(git diff --shortstat | tr -cd '[0-9 ]' | awk '{ print $1 " files +" $2 " -" $3 }')"
             popd
 
-            echo "$dir | $branch | $_status"
+            echo "$dir | $gitbranch | $gitstatus"
         done
     ) | column -t -s '|'
 }
