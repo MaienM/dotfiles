@@ -12,6 +12,10 @@ alias gitrbu='gitrb origin/master..'
 # Diff.
 alias gitd="GIT_PAGER='less' git diff --minimal"
 
+# Get the jira item from a branch name
+alias _git_branch_strip_remote="sed 's/^.*\\///g'"
+alias _git_branch_to_jira="sed 's/\\(-[0-9]\\+\\).*$/\\1/g'"
+
 # Diff/add.
 gitda() {
     gitd $@
@@ -20,18 +24,20 @@ gitda() {
 }
 
 # Commit
-alias gitc="git commit -m"
-gitcb() {
+gitcj() {
+    local prefix
     if [[ -z $1 ]]; then
         echo "Please add a commit message!"
         exit 1
     fi
-    gitc "$(git rev-parse --abbrev-ref HEAD | sed 's/.*\///' | sed 's/-develop$//') $@"
+    prefix=$(git rev-parse --abbrev-ref HEAD | _git_branch_strip_remote | _git_branch_to_jira)
+    git commit -m "$prefix: $@"
 }
 
 # Push
 alias gitp="git push"
 gitpb() {
+    local remote
     remote="${1:-origin}"
     [[ -n $1 ]] && shift
     gitp --set-upstream "$@" "$remote" $(git rev-parse --abbrev-ref HEAD)
