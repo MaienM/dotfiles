@@ -13,3 +13,5 @@ function colortest {
 		printf "\n";
 	}'
 }
+
+alias stripescape='sed -E "s/[[:cntrl:]]\[[0-9]{1,3}(;[0-9]{1,3}){0,2}[mGK]//g"'
