@@ -4,15 +4,16 @@
 # mix and match these, these will be defined as three separate commands.
 #
 # The source will be defined as a command named _fzf_pipeline_NAME_source. It may accept arguments, and it should output
-# the data to be piped into fzf.
+# the data to be piped into fzf. The first word of each line serves as identifier, it will not be shown in fzf, and will
+# be available to most commands.
 #
-# The preview will be defined as a command named _fzf_pipeline_NAME_preview. It receives a single argument: the selected
-# line in fzf, and it should output the data to be shown as preview. It is optional, and if it is not present no preview
-# will be shown for this pipeline.
+# The preview will be defined as a command named _fzf_pipeline_NAME_preview. It will receive two arguments: the
+# identifier of the selected line in fzf, and the rest of the selected line. It should output the data to be shown
+# as preview. It is optional, and if it is not present no preview will be shown for this pipeline.
 #
-# The output will be defined as a command named _fzf_pipeline_NAME_target. It will receive no arguments, but the chosen
-# line will be piped into this command. It should output the final output of the pipeline, which will be printed to
-# stdout. It is optional, and if it is not present the entire selected line will be used.
+# The output will be defined as a command named _fzf_pipeline_NAME_target. It will receive two arguments: the identifier
+# of the chosen line in fzf, and the rest of the selected line. It should output the final output of the pipeline,
+# which will be printed to stdout. It is optional, and if it is not present the identifier will be output.
 
 (
     # Example pipeline
@@ -22,11 +23,14 @@
         echo "3 Foo Bar"
     }
     _fzf_pipeline_example_preview() {
-        echo "ID: $(echo "$@" | cut -d' ' -f1)"
-        echo "Name: $(echo "$@" | cut -d' ' -f2-)"
+        echo "ID: $1"
+        echo "Name: $2"
     }
-    alias _fzf_pipeline_example_target='cut -d" " --f1'
 )
+
+_fzf_pipeline_default_target() {
+    echo $1
+}
 
 ################################################################################
 
@@ -50,8 +54,7 @@ alias _fzf_multi_start='echo'
 #
 # The first argument is the name of the pipeline, as documented at the start of this file.
 # 
-# The second argument is the prefix. All lines of a pipeline will be prefixed with the prefix. This is required, as it
-# is used to identify the type in order to use the correct preview/target command.
+# The second argument is the prefix. All lines of a pipeline will be prefixed with the prefix. This is optional.
 _fzf_multi_add() {
     local existing pipeline prefix sourcefn targetfn previewfn
 
@@ -81,7 +84,7 @@ _fzf_multi_add() {
 
     targetfn="_fzf_pipeline_${pipeline}_target"
     if ! which $targetfn &> /dev/null; then
-        targetfn="cat"
+        targetfn="_fzf_pipeline_default_target"
     fi
 
     previewfn="_fzf_pipeline_${pipeline}_preview"
@@ -89,7 +92,26 @@ _fzf_multi_add() {
         previewfn=
     fi
 
-    echo $existing ${(q)pipeline} ${(q)prefix} ${(q)sourcefn} ${(q)targetfn} ${(q)previewfn}
+    echo $existing $pipeline ${(q)prefix} $sourcefn $targetfn $previewfn
+}
+
+# Get the config of a single pipeline for a multi pipeline config
+#
+# The first argument is the pipeline to get the config for
+_fzf_multi_get() {
+    local config pipeline prefix sourcefn targetfn previewfn
+
+    # Read the config
+    read -r config
+
+    # Find the correct pipeline
+    for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
+        [[ "$1" == "$pipeline" ]] || continue
+        echo $prefix $sourcefn $targetfn $previewfn
+        return
+    done
+    echo "Pipeline $1 not in config" >&2
+    return 1
 }
 
 # Debug
@@ -104,20 +126,16 @@ _fzf_multi_debug() {
         (
             echo '--------------------------------------------------------------------------------' >&2
             echo pipeline
-            echo "\tquoted: '$pipeline'"
-            echo "\tunquoted: '${(Q)pipeline}'"
+            echo "\tvalue: '$pipeline'"
             echo prefix
             echo "\tquoted: '$prefix'"
             echo "\tunquoted: '${(Q)prefix}'"
             echo sourcefn
-            echo "\tquoted: '$sourcefn'"
-            echo "\tunquoted: '${(Q)sourcefn}'"
+            echo "\tvalue: '$sourcefn'"
             echo targetfn
-            echo "\tquoted: '$targetfn'"
-            echo "\tunquoted: '${(Q)targetfn}'"
+            echo "\tvalue: '$targetfn'"
             echo previewfn
-            echo "\tquoted: '$previewfn'"
-            echo "\tunquoted: '${(Q)previewfn}'"
+            echo "\tvalue: '$previewfn'"
         ) >&2
     done
 }
@@ -126,7 +144,7 @@ _fzf_multi_debug() {
 #
 # Arguments are passed to fzf.
 _fzf_multi_run() {
-    local config pipeline prefix sourcefn targetfn previewfn sources line target has_preview fzf_args
+    local config pipeline prefix sourcefn targetfn previewfn sources line has_preview fzf_args
 
     # Read the config
     read -r config
@@ -134,18 +152,21 @@ _fzf_multi_run() {
     # Get all source lines
     sources=$(
         for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
-            ${(Q)sourcefn} | while read line; do echo "${(Q)prefix}$line"; done
+            ${sourcefn} | while read line; do
+                line=(${(z)line})
+                echo "$pipeline ${line[1]} ${(Q)prefix} ${line[2,-1]}"
+            done
         done
     )
 
     # Determine if a preview is needed
     has_preview=0
     for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
-        [[ -n "${(Q)previewfn}" ]] && has_preview=1
+        [[ -n "${previewfn}" ]] && has_preview=1
     done
 
     # Run FZF
-    fzf_args=("--ansi")
+    fzf_args=("--with-nth" "3..") # first is pipeline, second is identifier, anything beyond that is displayed
     if [[ $has_preview -eq 1 ]]; then
         fzf_args=(
             "${fzf_args[@]}"
@@ -153,15 +174,16 @@ _fzf_multi_run() {
             "--preview-window" "down"
         )
     fi
-    echo $sources | fzf $fzf_args "$@" | read -r target || return
+    echo $sources | fzf $fzf_args "$@" | read -r line || return
 
     # Use the appropriate target function to transform the line
     for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
-        prefix=$(echo ${(Q)prefix} | stripescape)
-        [[ "$target" == "${prefix}"* ]] || continue
+        [[ "$line" == "$pipeline "* ]] || continue
 
         # Transform the line using this pipeline
-        echo "${target#${prefix}}" | ${(Q)targetfn}
+        prefix=$(echo ${(Q)prefix} | stripescape)
+        line=(${(z)line})
+        ${targetfn} "${line[2]}" "${${line[3,-1]}#${prefix}} "
         return
     done
     echo "Unable to process output" >&2
@@ -184,12 +206,13 @@ _fzf_multi_preview() {
 
     # Use the appropriate preview function
     for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
-        prefix=$(echo ${(Q)prefix} | stripescape)
-        [[ "$line" == "${prefix}"* ]] || continue
-        [[ "${(Q)previewfn}" == "" ]] && break;
+        [[ "$line" == "$pipeline "* ]] || continue
+        [[ "${previewfn}" == "" ]] && break;
 
         # Run the preview
-        ${(Q)previewfn} "${line#${prefix}}"
+        prefix=$(echo ${(Q)prefix} | stripescape)
+        line=(${(z)line})
+        ${previewfn} "${line[2]}" "${${line[3,-1]}#${prefix}} "
         return
     done
     echo "No preview available"
