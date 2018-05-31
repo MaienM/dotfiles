@@ -28,36 +28,169 @@
     alias _fzf_pipeline_example_target='cut -d" " --f1'
 )
 
+################################################################################
+
+# Run a single pipeline.
+#
+# The first argument should be the name of the pipeline.
+# Extra arguments are passed to fzf.
 _fzf_run() {
-    local name sourcefn targetfn previewfn target
+    local pipeline
 
-    name="$1"
-    sourcefn="_fzf_pipeline_${name}_source"
-    targetfn="_fzf_pipeline_${name}_target"
-    previewfn="_fzf_pipeline_${name}_preview"
+    pipeline="$1"
+    shift 1
 
-    # Check the names/functions
-    if [[ "$name" == *" "* ]]; then
-        echo "fzf pipeline names cannot contain spaces" >&2
+    _fzf_multi_start | _fzf_multi_add "$pipeline" "" | _fzf_multi_run "$@"
+}
+
+# Start a multi pipeline config
+alias _fzf_multi_start='echo'
+
+# Add a pipeline to a multi pipeline config.
+#
+# The first argument is the name of the pipeline, as documented at the start of this file.
+# 
+# The second argument is the prefix. All lines of a pipeline will be prefixed with the prefix. This is required, as it
+# is used to identify the type in order to use the correct preview/target command.
+_fzf_multi_add() {
+    local existing pipeline prefix sourcefn targetfn previewfn
+
+    # Store the existing config data
+    read -r existing
+
+    # Read the arguments
+    pipeline="$1"
+    prefix="$2"
+    shift 2
+    if [[ -n "$@" ]]; then
+        echo "Extra arguments given to _fzf_multi_add ($@)" >&2
         return 1
     fi
-    if [[ "$(type $sourcefn)" != *"function"* ]]; then
-        echo "$sourcefn must be a function"
+
+    # Validate the arguments and find the functions to use
+    if [[ "$pipeline" == *" "* ]]; then
+        echo "fzf pipeline names cannot contain spaces ($pipeline)" >&2
         return 1
     fi
-    if [[ "$(type $targetfn)" != *"function"* ]]; then
+
+    sourcefn="_fzf_pipeline_${pipeline}_source"
+    if ! which $sourcefn &> /dev/null; then
+        echo "$sourcefn must be a command" >&2
+        return 1
+    fi
+
+    targetfn="_fzf_pipeline_${pipeline}_target"
+    if ! which $targetfn &> /dev/null; then
         targetfn="cat"
     fi
-    if [[ "$(type $previewfn)" != *"function"* ]]; then
+
+    previewfn="_fzf_pipeline_${pipeline}_preview"
+    if ! which $previewfn &> /dev/null; then
         previewfn=
     fi
 
-    # Build the args for fzf
+    echo $existing ${(q)pipeline} ${(q)prefix} ${(q)sourcefn} ${(q)targetfn} ${(q)previewfn}
+}
+
+# Debug
+_fzf_multi_debug() {
+    local config pipeline prefix sourcefn targetfn previewfn
+
+    # Read the config
+    read -r config
+
+    # Output debug info
+    for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
+        (
+            echo '--------------------------------------------------------------------------------' >&2
+            echo pipeline
+            echo "\tquoted: '$pipeline'"
+            echo "\tunquoted: '${(Q)pipeline}'"
+            echo prefix
+            echo "\tquoted: '$prefix'"
+            echo "\tunquoted: '${(Q)prefix}'"
+            echo sourcefn
+            echo "\tquoted: '$sourcefn'"
+            echo "\tunquoted: '${(Q)sourcefn}'"
+            echo targetfn
+            echo "\tquoted: '$targetfn'"
+            echo "\tunquoted: '${(Q)targetfn}'"
+            echo previewfn
+            echo "\tquoted: '$previewfn'"
+            echo "\tunquoted: '${(Q)previewfn}'"
+        ) >&2
+    done
+}
+
+# Run a multi pipeline config.
+#
+# Arguments are passed to fzf.
+_fzf_multi_run() {
+    local config pipeline prefix sourcefn targetfn previewfn sources line target has_preview fzf_args
+
+    # Read the config
+    read -r config
+
+    # Get all source lines
+    sources=$(
+        for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
+            ${(Q)sourcefn} | while read line; do echo "${(Q)prefix}$line"; done
+        done
+    )
+
+    # Determine if a preview is needed
+    has_preview=0
+    for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
+        [[ -n "${(Q)previewfn}" ]] && has_preview=1
+    done
+
+    # Run FZF
     fzf_args=("--ansi")
-    if [[ -n "$previewfn" ]]; then
-        fzf_args=("${fzf_args[@]}" "--preview" "source ~/.zsh/init.zsh; $previewfn {}" "--preview-window" "down")
+    if [[ $has_preview -eq 1 ]]; then
+        fzf_args=(
+            "${fzf_args[@]}"
+            "--preview" "source ~/.zsh/rc/functions.zsh; echo ${(q)config} | _fzf_multi_preview {}"
+            "--preview-window" "down"
+        )
+    fi
+    echo $sources | fzf $fzf_args "$@" | read -r target || return
+
+    # Use the appropriate target function to transform the line
+    for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
+        prefix=$(echo ${(Q)prefix} | stripescape)
+        [[ "$target" == "${prefix}"* ]] || continue
+
+        # Transform the line using this pipeline
+        echo "${target#${prefix}}" | ${(Q)targetfn}
+        return
+    done
+    echo "Unable to process output" >&2
+    return 1
+}
+
+# Render a preview using a multi pipeline config.
+_fzf_multi_preview() {
+    local config pipeline prefix sourcefn targetfn previewfn line
+
+    # Read the config
+    read -r config
+
+    # Get the current line
+    line="$1"
+    shift 1
+    if [[ -n "$@" ]]; then
+        echo "Extra arguments given to _fzf_multi_preview ($@)" >&2
     fi
 
-    target=$($sourcefn | fzf $fzf_args) || return
-    echo "$target" | $targetfn
+    # Use the appropriate preview function
+    for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
+        prefix=$(echo ${(Q)prefix} | stripescape)
+        [[ "$line" == "${prefix}"* ]] || continue
+        [[ "${(Q)previewfn}" == "" ]] && break;
+
+        # Run the preview
+        ${(Q)previewfn} "${line#${prefix}}"
+        return
+    done
+    echo "No preview available"
 }
