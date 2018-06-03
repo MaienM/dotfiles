@@ -115,3 +115,32 @@ _fzf_pipeline_git_tag_source() {
     git tag "$@" --format="%(refname:strip=1) ${fg[yellow]}%(refname:strip=2)$reset_color %(subject)"
 }
 alias _fzf_pipeline_git_tag_preview='_fzf_pipeline_git_commit_preview'
+
+# Autocomplete
+_fzf_complete_git() {
+    # Auto-determine prefix if none is given
+    if [[ -z $prefix ]]; then
+        local args
+        args=(${(z)@})
+        case ${args[2]} in
+            checkout) prefix='ref:' ;;
+            branch) prefix='branch:' ;;
+            tag) prefix='tag:' ;;
+            *) return ;;
+        esac
+    fi
+
+    # Get by prefix
+    case $prefix in
+        c:|commit:) _fzf_pipeline_run_complete "git_commit" "--ansi" "$@" ;;
+        b:|branch:) _fzf_pipeline_run_complete "git_branch" "--ansi" "$@" ;;
+        t:|tag:) _fzf_pipeline_run_complete "git_tag" "--ansi" "$@" ;;
+        r:|ref:)
+            _fzf_config_start \
+            | _fzf_config_add "git_branch" "${fg[green]}branch$reset_color" \
+            | _fzf_config_add "git_tag" "${fg[blue]}tag$reset_color" \
+            | _fzf_config_add "git_commit" "${fg[cyan]}commit$reset_color" \
+            | _fzf_config_run_complete "--ansi" "$@"
+        ;;
+    esac
+}
