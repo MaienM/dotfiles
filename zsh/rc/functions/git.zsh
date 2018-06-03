@@ -109,3 +109,9 @@ _fzf_pipeline_git_branch_source() {
     | column --table --separator='|' --output-separator=''
 }
 alias _fzf_pipeline_git_branch_preview='_fzf_pipeline_git_commit_preview'
+
+# Tags
+_fzf_pipeline_git_tag_source() {
+    git tag "$@" --format="%(refname:strip=1) ${fg[yellow]}%(refname:strip=2)$reset_color %(subject)"
+}
+alias _fzf_pipeline_git_tag_preview='_fzf_pipeline_git_commit_preview'
