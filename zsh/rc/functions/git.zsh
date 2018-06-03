@@ -61,3 +61,16 @@ gitsdir() {
         done
     ) | column -t -s '|'
 }
+
+################################################################################
+# FZF
+################################################################################
+
+# Commit
+_fzf_pipeline_git_commit_source() {
+    git log --pretty=format:"%H ${fg[yellow]}%h$reset_color %s" "$@"
+}
+_fzf_pipeline_git_commit_preview() {
+    git show --name-status "$1"
+}
+
