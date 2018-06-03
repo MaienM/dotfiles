@@ -13,7 +13,6 @@ alias gitrbu='gitrb origin/master..'
 alias gitd="GIT_PAGER='less' git diff --minimal"
 
 # Get the jira item from a branch name
-alias _git_branch_strip_remote="sed 's/^.*\\///g'"
 alias _git_branch_to_jira="sed 's/\\(-[0-9]\\+\\).*$/\\1/g'"
 
 # Diff/add.
@@ -30,7 +29,9 @@ gitcj() {
         echo "Please add a commit message!"
         exit 1
     fi
-    prefix=$(git rev-parse --abbrev-ref HEAD | _git_branch_strip_remote | _git_branch_to_jira)
+    prefix=$(git rev-parse --abbrev-ref HEAD)
+    prefix=${prefix#remotes/*/}
+    prefix=$(echo $prefix | _git_branch_to_jira)
     git commit -m "$prefix: $@"
 }
 
