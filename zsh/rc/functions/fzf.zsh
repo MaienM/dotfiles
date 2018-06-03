@@ -1,3 +1,4 @@
+########################################################################################################################
 # The "pipeline" system.
 #
 # Most fzf commands can be seen as three components: the source data, the preview, and the output. To make it easy to
@@ -14,6 +15,7 @@
 # The output will be defined as a command named _fzf_pipeline_NAME_target. It will receive two arguments: the identifier
 # of the chosen line in fzf, and the rest of the selected line. It should output the final output of the pipeline,
 # which will be printed to stdout. It is optional, and if it is not present the identifier will be output.
+########################################################################################################################
 
 (
     # Example pipeline
@@ -32,30 +34,22 @@ _fzf_pipeline_default_target() {
     echo $1
 }
 
-################################################################################
-
-# Run a single pipeline.
+########################################################################################################################
+# Pipeline running
 #
-# The first argument should be the name of the pipeline.
-# Extra arguments are passed to fzf.
-_fzf_run() {
-    local pipeline
+# The default way to run pipelines is to use the commands defined here to build a "pipeline config", which is then piped
+# into one of the run commands.
+########################################################################################################################
 
-    pipeline="$1"
-    shift 1
+# Start a pipeline config
+alias _fzf_config_start='echo'
 
-    _fzf_multi_start | _fzf_multi_add "$pipeline" "" | _fzf_multi_run "$@"
-}
-
-# Start a multi pipeline config
-alias _fzf_multi_start='echo'
-
-# Add a pipeline to a multi pipeline config.
+# Add a pipeline to a pipeline config.
 #
 # The first argument is the name of the pipeline, as documented at the start of this file.
 # 
 # The second argument is the prefix. All lines of a pipeline will be prefixed with the prefix. This is optional.
-_fzf_multi_add() {
+_fzf_config_add() {
     local existing pipeline prefix sourcefn targetfn previewfn
 
     # Store the existing config data
@@ -63,10 +57,13 @@ _fzf_multi_add() {
 
     # Read the arguments
     pipeline="$1"
-    prefix="$2"
-    shift 2
+    shift 1
+    if [[ -n "$1" ]]; then
+        prefix="$1"
+        shift 1
+    fi
     if [[ -n "$@" ]]; then
-        echo "Extra arguments given to _fzf_multi_add ($@)" >&2
+        echo "Extra arguments given to _fzf_config_add ($@)" >&2
         return 1
     fi
 
@@ -91,14 +88,16 @@ _fzf_multi_add() {
     if ! which $previewfn &> /dev/null; then
         previewfn=
     fi
+    # Aliases don't seem to work correctly in the previews, so resolve them
+    previewfn=$(resolve_alias "$previewfn")
 
     echo $existing $pipeline ${(q)prefix} $sourcefn $targetfn $previewfn
 }
 
-# Get the config of a single pipeline for a multi pipeline config
+# Get the config of a single pipeline for a pipeline config
 #
 # The first argument is the pipeline to get the config for
-_fzf_multi_get() {
+_fzf_config_get() {
     local config pipeline prefix sourcefn targetfn previewfn
 
     # Read the config
@@ -115,7 +114,7 @@ _fzf_multi_get() {
 }
 
 # Debug
-_fzf_multi_debug() {
+_fzf_config_debug() {
     local config pipeline prefix sourcefn targetfn previewfn
 
     # Read the config
@@ -140,10 +139,10 @@ _fzf_multi_debug() {
     done
 }
 
-# Run a multi pipeline config.
+# Run a pipeline config.
 #
 # Arguments are passed to fzf.
-_fzf_multi_run() {
+_fzf_config_run() {
     local config pipeline prefix sourcefn targetfn previewfn sources line has_preview fzf_args
 
     # Read the config
@@ -170,7 +169,7 @@ _fzf_multi_run() {
     if [[ $has_preview -eq 1 ]]; then
         fzf_args=(
             "${fzf_args[@]}"
-            "--preview" "source ~/.zsh/rc/functions.zsh; echo ${(q)config} | _fzf_multi_preview {}"
+            "--preview" "source ~/.zsh/rc/functions.zsh; echo ${(q)config} | _fzf_config_preview {}"
             "--preview-window" "down"
         )
     fi
@@ -183,15 +182,35 @@ _fzf_multi_run() {
         # Transform the line using this pipeline
         prefix=$(echo ${(Q)prefix} | stripescape)
         line=(${(z)line})
-        ${targetfn} "${line[2]}" "${${line[3,-1]}#${prefix}} "
+        ${(z)targetfn} "${line[2]}" "${${line[3,-1]}#${(Q)prefix} }"
         return
     done
     echo "Unable to process output" >&2
     return 1
 }
 
-# Render a preview using a multi pipeline config.
-_fzf_multi_preview() {
+# Run a pipeline config, and use the results for completion.
+#
+# The first argument is passed to fzf.
+# The second argument should be the arguments received by the _fzf_complete_* function.
+_fzf_config_run_complete() {
+    local results
+
+    # Run the config
+    _fzf_config_run "$1" | read -r results
+
+    # Add the results to the buffer
+    if [[ -n "$results" ]]; then
+        LBUFFER="$2$results"
+    fi
+
+    # Redraw
+    zle redisplay
+    typeset -f zle-line-init > /dev/null && zle zle-line-init
+}
+
+# Render a preview using a pipeline config.
+_fzf_config_preview() {
     local config pipeline prefix sourcefn targetfn previewfn line
 
     # Read the config
@@ -201,7 +220,7 @@ _fzf_multi_preview() {
     line="$1"
     shift 1
     if [[ -n "$@" ]]; then
-        echo "Extra arguments given to _fzf_multi_preview ($@)" >&2
+        echo "Extra arguments given to _fzf_config_preview ($@)" >&2
     fi
 
     # Use the appropriate preview function
@@ -212,8 +231,34 @@ _fzf_multi_preview() {
         # Run the preview
         prefix=$(echo ${(Q)prefix} | stripescape)
         line=(${(z)line})
-        ${previewfn} "${line[2]}" "${${line[3,-1]}#${prefix}} "
+        ${(z)previewfn} "${line[2]}" "${${line[3,-1]}#${(Q)prefix} }"
         return
     done
     echo "No preview available"
+}
+
+########################################################################################################################
+# Utility methods
+########################################################################################################################
+
+# Run a single pipeline.
+#
+# The first argument should be the name of the pipeline.
+# Extra arguments are passed to fzf.
+_fzf_pipeline_run() {
+    local pipeline
+    pipeline="$1"
+    shift 1
+    _fzf_config_start | _fzf_config_add "$pipeline" | _fzf_config_run "$@"
+}
+
+# Run a single pipeline, and use the results for completion.
+#
+# The first argument should be the name of the pipeline.
+# Extra arguments are passed to fzf.
+_fzf_pipeline_run_complete() {
+    local pipeline
+    pipeline="$1"
+    shift 1
+    _fzf_config_start | _fzf_config_add "$pipeline" | _fzf_config_run_complete "$@"
 }
