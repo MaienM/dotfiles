@@ -1,3 +1,7 @@
+if !exists(":Unite")
+  finish
+endif
+
 " Default matcher and sorter. {{{1
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_selecta', '!sorter_ftime'])
