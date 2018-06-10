@@ -20,3 +20,18 @@ resolve_alias() {
         echo "$@"
     fi
 }
+
+# Run a command, and use the results for completion.
+#
+# The arguments are run as command
+run_as_complete() {
+    local results
+
+    # Run the command
+    $@ | read -r results || return 1
+
+    # Add the results to the buffer
+    if [[ -n "$results" ]]; then
+        LBUFFER="$LBUFFER$results"
+    fi
+}

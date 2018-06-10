@@ -200,26 +200,6 @@ _fzf_config_run() {
     return 1
 }
 
-# Run a pipeline config, and use the results for completion.
-#
-# The first argument is passed to _fzf_config_run.
-# The second argument should be the arguments received by the _fzf_complete_* function.
-_fzf_config_run_complete() {
-    local results
-
-    # Run the config
-    _fzf_config_run "$1" | read -r results
-
-    # Add the results to the buffer
-    if [[ -n "$results" ]]; then
-        LBUFFER="$2$results"
-    fi
-
-    # Redraw
-    zle redisplay
-    typeset -f zle-line-init > /dev/null && zle zle-line-init
-}
-
 # Render a preview using a pipeline config.
 _fzf_config_preview() {
     local config pipeline prefix sourcefn targetfn previewfn line
@@ -249,7 +229,7 @@ _fzf_config_preview() {
 }
 
 ########################################################################################################################
-# Utility methods
+# Utility methods for simple cases
 ########################################################################################################################
 
 # Run a single pipeline.
@@ -261,15 +241,4 @@ _fzf_pipeline_run() {
     pipeline="$1"
     shift 1
     _fzf_config_start | _fzf_config_add "$pipeline" | _fzf_config_run "$@"
-}
-
-# Run a single pipeline, and use the results for completion.
-#
-# The first argument should be the name of the pipeline.
-# Extra arguments are passed to fzf.
-_fzf_pipeline_run_complete() {
-    local pipeline
-    pipeline="$1"
-    shift 1
-    _fzf_config_start | _fzf_config_add "$pipeline" | _fzf_config_run_complete "$@"
 }
