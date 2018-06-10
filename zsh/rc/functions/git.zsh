@@ -24,15 +24,15 @@ gitda() {
 
 # Commit
 gitcj() {
-    local prefix
+    local preset
     if [[ -z $1 ]]; then
         echo "Please add a commit message!"
         exit 1
     fi
-    prefix=$(git rev-parse --abbrev-ref HEAD)
-    prefix=${prefix#remotes/*/}
-    prefix=$(echo $prefix | _git_branch_to_jira)
-    git commit -m "$prefix: $@"
+    preset=$(git rev-parse --abbrev-ref HEAD)
+    preset=${preset#remotes/*/}
+    preset=$(echo $preset | _git_branch_to_jira)
+    git commit -m "$preset: $@"
 }
 
 # Push
@@ -66,7 +66,7 @@ gitsdir() {
 # FZF
 ################################################################################
 
-# Commit
+# Commits
 _fzf_pipeline_git_commit_source() {
     git log --pretty=format:"%H ${fg[yellow]}%h$reset_color %s" "$@"
 }
@@ -109,12 +109,39 @@ _fzf_pipeline_git_branch_source() {
     | column --table --separator='|' --output-separator=''
 }
 alias _fzf_pipeline_git_branch_preview='_fzf_pipeline_git_commit_preview'
+_fzf_pipeline_git_branch_target() {
+    local short
+
+    # Abbreviate the name, if it is non-ambiguous
+    short=${1#*/}
+    if [[ $(git branch --list --all | grep "$short" | wc -l) -eq 1 ]]; then
+        echo $short
+    else
+        echo $1
+    fi
+}
 
 # Tags
 _fzf_pipeline_git_tag_source() {
     git tag "$@" --format="%(refname:strip=1) ${fg[yellow]}%(refname:strip=2)$reset_color %(subject)"
 }
 alias _fzf_pipeline_git_tag_preview='_fzf_pipeline_git_commit_preview'
+
+# Presetes
+alias _fzf_preset_git_commit='_fzf_config_add git_commit'
+alias _fzf_preset_git_branch='_fzf_config_add git_branch'
+alias _fzf_preset_git_tag='_fzf_config_add git_tag'
+_fzf_preset_git_ref() {
+    echo \
+    | _fzf_config_add "git_branch" "${fg[green]}branch$reset_color" \
+    | _fzf_config_add "git_tag" "${fg[blue]}tag$reset_color" \
+    | _fzf_config_add "git_commit" "${fg[cyan]}commit$reset_color"
+}
+
+_fzf_register_preset "git_commit" "Git commits" "git:commit"
+_fzf_register_preset "git_branch" "Git branches" "git:branch"
+_fzf_register_preset "git_tag" "Git tags" "git:tag"
+_fzf_register_preset "git_ref" "Git refs (commits, branches and tags)" "git:ref"
 
 # Autocomplete
 _fzf_complete_git() {
@@ -123,24 +150,11 @@ _fzf_complete_git() {
         local args
         args=(${(z)@})
         case ${args[2]} in
-            checkout) prefix='ref:' ;;
-            branch) prefix='branch:' ;;
-            tag) prefix='tag:' ;;
-            *) return ;;
+            checkout) prefix='git:ref:' ;;
+            branch) prefix='git:branch:' ;;
+            tag) prefix='git:tag:' ;;
         esac
     fi
 
-    # Get by prefix
-    case $prefix in
-        c:|commit:) _fzf_pipeline_run_complete "git_commit" "--ansi" "$@" ;;
-        b:|branch:) _fzf_pipeline_run_complete "git_branch" "--ansi" "$@" ;;
-        t:|tag:) _fzf_pipeline_run_complete "git_tag" "--ansi" "$@" ;;
-        r:|ref:)
-            _fzf_config_start \
-            | _fzf_config_add "git_branch" "${fg[green]}branch$reset_color" \
-            | _fzf_config_add "git_tag" "${fg[blue]}tag$reset_color" \
-            | _fzf_config_add "git_commit" "${fg[cyan]}commit$reset_color" \
-            | _fzf_config_run_complete "--ansi" "$@"
-        ;;
-    esac
+    _fzf_run_as_complete "_fzf_preset_run $prefix" "$@"
 }

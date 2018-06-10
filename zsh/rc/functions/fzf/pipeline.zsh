@@ -43,9 +43,6 @@ _fzf_pipeline_default_target() {
 
 FZF_PIPELINE_DEFAULT_ARGS='--ansi'
 
-# Start a pipeline config
-alias _fzf_config_start='echo'
-
 # Add a pipeline to a pipeline config.
 #
 # The first argument is the name of the pipeline, as documented at the start of this file.
@@ -61,7 +58,7 @@ _fzf_config_add() {
     pipeline="$1"
     shift 1
     if [[ -n "$1" ]]; then
-        prefix="$1"
+        prefix="$1 "
         shift 1
     fi
     if [[ -n "$@" ]]; then
@@ -141,6 +138,24 @@ _fzf_config_debug() {
     done
 }
 
+# Get the combined output of all sources of a pipeline config.
+#
+# This serves as input for fzf when the config is ran.
+_fzf_config_get_source() {
+    local config pipeline prefix sourcefn targetfn previewfn
+
+    # Read the config
+    read -r config
+
+    # Output all source lines
+    for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
+        ${sourcefn} | while read line; do
+            line=(${(z)line})
+            echo "$pipeline ${line[1]} ${(Q)prefix}${line[2,-1]}"
+        done
+    done
+}
+
 # Run a pipeline config.
 #
 # Arguments are passed to fzf.
@@ -151,14 +166,7 @@ _fzf_config_run() {
     read -r config
 
     # Get all source lines
-    sources=$(
-        for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
-            ${sourcefn} | while read line; do
-                line=(${(z)line})
-                echo "$pipeline ${line[1]} ${(Q)prefix} ${line[2,-1]}"
-            done
-        done
-    )
+    sources=$(echo ${(z)config} | _fzf_config_get_source)
 
     # Determine if a preview is needed
     has_preview=0
@@ -185,6 +193,7 @@ _fzf_config_run() {
 
     # Run fzf
     echo $sources | fzf "${fzf_args[@]}" | read -r line || return
+    [[ -n "$line" ]] || return
 
     # Use the appropriate target function to transform the line
     for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
@@ -225,7 +234,8 @@ _fzf_config_preview() {
         ${(z)previewfn} "${line[2]}" "${${line[3,-1]}#${(Q)prefix} }"
         return
     done
-    echo "No preview available"
+    echo "No preview available" >&2
+    return 1
 }
 
 ########################################################################################################################
@@ -240,5 +250,5 @@ _fzf_pipeline_run() {
     local pipeline
     pipeline="$1"
     shift 1
-    _fzf_config_start | _fzf_config_add "$pipeline" | _fzf_config_run "$@"
+    echo | _fzf_config_add "$pipeline" | _fzf_config_run "$@"
 }
