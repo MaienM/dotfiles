@@ -41,6 +41,8 @@ _fzf_pipeline_default_target() {
 # into one of the run commands.
 ########################################################################################################################
 
+FZF_PIPELINE_DEFAULT_ARGS='--ansi'
+
 # Start a pipeline config
 alias _fzf_config_start='echo'
 
@@ -164,8 +166,11 @@ _fzf_config_run() {
         [[ -n "${previewfn}" ]] && has_preview=1
     done
 
-    # Run FZF
-    fzf_args=("--with-nth" "3..") # first is pipeline, second is identifier, anything beyond that is displayed
+    # Build the arguments
+    # Default arguments
+    fzf_args=(${(z)FZF_PIPELINE_DEFAULT_ARGS})
+    # First item of a line is the pipeline, second is identifier, anything beyond that is displayed
+    fzf_args=("${fzf_args[@]}" "--with-nth" "3..")
     if [[ $has_preview -eq 1 ]]; then
         fzf_args=(
             "${fzf_args[@]}"
@@ -173,7 +178,13 @@ _fzf_config_run() {
             "--preview-window" "down"
         )
     fi
-    echo $sources | fzf $fzf_args "$@" | read -r line || return
+    # Extra arguments
+    if [[ -n "$@" ]]; then
+        fzf_args=("${fzf_args[@]}" "$@")
+    fi
+
+    # Run fzf
+    echo $sources | fzf "${fzf_args[@]}" | read -r line || return
 
     # Use the appropriate target function to transform the line
     for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
@@ -191,7 +202,7 @@ _fzf_config_run() {
 
 # Run a pipeline config, and use the results for completion.
 #
-# The first argument is passed to fzf.
+# The first argument is passed to _fzf_config_run.
 # The second argument should be the arguments received by the _fzf_complete_* function.
 _fzf_config_run_complete() {
     local results
