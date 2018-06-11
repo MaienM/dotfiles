@@ -10,7 +10,7 @@ fzf_complete_preset() {
         prefix=${${(zA)LBUFFER}[-1]}
     fi
 
-    _fzf_run_as_complete "_fzf_preset_run $prefix" "${LBUFFER%$prefix}"
+    _fzf_run_as_complete "fzf_run_preset $prefix" "${LBUFFER%$prefix}"
 }
 zle -N fzf_complete_preset
 for key in "$key_info[Control]"{e,E}; do

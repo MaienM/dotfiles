@@ -246,7 +246,7 @@ _fzf_config_preview() {
 #
 # The first argument should be the name of the pipeline.
 # Extra arguments are passed to fzf.
-_fzf_pipeline_run() {
+fzf_run_pipeline() {
     local pipeline
     pipeline="$1"
     shift 1
