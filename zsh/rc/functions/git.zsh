@@ -127,7 +127,7 @@ _fzf_pipeline_git_tag_source() {
 }
 alias _fzf_pipeline_git_tag_preview='_fzf_pipeline_git_commit_preview'
 
-# Presetes
+# Presets
 alias _fzf_preset_git_commit='_fzf_config_add git_commit'
 alias _fzf_preset_git_branch='_fzf_config_add git_branch'
 alias _fzf_preset_git_tag='_fzf_config_add git_tag'
