@@ -149,7 +149,7 @@ _fzf_config_get_source() {
 
     # Output all source lines
     for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
-        ${sourcefn} | while read line; do
+        $(resolve_alias $sourcefn) | while read line; do
             line=(${(z)line})
             echo "$pipeline ${line[1]} ${(Q)prefix}${line[2,-1]}"
         done
@@ -182,7 +182,11 @@ _fzf_config_run() {
     if [[ $has_preview -eq 1 ]]; then
         fzf_args=(
             "${fzf_args[@]}"
-            "--preview" "source ~/.zsh/rc/functions.zsh; echo ${(q)config} | _fzf_config_preview {}"
+            "--preview" "
+                source ~/.zsh/rc/functions.zsh;
+                source ~/.zsh/rc/fzf.zsh;
+                echo ${(q)config} | _fzf_config_preview {}
+            "
             "--preview-window" "down"
         )
     fi
@@ -202,7 +206,7 @@ _fzf_config_run() {
         # Transform the line using this pipeline
         prefix=$(echo ${(Q)prefix} | stripescape)
         line=(${(z)line})
-        ${(z)targetfn} "${line[2]}" "${${line[3,-1]}#${(Q)prefix} }"
+        $(resolve_alias $targetfn) "${line[2]}" "${${line[3,-1]}#${(Q)prefix} }"
         return
     done
     echo "Unable to process output" >&2
