@@ -72,7 +72,7 @@ _fzf_preset_run() {
         match_preset=${1%:}
         shift 1
     fi
-    match_preset=$(_fzf_pipeline_run fzf_presets --nth=3 --select-1 --exit-0 --query="$match_preset") || return 1
+    match_preset=$(_fzf_pipeline_run fzf_presets --nth=1 --select-1 --exit-0 --query="$match_preset") || return 1
 
     # Complete using the preset 
     for preset fn description in ${(z)FZF_PRESETS}; do
