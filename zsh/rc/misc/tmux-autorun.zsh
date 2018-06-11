@@ -20,4 +20,4 @@ if ! tmux has-session 2> /dev/null; then
 fi
 
 # Attach to the last session used (which will be the newly created session if none existed previously)
-exec tmux attach-session
+tmux attach-session

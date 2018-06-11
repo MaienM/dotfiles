@@ -25,6 +25,6 @@ for key in "${(k)key_info[@]}"; do
 done
 
 # Load the files defining the keybindings
-for file in ~/.zsh/rc/keybindings/*.zsh; do
+for file in ~/.zsh/rc/keybindings/**/*.zsh; do
 	source "$file"
 done
