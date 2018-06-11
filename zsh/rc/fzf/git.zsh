@@ -1,3 +1,20 @@
+# Files
+_fzf_pipeline_git_files_source() {
+    local file
+
+    git ls-files "$@" \
+    | while read file; do
+        echo "${(q)file} $file"
+    done
+}
+_fzf_pipeline_git_files_target() {
+    echo ${(Q)1}
+}
+
+# Files with changes
+alias _fzf_pipeline_git_files_dirty_source='_fzf_pipeline_git_files_source --modified --others --exclude-standard'
+alias _fzf_pipeline_git_files_dirty_target='_fzf_pipeline_git_files_target'
+
 # Commits
 _fzf_pipeline_git_commit_source() {
     git log --pretty=format:"%H ${fg[yellow]}%h$reset_color %s" "$@"
@@ -60,6 +77,8 @@ _fzf_pipeline_git_tag_source() {
 alias _fzf_pipeline_git_tag_preview='_fzf_pipeline_git_commit_preview'
 
 # Presets
+alias _fzf_preset_git_files='_fzf_config_add git_files'
+alias _fzf_preset_git_files_dirty='_fzf_config_add git_files_dirty'
 alias _fzf_preset_git_commit='_fzf_config_add git_commit'
 alias _fzf_preset_git_branch='_fzf_config_add git_branch'
 alias _fzf_preset_git_tag='_fzf_config_add git_tag'
@@ -70,6 +89,8 @@ _fzf_preset_git_ref() {
     | _fzf_config_add "git_commit" "${fg[cyan]}commit$reset_color"
 }
 
+_fzf_register_preset "git_files" "Git files" "git:files"
+_fzf_register_preset "git_files_dirty" "Git files (with changes/untracked)" "git:files:dirty"
 _fzf_register_preset "git_commit" "Git commits" "git:commit"
 _fzf_register_preset "git_branch" "Git branches" "git:branch"
 _fzf_register_preset "git_tag" "Git tags" "git:tag"
