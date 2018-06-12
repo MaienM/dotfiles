@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 alias docker='sudo -E docker'
 alias dockc='sudo -E docker-compose'
 

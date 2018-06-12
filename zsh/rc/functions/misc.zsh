@@ -1,5 +1,3 @@
-#!/bin/sh
-
 # Get the definition of an alias
 resolve_alias() {
     local args name output retval
