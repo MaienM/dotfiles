@@ -1,9 +1,5 @@
 #!/bin/sh
 
-if which nvim &> /dev/null; then
-    alias vim="echo Use 'nvim' instead. If you _really_ need vim, use 'command vim'"
-fi
-
 # Get the definition of an alias
 resolve_alias() {
     local args name output retval
