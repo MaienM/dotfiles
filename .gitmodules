@@ -193,3 +193,6 @@
 [submodule "vim/bundle/fzf"]
 	path = vim/bundle/fzf-vim
 	url = https://github.com/junegunn/fzf.vim
+[submodule "zsh/bundle/colored-man-pages"]
+	path = zsh/bundle/colored-man-pages
+	url = https://github.com/ael-code/zsh-colored-man-pages
