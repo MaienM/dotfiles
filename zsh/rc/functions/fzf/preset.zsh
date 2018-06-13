@@ -49,7 +49,7 @@ _fzf_pipeline_fzf_presets_source() {
     local preset fn description
 
     for preset fn description in ${(z)FZF_PRESETS}; do
-        echo "$preset ${fg[cyan]}$preset$reset_color: ${(Q)description}"
+        echo "$preset ${fg[cyan]}$preset$reset_color ${(Q)description}"
     done
 }
 _fzf_pipeline_fzf_presets_preview() {
