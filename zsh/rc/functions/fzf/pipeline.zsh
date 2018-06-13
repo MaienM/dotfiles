@@ -31,7 +31,7 @@
 )
 
 _fzf_pipeline_default_target() {
-    echo $1
+    echo ${(q)1}
 }
 
 ########################################################################################################################
@@ -42,6 +42,7 @@ _fzf_pipeline_default_target() {
 ########################################################################################################################
 
 FZF_PIPELINE_DEFAULT_ARGS='--ansi'
+FZF_SEPERATOR_PLACEHOLDER="\0"
 
 # Add a pipeline to a pipeline config.
 #
@@ -60,7 +61,7 @@ _fzf_config_add() {
     pipeline="$1"
     shift 1
     if [[ -n "$1" ]]; then
-        prefix="$1 "
+        prefix="$1"
         shift 1
     fi
     if [[ -n "$@" ]]; then
@@ -151,9 +152,12 @@ _fzf_config_get_source() {
 
     # Output all source lines
     for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
-        $(resolve_alias $sourcefn) | while read line; do
+        if [[ -n "$prefix" ]]; then
+            prefix="$prefix "
+        fi
+        $(resolve_alias $sourcefn) | while read -r line; do
             line=(${(z)line})
-            echo "$pipeline ${line[1]} ${(Q)prefix}${line[2,-1]}"
+            echo "$pipeline ${line[1]// /FZF_SEPERATOR_PLACEHOLDER} ${(Q)prefix}${line[2,-1]}"
         done
     done
 }
@@ -201,6 +205,9 @@ _fzf_config_run() {
     echo $sources | fzf "${fzf_args[@]}" | read -r line || return
     [[ -n "$line" ]] || return
 
+    LAST_LINE=$line
+    LAST_LINE_SEGMENTS=(${(z)line})
+
     # Use the appropriate target function to transform the line
     for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
         [[ "$line" == "$pipeline "* ]] || continue
@@ -208,7 +215,7 @@ _fzf_config_run() {
         # Transform the line using this pipeline
         prefix=$(echo ${(Q)prefix} | stripescape)
         line=(${(z)line})
-        $(resolve_alias $targetfn) "${line[2]}" "${${line[3,-1]}#${(Q)prefix} }"
+        $(resolve_alias $targetfn) "${line[2]//FZF_SEPERATOR_PLACEHOLDER/ }" "${${line[3,-1]}#${(Q)prefix} }"
         return
     done
     echo "Unable to process output" >&2
@@ -237,7 +244,7 @@ _fzf_config_preview() {
         # Run the preview
         prefix=$(echo ${(Q)prefix} | stripescape)
         line=(${(z)line})
-        ${(z)previewfn} "${line[2]}" "${${line[3,-1]}#${(Q)prefix} }"
+        ${(z)previewfn} "${line[2]//FZF_SEPERATOR_PLACEHOLDER/ }" "${${line[3,-1]}#${(Q)prefix} }"
         return
     done
     echo "No preview available" >&2
