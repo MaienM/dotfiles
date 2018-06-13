@@ -51,8 +51,10 @@ FZF_PIPELINE_DEFAULT_ARGS='--ansi'
 _fzf_config_add() {
     local existing pipeline prefix sourcefn targetfn previewfn
 
-    # Store the existing config data
-    read -r existing
+    # Store the existing config data if piped into
+    if [[ ! -t 0 ]]; then
+        read -r existing
+    fi
 
     # Read the arguments
     pipeline="$1"
