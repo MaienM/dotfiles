@@ -65,7 +65,7 @@ _fzf_pipeline_fzf_presets_preview() {
 
 # Run a preset
 fzf_run_preset() {
-    local match_preset preset fn description
+    local fzf_args match_preset preset fn description
 
     # First complete on the preset itself, in case it is a partial/nonexistant preset
     if [[ $# -ge 1 ]]; then
@@ -80,6 +80,5 @@ fzf_run_preset() {
         echo | $(resolve_alias $fn) | _fzf_config_run "$@"
         return
     done
-    echo "Unknown preset" >&2
     return 1
 }

@@ -4,13 +4,10 @@ fi
 
 # Easily complete using presets
 fzf_complete_preset() {
-    local prefix
-
-    if [[ "$LBUFFER" != *" " ]]; then
-        prefix=${${(zA)LBUFFER}[-1]}
-    fi
-
-    _fzf_run_as_complete "fzf_run_preset $prefix" "${LBUFFER%$prefix}"
+    local prefix result
+    prefix=${${(zA)LBUFFER}[-1]}
+    result=$(fzf_run_preset "$prefix" --height='30%' --preview-window='right') || return 1
+    LBUFFER="${LBUFFER%$prefix}$result"
 }
 zle -N fzf_complete_preset
 for key in "$key_info[Control]"{e,E}; do
