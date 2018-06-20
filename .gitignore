@@ -2,6 +2,7 @@ irssi/scripts/autorun
 putty/output
 vim/init.vim
 vim/.netrwhist
+vim/bundle/fzf-base
 vim/bundle/powerline
 vim/doc/tags
 vim/eclim
