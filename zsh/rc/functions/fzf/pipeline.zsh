@@ -205,9 +205,6 @@ _fzf_config_run() {
     echo $sources | fzf "${fzf_args[@]}" | read -r line || return
     [[ -n "$line" ]] || return
 
-    LAST_LINE=$line
-    LAST_LINE_SEGMENTS=(${(z)line})
-
     # Use the appropriate target function to transform the line
     for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
         [[ "$line" == "$pipeline "* ]] || continue
