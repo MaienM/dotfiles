@@ -62,7 +62,10 @@ _dockrun() {
 
 # Start a shell in a docker container
 docksh() {
-    name=${1:-$(docker ps -lq)}; shift &> /dev/null
+    name=${1:--}; shift &> /dev/null
+    if [ "$name" = "-" ]; then
+       name="$(docker ps -lq)"
+    fi
     docker exec -it "$name" "${@:-/bin/bash}"
 }
 
