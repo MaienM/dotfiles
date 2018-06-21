@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sh ~/.fzf/install --bin
+bash ~/.fzf/install --bin
