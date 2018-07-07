@@ -19,7 +19,7 @@ endif
 
 " Font
 if has("gui_running")
-	set guifont=Inconsolata-dz\ for\ Powerline:h10
+  set guifont=Inconsolata-dz\ for\ Powerline:h10
 endif
 
 " General settings.
@@ -61,12 +61,16 @@ set bufhidden=hide              " lemme switch buffers without saving
 
 " don't clutter $PWD
 if has("win32") || has("win16")
-  set backupdir=$TEMP\\vim//,$TMP\\vim//,.
-  set directory=$TEMP\\vim//,$TMP\\vim//,.
+  let s:pathsep = '\\\\'
 else
-  set backupdir=$TEMPDIR/vim//,$TMPDIR/vim//,.
-  set directory=$TEMPDIR/vim//,$TMPDIR/vim//,.
+  let s:pathsep = '/'
 endif
+let s:cache_basedir = $HOME . s:pathsep . '.cache' . s:pathsep . 'vim'
+call mkdir(s:cache_basedir . s:pathsep . 'backup', 'p')
+call mkdir(s:cache_basedir . s:pathsep . 'swap', 'p')
+call mkdir(s:cache_basedir . s:pathsep . 'undo', 'p')
+let &backupdir=s:cache_basedir . s:pathsep . 'backup//'
+let &directory=s:cache_basedir . s:pathsep . 'swap//'
 
 " Version-specific stuff, doesn't work in older versions, sadly.
 if v:version >= 600
@@ -81,7 +85,8 @@ endif
 " Vim 7.3+
 if has("persistent_undo")
   set undofile                  " enable persistent undo
-  let &undodir=&backupdir       " but don't clutter $PWD
+  " but don't clutter $PWD
+  let &undodir=s:cache_basedir . s:pathsep . 'undo//'
 endif
 
 " In many terminal emulators the mouse works just fine, thus enable it.
