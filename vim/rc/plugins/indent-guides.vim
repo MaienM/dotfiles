@@ -6,3 +6,5 @@ let g:indent_guides_auto_colors = 0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=base01 ctermbg=18
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=base02 ctermbg=19
 
+" Exclude filetypes
+let g:indent_guides_exclude_filetypes = ['help', 'fzf']
