@@ -4,3 +4,5 @@ nnoremap <Leader>gf :<C-u>GFiles?<CR>
 nnoremap <Leader>b :<C-u>Buffers<CR>
 nnoremap <Leader>/ :<C-u>exe 'Ag ' . input("Pattern: ")<CR>
 nnoremap <Leader>? :<C-u>Lines<CR>
+nnoremap <Leader>h :<C-u>call fzf#vim#helptags(0)<CR>
+nnoremap <Leader>H :<C-u>call pathogen#helptags()<CR>
