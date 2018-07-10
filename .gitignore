@@ -8,6 +8,7 @@ vim/bundle/powerline
 vim/doc/tags
 vim/eclim
 vim/spell
+tmux/resurrect
 
 *.un~
 *.sw[po]

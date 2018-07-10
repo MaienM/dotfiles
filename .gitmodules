@@ -193,3 +193,12 @@
 [submodule "vim/bundle/fzf"]
 	path = vim/bundle/fzf-vim
 	url = https://github.com/junegunn/fzf.vim
+[submodule "vim/bundle/obsession"]
+	path = vim/bundle/obsession
+	url = https://github.com/tpope/vim-obsession
+[submodule "tmux/bundle/resurrect"]
+	path = tmux/bundle/resurrect
+	url = https://github.com/tmux-plugins/tmux-resurrect
+[submodule "tmux/bundle/continuum"]
+	path = tmux/bundle/continuum
+	url = https://github.com/tmux-plugins/tmux-continuum
