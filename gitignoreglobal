@@ -12,9 +12,8 @@
 doc/tags
 
 # Project-specific vimrc.
-_vimrc_local.vim
 .lvimrc
-.vimprj
+.lvim/
 
 # Ignore virtualenv files.
 .venv
