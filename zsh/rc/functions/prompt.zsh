@@ -3,27 +3,40 @@
 # $2: The default answer ('Y' or 'N')
 prompt_confirm()
 {
-	MESSAGE=$1
+	local message default options reply
+
+	message=$1
 	case $2 in
 		[yY]) 
-			DEFAULT='Y'
-			OPTIONS='Yn'
+			default=0
+			options='Yn'
 		;;
 		*)    
-			DEFAULT='N'
-			OPTIONS='yN'
+			default=1
+			options='yN'
 		;;
 	esac
 
-	echo "$MESSAGE [$OPTIONS]"
-	case $SHELL in
-		*/zsh) read -k 1 REPLY;;
-		*) read -n 1 REPLY;;
-	esac
-	case $REPLY in 
-		[yY]) true;;
-		[nN]) false;;
-		[$IFS])   [[ $DEFAULT == 'Y' ]] && true || false;;
-		*)    prompt_confirm $MESSAGE $DEFAULT;;
-	esac
+	while true; do
+		echo "$message [$options]"
+		case $SHELL in
+			*/zsh)
+				read -k 1 reply
+			;;
+			*)
+				read -n 1 reply
+			;;
+		esac
+		case $reply in 
+			[yY])
+				return 0;
+			;;
+			[nN])
+				return 1;
+			;;
+			[$IFS])
+				return $default
+			;;
+		esac
+	done
 }
