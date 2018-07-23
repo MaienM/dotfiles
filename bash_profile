@@ -1,7 +1,7 @@
 #
 # Load generic profile
 #
-if [ -f $HOME/.profile ]; do
+if [ -f $HOME/.profile ]; then
   source $HOME/.profile;
 fi
 
