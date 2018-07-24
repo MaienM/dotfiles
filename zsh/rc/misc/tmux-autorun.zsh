@@ -4,7 +4,7 @@ if (
 	[ -n "$TMUX" ] ||
 	[ -n "$EMACS" ] || 
 	[ -n "$VIM" ] ||
-	[ -n "$INSIDE_EMACS" ]
+	[ -n "$INSIDE_EMACS" ] ||
 	[ -z "$SSH_TTY" ]
 ); then
 	return 1
