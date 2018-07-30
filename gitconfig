@@ -3,6 +3,7 @@
 	name = Michon van Dooren
 [core]
 	excludesfile = ~/.gitignoreglobal
+	pager = diff-so-fancy | less --tabs=4 -RFX
 [color]
 	diff = auto
 	branch = auto
