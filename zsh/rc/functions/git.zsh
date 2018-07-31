@@ -10,7 +10,7 @@ alias gitrb='git rebase --interactive'
 alias gitrbu='gitrb origin/master..'
 
 # Diff.
-alias gitd="GIT_PAGER='less' git diff --minimal"
+alias gitd="git diff"
 
 # Get the jira item from a branch name
 alias _git_branch_to_jira="sed 's/\\(-[0-9]\\+\\).*$/\\1/g'"
