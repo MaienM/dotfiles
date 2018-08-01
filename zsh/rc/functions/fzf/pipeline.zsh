@@ -202,21 +202,24 @@ _fzf_config_run() {
     fi
 
     # Run fzf
-    echo $sources | fzf "${fzf_args[@]}" | read -r line || return
-    [[ -n "$line" ]] || return
+    echo $sources | fzf "${fzf_args[@]}" | while read -r line; do
+        [[ -n "$line" ]] || return
 
-    # Use the appropriate target function to transform the line
-    for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
-        [[ "$line" == "$pipeline "* ]] || continue
+        # Use the appropriate target function to transform the line
+        for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
+            [[ "$line" == "$pipeline "* ]] || continue
 
-        # Transform the line using this pipeline
-        prefix=$(echo ${(Q)prefix} | stripescape)
-        line=(${(z)line})
-        $(resolve_alias $targetfn) "${line[2]//FZF_SEPERATOR_PLACEHOLDER/ }" "${${line[3,-1]}#${(Q)prefix} }"
-        return
+            # Transform the line using this pipeline
+            prefix=$(echo ${(Q)prefix} | stripescape)
+            line=(${(z)line})
+            $(resolve_alias $targetfn) "${line[2]//FZF_SEPERATOR_PLACEHOLDER/ }" "${${line[3,-1]}#${(Q)prefix} }"
+            continue 2
+        done
+
+        # Unable to match line to pipeline, so fail
+        echo "Unable to process output" >&2
+        return 1
     done
-    echo "Unable to process output" >&2
-    return 1
 }
 
 # Render a preview using a pipeline config.
