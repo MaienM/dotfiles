@@ -13,6 +13,9 @@ _fzf_pipeline_git_files_target() {
 
 # Files with changes
 alias _fzf_pipeline_git_files_dirty_source='_fzf_pipeline_git_files_source --modified --others --exclude-standard'
+_fzf_pipeline_git_files_dirty_preview() {
+    git diff "$1"
+}
 alias _fzf_pipeline_git_files_dirty_target='_fzf_pipeline_git_files_target'
 
 # Commits
