@@ -8,3 +8,5 @@ for file in ~/.zsh/rc/fzf/**/*.zsh; do
 	source "$file";
 done
 
+# Change the multi-select direction, so you can just repeatedly hit tab to select everything
+export FZF_DEFAULT_OPTS="--bind tab:toggle-out,shift-tab:toggle-in"
