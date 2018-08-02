@@ -14,6 +14,6 @@
 	submodule-init = submodule update --recursive --init
 	submodule-update = submodule update --recursive --remote
 	submodule-reset = submodule foreach git reset --hard
-    files-changed-in = diff-tree --no-commit-id --name-only -r
+	files-changed-in = diff-tree --no-commit-id --name-only -r
 [include]
-    path = .gitconfig_local
+	path = .gitconfig_local
