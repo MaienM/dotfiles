@@ -14,3 +14,5 @@
 	submodule-init = submodule update --recursive --init
 	submodule-update = submodule update --recursive --remote
 	submodule-reset = submodule foreach git reset --hard
+[include]
+    path = .gitconfig_local
