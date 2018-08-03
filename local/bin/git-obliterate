@@ -1,6 +1,17 @@
-#!/bin/sh
+#!/bin/zsh
 
 # Remove a file from the history
+
+set -o errexit
+source ~/.zsh/rc/functions/prompt.zsh
+
+echo "--------------------------------------------------------------------------------"
+echo "This will modify history, which will cause headaches for any unmerged code!"
+echo "If anyone else works on this codebase they need to merge their work first"
+echo "Are you sure you want to do this?"
+echo "--------------------------------------------------------------------------------"
+echo
+prompt_confirm "Are you sure you want to rewrite history?"
 
 git filter-branch \
     --force \
