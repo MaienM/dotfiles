@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# This will update all submodules to the newest version
+git submodule update --recursive --remote

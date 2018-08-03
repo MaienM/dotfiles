@@ -5,3 +5,5 @@ xbmc
 xbmc/userdata
 ipython
 ipython/profile_default
+local
+local/bin

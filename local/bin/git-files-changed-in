@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# This will list all files that were in some way changed in the given commit(s)
+git diff-tree --no-commit-id --name-only -r "$@"

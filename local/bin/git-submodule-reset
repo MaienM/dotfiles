@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# This will reset all submodules to the version currently specifiec in .gitmodules, removing any changes
+git submodule foreach git reset --hard

@@ -9,11 +9,5 @@
 	branch = auto
 [push]
 	default = simple
-[alias]
-	obliterate = filter-branch -f --index-filter "git rm -r --cached '$file' --ignore-unmatch" --prune-empty --tag-name-filter cat -- --all
-	submodule-init = submodule update --recursive --init
-	submodule-update = submodule update --recursive --remote
-	submodule-reset = submodule foreach git reset --hard
-	files-changed-in = diff-tree --no-commit-id --name-only -r
 [include]
 	path = .gitconfig_local
