@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+
+# Like git commit --amend --no-edit, but for other commits than HEAD
+
+set -o errexit
+
+if [ -z "$1" ]; then
+    echo "A commit hash is required"
+    exit 1
+fi
+COMMIT="$1"
+
+if ! git merge-base --is-ancestor "$COMMIT" HEAD; then
+    echo "This commit doesn't exist on this branch"
+    echo "Keep in mind that amending changes the commit hash, so amending multiple times with the same hash will not work"
+    exit 1
+fi
+git commit --fixup="$1"
+GIT_EDITOR=true git rebase --interactive --autostash --autosquash "$COMMIT~1"
