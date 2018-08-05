@@ -8,7 +8,10 @@ _status="$(battery_status 2>&1)"
 [[ $_status =~ (charging) ]] && status='C'
 [[ $_status =~ (discharging) ]] && status='D'
 [[ $_status =~ (charged) ]] && status='F'
-[[ -z $status ]] && exit 0
+if [[ -z $status ]]; then
+	echo "N/A"
+	exit 1
+fi
 
 # Print the icon
 [ $status == 'A' ] && echo -n "!▼"
