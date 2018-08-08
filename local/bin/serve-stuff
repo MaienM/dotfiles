@@ -1,0 +1,262 @@
+#!/usr/bin/env ruby
+
+require 'pry'
+
+################################################################################
+# Dependency management
+################################################################################
+
+# Try to require a gem. If this fails, install it and try again
+def require_or_install(file, options = {})
+	require file
+rescue LoadError => e
+	gem_name = options[:gem] || file
+
+	# Install missing gem
+	put '----------------------------------------'
+	puts "Missing gem: #{gem_name}"
+	print 'Auto-install it? [yN] '
+	put '----------------------------------------'
+	gets.strip =~ /y/i or exit(1)
+	system("gem install #{gem_name}") or exit(1)
+
+	# Retry
+	Gem.clear_paths
+	puts 'Trying again...'
+	require file
+end
+
+require_or_install 'facets'
+
+################################################################################
+# Config
+################################################################################
+
+require 'yaml'
+
+CONFIG = File.join(Dir.home, '.serve-stuffrc.yml')
+DEFAULT_CONFIG = <<~END
+	server:
+		host: '0.0.0.0'
+		port: 9090
+
+	pusher:
+		# Please enter the details of your pusher app here
+		# Go to pusher.com to create one
+		app_id: ''
+		key: ''
+		secret: ''
+		cluster: ''
+		encrypted: true
+		# The channel to send messages on
+		channel: 'serve-stuff'
+END
+
+# Load the config
+begin
+	config = YAML::load_file(CONFIG)
+rescue Errno::ENOENT
+	File.write(CONFIG, DEFAULT_CONFIG.gsub("\t", '  '))
+	abort("Config does not exit, creating basic config. Please setup #{CONFIG} and run again")
+rescue => e
+	puts e
+	abort("Unable to load the config file, please setup #{CONFIG}")
+end
+
+################################################################################
+# Hot reloading
+################################################################################
+
+require_or_install 'pusher'
+
+pusher = Pusher::Client.new(
+	app_id: config['pusher']['app_id'],
+	key: config['pusher']['key'],
+	secret: config['pusher']['secret'],
+	cluster: config['pusher']['cluster'],
+	encrypted: config['pusher']['encrypted'],
+)
+
+# A script that can be injected into a HTML page to make it support auto reloading
+RELOAD_SCRIPT = <<~END
+	<script src="//js.pusher.com/4.2/pusher.min.js"></script>
+	<script type="text\/javascript">
+		Pusher.logToConsole = true;
+
+		var pusher = new Pusher('#{config['pusher']['key']}', {
+			cluster: '#{config['pusher']['cluster']}',
+			encrypted: #{config['pusher']['encrypted']},
+		});
+
+		var channel = pusher.subscribe('#{config['pusher']['channel']}');
+		channel.bind('reload', function(data) {
+			if (location.pathname == data.path) {
+				location.reload(true);
+			}
+		});
+	</script>
+END
+
+################################################################################
+# Listen to file changes
+################################################################################
+
+require_or_install 'listen'
+require 'listen/record/symlink_detector'
+
+# Listen >= 2.8 patch to silence duplicate directory errors, which occur when a symlink points to a folder that is also
+# in the listen path. It seems this is the only approach available for symlinks, because for some inexplicable reason
+# you cannot choose to just not follow these.
+module Listen
+	class Record
+		class SymlinkDetector
+			def _fail(_, _)
+				fail Error, "Don't watch locally-symlinked directory twice"
+			end
+		end
+	end
+end
+
+# Allow listening to specific changes on specific extensions
+module CustomListener
+	class Hook
+		EVENTS = %i(added modified removed)
+
+		attr_reader :extensions, :events
+
+		def initialize(extensions, events, &block)
+			invalid_events = events.reject(&EVENTS.method(:include?))
+			abort("Invalid event(s) #{invalid_events}, choose from #{EVENTS}") unless invalid_events.empty?
+
+			@extensions = extensions
+			@events = events
+			@block = block
+		end
+
+		def call(file)
+			@block.call(file)
+		end
+	end
+
+	class Listener
+		def initialize(path)
+			@hooks = []
+			@listener = Listen.to(path, &method(:handler))
+		end
+
+		def handler(modified, added, removed)
+			changes = []
+			changes |= modified.map { |file| { file: file, event: :modified } }
+			changes |= added.map { |file| { file: file, event: :added } }
+			changes |= removed.map { |file| { file: file, event: :removed } }
+
+			changes.each do |change|
+				@hooks.each do |hook|
+					next unless hook.extensions.include?(File.ext(change[:file]))
+					next unless hook.events.include?(change[:event])
+					hook.call(change[:file])
+				end
+			end
+		end
+
+		def start()
+			@listener.start
+		end
+
+		def listen(extensions, events, &block)
+			@hooks << Hook.new(extensions, events, &block)
+		end
+	end
+end
+
+################################################################################
+# File type renderers
+################################################################################
+
+require_or_install 'webrick'
+
+# The extensions allowed for various filetypes
+ASCIIDOC_EXTENSIONS = %w(asciidoc adoc)
+MARKDOWN_EXTENSIONS = %w(markdown md)
+ALL_EXTENSIONS = ASCIIDOC_EXTENSIONS | MARKDOWN_EXTENSIONS
+
+class BaseFileHandler < WEBrick::HTTPServlet::AbstractServlet
+	def do_GET(request, response)
+		# Read and transform the file
+		body = File.read(@options[0])
+		body = self.transform(body)
+		# Add the reload script
+		body += RELOAD_SCRIPT
+		# Render the HTML
+		response.content_type = 'text/html'
+		response.body = body
+	end
+
+	def transform(body)
+		return body
+	end
+end
+
+class AsciidoctorFileHandler < BaseFileHandler
+	def transform(body)
+		require_or_install 'asciidoctor'
+		return Asciidoctor.convert(
+			body,
+			attributes: { 'source-highlighter' => 'prettify' },
+			header_footer: true,
+			safe: :safe,
+			to_file: false,
+		)
+	end
+end
+
+class MarkdownFileHandler < BaseFileHandler
+	def transform(body)
+		require_or_install 'commonmarker'
+		body = CommonMarker.render_doc(
+			body,
+			%i(FOOTNOTES VALIDATE_UTF8),
+			%i(table strikethrough autolink tagfilter),
+		).to_html(%i(GITHUB_PRE_LANG SAFE))
+		body += <<~END
+			<link rel="stylesheet" href="//cdn.rawgit.com/sindresorhus/github-markdown-css/gh-pages/github-markdown.css">
+			<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+			<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" charset="utf-8"></script>
+			<script>
+				/* Add the proper class to the body so that the github css works */
+				document.body.classList.add('markdown-body');
+				/* Init highlighting */
+				hljs.initHighlightingOnLoad();
+			</script>
+		END
+		return body
+	end
+end
+
+################################################################################
+# Run
+################################################################################
+
+# Determine the path to work on
+abort('Received too many arguments') if ARGV.size > 1
+path = ARGV.empty? ? Dir.pwd : ARGV[0]
+abort("Cannot find #{path}") unless File.exists?(path)
+
+# Start listening for changes in the given path
+listener = CustomListener::Listener.new(path)
+listener.listen(ALL_EXTENSIONS, %i(modified)) do |target|
+	pusher.trigger(config['pusher']['channel'], 'reload', { path: target.lchomp(path) })
+end
+listener.start
+
+# Setup a http server
+server = WEBrick::HTTPServer.new(Host: config['server']['host'], Port: config['server']['port'])
+handler = server.mount('/', WEBrick::HTTPServlet::FileHandler, path, true)[0]
+
+# Register all known extensions
+ASCIIDOC_EXTENSIONS.each { |ext| handler.add_handler(ext, AsciidoctorFileHandler) }
+MARKDOWN_EXTENSIONS.each { |ext| handler.add_handler(ext, MarkdownFileHandler) }
+
+# Start the server
+trap('INT') { server.shutdown }
+server.start
