@@ -5,7 +5,7 @@ nnoremap <Leader>RR :VimuxInterruptRunner<CR>:VimuxRunLastCommand<CR>
 function! VimuxRunLastZsh()
 	let l:lines = readfile($HOME . '/.zhistory')
 	let l:line = l:lines[len(l:lines) - 1]
-	let l:command = split(l:line, ';')[1]
+	let l:command = substitute(l:line, '^[^;]*;', '', '')
 
 	call VimuxInterruptRunner()
 	call VimuxRunCommand(l:command)
