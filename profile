@@ -73,8 +73,8 @@ fi
 #
 # If present, setup java environment variables.
 #
-[ -n "$(which java)" ] && export JAVA_HOME=$(readlink -f "$(which java)" | sed "s:/bin/java::")
-[ -n "$(which javac)" ] && export JDK_HOME=$(readlink -f "$(which javac)" | sed "s:/bin/javac::")
+which java &> /dev/null && export JAVA_HOME=$(readlink -f "$(which java)" | sed "s:/bin/java::")
+which javac &> /dev/null && export JDK_HOME=$(readlink -f "$(which javac)" | sed "s:/bin/javac::")
 [ -x /usr/libexec/java_home ] && export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 [ -d "$HOME/.local/share/android-sdk-linux" ] && export ANDROID_HOME="$HOME/.local/share/android-sdk-linux" 
 
