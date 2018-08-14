@@ -24,8 +24,9 @@ echo ">>> Installations complete"
 echo ">>> Setting up python $py2_version"
 (
   set -o errexit
-  pyenv virtualenv-delete -f neovim2
+  pyenv virtualenv-delete -f neovim2 || true
   pyenv virtualenv $py2_version neovim2
+  eval "$(pyenv init -)"
   pyenv activate neovim2
   pip install neovim
 )
@@ -34,8 +35,9 @@ py2_path=$(pyenv which python)
 echo ">>> Setting up python $py3_version"
 (
   set -o errexit
-  pyenv virtualenv-delete -f neovim3
+  pyenv virtualenv-delete -f neovim3 || true
   pyenv virtualenv $py3_version neovim3
+  eval "$(pyenv init -)"
   pyenv activate neovim3
   pip install neovim
 )
@@ -44,6 +46,7 @@ py3_path=$(pyenv which python)
 echo ">>> Setting up ruby $rb_version"
 (
   set -o errexit
+  eval "$(rbenv init -)"
   rbenv shell $rb_version
   gem install neovim
 )
