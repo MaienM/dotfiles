@@ -1,5 +1,6 @@
 config
 config/awesome
+config/i3
 irssi
 xbmc
 xbmc/userdata
