@@ -152,4 +152,5 @@ floating_minimum_size 75 x 50
 # Startup applications
 exec_always --no-startup-id numlockx on
 exec --no-startup-id xscreensaver
+exec --no-startup-id compton
 exec --no-startup-id albert
