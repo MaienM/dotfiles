@@ -1,0 +1,272 @@
+[colors]
+background = #222
+background-alt = #444
+foreground = #dfdfdf
+foreground-alt = #555
+primary = #ffb52a
+secondary = #e60053
+alert = #bd2c40
+
+[settings]
+screenchange-reload = true
+
+[global/wm]
+margin-top = 0
+margin-bottom = 0
+
+;===============================================================================
+; Bars
+;===============================================================================
+
+[bar/base]
+monitor = ${env:MONITOR}
+width = 100%
+height = 54
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 5
+line-color = #f00
+
+module-margin-left = 1
+module-margin-right = 2
+
+font-0 = fixed:pixelsize=20;1
+font-1 = Material Design Icons:size=24;0
+font-2 = unifont:fontformat=truetype:size=16:antialias=false;0
+font-3 = siji:pixelsize=20;1
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[bar/primary]
+inherits = bar/base
+
+modules-left = i3
+modules-center = xwindow
+modules-right = xbacklight alsa pulseaudio memory cpu temperature wlan eth battery date powermenu
+
+tray-position = right
+tray-padding = 2
+tray-maxsize = 27
+
+[bar/secondary]
+inherits = bar/base
+
+modules-left = i3
+modules-center = xwindow
+modules_right = xbacklight
+
+;===============================================================================
+; Modules
+;===============================================================================
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:80:...%
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+
+; Only show workspaces on the same output as the bar
+pin-workspaces = true
+
+label-mode-padding = 2
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
+
+; focused = Active workspace on focused monitor
+label-focused = %index%
+label-focused-background = ${colors.background-alt}
+label-focused-underline= ${colors.primary}
+label-focused-padding = 2
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %index%
+label-unfocused-padding = 2
+
+; visible = Active workspace on unfocused monitor
+label-visible = %index%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${colors.secondary}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+label-urgent = %index%!
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+
+[module/xbacklight]
+type = internal/xbacklight
+
+format = <label> <bar>
+label = ${env:fa_sun}
+
+bar-width = 10
+bar-indicator = |
+bar-indicator-foreground = #fff
+bar-indicator-font = 2
+bar-fill = ─
+bar-fill-font = 2
+bar-fill-foreground = #9f78e1
+bar-empty = ─
+bar-empty-font = 2
+bar-empty-foreground = ${colors.foreground-alt}
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+format-prefix = ${env:fa_server} 
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #f90000
+label = %percentage:2%%
+
+[module/memory]
+type = internal/memory
+interval = 2
+format-prefix = ${env:fa_memory}
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #4bffdc
+label = %percentage_used%%
+
+[module/wlan]
+type = internal/network
+interface = wlp59s0
+interval = 3.0
+
+format-connected = <ramp-signal> <label-connected>
+format-connected-prefix = ${env:fa_wifi}
+format-connected-underline = #9f78e1
+label-connected = %essid%
+
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
+ramp-signal-foreground = ${colors.foreground-alt}
+
+[module/eth]
+type = internal/network
+interface = enp0s20f0u2
+interval = 3.0
+
+format-connected-underline = #55aa55
+format-connected-prefix = "ETH "
+format-connected-prefix-foreground = ${colors.foreground-alt}
+label-connected = %local_ip%
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+[module/date]
+type = internal/date
+interval = 5
+
+date =
+date-alt = " %Y-%m-%d"
+
+time = %H:%M
+time-alt = %H:%M:%S
+
+format-prefix = ${env:fa_clock}
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #0a6cf5
+
+label = %date% %time%
+
+[module/alsa]
+type = internal/alsa
+
+format-volume = <label-volume> <bar-volume>
+label-volume = ${env:fa_volume_up}
+label-volume-foreground = ${root.foreground}
+
+format-muted-foreground = ${colors.foreground-alt}
+label-muted = ${env:fa_volume_off}
+
+bar-volume-width = 10
+bar-volume-foreground-0 = #55aa55
+bar-volume-foreground-1 = #55aa55
+bar-volume-foreground-2 = #55aa55
+bar-volume-foreground-3 = #55aa55
+bar-volume-foreground-4 = #55aa55
+bar-volume-foreground-5 = #f5a70a
+bar-volume-foreground-6 = #ff5555
+bar-volume-gradient = false
+bar-volume-indicator = |
+bar-volume-indicator-font = 2
+bar-volume-fill = ─
+bar-volume-fill-font = 2
+bar-volume-empty = ─
+bar-volume-empty-font = 2
+bar-volume-empty-foreground = ${colors.foreground-alt}
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = ADP1
+full-at = 98
+
+format-charging = <animation-charging> <label-charging>
+format-charging-underline = #ffb52a
+
+format-discharging = <animation-discharging> <label-discharging>
+format-discharging-underline = ${self.format-charging-underline}
+
+format-full-prefix = ${env:fa_plug}
+format-full-prefix-foreground = ${colors.foreground-alt}
+format-full-underline = ${self.format-charging-underline}
+
+ramp-capacity-0 = ${env:fa_battery_empty}
+ramp-capacity-1 = ${env:fa_battery_quarter}
+ramp-capacity-2 = ${env:fa_battery_half}
+ramp-capacity-3 = ${env:fa_battery_three_quarters}
+ramp-capacity-4 = ${env:fa_battery_full}
+ramp-capacity-foreground = ${colors.foreground-alt}
+
+animation-charging-0 = ${env:fa_battery_empty}
+animation-charging-1 = ${env:fa_battery_quarter}
+animation-charging-2 = ${env:fa_battery_half}
+animation-charging-3 = ${env:fa_battery_three_quarters}
+animation-charging-4 = ${env:fa_battery_full}
+animation-charging-foreground = ${colors.foreground-alt}
+animation-charging-framerate = 500
+
+animation-discharging-0 = ${env:fa_battery_full}
+animation-discharging-1 = ${env:fa_battery_three_quarters}
+animation-discharging-2 = ${env:fa_battery_half}
+animation-discharging-3 = ${env:fa_battery_quarter}
+animation-discharging-4 = ${env:fa_battery_empty}
+animation-discharging-foreground = ${colors.foreground-alt}
+animation-discharging-framerate = 500
+
+[module/temperature]
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 60
+
+format = <ramp> <label>
+format-underline = #f50a4d
+format-warn = <ramp> <label-warn>
+format-warn-underline = ${self.format-underline}
+
+label = %temperature-c%
+label-warn = %temperature-c%
+label-warn-foreground = ${colors.secondary}
+
+ramp-0 = ${env:fa_thermometer_empty}
+ramp-1 = ${env:fa_thermometer_quarter}
+ramp-2 = ${env:fa_thermometer_half}
+ramp-3 = ${env:fa_thermometer_three_quarters}
+ramp-4 = ${env:fa_thermometer_full}
+ramp-foreground = ${colors.foreground-alt}
+
+; vim:ft=dosini
