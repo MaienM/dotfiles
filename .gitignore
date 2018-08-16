@@ -1,6 +1,5 @@
 irssi/scripts/autorun
 putty/output
-fonts/.uuid
 vim/init.vim
 vim/.netrwhist
 vim/bundle/fzf-base
