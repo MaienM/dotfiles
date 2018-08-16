@@ -33,7 +33,7 @@ module-margin-left = 1
 module-margin-right = 2
 
 font-0 = fixed:pixelsize=20;1
-font-1 = Material Design Icons:size=24;0
+font-1 = Symbols Nerd Font:size=24;0
 font-2 = unifont:fontformat=truetype:size=16:antialias=false;0
 font-3 = siji:pixelsize=20;1
 
@@ -45,7 +45,7 @@ inherits = bar/base
 
 modules-left = i3
 modules-center = xwindow
-modules-right = xbacklight alsa pulseaudio memory cpu temperature wlan eth battery date powermenu
+modules-right = xbacklight alsa pulseaudio memory cpu temperature wlan eth battery date
 
 tray-position = right
 tray-padding = 2
@@ -104,7 +104,7 @@ label-urgent-padding = 2
 type = internal/xbacklight
 
 format = <label> <bar>
-label = ${env:fa_sun}
+label = ${env:i_mdi_brightness_5}
 
 bar-width = 10
 bar-indicator = |
@@ -120,7 +120,7 @@ bar-empty-foreground = ${colors.foreground-alt}
 [module/cpu]
 type = internal/cpu
 interval = 2
-format-prefix = ${env:fa_server} 
+format-prefix = ${env:i_mdi_speedometer} 
 format-prefix-foreground = ${colors.foreground-alt}
 format-underline = #f90000
 label = %percentage:2%%
@@ -128,7 +128,7 @@ label = %percentage:2%%
 [module/memory]
 type = internal/memory
 interval = 2
-format-prefix = ${env:fa_memory}
+format-prefix = ${env:i_mdi_memory}
 format-prefix-foreground = ${colors.foreground-alt}
 format-underline = #4bffdc
 label = %percentage_used%%
@@ -139,24 +139,23 @@ interface = wlp59s0
 interval = 3.0
 
 format-connected = <ramp-signal> <label-connected>
-format-connected-prefix = ${env:fa_wifi}
 format-connected-underline = #9f78e1
 label-connected = %essid%
 
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
+ramp-signal-0 = ${env:i_mdi_wifi}
+; ramp-signal-0 = ${env:i_mdi_wifi_strength_1}
+; ramp-signal-1 = ${env:i_mdi_wifi_strength_2}
+; ramp-signal-2 = ${env:i_mdi_wifi_strength_3}
+; ramp-signal-3 = ${env:i_mdi_wifi_strength_4}
 ramp-signal-foreground = ${colors.foreground-alt}
 
 [module/eth]
 type = internal/network
-interface = enp0s20f0u2
+interface = enp58s0u1
 interval = 3.0
 
 format-connected-underline = #55aa55
-format-connected-prefix = "ETH "
+format-connected-prefix = ${env:i_mdi_lan_connect}
 format-connected-prefix-foreground = ${colors.foreground-alt}
 label-connected = %local_ip%
 
@@ -176,7 +175,7 @@ date-alt = " %Y-%m-%d"
 time = %H:%M
 time-alt = %H:%M:%S
 
-format-prefix = ${env:fa_clock}
+format-prefix = ${env:i_mdi_clock}
 format-prefix-foreground = ${colors.foreground-alt}
 format-underline = #0a6cf5
 
@@ -186,11 +185,11 @@ label = %date% %time%
 type = internal/alsa
 
 format-volume = <label-volume> <bar-volume>
-label-volume = ${env:fa_volume_up}
+label-volume = ${env:i_mdi_volume_high}
 label-volume-foreground = ${root.foreground}
 
 format-muted-foreground = ${colors.foreground-alt}
-label-muted = ${env:fa_volume_off}
+label-muted = ${env:i_mdi_volume_off}
 
 bar-volume-width = 10
 bar-volume-foreground-0 = #55aa55
@@ -221,32 +220,42 @@ format-charging-underline = #ffb52a
 format-discharging = <animation-discharging> <label-discharging>
 format-discharging-underline = ${self.format-charging-underline}
 
-format-full-prefix = ${env:fa_plug}
+format-full-prefix = ${env:i_mdi_battery}
 format-full-prefix-foreground = ${colors.foreground-alt}
 format-full-underline = ${self.format-charging-underline}
 
-ramp-capacity-0 = ${env:fa_battery_empty}
-ramp-capacity-1 = ${env:fa_battery_quarter}
-ramp-capacity-2 = ${env:fa_battery_half}
-ramp-capacity-3 = ${env:fa_battery_three_quarters}
-ramp-capacity-4 = ${env:fa_battery_full}
-ramp-capacity-foreground = ${colors.foreground-alt}
-
-animation-charging-0 = ${env:fa_battery_empty}
-animation-charging-1 = ${env:fa_battery_quarter}
-animation-charging-2 = ${env:fa_battery_half}
-animation-charging-3 = ${env:fa_battery_three_quarters}
-animation-charging-4 = ${env:fa_battery_full}
+; animation-charging-0 = ${env:i_mdi_battery_charging_outline}
+; animation-charging-1 = ${env:i_mdi_battery_charging_10}
+; animation-charging-2 = ${env:i_mdi_battery_charging_20}
+; animation-charging-3 = ${env:i_mdi_battery_charging_30}
+; animation-charging-4 = ${env:i_mdi_battery_charging_40}
+; animation-charging-5 = ${env:i_mdi_battery_charging_40}
+; animation-charging-6 = ${env:i_mdi_battery_charging_60}
+; animation-charging-7 = ${env:i_mdi_battery_charging_70}
+; animation-charging-8 = ${env:i_mdi_battery_charging_80}
+; animation-charging-9 = ${env:i_mdi_battery_charging_90}
+; animation-charging-10 = ${env:i_mdi_battery_charging_100}
+animation-charging-0 = ${env:i_mdi_battery_charging_20}
+animation-charging-1 = ${env:i_mdi_battery_charging_40}
+animation-charging-2 = ${env:i_mdi_battery_charging_60}
+animation-charging-3 = ${env:i_mdi_battery_charging_80}
+animation-charging-4 = ${env:i_mdi_battery_charging_100}
 animation-charging-foreground = ${colors.foreground-alt}
-animation-charging-framerate = 500
+animation-charging-framerate = 400
 
-animation-discharging-0 = ${env:fa_battery_full}
-animation-discharging-1 = ${env:fa_battery_three_quarters}
-animation-discharging-2 = ${env:fa_battery_half}
-animation-discharging-3 = ${env:fa_battery_quarter}
-animation-discharging-4 = ${env:fa_battery_empty}
+animation-discharging-0 = ${env:i_mdi_battery}
+animation-discharging-1 = ${env:i_mdi_battery_90}
+animation-discharging-2 = ${env:i_mdi_battery_80}
+animation-discharging-3 = ${env:i_mdi_battery_70}
+animation-discharging-4 = ${env:i_mdi_battery_60}
+animation-discharging-5 = ${env:i_mdi_battery_40}
+animation-discharging-6 = ${env:i_mdi_battery_40}
+animation-discharging-7 = ${env:i_mdi_battery_30}
+animation-discharging-8 = ${env:i_mdi_battery_20}
+animation-discharging-9 = ${env:i_mdi_battery_10}
+animation-discharging-10 = ${env:i_mdi_battery_outline}
 animation-discharging-foreground = ${colors.foreground-alt}
-animation-discharging-framerate = 500
+animation-discharging-framerate = 200
 
 [module/temperature]
 type = internal/temperature
@@ -262,11 +271,7 @@ label = %temperature-c%
 label-warn = %temperature-c%
 label-warn-foreground = ${colors.secondary}
 
-ramp-0 = ${env:fa_thermometer_empty}
-ramp-1 = ${env:fa_thermometer_quarter}
-ramp-2 = ${env:fa_thermometer_half}
-ramp-3 = ${env:fa_thermometer_three_quarters}
-ramp-4 = ${env:fa_thermometer_full}
+ramp-0 = ${env:i_mdi_thermometer}
 ramp-foreground = ${colors.foreground-alt}
 
 ; vim:ft=dosini
