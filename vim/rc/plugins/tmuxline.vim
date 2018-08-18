@@ -1,11 +1,11 @@
 let g:tmuxline_preset = {
 	\'a': '#S',
 	\'win': [
-		\'#I',
+		\'#I#{s/-//:window_flags}',
 		\'#W',
 	\],
 	\'cwin': [
-		\'#I',
+		\'#I#{s/*//:window_flags}',
 		\'#W',
 	\],
 	\'x': [
