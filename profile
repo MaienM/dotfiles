@@ -4,10 +4,14 @@
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-# (Neo)vim. Need I say more?
-which nvim &> /dev/null && export EDITOR="nvim" || export EDITOR="vim"
+#
+# Helper methods.
+#
 
-# Helper method to add things to path
+command-exists() {
+	which "$@" &> /dev/null
+}
+
 in-path() {
 	case ":$PATH:" in
 		*":$1:"*)
@@ -25,7 +29,24 @@ append-to-path() {
 	in-path "$1" || export PATH="$PATH:$1"
 }
 
-# Add local elements to path
+#
+# Set preferred programs.
+#
+if command-exists nvim; then
+	export EDITOR="nvim"
+elif command-exists vim; then
+	export EDITOR="vim"
+elif command-exists vi; then
+	export EDITOR="vi"
+fi
+
+if command-exists kitty; then
+	export TERMINAL="kitty"
+fi
+
+#
+# Add local bin to path.
+#
 prepend-to-path "$HOME/.local/bin"
 
 #
