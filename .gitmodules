@@ -98,7 +98,7 @@
 	path = vim/bundle/airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes
 [submodule "bin/ssh-ident"]
-	path = bin/ssh-ident
+	path = opt/ssh-ident
 	url = https://github.com/ccontavalli/ssh-ident
 [submodule "vim/bundle/tmuxline"]
 	path = vim/bundle/tmuxline

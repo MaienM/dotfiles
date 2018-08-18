@@ -2,5 +2,5 @@ vim                                                .config/nvim
 vim/vimrc                                          .config/nvim/init.vim
 tmux/init.conf                                     .tmux.conf
 zsh/init.zsh                                       .zshrc
-bin/ssh-ident/ssh-ident                            .local/bin/ssh
+opt/ssh-ident/ssh-ident                            .local/bin/ssh
 fzf/                                               .vim/bundle/fzf-base
