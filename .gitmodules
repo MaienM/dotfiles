@@ -4,9 +4,6 @@
 [submodule "vim/bundle/vim-commentary"]
 	path = vim/bundle/commentary
 	url = https://github.com/tpope/vim-commentary.git
-[submodule "vim/bundle/tagbar"]
-	path = vim/bundle/tagbar
-	url = https://github.com/majutsushi/tagbar.git
 [submodule "vim/bundle/vim-indent-guides"]
 	path = vim/bundle/indent-guides
 	url = https://github.com/nathanaelkane/vim-indent-guides.git
@@ -19,9 +16,6 @@
 [submodule "vim/bundle/matchit.zip"]
 	path = vim/bundle/matchit
 	url = https://github.com/vim-scripts/matchit.zip.git
-[submodule "vim/bundle/CamelCaseMotion"]
-	path = vim/bundle/camel-case-motion
-	url = https://github.com/bkad/CamelCaseMotion.git
 [submodule "vim/bundle/vim-repeat"]
 	path = vim/bundle/repeat
 	url = https://github.com/tpope/vim-repeat.git
@@ -34,15 +28,6 @@
 [submodule "vim/bundle/vim-speeddating"]
 	path = vim/bundle/speeddating
 	url = https://github.com/tpope/vim-speeddating.git
-[submodule "vim/bundle/emmet-vim"]
-	path = vim/bundle/emmet
-	url = https://github.com/mattn/emmet-vim.git
-[submodule "vim/bundle/splitjoin.vim"]
-	path = vim/bundle/splitjoin
-	url = https://github.com/AndrewRadev/splitjoin.vim.git
-[submodule "vim/bundle/vdebug"]
-	path = vim/bundle/vdebug
-	url = https://github.com/joonty/vdebug.git
 [submodule "vim/bundle/vim-fugitive"]
 	path = vim/bundle/fugitive
 	url = https://github.com/tpope/vim-fugitive.git
@@ -52,18 +37,12 @@
 [submodule "vim/bundle/vimproc"]
 	path = vim/bundle/vimproc
 	url = https://github.com/Shougo/vimproc.vim.git
-[submodule "vim/bundle/snippets"]
-	path = vim/bundle/snippets
-	url = https://github.com/honza/vim-snippets.git
 [submodule "vim/bundle/polyglot"]
 	path = vim/bundle/polyglot
 	url = https://github.com/sheerun/vim-polyglot.git
 [submodule "vim/bundle/sleuth"]
 	path = vim/bundle/sleuth
 	url = https://github.com/tpope/vim-sleuth.git
-[submodule "vim/bundle/rails"]
-	path = vim/bundle/rails
-	url = https://github.com/tpope/vim-rails.git
 [submodule "vim/bundle/vim-misc"]
 	path = vim/bundle/vim-misc
 	url = https://github.com/xolox/vim-misc
@@ -124,18 +103,9 @@
 [submodule "vim/bundle-nvim/airline-themes"]
 	path = vim/bundle/airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes
-[submodule "vim/bundle/asciidoc-superfold"]
-	path = vim/bundle/asciidoc-superfold
-	url = https://github.com/blablatros/vim-asciidoc-superfold
 [submodule "bin/ssh-ident"]
 	path = bin/ssh-ident
 	url = https://github.com/ccontavalli/ssh-ident
-[submodule "vim/bundle/neosnippet"]
-	path = vim/bundle/neosnippet
-	url = https://github.com/Shougo/neosnippet.vim
-[submodule "vim/bundle/neosnippet-snippets"]
-	path = vim/bundle/neosnippet-snippets
-	url = https://github.com/Shougo/neosnippet-snippets
 [submodule "vim/bundle/tmuxline"]
 	path = vim/bundle/tmuxline
 	url = https://github.com/edkolev/tmuxline.vim
@@ -163,15 +133,9 @@
 [submodule "vim/bundle/deoplete-ternjs"]
 	path = vim/bundle-nvim/deoplete-ternjs
 	url = https://github.com/carlitux/deoplete-ternjs
-[submodule "vim/bundle-nvim/ghost"]
-	path = vim/bundle-nvim/ghost
-	url = https://github.com/raghur/vim-ghost
 [submodule "vim/bundle/golden-ratio"]
 	path = vim/bundle/golden-ratio
 	url = https://github.com/roman/golden-ratio
-[submodule "vim/bundle/tbone"]
-	path = vim/bundle/tbone
-	url = https://github.com/tpope/vim-tbone
 [submodule "vim/bundle/lsc"]
 	path = vim/bundle/lsc
 	url = https://github.com/natebosch/vim-lsc
