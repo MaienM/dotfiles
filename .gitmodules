@@ -160,3 +160,6 @@
 [submodule "vim/bundle/rainbow-parentheses"]
 	path = vim/bundle/rainbow-parentheses
 	url = https://github.com/junegunn/rainbow_parentheses.vim
+[submodule "vim/bundle/editorconfig"]
+	path = vim/bundle/editorconfig
+	url = https://github.com/sgur/vim-editorconfig
