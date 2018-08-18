@@ -1,12 +1,7 @@
 README
-cmds
-scripts
-powerline
-solarized
-putty
-irssi-powerline
-dotsecrets
-opt
-windows-registry
-utils
 Session.vim
+cmds
+opt
+scripts
+utils
+windows-registry
