@@ -1,7 +1,0 @@
-# make CapsLock behave like Ctrl
-setxkbmap -option ctrl:nocaps
-
-# make short-pressed Ctrl behave like Escape
-if which xcape > /dev/null 2>&1; then
-    xcape -e 'Control_L=Escape'
-fi
