@@ -7,9 +7,6 @@
 [submodule "vim/bundle/vim-indent-guides"]
 	path = vim/bundle/indent-guides
 	url = https://github.com/nathanaelkane/vim-indent-guides.git
-[submodule "vim/bundle/rainbow_parentheses.vim"]
-	path = vim/bundle/rainbow-parentheses
-	url = https://github.com/kien/rainbow_parentheses.vim.git
 [submodule "vim/bundle/vim-sneak"]
 	path = vim/bundle/sneak
 	url = https://github.com/justinmk/vim-sneak.git
@@ -160,3 +157,6 @@
 [submodule "vim/bundle/ale"]
 	path = vim/bundle/ale
 	url = https://github.com/w0rp/ale
+[submodule "vim/bundle/rainbow-parentheses"]
+	path = vim/bundle/rainbow-parentheses
+	url = https://github.com/junegunn/rainbow_parentheses.vim
