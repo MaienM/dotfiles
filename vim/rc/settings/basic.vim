@@ -72,6 +72,12 @@ call mkdir(s:cache_basedir . s:pathsep . 'undo', 'p')
 let &backupdir=s:cache_basedir . s:pathsep . 'backup//'
 let &directory=s:cache_basedir . s:pathsep . 'swap//'
 
+" Vertical splits.
+set diffopt+=vertical
+
+" Decent preview window height.
+set previewheight=20
+
 " Version-specific stuff, doesn't work in older versions, sadly.
 if v:version >= 600
   set clipboard=unnamed        " interoperate with the X clipboard

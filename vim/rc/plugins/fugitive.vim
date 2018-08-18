@@ -1,15 +1,6 @@
-" Vertical splits.
-set diffopt+=vertical
-
-" Decent preview window height.
-set previewheight=20
-
 " Some settings for git buffers.
 autocmd FileType gitcommit call s:settings()
 function! s:settings()
-  " No supertab.
-  let b:SuperTabDisabled=1
-
   " No folding.
   setlocal nofoldenable
 
