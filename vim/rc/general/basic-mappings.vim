@@ -1,6 +1,6 @@
 " Use space as leader.
 nnoremap <Space> <nop>
-let mapleader='\<Space>'
+let mapleader="\<Space>"
 
 " Make Y behave consistent with D and C (from cursor to end of line).
 nnoremap Y y$
