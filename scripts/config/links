@@ -1,5 +1,6 @@
 .config/nvim             vim
 .config/nvim/init.vim    vim/vimrc
+.local/bin/diff-so-fancy opt/diff-so-fancy/third_party/build_fatpack/diff-so-fancy
 .local/bin/ssh           opt/ssh-ident/ssh-ident
 .tmux.conf               tmux/init.conf
 .vim/bundle/fzf-base     fzf/
