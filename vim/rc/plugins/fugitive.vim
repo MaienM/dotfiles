@@ -1,5 +1,5 @@
 " Some settings for git buffers.
-autocmd FileType gitcommit call s:settings()
+au FileType gitcommit call s:settings()
 function! s:settings()
   " No folding.
   setlocal nofoldenable
