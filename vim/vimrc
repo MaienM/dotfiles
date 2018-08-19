@@ -12,5 +12,14 @@ else
 	execute pathogen#infect('bundle/{}', 'bundle-vim/{}')
 endif
 
+" Define the autocmd group, so we can delete all autocommands set in the vimrc at once.
+augroup vimrc
+
+" Delete all autocommands previously defined in this group.
+au!
+
 " Load the rc files responsible for the rest of the initialisation.
 runtime! rc/**.vim
+
+" Close the autocmd group.
+augroup END
