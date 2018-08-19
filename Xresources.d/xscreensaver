@@ -1,0 +1,36 @@
+! No splash screen.
+xscreensaver.splash: false
+
+! No "new login" button, as it is styled incorrectly and I have no use for it.
+xscreensaver.newLoginCommand:
+
+! No timestamp, as it is styled incorrectly and really not all that important anyway.
+xscreensaver.dateFormat: 
+
+! The font.
+xscreensaver.Dialog.headingFont: -*-inconsolata-bold-r-*--60-*-*-*-*-*-ascii-*
+xscreensaver.Dialog.bodyFont:    -*-inconsolata-medium-r-*--40-*-*-*-*-*-ascii-*
+xscreensaver.Dialog.labelFont:   -*-inconsolata-medium-r-*--50-*-*-*-*-*-ascii-*
+xscreensaver.Dialog.unameFont:   -*-inconsolata-medium-r-*--40-*-*-*-*-*-ascii-*
+xscreensaver.Dialog.buttonFont:  -*-inconsolata-bold-r-*--40-*-*-*-*-*-ascii-*
+xscreensaver.Dialog.dateFont:    -*-inconsolata-medium-r-*--40-*-*-*-*-*-ascii-*
+xscreensaver.passwd.passwdFont:  -*-inconsolata-bold-r-*--40-*-*-*-*-*-ascii-*
+
+! Main dialog box style.
+xscreensaver.Dialog.foreground:        base05
+xscreensaver.Dialog.background:        base01
+xscreensaver.Dialog.topShadowColor:    base05
+xscreensaver.Dialog.bottomShadowColor: base05
+xscreensaver.Dialog.Button.foreground: base05
+xscreensaver.Dialog.Button.background: base01
+
+! Username/password input box and date text colour.
+xscreensaver.Dialog.text.foreground:     base05
+xscreensaver.Dialog.text.background:     base01
+xscreensaver.Dialog.internalBorderWidth: 20
+xscreensaver.Dialog.borderWidth:         0
+xscreensaver.Dialog.shadowThickness:     2
+
+! Timeout barn style.
+xscreensaver.passwd.thermometer.foreground: base0D
+xscreensaver.passwd.thermometer.width:      12
