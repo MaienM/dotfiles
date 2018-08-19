@@ -1,4 +1,5 @@
-" Start interactive EasyAlign in visual mode (e.g. vipga)
+" Start interactive EasyAlign in visual mode (e.g. vipga).
 xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip).
 nmap ga <Plug>(EasyAlign)

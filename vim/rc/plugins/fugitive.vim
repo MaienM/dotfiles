@@ -1,12 +1,12 @@
 " Some settings for git buffers.
 au FileType gitcommit call s:settings()
 function! s:settings()
-  " No folding.
-  setlocal nofoldenable
+	" No folding.
+	setlocal nofoldenable
 
-  " So I can spam C-C to get out, now.
-  nmap <buffer> <C-C> :<C-U>q<CR>
+	" So I can spam C-C to get out, now.
+	nmap <buffer> <C-C> :<C-U>q<CR>
 endfunction
 
-" Mappings
+" Mappings.
 nnoremap <Leader>gg :Gstatus<CR>

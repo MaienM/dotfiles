@@ -1,2 +1,2 @@
-" Re-run last command
+" Re-run last command.
 nnoremap <Leader>rr :Dispatch -<CR>

@@ -13,7 +13,7 @@ vnoremap < <gv
 nnoremap Q @q
 
 " Search for the selected text when using * or # in visual mode.
-" See http://got-ravings.blogspot.nl/2008/07/vim-pr0n-visual-search-mappings.html
+" See http://got-ravings.blogspot.nl/2008/07/vim-pr0n-visual-search-mappings.html.
 function! s:VSetSearch()
 	let temp = @@
 	norm! gvy

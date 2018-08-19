@@ -1,7 +1,7 @@
-" Re-run last command
+" Re-run last command.
 nnoremap <Leader>RR :VimuxInterruptRunner<CR>:VimuxRunLastCommand<CR>
 
-" Re-run the last command executed in the shell
+" Re-run the last command executed in the shell.
 function! VimuxRunLastZsh()
 	let l:lines = readfile($HOME . '/.zhistory')
 	let l:line = l:lines[len(l:lines) - 1]

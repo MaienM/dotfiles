@@ -1,4 +1,4 @@
-" Setup unicode if available
+" Setup unicode if available.
 if has('multi_byte')
 	if &termencoding == ''
 		let &termencoding = &encoding
