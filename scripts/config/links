@@ -1,6 +1,6 @@
-fzf/                                               .vim/bundle/fzf-base
-opt/ssh-ident/ssh-ident                            .local/bin/ssh
-tmux/init.conf                                     .tmux.conf
-vim                                                .config/nvim
-vim/vimrc                                          .config/nvim/init.vim
-zsh/init.zsh                                       .zshrc
+.config/nvim             vim
+.config/nvim/init.vim    vim/vimrc
+.local/bin/ssh           opt/ssh-ident/ssh-ident
+.tmux.conf               tmux/init.conf
+.vim/bundle/fzf-base     fzf/
+.zshrc                   zsh/init.zsh
