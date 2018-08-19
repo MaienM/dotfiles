@@ -1,4 +1,4 @@
-" Use Vim settings, rather then Vi settings (much better!).
+" Use Vim settings, rather than Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
@@ -18,8 +18,12 @@ augroup vimrc
 " Delete all autocommands previously defined in this group.
 au!
 
-" Load the rc files responsible for the rest of the initialisation.
-runtime! rc/**.vim
+" Load the rc files responsible for the core initialisation.
+runtime! rc/general.vim
+runtime! rc/plugins.vim
 
 " Close the autocmd group.
 augroup END
+
+" Load the rc files responsible for the final touches.
+runtime! rc/after.vim
