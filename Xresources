@@ -1,3 +1,4 @@
-! Sharper fonts.
-Xft.lcdfilter: lcddefault
-Xft.hintstyle: hintslight
+#include ".Xresources.d/font"
+#include ".Xresources.d/colors"
+
+#include ".Xresources_local"
