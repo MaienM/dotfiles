@@ -172,3 +172,6 @@
 [submodule "vim/bundle/golden-view"]
 	path = vim/bundle/golden-view
 	url = https://github.com/zhaocai/GoldenView.Vim
+[submodule "vim/bundle/goyo"]
+	path = vim/bundle/goyo
+	url = https://github.com/junegunn/goyo.vim
