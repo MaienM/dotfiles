@@ -1,15 +1,9 @@
-irssi/scripts/autorun
-putty/output
-vim/init.vim
+tmux/resurrect
 vim/.netrwhist
 vim/bundle/fzf-base
 vim/bundle/powerline
 vim/doc/tags
-vim/eclim
+vim/init.vim
 vim/spell
-tmux/resurrect
-
-*.un~
-*.sw[po]
 
 *.pyc
