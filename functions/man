@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+# shellcheck disable=SC2154
+
+# termcap  
+# ks       make the keypad send commands
+# ke       make the keypad send digits
+# vb       emit visual bell
+# mb       start blink
+# md       start bold
+# me       turn off bold, blink and underline
+# so       start standout (reverse video)
+# se       stop standout
+# us       start underline
+# ue       stop underline
+
+man() {
+    colors
+    LESS_TERMCAP_mb="$color_fg_blue" \
+    LESS_TERMCAP_md="$color_fg_magenta" \
+    LESS_TERMCAP_me="$color_reset" \
+    LESS_TERMCAP_so="$color_fg_black$color_bg_white" \
+    LESS_TERMCAP_se="$color_reset" \
+    LESS_TERMCAP_us="$color_fg_green" \
+    LESS_TERMCAP_ue="$color_reset" \
+        command man "$@"
+}
+
