@@ -1,35 +1,22 @@
 #!/usr/bin/env sh
 
 #
+# Setup autoloading functions.
+#
+for file in "$HOME/.functions"/*; do
+	name=$(basename "$file")
+	eval "$name() {
+		unset \"$name\"
+		. \"$file\"
+		\"$name\" \"\$@\"
+	}"
+done
+
+#
 # Force English as language.
 #
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-
-#
-# Helper methods.
-#
-
-command_exists() {
-	command -v "$@" > /dev/null 2>&1 
-}
-
-in_path() {
-	case ":$PATH:" in
-		*":$1:"*)
-			return 0  # zero return code -> success
-		;;
-		*)
-			return 1  # non-zero return code -> failure
-		;;
-	esac
-}
-prepend_to_path() {
-	in_path "$1" || export PATH="$1:$PATH"
-}
-append_to_path() {
-	in_path "$1" || export PATH="$PATH:$1"
-}
 
 #
 # Set preferred programs.
