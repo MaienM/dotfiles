@@ -1,0 +1,34 @@
+#!/usr/bin/env sh
+# shellcheck disable=SC2034
+
+colors() {
+	set -a
+
+	color_fg_black=$(tput setaf 0)
+	color_fg_red=$(tput setaf 1)
+	color_fg_green=$(tput setaf 2)
+	color_fg_yellow=$(tput setaf 3)
+	color_fg_blue=$(tput setaf 4)
+	color_fg_magenta=$(tput setaf 5)
+	color_fg_cyan=$(tput setaf 6)
+	color_fg_white=$(tput setaf 7)
+
+	color_bg_black=$(tput setab 0)
+	color_bg_red=$(tput setab 1)
+	color_bg_green=$(tput setab 2)
+	color_bg_yellow=$(tput setab 3)
+	color_bg_blue=$(tput setab 4)
+	color_bg_magenta=$(tput setab 5)
+	color_bg_cyan=$(tput setab 6)
+	color_bg_white=$(tput setab 7)
+
+	color_dim=$(tput dim)
+	color_underline=$(tput smul)
+	color_underline_reset=$(tput rmul)
+	color_reverse=$(tput rev)
+	color_standout=$(tput smso)
+	color_standout_reset=$(tput rmso)
+	color_reset=$(tput sgr0)
+
+	set +a
+}
