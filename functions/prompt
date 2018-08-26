@@ -31,8 +31,8 @@ prompt() {
 
 	# shellcheck disable=SC2034
 	reply_opts=$(echo "$opts" | tr '[:upper:]' '[:lower:]')
+	echo "$message [$opts]"
 	while true; do
-		echo "$message [$opts]"
 		reply=$(read_char reply; echo "$reply" | tr '[:upper:]' '[:lower:]')
 		# shellcheck disable=SC2102
 		case $reply in 
