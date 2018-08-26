@@ -4,6 +4,9 @@
 colors() {
 	set -a
 
+	color_names="black red green yellow blue magenta cyan white"
+	color_names_special="dim underline reverse standout"
+
 	color_fg_black=$(tput setaf 0)
 	color_fg_red=$(tput setaf 1)
 	color_fg_green=$(tput setaf 2)

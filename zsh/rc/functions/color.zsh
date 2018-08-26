@@ -14,20 +14,6 @@ truecolortest() {
 	}'
 }
 
-colorlist() {
-    local k
-
-    echo "NAME         EXAMPLE      CODE"
-    echo "fg[*]"
-    for k in ${(k)fg}; do
-        echo "${(r:12:)k} ${fg[$k]}example$reset_color     ${(q)fg[$k]}"
-    done
-    echo "bg[*]"
-    for k in ${(k)bg}; do
-        echo "${(r:12:)k} ${bg[$k]}example$reset_color     ${(q)bg[$k]}"
-    done
-}
-
 colorgrid() {
     local fgk bgk width
 
