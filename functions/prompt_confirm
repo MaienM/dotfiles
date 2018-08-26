@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+
+# Prompt for confirmation.
+# $1: The message/question.
+# $2: The default answer ('Y' or 'N'). If not given, the default is 
+prompt_confirm() {
+	message=$1
+	case $2 in
+		[yY]) 
+			opts='Yn'
+		;;
+		[nN]|'')
+			opts='yN'
+		;;
+		*)    
+			echo "Invalid default ($2), expected 'y' or 'n'" >&2
+			return 1
+		;;
+	esac
+
+	prompt reply "$opts" "$message"
+	# shellcheck disable=SC2154
+	[ "$reply" = 'y' ]
+}

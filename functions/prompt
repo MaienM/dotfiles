@@ -1,0 +1,49 @@
+#!/usr/bin/env sh
+
+# Read a single character.
+# From https://stackoverflow.com/a/30022297.
+read_char() {
+	stty -icanon -echo
+	eval "$1=\$(dd bs=1 count=1 2>/dev/null)"
+	stty icanon echo
+}
+
+# Display a prompt with a limited list of options.
+# $1: The output variable. The chosen (lowercased) letter will be stored in this.
+# $2: The options. If any of the options is capitalized it will be used as default.
+# $3: The message/question.
+prompt() {
+	target="$1"
+	opts="$2"
+	message="$3"
+
+	invalid_opts="$(echo "$opts" | tr -d '[:upper:][:lower:][:digit:]')"
+	if [ -n "$invalid_opts" ]; then
+		echo "Invalid options ($invalid_opts)" >&2
+		return 1
+	fi
+
+	default=$(echo "$opts" | tr -d '[:lower:]' | tr '[:upper:]' '[:lower:]')
+	if [ ${#default} -gt 1 ]; then
+		echo "Only one default option allowed, got multiple ($default)" >&2
+		return 1
+	fi
+
+	# shellcheck disable=SC2034
+	reply_opts=$(echo "$opts" | tr '[:upper:]' '[:lower:]')
+	while true; do
+		echo "$message [$opts]"
+		reply=$(read_char reply; echo "$reply" | tr '[:upper:]' '[:lower:]')
+		# shellcheck disable=SC2102
+		case $reply in 
+			[$reply_opts])
+				eval "$target=\"\$reply\""
+				return 0;
+			;;
+			'')
+				eval "$target=\"\$default\""
+				return 0
+			;;
+		esac
+	done
+}
