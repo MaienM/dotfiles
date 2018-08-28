@@ -5,6 +5,7 @@
 #
 for file in "$HOME/.functions"/*; do
 	name=$(basename "$file")
+	echo "$name" | grep -qF . && continue
 	eval "$name() {
 		unset \"$name\"
 		. \"$file\"
