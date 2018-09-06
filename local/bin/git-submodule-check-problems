@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+
+# Git is pretty bad at cleaning up submodules. This script scans the current directory for submodules that have been
+# partially removed, and cleans up the mess left behind.
+
+in_array() {
+	needle="$1"
+	shift
+	for stray in "$@"; do
+		[[ "$needle" == "$stray" ]] && return 0
+	done
+	return 1
+}
+
+join_array() {
+	local delim="$1"
+	echo -n "$2"
+	shift 2
+	printf "%s" "${@/#/$delim}"
+}
+
+declare -A names
+
+# Get colors.
+color_name=$(tput setaf 3)
+color_place=$(tput setaf 4)
+color_reset=$(tput sgr0)
+
+# Get the modules according to the .gitmodules file.
+# Modules are added to this file with `git submodule add`, but not removed with `git rm` or `git submodule deinit`.
+names[gitmodules]='.gitmodules'
+modules_from_gitmodules=
+mapfile -t modules_from_gitmodules < <(
+	git config -f .gitmodules --list \
+		| grep '^submodule\.' \
+		| sed 's/^submodule\.\(.*\)\.[^/]\+=.*$/\1/' \
+		| sort -u
+)
+
+# Get the modules according to the .git/config file.
+# Modules are added to this file when a module is initialized, and removed with `git submodule deinit`, but not with
+# `git rm`.
+names[git_config]='.git/config'
+mapfile -t modules_from_git_config < <(
+	git config -f .git/config --list \
+		| grep '^submodule\.' \
+		| sed 's/^submodule\.\(.*\)\.[^/]\+=.*$/\1/' \
+		| sort -u
+)
+
+# Get the modules according to the .git/modules folder.
+# Modules are added here when a module is initialized, but not removed with `git rm` or `git submodule deinit`.
+names[git_modules]='.git/modules'
+mapfile -t modules_from_git_modules < <(
+	find .git/modules \
+		| grep '/index$' \
+		| sed 's!^.git/modules/\(.*\)/index$!\1!' \
+		| sort -u
+)
+
+# Get a list of all modules that are known.
+mapfile -t modules < <(
+	printf '%s\n' "${modules_from_gitmodules[@]}" "${modules_from_git_config[@]}" "${modules_from_git_modules[@]}" \
+		| sort -u
+)
+
+# Get colors.
+color_name=$(tput setaf 4)
+color_place=$(tput setaf 3)
+color_place_missing=$(tput setaf 1)
+color_reset=$(tput sgr0)
+
+# Loop over all modules and looks for problems.
+for module in "${modules[@]}"; do
+	# If the previous module is a prefix of this module it is a submodule of a submodule, which we won't touch.
+	if [[ "$module" == "$lastmodule"/* ]]; then
+		continue
+	fi
+	lastmodule="$module"
+
+	# Build a list of descriptions of what locations the module was (not) found in.
+	positive=()
+	negative=()
+	for name in "${!names[@]}"; do
+		array_name="modules_from_${name}[@]"
+		if in_array "$module" "${!array_name}"; then
+			positive=("${positive[@]}" "${names[$name]}")
+		else
+			negative=("${negative[@]}" "${names[$name]}")
+		fi
+	done
+
+	# Skip the module if there are no problems.
+	[ ${#negative} -eq 0 ] && continue
+
+	# Module is not fine, inform the user.
+	printf '%s is in %s but not in %s\n' \
+		"$color_name$module$color_reset" \
+		"$color_place$(join_array "$color_reset and in $color_place" "${positive[@]}")$color_reset" \
+		"$color_place_missing$(join_array "$color_reset or in $color_place_missing" "${negative[@]}")$color_reset"
+done
+
