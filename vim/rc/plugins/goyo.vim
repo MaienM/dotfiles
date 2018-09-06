@@ -13,8 +13,11 @@ function! s:goyo_enter()
 	" Zoom the pane.
 	silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
 	" Keep current paragraph centered.
-	let s:old_scrollof=&scrolloff
+	let s:old_scrollof = &scrolloff
 	set scrolloff=999
+	" Don't show wrap markers.
+	let s:old_showbreak = &showbreak
+	set showbreak=
 	" Enable Limelight.
 	Limelight
 	" Set old peekaboo size to restore later.
@@ -24,7 +27,8 @@ function! s:goyo_leave()
 	let s:goyo = 0
 	silent !tmux set status on
 	silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
-	let &scrolloff=s:old_scrollof
+	let &scrolloff = s:old_scrollof
+	let &showbreak = s:old_showbreak
 	Limelight!
 	let g:peekaboo_window = s:old_peekaboo_window
 endfunction
