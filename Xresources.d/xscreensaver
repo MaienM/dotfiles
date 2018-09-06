@@ -1,36 +1,43 @@
-! No splash screen.
+! No splash screen. I have no need for it, and it looks awful with the rest of the settings here.
 xscreensaver.splash: false
 
-! No "new login" button, as it is styled incorrectly and I have no use for it.
-xscreensaver.newLoginCommand:
+! Eliminate superfluous padding.
+xscreensaver.Dialog.logo.width:  1
+xscreensaver.Dialog.logo.height: 1
 
-! No timestamp, as it is styled incorrectly and really not all that important anyway.
+! Hide some strings to make the dialog more compact.
+xscreensaver.passwd.heading.label:
 xscreensaver.dateFormat: 
 
-! The font.
-xscreensaver.Dialog.headingFont: -*-inconsolata-bold-r-*--60-*-*-*-*-*-ascii-*
-xscreensaver.Dialog.bodyFont:    -*-inconsolata-medium-r-*--40-*-*-*-*-*-ascii-*
-xscreensaver.Dialog.labelFont:   -*-inconsolata-medium-r-*--50-*-*-*-*-*-ascii-*
+! Set the fonts. The 'hidden' items are given as small a font as possible, because otherwise they will still take space.
+xscreensaver.Dialog.headingFont: -*-inconsolata-bold-r-*--0-*-*-*-*-*-ascii-*
 xscreensaver.Dialog.unameFont:   -*-inconsolata-medium-r-*--40-*-*-*-*-*-ascii-*
-xscreensaver.Dialog.buttonFont:  -*-inconsolata-bold-r-*--40-*-*-*-*-*-ascii-*
-xscreensaver.Dialog.dateFont:    -*-inconsolata-medium-r-*--40-*-*-*-*-*-ascii-*
-xscreensaver.passwd.passwdFont:  -*-inconsolata-bold-r-*--40-*-*-*-*-*-ascii-*
+xscreensaver.Dialog.bodyFont:    -*-inconsolata-medium-r-*--30-*-*-*-*-*-ascii-*
+xscreensaver.Dialog.labelFont:   -*-inconsolata-medium-r-*--50-*-*-*-*-*-ascii-*
+xscreensaver.passwd.passwdFont:  -*-inconsolata-medium-r-*--40-*-*-*-*-*-ascii-*
+xscreensaver.Dialog.dateFont:    -*-inconsolata-medium-r-*--0-*-*-*-*-*-ascii-*
+xscreensaver.Dialog.buttonFont:  -*-inconsolata-medium-r-*--51-*-*-*-*-*-ascii-*
 
-! Main dialog box style.
-xscreensaver.Dialog.foreground:        base05
-xscreensaver.Dialog.background:        base01
-xscreensaver.Dialog.topShadowColor:    base05
-xscreensaver.Dialog.bottomShadowColor: base05
-xscreensaver.Dialog.Button.foreground: base05
+! Set the main foreground/background color.
 xscreensaver.Dialog.Button.background: base01
+xscreensaver.Dialog.background:        base01
+xscreensaver.Dialog.text.background:   base01
+xscreensaver.Dialog.Button.foreground: base05
+xscreensaver.Dialog.foreground:        base05
+xscreensaver.Dialog.text.foreground:   base05
 
-! Username/password input box and date text colour.
-xscreensaver.Dialog.text.foreground:     base05
-xscreensaver.Dialog.text.background:     base01
-xscreensaver.Dialog.internalBorderWidth: 20
-xscreensaver.Dialog.borderWidth:         0
-xscreensaver.Dialog.shadowThickness:     2
+! Use the shadow as a border, and hide the actual border, because the border can be hidden but the shadow cannot.
+xscreensaver.Dialog.borderWidth:       0
+xscreensaver.Dialog.shadowThickness:   2
+xscreensaver.Dialog.bottomShadowColor: base05
+xscreensaver.Dialog.topShadowColor:    base05
 
-! Timeout barn style.
+! Keep some spacing between elements, but not too much.
+xscreensaver.Dialog.internalBorderWidth: 12
+
+! Hide typed asterisks.
+xscreensaver.passwd.asterisks: false
+
+! Make the timeout bar stand out from the rest with a splash of color.
 xscreensaver.passwd.thermometer.foreground: base0D
 xscreensaver.passwd.thermometer.width:      12
