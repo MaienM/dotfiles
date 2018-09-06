@@ -1,6 +1,6 @@
 # Make sure the fzf functions have been loaded
 for file in ~/.zsh/rc/fzf/functions/**/*.zsh; do
-    source "$file";
+	source "$file";
 done
 
 # Load the fzf pipeline files
