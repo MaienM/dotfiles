@@ -4,4 +4,8 @@ nmap <Leader>ts :TestSuite<CR>
 nmap <Leader>tr :TestLast<CR>
 nmap <Leader>gt :TestVisit<CR>
 
-let test#strategy = 'vimux'
+if exists('g:gui_oni')
+	let test#strategy = 'neovim'
+else
+	let test#strategy = 'vimux'
+endif
