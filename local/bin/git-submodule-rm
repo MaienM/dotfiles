@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+# Using the regular commands (git submodule deinit & git rm) still leaves behind some stuff that makes it harder to
+# re-add the submodule later. This command does a more thorough cleaning that doesn't have this problem.
+
+[ -n "$1" ] || exit 1
+
+echo "Fully removing submodule $1"
+echo "If the submodule was previously partially removed this may print some errors, these can be ignored"
+
+# Remove from the index.
+git rm -rf --cached "$1"
+
+# Remove from the configs. The second removal is what is done by submodule deinit, except that won't work for partially
+# removed modules, while doing it like this always works.
+git config -f .gitmodules --remove-section "submodule.$1"
+git config -f .git/config --remove-section "submodule.$1"
+
+# Remove leftover files.
+rm -rf "$1"
+rm -rf ".git/modules/$1"
