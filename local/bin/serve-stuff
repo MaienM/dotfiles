@@ -236,7 +236,7 @@ end
 
 # Determine the path to work on
 abort('Received too many arguments') if ARGV.size > 1
-path = ARGV.empty? ? Dir.pwd : ARGV[0]
+path = ARGV.empty? ? Dir.pwd : File.realpath(ARGV[0])
 abort("Cannot find #{path}") unless File.exists?(path)
 
 # Start listening for changes in the given path
