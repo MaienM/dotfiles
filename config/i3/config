@@ -146,7 +146,7 @@ smart_borders on
 floating_minimum_size 75 x 50
 
 # Keybinds to run programs
-bindsym $mod+Home exec --no-startup-id xscreensaver-command -lock
+bindsym $mod+Escape exec --no-startup-id xscreensaver-command -lock
 
 # Startup applications
 exec_always --no-startup-id [ -d ~/.config/i3/backgrounds ] && feh --bg-max --randomize --recursive ~/.config/i3/backgrounds/
