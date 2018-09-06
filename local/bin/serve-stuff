@@ -7,15 +7,14 @@
 # Try to require a gem. If this fails, install it and try again
 def require_or_install(file, options = {})
 	require file
-rescue LoadError => e
+rescue LoadError
 	gem_name = options[:gem] || file
 
 	# Install missing gem
-	put '----------------------------------------'
+	puts '----------------------------------------'
 	puts "Missing gem: #{gem_name}"
 	print 'Auto-install it? [yN] '
-	put '----------------------------------------'
-	gets.strip =~ /y/i or exit(1)
+	$stdin.gets.strip =~ /y/i or exit(1)
 	system("gem install #{gem_name}") or exit(1)
 
 	# Retry
