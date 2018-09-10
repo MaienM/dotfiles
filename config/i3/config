@@ -136,9 +136,6 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Disable mouse warping (mouse jumping when switching workspaces across monitors)
-mouse_warping none
-
 # Look & feel of windows
 new_window 1pixel
 gaps inner 04
