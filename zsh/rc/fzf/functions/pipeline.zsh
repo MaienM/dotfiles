@@ -210,7 +210,7 @@ _fzf_config_run() {
             [[ "$line" == "$pipeline "* ]] || continue
 
             # Transform the line using this pipeline
-            prefix=$(echo ${(Q)prefix} | strip_escape)
+            prefix=$(echo ${(Q)prefix})
             line=(${(z)line})
             $(resolve_alias $targetfn) "${line[2]//FZF_SEPERATOR_PLACEHOLDER/ }" "${${line[3,-1]}#${(Q)prefix} }"
             continue 2
@@ -242,7 +242,7 @@ _fzf_config_preview() {
         [[ "${previewfn}" == "" ]] && break;
 
         # Run the preview
-        prefix=$(echo ${(Q)prefix} | strip_escape)
+        prefix=$(echo ${(Q)prefix})
         line=(${(z)line})
         ${(z)previewfn} "${line[2]//FZF_SEPERATOR_PLACEHOLDER/ }" "${${line[3,-1]}#${(Q)prefix} }"
         return
