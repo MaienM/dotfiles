@@ -15,10 +15,10 @@ alias gitd="git diff"
 # Get the jira item from a branch name
 alias _git_branch_to_jira="sed 's/\\(-[0-9]\\+\\).*$/\\1/g'"
 
-# Diff + add
+# Diff + add.
 gitda() {
     if [[ $# -eq 0 ]]; then
-        git add $(fzf_run_preset "git:files:dirty" --multi)
+        git add $(fzf_run_preset "git:files:dirty" --multi --header="Pick files to stage")
     else
         gitd $@
         prompt_confirm "Add to index?" "Y" && git add $@
@@ -29,7 +29,7 @@ gitda() {
 # Checkout
 gitco() {
     if [[ $# -eq 0 ]]; then
-        git checkout -- $(fzf_run_preset "git:files:dirty" --multi)
+        git checkout -- $(fzf_run_preset "git:files:dirty" --multi --header="Pick files to checkout")
     else
         gitd $@
         prompt_confirm "Reset changes?" "Y" && git checkout -- $@
