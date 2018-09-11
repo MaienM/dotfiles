@@ -34,13 +34,28 @@ gitda() {
     gits
 }
 
+# A variant of git checkout that also removes untracked files
+git_drop_changes() {
+    for file in "$@"; do
+        if [[ -n "$(git ls-files "$file")" ]]; then
+            git checkout -- "$file"
+        else
+            rm "$file"
+        fi
+    done
+}
+
 # Checkout
 gitco() {
     if [[ $# -eq 0 ]]; then
-        git checkout -- $(fzf_run_preset "git:files:dirty" --multi --header="Pick files to checkout")
+        files=($(fzf_run_preset "git:files:dirty" --multi --header="Pick files to checkout"))
+        [ ${#files} -gt 0 ] || return 0
+        echo "Picked files:"
+        printf '%s\n' "${files[@]}"
+        prompt_confirm "Reset changes? This is not reversible!" "n" && git_drop_changes "${files[@]}"
     else
         gitd $@
-        prompt_confirm "Reset changes?" "Y" && git checkout -- $@
+        prompt_confirm "Reset changes? This is not reversible!" "n" && git_drop_changes $@
     fi
     gits
 }
