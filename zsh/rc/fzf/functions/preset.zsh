@@ -67,6 +67,9 @@ _fzf_pipeline_fzf_presets_preview() {
 fzf_run_preset() {
     local fzf_args match_preset preset fn description
 
+    # Load/reset colors
+    colors
+
     # First complete on the preset itself, in case it is a partial/nonexistant preset
     if [[ $# -ge 1 ]]; then
         match_preset=${1%:}
