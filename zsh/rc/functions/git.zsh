@@ -51,11 +51,11 @@ gitco() {
         files=($(fzf_run_preset "git:files:dirty" --multi --header="Pick files to checkout"))
         [ ${#files} -gt 0 ] || return 0
         echo "Picked files:"
-        printf '%s\n' "${files[@]}"
-        prompt_confirm "Reset changes? This is not reversible!" "n" && git_drop_changes "${files[@]}"
+        printf "\t$color_fg_cyan%s$color_reset\n" "${files[@]}"
+        prompt_confirm "Reset changes? ${color_fg_red}This is not reversible!$color_reset" "n" && git_drop_changes "${files[@]}"
     else
         gitd $@
-        prompt_confirm "Reset changes? This is not reversible!" "n" && git_drop_changes $@
+        prompt_confirm "Reset changes? ${color_fg_red}This is not reversible!$color_reset" "n" && git_drop_changes $@
     fi
     gits
 }
