@@ -9,11 +9,19 @@ alias gitlvu='gitlv origin/master..'
 alias gitrb='git rebase --interactive'
 alias gitrbu='gitrb origin/master..'
 
-# Diff.
-alias gitd="git diff"
-
 # Get the jira item from a branch name
 alias _git_branch_to_jira="sed 's/\\(-[0-9]\\+\\).*$/\\1/g'"
+
+# A variant of git diff that also shows diffs for new and deleted files
+gitd() {
+    for file in "$@"; do
+        if [[ -n "$(git ls-files "$file")" ]]; then
+            git diff -- "$file"
+        else
+            git diff --no-index -- /dev/null "$file"
+        fi
+    done
+}
 
 # Diff + add.
 gitda() {
