@@ -7,6 +7,16 @@ _fzf_pipeline_git_files_source() {
         echo "${(q)file} $file"
     done
 }
+_fzf_pipeline_git_files_preview() {
+    fn="${(Q)1}"
+    if [ -d "$fn" ]; then
+        ls -hl "$fn"
+    elif [ -f "$fn" ]; then
+        pygmentize -g -O "full,style=$BASE16_THEME" "$fn"
+    else
+        stat "$fn"
+    fi
+}
 _fzf_pipeline_git_files_target() {
     echo ${(Q)1}
 }
