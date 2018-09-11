@@ -12,7 +12,10 @@ _fzf_pipeline_git_files_target() {
 }
 
 # Files with changes
-alias _fzf_pipeline_git_files_modified_source='_fzf_pipeline_git_files_source --modified --exclude-standard'
+_fzf_pipeline_git_files_modified_source() {
+    _fzf_pipeline_git_files_source --modified --exclude-standard \
+    | grep --invert-match --fixed-strings --line-regexp "$(_fzf_pipeline_git_files_deleted_source)"
+}
 alias _fzf_pipeline_git_files_modified_preview='gitd'
 alias _fzf_pipeline_git_files_modified_target='_fzf_pipeline_git_files_target'
 
@@ -109,7 +112,7 @@ _fzf_preset_git_ref() {
 }
 
 _fzf_register_preset "git_files" "Git files" "git:files"
-_fzf_register_preset "git_files_modified" "Git files with changes" "git:files:modified"
+_fzf_register_preset "git_files_modified" "Git files with unstaged changes" "git:files:modified"
 _fzf_register_preset "git_files_deleted" "Git files that are staged for removal" "git:files:deleted"
 _fzf_register_preset "git_files_others" "Git files that are not yet tracked" "git:files:others"
 _fzf_register_preset "git_files_dirty" "Git files (with changes/untracked)" "git:files:dirty"
