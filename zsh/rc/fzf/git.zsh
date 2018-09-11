@@ -12,11 +12,19 @@ _fzf_pipeline_git_files_target() {
 }
 
 # Files with changes
-alias _fzf_pipeline_git_files_dirty_source='_fzf_pipeline_git_files_source --modified --others --exclude-standard'
-_fzf_pipeline_git_files_dirty_preview() {
-    git diff "$1"
-}
-alias _fzf_pipeline_git_files_dirty_target='_fzf_pipeline_git_files_target'
+alias _fzf_pipeline_git_files_modified_source='_fzf_pipeline_git_files_source --modified --exclude-standard'
+alias _fzf_pipeline_git_files_modified_preview='gitd'
+alias _fzf_pipeline_git_files_modified_target='_fzf_pipeline_git_files_target'
+
+# Deleted files
+alias _fzf_pipeline_git_files_deleted_source='_fzf_pipeline_git_files_source --deleted --exclude-standard'
+alias _fzf_pipeline_git_files_deleted_preview='gitd'
+alias _fzf_pipeline_git_files_deleted_target='_fzf_pipeline_git_files_target'
+
+# Other files (this includes files not yet known to git)
+alias _fzf_pipeline_git_files_others_source='_fzf_pipeline_git_files_source --others --exclude-standard'
+alias _fzf_pipeline_git_files_others_preview='gitd'
+alias _fzf_pipeline_git_files_others_target='_fzf_pipeline_git_files_target'
 
 # Commits
 _fzf_pipeline_git_commit_source() {
@@ -81,7 +89,15 @@ alias _fzf_pipeline_git_tag_preview='_fzf_pipeline_git_commit_preview'
 
 # Presets
 alias _fzf_preset_git_files='_fzf_config_add git_files'
-alias _fzf_preset_git_files_dirty='_fzf_config_add git_files_dirty'
+alias _fzf_preset_git_files_modified='_fzf_config_add git_files_modified'
+alias _fzf_preset_git_files_deleted='_fzf_config_add git_files_deleted'
+alias _fzf_preset_git_files_others='_fzf_config_add git_files_others'
+_fzf_preset_git_files_dirty() {
+    echo \
+    | _fzf_config_add "git_files_modified" "${fg[cyan]}modified$reset_color" \
+    | _fzf_config_add "git_files_deleted" "${fg[red]}deleted$reset_color" \
+    | _fzf_config_add "git_files_others" "${fg[green]}added$reset_color"
+}
 alias _fzf_preset_git_commit='_fzf_config_add git_commit'
 alias _fzf_preset_git_branch='_fzf_config_add git_branch'
 alias _fzf_preset_git_tag='_fzf_config_add git_tag'
@@ -93,6 +109,9 @@ _fzf_preset_git_ref() {
 }
 
 _fzf_register_preset "git_files" "Git files" "git:files"
+_fzf_register_preset "git_files_modified" "Git files with changes" "git:files:modified"
+_fzf_register_preset "git_files_deleted" "Git files that are staged for removal" "git:files:deleted"
+_fzf_register_preset "git_files_others" "Git files that are not yet tracked" "git:files:others"
 _fzf_register_preset "git_files_dirty" "Git files (with changes/untracked)" "git:files:dirty"
 _fzf_register_preset "git_commit" "Git commits" "git:commit"
 _fzf_register_preset "git_branch" "Git branches" "git:branch"
