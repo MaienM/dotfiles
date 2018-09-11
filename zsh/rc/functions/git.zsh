@@ -14,11 +14,21 @@ alias _git_branch_to_jira="sed 's/\\(-[0-9]\\+\\).*$/\\1/g'"
 
 # A variant of git diff that also shows diffs for new and deleted files
 gitd() {
+    local opts
+
+    opts=()
+    if [[ "$@" == *' -- '* ]]; then
+        while ! [ "$1" = '--' ]; do
+            opts=("${opts[@]}" "$1")
+            shift 1
+        done
+    fi
+
     for file in "$@"; do
         if [[ -n "$(git ls-files "$file")" ]]; then
-            git diff -- "$file"
+            git diff "${opts[@]}" -- "$file"
         else
-            git diff --no-index -- /dev/null "$file"
+            git diff "${opts[@]}" --no-index -- /dev/null "$file"
         fi
     done
 }
