@@ -11,7 +11,7 @@ _fzf_require_sudo() {
 
 # Containers
 _fzf_pipeline_docker_containers_source() {
-    _fzf_require_sudo docker ps --format="{{.ID}} ${fg[yellow]}{{.Names}}$reset_color{{if (.Label \"com.docker.compose.project\")}} (part of ${fg[blue]}{{.Label \"com.docker.compose.project\"}}$reset_color){{end}} is an instance of ${fg[cyan]}{{.Image}}$reset_color"
+    _fzf_require_sudo docker ps --format="{{.ID}} $color_fg_yellow{{.Names}}$color_reset{{if (.Label \"com.docker.compose.project\")}} (part of $color_fg_blue{{.Label \"com.docker.compose.project\"}}$color_reset){{end}} is an instance of $color_fg_cyan{{.Image}}$color_reset"
 }
 _fzf_pipeline_docker_containers_preview() {
     docker-tools inspect $1

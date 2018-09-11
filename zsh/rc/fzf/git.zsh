@@ -37,7 +37,7 @@ alias _fzf_pipeline_git_files_others_target='_fzf_pipeline_git_files_target'
 
 # Commits
 _fzf_pipeline_git_commit_source() {
-    git log --pretty=format:"%H ${fg[yellow]}%h$reset_color %s" "$@"
+    git log --pretty=format:"%H ${color_fg_yellow}%h$color_reset %s" "$@"
 }
 _fzf_pipeline_git_commit_preview() {
     git show --name-status "$1"
@@ -71,7 +71,7 @@ _fzf_pipeline_git_branch_source() {
     | sort --key=2 --stable \
     | while read branch __ __ __; do
         echo -n $branch
-        echo -n ' '${fg[yellow]}${branch[0,$columns]}$reset_color
+        echo -n ' '${color_fg_yellow}${branch[0,$columns]}$color_reset
         echo -n ' | '$(git log --pretty=format:%s "$branch" --max-count=1)
         echo
     done \
@@ -92,7 +92,7 @@ _fzf_pipeline_git_branch_target() {
 
 # Tags
 _fzf_pipeline_git_tag_source() {
-    git tag "$@" --format="%(refname:strip=1) ${fg[yellow]}%(refname:strip=2)$reset_color %(subject)"
+    git tag "$@" --format="%(refname:strip=1) ${color_fg_yellow}%(refname:strip=2)$color_reset %(subject)"
 }
 alias _fzf_pipeline_git_tag_preview='_fzf_pipeline_git_commit_preview'
 
@@ -103,18 +103,18 @@ alias _fzf_preset_git_files_deleted='_fzf_config_add git_files_deleted'
 alias _fzf_preset_git_files_others='_fzf_config_add git_files_others'
 _fzf_preset_git_files_dirty() {
     echo \
-    | _fzf_config_add "git_files_modified" "${fg[cyan]}modified$reset_color" \
-    | _fzf_config_add "git_files_deleted" "${fg[red]}deleted$reset_color" \
-    | _fzf_config_add "git_files_others" "${fg[green]}added$reset_color"
+    | _fzf_config_add "git_files_modified" "${color_fg_cyan}modified$color_reset" \
+    | _fzf_config_add "git_files_deleted" "${color_fg_red}deleted$color_reset" \
+    | _fzf_config_add "git_files_others" "${color_fg_green}added$color_reset"
 }
 alias _fzf_preset_git_commit='_fzf_config_add git_commit'
 alias _fzf_preset_git_branch='_fzf_config_add git_branch'
 alias _fzf_preset_git_tag='_fzf_config_add git_tag'
 _fzf_preset_git_ref() {
     echo \
-    | _fzf_config_add "git_branch" "${fg[green]}branch$reset_color" \
-    | _fzf_config_add "git_tag" "${fg[blue]}tag$reset_color" \
-    | _fzf_config_add "git_commit" "${fg[cyan]}commit$reset_color"
+    | _fzf_config_add "git_branch" "${color_fg_green}branch$color_reset" \
+    | _fzf_config_add "git_tag" "${color_fg_blue}tag$color_reset" \
+    | _fzf_config_add "git_commit" "${color_fg_cyan}commit$color_reset"
 }
 
 _fzf_register_preset "git_files" "Git files" "git:files"
