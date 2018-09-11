@@ -16,17 +16,23 @@ _fzf_pipeline_git_files_modified_source() {
     _fzf_pipeline_git_files_source --modified --exclude-standard \
     | grep --invert-match --fixed-strings --line-regexp "$(_fzf_pipeline_git_files_deleted_source)"
 }
-alias _fzf_pipeline_git_files_modified_preview='gitd'
+_fzf_pipeline_git_files_modified_preview() {
+    gitd "${(Q)1}"
+}
 alias _fzf_pipeline_git_files_modified_target='_fzf_pipeline_git_files_target'
 
 # Deleted files
 alias _fzf_pipeline_git_files_deleted_source='_fzf_pipeline_git_files_source --deleted --exclude-standard'
-alias _fzf_pipeline_git_files_deleted_preview='gitd'
+_fzf_pipeline_git_files_deleted_preview() {
+    gitd "${(Q)1}"
+}
 alias _fzf_pipeline_git_files_deleted_target='_fzf_pipeline_git_files_target'
 
 # Other files (this includes files not yet known to git)
 alias _fzf_pipeline_git_files_others_source='_fzf_pipeline_git_files_source --others --exclude-standard'
-alias _fzf_pipeline_git_files_others_preview='gitd'
+_fzf_pipeline_git_files_others_preview() {
+    gitd "${(Q)1}"
+}
 alias _fzf_pipeline_git_files_others_target='_fzf_pipeline_git_files_target'
 
 # Commits
