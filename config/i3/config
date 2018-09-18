@@ -140,6 +140,7 @@ bindsym $mod+r mode "resize"
 new_window 1pixel
 gaps inner 04
 smart_borders on
+smart_gaps on
 floating_minimum_size 75 x 50
 
 # Keybinds to run programs
