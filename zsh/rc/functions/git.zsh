@@ -36,7 +36,14 @@ gitd() {
 # Diff + add.
 gitda() {
     if [[ $# -eq 0 ]]; then
-        git add $(fzf_run_preset "git:files:dirty" --multi --header="Pick files to stage")
+        files=($(fzf_run_preset \
+            "git:files:dirty" \
+            --multi \
+            --header="Pick files to stage" \
+            --bind='alt-p:abort+execute(git add -p {2} >&2 < /dev/tty)' \
+        ))
+        [ ${#files} -gt 0 ] || return 0
+        git add "${files[@]}"
     else
         gitd $@
         prompt_confirm "Add to index?" "Y" && git add $@
