@@ -51,29 +51,35 @@ gitda() {
     gits
 }
 
-# A variant of git checkout that also removes untracked files
-git_drop_changes() {
-    for file in "$@"; do
+# Checkout
+gitco() {
+    # Determine files to operate on
+    files=()
+    if [[ $# -eq 0 ]]; then
+        files=($(fzf_run_preset \
+            "git:files:dirty" \
+            --multi \
+            --header="Pick files to checkout" \
+            --bind='alt-p:abort+execute(git checkout -p {2} >&2 < /dev/tty)' \
+        ))
+        [ ${#files} -gt 0 ] || return 0
+        echo "Picked files:"
+        printf "\t$color_fg_cyan%s$color_reset\n" "${files[@]}"
+    else
+        files=("$@")
+        gitd $@
+    fi
+    prompt_confirm "Reset changes? ${color_fg_red}This is not reversible!$color_reset" "n" || return 0
+
+    # Reset the changes
+    for file in "${files[@]}"; do
         if [[ -n "$(git ls-files "$file")" ]]; then
             git checkout -- "$file"
         else
             rm "$file"
         fi
     done
-}
 
-# Checkout
-gitco() {
-    if [[ $# -eq 0 ]]; then
-        files=($(fzf_run_preset "git:files:dirty" --multi --header="Pick files to checkout"))
-        [ ${#files} -gt 0 ] || return 0
-        echo "Picked files:"
-        printf "\t$color_fg_cyan%s$color_reset\n" "${files[@]}"
-        prompt_confirm "Reset changes? ${color_fg_red}This is not reversible!$color_reset" "n" && git_drop_changes "${files[@]}"
-    else
-        gitd $@
-        prompt_confirm "Reset changes? ${color_fg_red}This is not reversible!$color_reset" "n" && git_drop_changes $@
-    fi
     gits
 }
 
