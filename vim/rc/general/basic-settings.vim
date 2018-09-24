@@ -67,7 +67,10 @@ set linebreak
 
 " Wrap long lines to prevent horizontal scrolling, and show this visually.
 set wrap
-let &showbreak = '>> '
+let &showbreak='≫ '
+" Indent wrapped lines.
+set breakindent
+set breakindentopt=min:40
 
 " Use the pyenv environment prepared by the install script.
 let g:python_host_prog = $HOME . '/.pyenv/versions/neovim2/bin/python'
