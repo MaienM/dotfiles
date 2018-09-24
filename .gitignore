@@ -1,6 +1,4 @@
 Xresources.d/colors
-local/share/background-sets
-local/share/backgrounds
 tmux/resurrect
 vim/.netrwhist
 vim/bundle/fzf-base
