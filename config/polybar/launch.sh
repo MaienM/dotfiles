@@ -12,8 +12,8 @@ source nerdfonts_icons_all
 set +a
 
 # Launch bars for all screens
-monitors=($(xrandr --listmonitors | cut -d' ' -f6))
+mapfile -t monitors < <(xrandr --listmonitors | cut -d' ' -f6 | grep -E '^.+$')
 MONITOR="${monitors[0]}" polybar primary &
-for monitor in ${monitors[@]:1}; do
+for monitor in "${monitors[@]:1}"; do
 	MONITOR="$monitor" polybar secondary &
 done
