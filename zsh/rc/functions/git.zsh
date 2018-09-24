@@ -27,6 +27,18 @@ gitd() {
     for file in "$@"; do
         if [[ -n "$(git ls-files "$file")" ]]; then
             git diff "${opts[@]}" -- "$file"
+        elif [[ -L "$file" ]]; then
+            # A new symlink. This is not handled correctly by the --no-index git diff, so create a diff manually.
+            (
+                echo "${color_bold}diff --git a/$file b/$file$color_reset"
+                echo "${color_bold}new file mode 120000$color_reset"
+                echo "${color_bold}index 0000000..1234567$color_reset"
+                echo "${color_bold}--- /dev/null$color_reset"
+                echo "${color_bold}+++ b/$file$color_reset"
+                echo "${color_fg_cyan}@@ -0,0 +1 @@$color_reset"
+                echo "${color_fg_green}$(readlink "$file")$color_reset"
+                echo "\ No newline at end of file$color_reset"
+            ) | diff-so-fancy
         else
             git diff "${opts[@]}" --no-index -- /dev/null "$file"
         fi

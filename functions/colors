@@ -25,6 +25,7 @@ colors() {
 	color_bg_cyan=$(tput setab 6)
 	color_bg_white=$(tput setab 7)
 
+	color_bold=$(tput bold)
 	color_dim=$(tput dim)
 	color_underline=$(tput smul)
 	color_underline_reset=$(tput rmul)
