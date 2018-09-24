@@ -3,3 +3,4 @@ config/albert
 config/i3
 local
 local/bin
+local/share
