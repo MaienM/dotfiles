@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # WSL doesn't seem to properly setup everything, so correct this
-if ! grep -q /proc/sys/kernel/osrelease Microsoft; then
+if ! grep -q Microsoft /proc/sys/kernel/osrelease; then
 	return;
 fi
 
