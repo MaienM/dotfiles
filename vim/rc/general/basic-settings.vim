@@ -36,6 +36,8 @@ set wildmode=longest,list,full
 " Default to folding by marker. If a filetype has support for syntax, it should set this.
 set foldmethod=marker
 set foldnestmax=4
+" Don't automatically open folds when searching.
+set foldopen-=search
 
 " Show certain invisible characters. Only used when 'list' is enabled, which it is not by default.
 set listchars=tab:>-,trail:-
