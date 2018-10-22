@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+[ -d "$HOME/.pyenv" ] || return
+
+export PYENV_ROOT="$HOME/.pyenv"
+bindir="$PYENV_ROOT/bin"
+if ! in_path "$bindir"; then
+	prepend_to_path "$bindir"
+	export PYTHON_CONFIGURE_OPTS="--enable-shared"
+	eval "$(pyenv init -)"
+fi

@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+# shellcheck disable=SC1090
 
 #
 # Setup autoloading functions.
@@ -45,46 +46,11 @@ prepend_to_path "$HOME/.local/bin"
 [ -f "$HOME/.profile_local" ] && . "$HOME/.profile_local";
 
 #
-# If present, setup pyenv.
+# Load other profile files.
 #
-if [ -d "$HOME/.pyenv" ]; then
-	export PYENV_ROOT="$HOME/.pyenv"
-	bindir="$PYENV_ROOT/bin"
-	if ! in_path "$bindir"; then
-		prepend_to_path "$bindir"
-		export PYTHON_CONFIGURE_OPTS="--enable-shared"
-		eval "$(pyenv init -)"
-	fi
-fi
-
-#
-# If present, setup rbenv.
-#
-if [ -d "$HOME/.rbenv" ]; then
-	export RBENV_ROOT="$HOME/.rbenv"
-	bindir="$RBENV_ROOT/bin"
-	if ! in_path "$bindir"; then
-		prepend_to_path "$bindir"
-		eval "$(rbenv init -)"
-	fi
-fi
-
-#
-# If present, setup nodenv.
-#
-if [ -d "$HOME/.nodenv" ]; then
-	export NODENV_ROOT="$HOME/.nodenv"
-	bindir="$NODENV_ROOT/bin"
-	if ! in_path "$bindir"; then
-		prepend_to_path "$bindir"
-		eval "$(nodenv init -)"
-	fi
-fi
-# Same for yarn
-if [ -d "$HOME/.yarn" ]; then
-	prepend_to_path "$HOME/.yarn/bin"
-	prepend_to_path "$HOME/.config/yarn/global/node_modules/.bin"
-fi
+for file in "$HOME/.profile.d/"*; do
+	. "$file"
+done
 
 #
 # If present, load the post profile file for this specific computer.

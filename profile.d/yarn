@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+[ -d "$HOME/.yarn" ] || return
+
+prepend_to_path "$HOME/.yarn/bin"
+prepend_to_path "$HOME/.config/yarn/global/node_modules/.bin"

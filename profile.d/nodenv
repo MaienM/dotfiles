@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+[ -d "$HOME/.nodenv" ] || return
+
+export NODENV_ROOT="$HOME/.nodenv"
+bindir="$NODENV_ROOT/bin"
+if ! in_path "$bindir"; then
+	prepend_to_path "$bindir"
+	eval "$(nodenv init -)"
+fi

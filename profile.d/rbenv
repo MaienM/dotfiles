@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+[ -d "$HOME/.rbenv" ] || return
+
+export RBENV_ROOT="$HOME/.rbenv"
+bindir="$RBENV_ROOT/bin"
+if ! in_path "$bindir"; then
+	prepend_to_path "$bindir"
+	eval "$(rbenv init -)"
+fi
