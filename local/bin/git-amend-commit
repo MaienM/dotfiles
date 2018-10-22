@@ -9,11 +9,12 @@ if [ -z "$1" ]; then
     exit 1
 fi
 COMMIT="$1"
+shift 1
 
 if ! git merge-base --is-ancestor "$COMMIT" HEAD; then
     echo "This commit doesn't exist on this branch"
     echo "Keep in mind that amending changes the commit hash, so amending multiple times with the same hash will not work"
     exit 1
 fi
-git commit --fixup="$1"
+git commit --fixup="$COMMIT" "$@"
 GIT_EDITOR=true git rebase --interactive --autostash --autosquash "$COMMIT~1"
