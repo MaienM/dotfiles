@@ -80,6 +80,11 @@ if [ -d "$HOME/.nodenv" ]; then
 		eval "$(nodenv init -)"
 	fi
 fi
+# Same for yarn
+if [ -d "$HOME/.yarn" ]; then
+	prepend_to_path "$HOME/.yarn/bin"
+	prepend_to_path "$HOME/.config/yarn/global/node_modules/.bin"
+fi
 
 #
 # If present, load the post profile file for this specific computer.
