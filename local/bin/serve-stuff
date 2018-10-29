@@ -230,6 +230,30 @@ class MarkdownFileHandler < BaseFileHandler
 	end
 end
 
+class RewriteHandler < WEBrick::HTTPServlet::AbstractServlet
+	def initialize(server)
+		@server = server
+	end
+
+	def do_GET(request, response)
+		# Rewrite the request path if desired
+		path = request.path
+		if request.query.key?('rewritePath')
+			path = request.query.delete('rewritePath')
+			puts "Rewriting #{request.path} to #{path}"
+			request.path_info = path
+		end
+
+		# Perform the request using the normal handler for the given path
+		path = "/__file_handler__/#{path}"
+		options = @server.search_servlet(path)
+		cls = options[0]
+		raise 'Nested rewrite' if cls == RewriteHandler
+		handler = cls.get_instance(@server, *options[1])
+		return handler.do_GET(request, response)
+	end
+end
+
 ################################################################################
 # Run
 ################################################################################
@@ -248,7 +272,12 @@ listener.start
 
 # Setup a http server
 server = WEBrick::HTTPServer.new(Host: config['server']['host'], Port: config['server']['port'])
-handler = server.mount('/', WEBrick::HTTPServlet::FileHandler, path, true)[0]
+
+# Set the path rewrite handler as root
+server.mount('/', RewriteHandler)
+
+# Add the actual file handler under a magic directory
+handler = server.mount('/__file_handler__/', WEBrick::HTTPServlet::FileHandler, path, true)[0]
 
 # Register all known extensions
 ASCIIDOC_EXTENSIONS.each { |ext| handler.add_handler(ext, AsciidoctorFileHandler) }
