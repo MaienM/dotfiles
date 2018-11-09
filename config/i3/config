@@ -121,6 +121,16 @@ bindsym $mod+Shift+0 move container to workspace $workspace10
 # move entire workspace
 bindsym $mod+Control+$left move workspace to output left
 bindsym $mod+Control+$right move workspace to output right
+bindsym $mod+Control+1 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace1"
+bindsym $mod+Control+2 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace2"
+bindsym $mod+Control+3 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace3"
+bindsym $mod+Control+4 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace4"
+bindsym $mod+Control+5 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace5"
+bindsym $mod+Control+6 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace6"
+bindsym $mod+Control+7 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace7"
+bindsym $mod+Control+8 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace8"
+bindsym $mod+Control+9 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace9"
+bindsym $mod+Control+10 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace10"
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
