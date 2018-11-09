@@ -121,6 +121,8 @@ bindsym $mod+Shift+0 move container to workspace $workspace10
 # move entire workspace
 bindsym $mod+Control+$left move workspace to output left
 bindsym $mod+Control+$right move workspace to output right
+bindsym $mod+Control+Mod1+$left exec ~/.config/i3/move-workspace-to-output-stay.sh left
+bindsym $mod+Control+Mod1+$right exec ~/.config/i3/move-workspace-to-output-stay.sh right
 bindsym $mod+Control+1 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace1"
 bindsym $mod+Control+2 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace2"
 bindsym $mod+Control+3 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace3"
