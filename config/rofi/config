@@ -1,0 +1,9 @@
+! Scale properly
+rofi.dpi: 240
+rofi.font: InconsolataGo 16
+
+! Sort matches, decreasing the amount of typing needed
+rofi.sort: true
+
+! Don't show the prefix by default in combi mode
+rofi.combi-hide-mode-prefix: true
