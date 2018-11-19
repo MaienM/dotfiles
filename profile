@@ -21,6 +21,12 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 #
+# Some constants for use in scripts.
+#
+export newl='
+'
+
+#
 # Set preferred programs.
 #
 if command_exists nvim; then
