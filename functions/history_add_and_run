@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+history_add_and_run() {
+	print -s "$*"
+	"$@"
+}
