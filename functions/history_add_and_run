@@ -1,6 +1,8 @@
 #!/usr/bin/env zsh
 
 history_add_and_run() {
+	source nerdfonts_icons_material
 	print -s "$*"
+	echo "  $i_mdi_subdirectory_arrow_right $@"
 	"$@"
 }
