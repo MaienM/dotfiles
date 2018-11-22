@@ -35,10 +35,10 @@ if [ ${#existing} -eq 1 ]; then
 fi
 
 prompt_context_custom() {
-    # The tmux statusline already includes the hostname, so don't make SSH show the context when in tmux.
-    if [[ -n "$TMUX" ]]; then
-        SSH_CLIENT= SSH_TTY= POWERLEVEL9K_CONTEXT_TEMPLATE="%n" prompt_context "$@"
-    else
-        prompt_context "$@"
-    fi
+	# The tmux statusline already includes the hostname, so don't make SSH show the context when in tmux.
+	if [[ -n "$TMUX" ]]; then
+		SSH_CLIENT= SSH_TTY= POWERLEVEL9K_CONTEXT_TEMPLATE="%n" prompt_context "$@"
+	else
+		prompt_context "$@"
+	fi
 }
