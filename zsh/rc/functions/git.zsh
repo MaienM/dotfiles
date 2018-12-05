@@ -12,6 +12,14 @@ alias gitrbu='gitrb origin/master..'
 # Get the jira item from a branch name
 alias _git_branch_to_jira="sed 's/\\(-[0-9]\\+\\).*$/\\1/g'"
 
+# Switch between branches
+gitb() {
+    local branch
+
+    branch="$(fzf_run_preset "git:branch")"
+    [ -n "$branch" ] && git checkout "$branch"
+}
+
 # A variant of git diff that also shows diffs for new and deleted files
 gitd() {
     local opts
