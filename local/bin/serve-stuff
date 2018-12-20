@@ -173,9 +173,10 @@ end
 require_or_install 'webrick'
 
 # The extensions allowed for various filetypes
+HTML_EXTENSIONS = %w(html htm)
 ASCIIDOC_EXTENSIONS = %w(asciidoc adoc)
 MARKDOWN_EXTENSIONS = %w(markdown md)
-ALL_EXTENSIONS = ASCIIDOC_EXTENSIONS | MARKDOWN_EXTENSIONS
+ALL_EXTENSIONS = HTML_EXTENSIONS | ASCIIDOC_EXTENSIONS | MARKDOWN_EXTENSIONS
 
 class BaseFileHandler < WEBrick::HTTPServlet::AbstractServlet
 	def do_GET(request, response)
@@ -192,6 +193,10 @@ class BaseFileHandler < WEBrick::HTTPServlet::AbstractServlet
 	def transform(body)
 		return body
 	end
+end
+
+class HTMLFileHandler < BaseFileHandler
+	# Only needs to inject the reload script, which is done by BaseFileHAndler
 end
 
 class AsciidoctorFileHandler < BaseFileHandler
@@ -280,6 +285,7 @@ server.mount('/', RewriteHandler)
 handler = server.mount('/__file_handler__/', WEBrick::HTTPServlet::FileHandler, path, true)[0]
 
 # Register all known extensions
+HTML_EXTENSIONS.each { |ext| handler.add_handler(ext, HTMLFileHandler) }
 ASCIIDOC_EXTENSIONS.each { |ext| handler.add_handler(ext, AsciidoctorFileHandler) }
 MARKDOWN_EXTENSIONS.each { |ext| handler.add_handler(ext, MarkdownFileHandler) }
 
