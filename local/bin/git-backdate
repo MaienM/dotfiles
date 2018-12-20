@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+
+# Change the timestamps of a commit.
+
+set -e
+
+commit="$1"
+shift
+
+# Show information of the commit.
+git show --quiet --format=fuller "$commit"
+currentdate="$(git show --quiet --format='%aI')"
+
+# Get for the new date.
+targetdate="$1"
+if [ -z "$targetdate" ]; then
+	echo "> What should the date be set to (optionally relative to author date)?"
+	read -r targetdate
+fi
+
+# Try to parse as a relative time.
+targetdate="$(date --date="$currentdate $targetdate" +%FT%T%Z || true)"
+if [ -z "$targetdate" ]; then
+	targetdate="$(date --date="$targetdate" +%FT%T%Z)"
+fi
+
+# Set the new date.
+echo "> Changing date from $currentdate to $targetdate"
+GIT_COMMITTER_DATE="$targetdate" git commit --amend --date="$targetdate" -C "$commit"
