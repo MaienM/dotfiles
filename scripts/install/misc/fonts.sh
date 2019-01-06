@@ -15,8 +15,8 @@ mkdir /tmp/font-setup
 
 	# Download InconsolataGo
 	echo '>>> Downloading InconsolataGo'
-	curl '-#' -O 'http://levien.com/type/myfonts/inconsolata/InconsolataGo-Regular.ttf'
-	curl '-#' -O 'http://levien.com/type/myfonts/inconsolata/InconsolataGo-Bold.ttf'
+	curl '-#' -O 'https://levien.com/type/myfonts/inconsolata/InconsolataGo-Regular.ttf'
+	curl '-#' -O 'https://levien.com/type/myfonts/inconsolata/InconsolataGo-Bold.ttf'
 
 	# Download the nerd-fonts font & scripts
 	echo '>>> Downloading Nerd-Fonts'
