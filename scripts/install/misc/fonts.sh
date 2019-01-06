@@ -2,6 +2,11 @@
 
 set -o errexit
 
+if ! which unzip &> /dev/null; then
+	echo >&2 "The unzip command is missing"
+	exit 1
+fi
+
 rm /tmp/font-setup -rf
 mkdir /tmp/font-setup
 (
