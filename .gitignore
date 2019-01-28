@@ -1,10 +1,11 @@
 Xresources.d/colors
-tmux/resurrect
+tmux/resurrect/
 vim/.netrwhist
 vim/bundle/fzf-base
 vim/bundle/powerline
 vim/doc/tags
 vim/init.vim
 vim/spell
+config/mpv/watch_later/
 
 *.pyc
