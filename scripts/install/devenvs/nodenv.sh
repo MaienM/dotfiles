@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 git clone https://github.com/nodenv/nodenv.git ~/.nodenv
 git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build

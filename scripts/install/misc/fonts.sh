@@ -2,7 +2,7 @@
 
 set -o errexit
 
-if ! which unzip &> /dev/null; then
+if ! command -v unzip &> /dev/null; then
 	echo >&2 "The unzip command is missing"
 	exit 1
 fi
@@ -27,14 +27,14 @@ mkdir /tmp/font-setup
 		'nerd-fonts-master/src/glyphs/Symbols-2048-em Nerd Font Complete.ttf' \
 		'nerd-fonts-master/10-nerd-font-symbols.conf'
 	rm master.zip
-	rm *Windows*
+	rm ./*Windows*
 
 	# Install fonts
 	echo '>>> Installing fonts'
 	mkdir -p ~/.local/share/fonts
-	mv *.ttf ~/.local/share/fonts/
+	mv ./*.ttf ~/.local/share/fonts/
 	mkdir -p ~/.config/fontconfig/conf.d
-	mv *.conf ~/.config/fontconfig/conf.d/
+	mv ./*.conf ~/.config/fontconfig/conf.d/
 	fc-cache -rf
 
 	# Rewrite the load_all script
@@ -42,6 +42,7 @@ mkdir /tmp/font-setup
 		echo '#!/usr/bin/env bash'
 		echo
 		echo 'for file in ~/.local/bin/nerdfonts_icons_*; do'
+		# shellcheck disable=SC2016
 		echo '  [[ "$file" == *"_all" ]] || source "$file"'
 		echo 'done'
 		echo 'unset file'

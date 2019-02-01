@@ -1,8 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Javascript/Typescript
-if which nodenv &> /dev/null
-  && (nodenv version | grep -v system) &> /dev/null;
+if command -v nodenv &> /dev/null && (nodenv version | grep -v system) &> /dev/null;
 then
   npm install -g javascript-typescript-langserver
 else
