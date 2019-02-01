@@ -81,13 +81,13 @@ bindsym $mod+a focus parent
 set $workspace1 1: code
 set $workspace2 2: web
 set $workspace3 3: chat
-set $workspace4 4
+set $workspace4 4: mail
 set $workspace5 5
 set $workspace6 6
 set $workspace7 7
 set $workspace8 8
 set $workspace9 9
-set $workspace10 10: music
+set $workspace10 10: media
 
 # switch to workspace
 bindsym $mod+1 workspace $workspace1
@@ -178,3 +178,12 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec_always --no-startup-id numlockx on
 exec --no-startup-id xscreensaver
 exec --no-startup-id compton
+
+### Window assignments
+assign [class="^discord$"] → $workspace3
+assign [class="^Slack$"] → $workspace3
+assign [class="^Evolution$"] → $workspace4
+
+### Window rules
+for_window [class="^Antimicro$"] floating enable
+for_window [class="^Steam$" title="^Friends list$"] floating enable
