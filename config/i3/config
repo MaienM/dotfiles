@@ -130,7 +130,7 @@ bindsym $mod+Control+9 exec ~/.config/i3/move-workspace-to-current-output.sh "$w
 bindsym $mod+Control+10 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace10"
 
 # reload the configuration file
-bindsym $mod+Shift+c reload
+bindsym $mod+Shift+c reload; exec "notify-send 'i3' 'Reloaded config'"
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
