@@ -89,11 +89,6 @@ set $workspace8 8
 set $workspace9 9
 set $workspace10 10: music
 
-# workspace layouts
-for_window [workspace=1] layout stacked
-for_window [workspace=2] layout stacked
-for_window [workspace=3] layout stacked
-
 # switch to workspace
 bindsym $mod+1 workspace $workspace1
 bindsym $mod+2 workspace $workspace2
