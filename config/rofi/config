@@ -2,8 +2,13 @@
 rofi.dpi: 240
 rofi.font: InconsolataGo 16
 
-! Sort matches, decreasing the amount of typing needed
+! Fuzzy matching, because this makes narrowing down much easier
+rofi.matching: fuzzy
 rofi.sort: true
+rofi.sorting-method: fzf
+
+! Don't search the executable
+rofi.drun-match-fields: name,generic,categories
 
 ! Don't show the prefix by default in combi mode
 rofi.combi-hide-mode-prefix: true
