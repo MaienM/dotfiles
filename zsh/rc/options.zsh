@@ -33,3 +33,6 @@ setopt AUTO_LIST
 setopt AUTO_MENU
 # Do not autoselect the first completion entry.
 unsetopt MENU_COMPLETE
+
+# Allow using comments in interactive mode. This can be useful to leave comments in the history.
+setopt INTERACTIVECOMMENTS
