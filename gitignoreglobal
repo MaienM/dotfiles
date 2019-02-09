@@ -11,8 +11,10 @@ Session.vim
 
 # Ignore virtualenv files.
 .venv
+.lua-version
 .node-version
 .python-version
+.ruby-version
 
 # Ignore stupid OSX garbage
 .DS_STORE
