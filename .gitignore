@@ -7,5 +7,4 @@ vim/doc/tags
 vim/init.vim
 vim/spell
 config/mpv/watch_later/
-
-*.pyc
+config/mpv/scripts/
