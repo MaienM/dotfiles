@@ -181,3 +181,6 @@
 [submodule "vim/bundle/eunuch"]
 	path = vim/bundle/eunuch
 	url = https://github.com/tpope/vim-eunuch
+[submodule "config/mpv/bundle/occivink"]
+	path = config/mpv/bundle/occivink
+	url = https://github.com/occivink/mpv-scripts
