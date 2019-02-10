@@ -1,4 +1,6 @@
 Xresources.d/colors
+config/mpv/scripts/
+config/mpv/watch_later/
 tmux/resurrect/
 vim/.netrwhist
 vim/bundle/fzf-base
@@ -6,5 +8,3 @@ vim/bundle/powerline
 vim/doc/tags
 vim/init.vim
 vim/spell
-config/mpv/watch_later/
-config/mpv/scripts/
