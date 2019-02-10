@@ -66,7 +66,16 @@ gitda() {
         git add "${files[@]}"
     else
         gitd $@
-        prompt_confirm "Add to index?" "Y" && git add $@
+        while true; do
+            prompt reply "Ynp" "Add to index?"
+            case "$reply" in
+                y) git add "$@";;
+                n) ;;
+                p) git add -p "$@";;
+                *) continue;;
+            esac
+            break
+        done
     fi
     gits
 }
