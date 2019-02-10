@@ -1,9 +1,0 @@
-.config/nvim             vim
-.config/nvim/init.vim    vim/vimrc
-.local/bin/diff-so-fancy opt/diff-so-fancy/third_party/build_fatpack/diff-so-fancy
-.local/bin/ssh           opt/ssh-ident/ssh-ident
-.local/share/backgrounds local/share/background-sets/photos/
-.config/mpv/scripts/crop.lua config/mpv/bundle/occivink/scripts/crop.lua
-.tmux.conf               tmux/init.conf
-.vim/bundle/fzf-base     fzf/
-.zshrc                   zsh/init.zsh

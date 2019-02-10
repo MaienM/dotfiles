@@ -1,0 +1,47 @@
+[README]
+action = skip
+[Session.vim]
+action = skip
+[cmds]
+action = skip
+[scripts]
+action = skip
+[windows-registry]
+action = skip
+
+[config]
+action = recurse
+[config/i3]
+action = recurse
+[config/mpv/bundle/occivink/scripts/crop.lua]
+target = .config/mpv/scripts/crop.lua
+
+[fzf]
+target = .vim/bundle/fzf-base
+
+[local]
+action = recurse
+[local/bin]
+action = recurse
+[local/share]
+action = recurse
+[local/share/background-sets/photos]
+target = .local/share/backgrounds
+
+[opt]
+action = skip
+[opt/diff-so-fancy/third_party/build_fatpack/diff-so-fancy]
+target = .local/bin/diff-so-fancy
+[opt/ssh-ident/ssh-ident]
+target = .local/bin/ssh
+
+[tmux/init.conf]
+target = .tmux.conf
+
+[vim]
+target = .vim, .config/nvim
+[vim/vimrc]
+target = .vim/vimrc, .config/nvim/init.vim
+
+[zsh/init.zsh]
+target = .zshrc
