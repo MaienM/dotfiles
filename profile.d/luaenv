@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+[ -d "$HOME/.luaenv" ] || return
+
+export LUAENV_ROOT="$HOME/.luaenv"
+bindir="$LUAENV_ROOT/bin"
+if ! in_path "$bindir"; then
+	prepend_to_path "$bindir"
+	eval "$(luaenv init -)"
+fi
