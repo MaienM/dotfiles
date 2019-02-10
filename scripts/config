@@ -17,6 +17,8 @@ action = recurse
 target = .config/mpv/scripts/crop.lua
 [config/mpv/bundle/occivink/scripts/encode.lua]
 target = .config/mpv/scripts/encode.lua
+[config/mpv/bundle/occivink/scripts/seek-to.lua]
+target = .config/mpv/scripts/seek-to.lua
 
 [fzf]
 target = .vim/bundle/fzf-base
