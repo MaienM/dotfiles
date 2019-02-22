@@ -19,6 +19,8 @@ target = .config/mpv/scripts/crop.lua
 target = .config/mpv/scripts/encode.lua
 [config/mpv/bundle/occivink/scripts/seek-to.lua]
 target = .config/mpv/scripts/seek-to.lua
+[config/mpv/bundle/youtube-quality/youtube-quality.lua]
+target = .config/mpv/scripts/youtube-quality.lua
 
 [fzf]
 target = .vim/bundle/fzf-base
