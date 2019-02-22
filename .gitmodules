@@ -190,3 +190,9 @@
 [submodule "vim/bundle/ingo-library"]
 	path = vim/bundle/ingo-library
 	url = https://github.com/vim-scripts/ingo-library
+[submodule "vim/bundle/braceless"]
+	path = vim/bundle/braceless
+	url = https://github.com/tweekmonster/braceless.vim
+[submodule "config/mpv/bundle/youtube-quality"]
+	path = config/mpv/bundle/youtube-quality
+	url = https://github.com/jgreco/mpv-youtube-quality
