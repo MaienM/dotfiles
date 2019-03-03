@@ -10,9 +10,16 @@ in_path() {
 		;;
 	esac
 }
+
 prepend_to_path() {
 	in_path "$1" || export PATH="$1:$PATH"
 }
+
 append_to_path() {
 	in_path "$1" || export PATH="$PATH:$1"
+}
+
+remove_from_path() {
+	PATH="$(echo "$PATH" | tr ':' '\n' | grep -vxF "$1" | tr '\n' ':' | sed 's/^:\+//; s/::\+/:/g; s/:$//')"
+	export PATH
 }
