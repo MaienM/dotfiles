@@ -23,7 +23,7 @@ target = .config/mpv/scripts/seek-to.lua
 target = .config/mpv/scripts/youtube-quality.lua
 
 [fzf]
-target = .vim/bundle/fzf-base
+target = .fzf, .vim/bundle/fzf-base
 
 [local]
 action = recurse
