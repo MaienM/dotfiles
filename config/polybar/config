@@ -31,42 +31,41 @@ margin-bottom = 0
 [bar/base]
 monitor = ${env:MONITOR}
 width = 100%
-height = 54
+height = 26
 
 background = ${colors.background}
 foreground = ${colors.foreground}
 
-line-size = 5
+line-size = 1
 line-color = #f00
 
-module-margin-left = 1
+module-margin-left = 1.5
 module-margin-right = 2
 
-font-0 = fixed:pixelsize=20;1
-font-1 = Symbols Nerd Font:size=24;0
-font-2 = unifont:fontformat=truetype:size=16:antialias=false;0
-font-3 = siji:pixelsize=20;1
+font-0 = fixed:pixelsize=10;1
+font-1 = Symbols Nerd Font:size=12;0
+font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
+font-3 = siji:pixelsize=10;1
 
 cursor-click = pointer
 cursor-scroll = ns-resize
 
+modules-left = i3
+modules-right = xbacklight alsa pulseaudio cpu memory temperature/cpu temperature/gpu wlan eth battery date
+
 [bar/primary]
 inherits = bar/base
 
-modules-left = i3
 modules-center = xwindow
-modules-right = xbacklight alsa pulseaudio memory cpu temperature wlan eth battery date
 
 tray-position = right
-tray-padding = 2
-tray-maxsize = 27
+tray-padding = 1
+tray-maxsize = 13.5
 
 [bar/secondary]
 inherits = bar/base
 
-modules-left = i3
-modules-center = xwindow
-modules_right = xbacklight
+padding-right = 1.5
 
 ;===============================================================================
 ; Modules
@@ -83,9 +82,9 @@ index-sort = true
 wrapping-scroll = false
 
 ; Only show workspaces on the same output as the bar
-pin-workspaces = true
+;pin-workspaces = true
 
-label-mode-padding = 2
+label-mode-padding = 1
 label-mode-foreground = #000
 label-mode-background = ${colors.primary}
 
@@ -93,11 +92,11 @@ label-mode-background = ${colors.primary}
 label-focused = %name%
 label-focused-background = ${colors.background-alt}
 label-focused-underline= ${colors.primary}
-label-focused-padding = 2
+label-focused-padding = 1
 
 ; unfocused = Inactive workspace on any monitor
 label-unfocused = %name%
-label-unfocused-padding = 2
+label-unfocused-padding = 1
 
 ; visible = Active workspace on unfocused monitor
 label-visible = %name%
@@ -108,7 +107,7 @@ label-visible-padding = ${self.label-focused-padding}
 ; urgent = Workspace with urgency hint set
 label-urgent = %name%!
 label-urgent-background = ${colors.alert}
-label-urgent-padding = 2
+label-urgent-padding = 1
 
 [module/xbacklight]
 type = internal/xbacklight
@@ -267,9 +266,9 @@ animation-discharging-10 = ${env:i_mdi_battery_outline}
 animation-discharging-foreground = ${colors.foreground-alt}
 animation-discharging-framerate = 200
 
-[module/temperature]
+[module/temperature/cpu]
 type = internal/temperature
-thermal-zone = 0
+thermal-zone = 3
 warn-temperature = 60
 
 format = <ramp> <label>
@@ -283,5 +282,10 @@ label-warn-foreground = ${colors.secondary}
 
 ramp-0 = ${env:i_mdi_thermometer}
 ramp-foreground = ${colors.foreground-alt}
+
+[module/temperature/gpu]
+type = custom/script
+exec = nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits
+interval = 10
 
 ; vim:ft=dosini
