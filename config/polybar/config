@@ -1,11 +1,21 @@
 [colors]
-background = #222
-background-alt = #444
-foreground = #dfdfdf
-foreground-alt = #555
-primary = #ffb52a
-secondary = #e60053
-alert = #bd2c40
+black = ${env:color0}
+red = ${env:color1}
+green = ${env:color2}
+yellow = ${env:color3}
+blue = ${env:color4}
+magenta = ${env:color5}
+cyan = ${env:color6}
+white = ${env:color7}
+
+background = ${colors.black}
+foreground = ${colors.white}
+primary = ${colors.blue}
+secondary = ${colors.green}
+alert = ${colors.red}
+
+background-alt = ${env:color18}
+foreground-alt = ${env:color11}
 
 [settings]
 screenchange-reload = true
