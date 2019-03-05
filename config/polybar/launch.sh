@@ -12,11 +12,7 @@ source nerdfonts_icons_all
 set +a
 
 # Make the colors available as environment variables
-eval "$(xrdb -query | grep '^*color' | while read -r line; do
-	name="$(echo "$line" | cut -c2- | cut -d: -f1)"
-	color="$(echo "$line" | cut -d: -f2 | tr -d '[:space:]')"
-	echo export "$name='$color'"
-done)"
+eval "$(xrdb -query | grep '^*color' | sed 's/^.*\(color[0-9]\+\):\s*\(#[0-9a-fA-F]\+\)$/export \1="\2"/')"
 
 # Launch bars for all screens
 mapfile -t monitors < <(xrandr --listmonitors | cut -d' ' -f6 | grep -E '^.+$')
