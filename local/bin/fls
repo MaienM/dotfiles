@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# A fancier-looking ls-like command, based on fancy find.
+
+# Determine whether at least one of the arguments is a directory. If this is the case, we need to print headers above
+# each ffind command. If not, we can opt for a more compact syntax.
+listing_a_dir=false
+for path in "$@"; do
+	[ -d "$path" ] && listing_a_dir=true
+done
+
+isfirst=true
+for path in "$@"; do
+	if [ "$#" -gt 1 ] && $listing_a_dir; then
+		$isfirst || printf '\n'
+		printf '%s:\n' "$path"
+	fi
+	isfirst=false
+
+	if [ -f "$path" ]; then
+		ffind "$path"
+	else
+		ffind "$path" -mindepth 1 -maxdepth 1 | awk -v "needle=$path/" '{ sub(needle, ""); print }'
+	fi
+done

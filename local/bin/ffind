@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+# A wrapper around find that pretties up the results and adds some additional information.
+
+# Should not be used with things that (can) have side effects.
+illegalargs="-delete|-exec|-execdir|-fls|-fprint|-fprint0|-fprintf|-ls|-ok|-okdior|-print|-print0|-printf|-prune"
+illegalarg="$(printf '\0%s\0' "$@" | grep -oEa "\0$illegalargs\0")"
+if [ -n "$illegalarg" ]; then
+	echo "$illegalarg" | sed 's/$/ is not permitted for ffind/' >&2
+	exit 1
+fi
+
+source nerdfonts_icons_fa
+source nerdfonts_icons_oct
+while IFS= read -r -d '' path; do
+	name="$path"
+	stats=($(stat -c '%a %s %N' "$path"))
+	perm="${stats[0]}"
+	size="${stats[1]}"
+	# this index is the path, quoted.
+	# this index is '->' if a link exists, and nothing otherwise.
+	linksto="$(eval "echo ${stats[4]}")"
+
+	# Color the permissions based on what this means in practice for the current user.
+	perm_color=
+	if [ ! -r "$path" ]; then
+		perm_color="$color_fg_red"
+	elif [ ! -x "$path" ] && [ -d "$path" ]; then
+		perm_color="$color_fg_red" # Cannot list the files in the directory.
+	elif [ ! -w "$path" ]; then
+		perm_color="$color_fg_yellow"
+	elif [ -x "$path" ] && [ ! -d "$path" ]; then
+		perm_color="$color_fg_blue"
+	fi
+
+	# In most cases the size is meaningless. Start out with an empty value for it, and only set it if useful.
+	sizeText=
+
+	icon="$i_oct_unverified"
+	if [ -d "$path" ]; then
+		[ -h "$path" ] && icon="$i_oct_file_symlink_directory" || icon="$i_oct_file_directory"
+	elif [ -f "$path" ]; then
+		if [ -h "$path" ]; then
+			icon="$i_oct_file_symlink_file"
+		else
+			sizeText="$(echo "$size" | numfmt --to=iec)"
+
+			type="$(file --brief "$path")"
+			case "$type" in
+				*compressed*) icon="$i_oct_file_zip" ;;
+				*image*) icon="$i_oct_file_media" ;;
+				*audio*) icon="$i_oct_file_media" ;;
+				*video*) icon="$i_oct_file_media" ;;
+				*text*) icon="$i_fa_file_o" ;;
+				*empty*) icon="$i_fa_file_o" ;;
+				*document*) icon="$i_oct_file_pdf" ;;
+				*) icon="$i_oct_file_binary" ;;
+			esac
+		fi
+	elif [ -h "$path" ]; then
+		# This is a broken symlink.
+		icon="$i_oct_file_symlink_file"
+		linksto="${color_fg_red}${linksto}${color_reset}" # Color the link target red, to indicate brokennes.
+	fi
+
+	if [ -h "$path" ]; then
+		name="$name -> $linksto"
+	fi
+
+	printf '%1s%0s%4s%0s %4s %s\n' \
+		"$color_fg_cyan$icon$color_reset" \
+		"$perm_color" "$perm" "$color_reset" \
+		"$sizeText" \
+		"$name"
+done < <(find "$@" -printf '%p\0' | sort -z)
