@@ -197,3 +197,8 @@ assign [class="^Evolution$"] → $workspace4
 ### Window rules
 for_window [class="^Antimicro$"] floating enable
 for_window [class="^Steam$" title="^Friends list$"] floating enable
+for_window [class="^Steam$" title="^Steam - News"] close
+for_window [class="^mpv$"] exec ~/.config/i3/resize-to-aspect-ratio.sh 16:9 height
+for_window [class="^calibre$" floating] resize set width 70ppt height 70ppt
+for_window [class="^calibre$" title="^Edit Metadata"] resize set width 80ppt height 80ppt
+for_window [class="^calibre$"] move position center
