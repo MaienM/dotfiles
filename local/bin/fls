@@ -2,16 +2,22 @@
 
 # A fancier-looking ls-like command, based on fancy find.
 
+# Get the targets. If none are given, default to the current directory (as ls does).
+targets=("$@")
+if [ "${#targets[@]}" -eq 0 ]; then
+	targets=("$PWD")
+fi
+
 # Determine whether at least one of the arguments is a directory. If this is the case, we need to print headers above
 # each ffind command. If not, we can opt for a more compact syntax.
 listing_a_dir=false
-for path in "$@"; do
+for path in "${targets[@]}"; do
 	[ -d "$path" ] && listing_a_dir=true
 done
 
 isfirst=true
-for path in "$@"; do
-	if [ "$#" -gt 1 ] && $listing_a_dir; then
+for path in "${targets[@]}"; do
+	if [ "${#targets[@]}" -gt 1 ] && $listing_a_dir; then
 		$isfirst || printf '\n'
 		printf '%s:\n' "$path"
 	fi
