@@ -8,3 +8,4 @@ vim/bundle/powerline
 vim/doc/tags
 vim/init.vim
 vim/spell
+zsh/bundle/base16-hooks/polybar.sh
