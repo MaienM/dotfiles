@@ -8,6 +8,10 @@ for file in ~/.zsh/rc/fzf/**/*.zsh; do
 	source "$file";
 done
 
+# Add a preview to the built-in ctrl-t keybinding
+export FZF_CTRL_T_OPTS="$FZF_CTRL_T_OPTS --preview 'source ~/.zsh/rc/fzf/files.zsh; _fzf_util_inspect_fs_item {}'"
+export FZF_ALT_C_OPTS="$FZF_ALT_C_OPTS --preview 'source ~/.zsh/rc/fzf/files.zsh; _fzf_util_inspect_fs_item {}'"
+
 # Load the base16 theme
 export FZF_DEFAULT_OPTS=""
 [ -f $HOME/.base16_theme_fzf ] && source $HOME/.base16_theme_fzf
