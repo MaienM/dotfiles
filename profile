@@ -17,8 +17,12 @@ done
 #
 # Force English as language.
 #
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
+if locale -a | grep -q en_GB; then
+	export LANG=en_GB.UTF-8
+else
+	export LANG=en_US.UTF-8
+fi
+export LC_ALL="$LANG"
 
 #
 # Some constants for use in scripts.
