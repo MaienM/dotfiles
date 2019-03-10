@@ -163,6 +163,10 @@ mode "resize" {
 	bindsym Mod1+9 exec ~/.config/i3/resize-to-aspect-ratio.sh 16:9 width
 	bindsym Mod1+0 exec ~/.config/i3/resize-to-aspect-ratio.sh 16:10 width
 
+	# A menu for less common ratios/presets
+	bindsym Tab exec ~/.config/i3/resize-menu.sh height
+	bindsym Mod1+Tab exec ~/.config/i3/resize-menu.sh width
+
 	# back to normal: Enter or Escape
 	bindsym Return mode "default"
 	bindsym Escape mode "default"

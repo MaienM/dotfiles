@@ -42,12 +42,9 @@ esac
 
 # Use jq to calculate the desired target size from the client info.
 target_size="$(get_active_window_info | jq ".rect.$calc | nearbyint")"
-i3-msg "resize set $target $target_size px"
 
-# Check whether the actual size is what was requested. If not, adjust by the amount that the size is off by and try
-# again. Eg, a height of 500 was requested, but the actual resuling size is 490, so now request a height of 510.
-actual_size="$(get_active_window_info | jq ".rect.$target")"
-if [ "$target_size" -ne "$actual_size" ]; then
-	i3-msg "resize set $target $((target_size * 2 - actual_size))"
-fi
+case "$target" in
+	'height') ~/.config/i3/resize-exact.sh 0 "$target_size" ;;
+	'width') ~/.config/i3/resize-exact.sh "$target_size" 0 ;;
+esac
 
