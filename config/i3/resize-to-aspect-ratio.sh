@@ -1,6 +1,7 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 set -o errexit -o pipefail
+shopt -s extglob
 
 # shellcheck disable=SC1090
 . ~/.config/i3/_utils.sh
@@ -13,7 +14,7 @@ fi
 
 ratio="$1"
 case "$ratio" in
-	[0-9]*:[0-9]*)
+	+([0-9]):+([0-9]))
 		ratio1=${ratio%:*}
 		ratio2=${ratio#*:}
 
@@ -31,8 +32,8 @@ esac
 
 target="$2"
 case "$target" in
-	'width') calc="height * $ratio1 / $ratio2" ;;
-	'height') calc="width / $ratio1 * $ratio2" ;;
+	'width') calc="height * $ratio1 / $ratio2 - 2" ;;
+	'height') calc="width / $ratio1 * $ratio2 + 1" ;;
 	*)
 		echo >&2 "Invalid value ($target) for the dimension to set, must be either 'width' or 'height'"
 		exit 1

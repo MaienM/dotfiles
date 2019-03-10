@@ -153,7 +153,7 @@ mode "resize" {
 	bindsym Mod1+$left resize shrink width 10 px or 10 ppt
 	bindsym Mod1+$right resize grow width 10 px or 10 ppt
 
-	# Set height to a be a 16:9 ratio between width and height
+	# Set height to a be a common ratio between width and height
 	bindsym 4 exec ~/.config/i3/resize-to-aspect-ratio.sh 4:3 height
 	bindsym 5 exec ~/.config/i3/resize-to-aspect-ratio.sh 5:4 height
 	bindsym 9 exec ~/.config/i3/resize-to-aspect-ratio.sh 16:9 height
