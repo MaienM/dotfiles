@@ -19,7 +19,7 @@ while IFS= read -r -d '' path; do
 	size="${stats[1]}"
 	# this index is the path, quoted.
 	# this index is '->' if a link exists, and nothing otherwise.
-	linksto="$(eval "echo ${stats[4]}")"
+	eval "linksto=${stats[4]}" # the target path is quoted, so eval to unquote.
 
 	# Color the permissions based on what this means in practice for the current user.
 	perm_color=
