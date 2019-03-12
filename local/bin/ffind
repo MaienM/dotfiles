@@ -26,11 +26,16 @@ while IFS= read -r -d '' path; do
 	if [ ! -r "$path" ]; then
 		perm_color="$color_fg_red"
 	elif [ ! -x "$path" ] && [ -d "$path" ]; then
-		perm_color="$color_fg_red" # Cannot list the files in the directory.
+		perm_color="$color_underline$color_fg_yellow" # Cannot list the files in the directory.
 	elif [ ! -w "$path" ]; then
 		perm_color="$color_fg_yellow"
-	elif [ -x "$path" ] && [ ! -d "$path" ]; then
-		perm_color="$color_fg_blue"
+	else
+		if [ -x "$path" ] && [ ! -d "$path" ]; then
+			perm_color="$color_fg_blue"
+		fi
+		if [ -k "$path" ] && [ ! -O $(id -u) ]; then
+			perm_color="$color_underline$perm_color" # Cannot rename/delete the path (sticky bit).
+		fi
 	fi
 
 	# In most cases the size is meaningless. Start out with an empty value for it, and only set it if useful.
