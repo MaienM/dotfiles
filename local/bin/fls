@@ -36,10 +36,10 @@ for path in "${targets[@]}"; do
 	fi
 	isfirst=false
 
-	if [ -f "$path" ]; then
-		ffind "${ffind_args[@]}" "$path"
-	else
+	if [ -d "$path" ]; then
 		ffind "${ffind_args[@]}" "$path" -mindepth 1 -maxdepth 1 \
 			| awk -v "needle=$path/" '{ sub(needle, ""); print }'
+	else
+		ffind "${ffind_args[@]}" "$path"
 	fi
 done
