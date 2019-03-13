@@ -4,26 +4,37 @@
 
 set -e
 
-commit="$1"
-shift
+if [ -z "$1" ]; then
+	echo "A commit hash is required"
+	exit 1
+fi
+COMMIT="$1"
+shift 1
+
+if ! git merge-base --is-ancestor "$COMMIT" HEAD; then
+	echo >&2 "This commit doesn't exist on this branch"
+	exit 1
+fi
 
 # Show information of the commit.
-git show --quiet --format=fuller "$commit"
+git show --quiet --format=fuller "$COMMIT"
 currentdate="$(git show --quiet --format='%aI')"
 
-# Get for the new date.
+# Get the new date.
 targetdate="$1"
 if [ -z "$targetdate" ]; then
 	echo "> What should the date be set to (optionally relative to author date)?"
 	read -r targetdate
 fi
 
-# Try to parse as a relative time.
-targetdate="$(date --date="$currentdate $targetdate" +%FT%T%Z || true)"
-if [ -z "$targetdate" ]; then
-	targetdate="$(date --date="$targetdate" +%FT%T%Z)"
+# Parse as a relative time if it starts with a + or -.
+# Just trying to do both won't work, because something like 'now + 1 hour' will then be 'SOMEDATE now + 1 hour', which
+# is equivalent to 'SOMEDATE + 1 hour'.
+if echo "$targetdate" | grep -qE '^/s*[+-]'; then
+	targetdate="$currentdate $targetdate"
 fi
+targetdate="$(date --date="$targetdate" +%FT%T%Z)"
 
 # Set the new date.
 echo "> Changing date from $currentdate to $targetdate"
-GIT_COMMITTER_DATE="$targetdate" git commit --amend --date="$targetdate" -C "$commit"
+GIT_COMMITTER_DATE="$targetdate" git commit --amend --date="$targetdate" -C "$COMMIT"
