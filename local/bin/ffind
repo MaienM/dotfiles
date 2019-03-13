@@ -109,6 +109,7 @@ while IFS= read -r -d '' path; do
 				*text*) icon="$i_fa_file_o" ;;
 				*empty*) icon="$i_fa_file_o" ;;
 				*document*) icon="$i_oct_file_pdf" ;;
+				*socket*) icon="$i_mdi_network" ;;
 				*) icon="$i_oct_file_binary" ;;
 			esac
 		fi
