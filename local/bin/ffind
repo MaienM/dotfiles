@@ -2,24 +2,85 @@
 
 # A wrapper around find that pretties up the results and adds some additional information.
 
-# Should not be used with things that (can) have side effects.
-illegalargs="-delete|-exec|-execdir|-fls|-fprint|-fprint0|-fprintf|-ls|-ok|-okdior|-print|-print0|-printf|-prune"
-illegalarg="$(printf '\0%s\0' "$@" | grep -oEa "\0$illegalargs\0")"
-if [ -n "$illegalarg" ]; then
-	echo "$illegalarg" | sed 's/$/ is not permitted for ffind/' >&2
-	exit 1
-fi
+shopt -s extglob
+
+find_args=()
+show_time=0
+show_owner=0
+stat_user_args='- -'
+
+has_invalid_param=0
+for arg in "$@"; do
+	case "$arg" in
+		# These arguments can have side effects, or can alter the output of find. This might break our parsing of its
+		# output, so block this.
+		-delete|-exec|-execdir|-fls|-fprint|-fprint0|-fprintf|-ls|-ok|-okdior|-print|-print0|-printf|-prune)
+			has_invalid_param=1
+			echo >&2 "$arg is not permitted for ffind, use regular find instead"
+		;;
+
+		+?(c)time)
+			show_time=1
+		;;
+
+		+owner?(s))
+			show_owner=1
+
+			stat_user_args="%u %g"
+
+			current_user="$(id -u)"
+			current_groups=" $(id -G) "
+
+			longest_user=$(cat /etc/passwd | cut -d: -f3 | wc -L)
+			longest_group=$(cat /etc/group | cut -d: -f3 | wc -L)
+		;;
+
+		+owner?(s)asname?(s))
+			show_owner=1
+
+			stat_user_args="%U %G"
+
+			current_user="$(whoami)"
+			current_groups=" $(groups) "
+
+			longest_user=$(cat /etc/passwd | cut -d: -f1 | wc -L)
+			longest_group=$(cat /etc/group | cut -d: -f1 | wc -L)
+		;;
+
+		+*)
+			has_invalid_param=1
+			echo >&2 "$arg is not a valid argument for ffind"
+			echo
+		;&
+
+		+help)
+			echo "Usage: $0 [OPTION]... [ARGUMENT FOR FIND]..."
+			echo
+			echo "  +time           show the last modified time"
+			echo "  +owner          show the ids of the owners (user and group)"
+			echo "  +ownerasname    show the names of the owners (user and group)"
+		;;
+
+		*)
+			find_args=("${find_args[@]}" "$arg")
+		;;
+	esac
+done
+[ "$has_invalid_param" -eq 0 ] || exit 1
 
 source nerdfonts_icons_fa
 source nerdfonts_icons_oct
 while IFS= read -r -d '' path; do
 	name="$path"
-	stats=($(stat -c '%a %s %N' "$path"))
+	stats=($(stat -c "%a %s $stat_user_args %Y %N" "$path"))
 	perm="${stats[0]}"
 	size="${stats[1]}"
+	user="${stats[2]}"
+	group="${stats[3]}"
+	ctime="${stats[4]}"
 	# this index is the path, quoted.
 	# this index is '->' if a link exists, and nothing otherwise.
-	eval "linksto=${stats[4]}" # the target path is quoted, so eval to unquote.
+	eval "linksto=${stats[7]}" # the target path is quoted, so eval to unquote.
 
 	# Color the permissions based on what this means in practice for the current user.
 	perm_color=
@@ -36,6 +97,26 @@ while IFS= read -r -d '' path; do
 		if [ -k "$path" ] && [ ! -O $(id -u) ]; then
 			perm_color="$color_underline$perm_color" # Cannot rename/delete the path (sticky bit).
 		fi
+	fi
+
+	# The optional items will all be gathered in this variable. These must be of fixed size!
+	optionals=
+
+	# Optionally add the user and group.
+	if [ "$show_owner" -eq 1 ]; then
+		# Color based on whether the current is (part of) these.
+		[ "$current_user" != "$user" ] && user_color="$color_fg_red" || user_color=
+		[ "$current_group" != *" $group "* ] && group_color="$color_fg_red" || group_color=
+		optionals="$optionals $(
+			printf "%s%${longest_user}s%s:%s%-${longest_group}s%s" \
+				"$user_color" "$user" "$color_reset" \
+				"$group_color" "$group" "$color_reset"
+		)"
+	fi
+
+	# Optionally add the last modified at time.
+	if [ "$show_time" -eq 1 ]; then
+		optionals="$optionals $(date --date="@$ctime" +'%b %e %H:%M')"
 	fi
 
 	# In most cases the size is meaningless. Start out with an empty value for it, and only set it if useful.
@@ -72,9 +153,10 @@ while IFS= read -r -d '' path; do
 		name="$name -> $linksto"
 	fi
 
-	printf '%1s%0s%4s%0s %4s %s\n' \
+	printf '%1s%0s%4s%0s %4s%s %s\n' \
 		"$color_fg_cyan$icon$color_reset" \
 		"$perm_color" "$perm" "$color_reset" \
 		"$sizeText" \
+		"$optionals" \
 		"$name"
-done < <(find "$@" -printf '%p\0' | sort -z)
+done < <(find "${find_args[@]}" -printf '%p\0' | sort -z)

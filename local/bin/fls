@@ -2,8 +2,21 @@
 
 # A fancier-looking ls-like command, based on fancy find.
 
-# Get the targets. If none are given, default to the current directory (as ls does).
-targets=("$@")
+# Arguments thatb start with a plus are options for ffind, and should be passed on.
+ffind_args=()
+targets=()
+while [ "$#" -gt 0 ]; do
+	arg="$1"
+	shift 1
+	case "$arg" in
+		+*) ffind_args=("${ffind_args[@]}" "$arg") ;;
+		--) break ;;
+		*) targets=("${targets[@]}" "$arg") ;;
+	esac
+done
+targets=("${targets[@]}" "$@")
+
+# If no targets are given, default to the current directory (as ls does).
 if [ "${#targets[@]}" -eq 0 ]; then
 	targets=("$PWD")
 fi
@@ -24,8 +37,9 @@ for path in "${targets[@]}"; do
 	isfirst=false
 
 	if [ -f "$path" ]; then
-		ffind "$path"
+		ffind "${ffind_args[@]}" "$path"
 	else
-		ffind "$path" -mindepth 1 -maxdepth 1 | awk -v "needle=$path/" '{ sub(needle, ""); print }'
+		ffind "${ffind_args[@]}" "$path" -mindepth 1 -maxdepth 1 \
+			| awk -v "needle=$path/" '{ sub(needle, ""); print }'
 	fi
 done
