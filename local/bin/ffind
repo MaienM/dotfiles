@@ -36,7 +36,7 @@ for arg in "$@"; do
 			longest_user=$(cat /etc/passwd | cut -d: -f3 | wc -L)
 			longest_group=$(cat /etc/group | cut -d: -f3 | wc -L)
 		;;
-		+owner?(s)asname?(s))
+		+owner?(s)?(as)name?(s))
 			show_owner=1
 
 			stat_args_owner="%U %G"
@@ -148,8 +148,8 @@ while IFS= read -r -d '' path; do
 		group="${stats[statsidx++]}"
 
 		# Color based on whether the current is (part of) these.
-		[ "$current_user" != "$user" ] && user_color="$color_fg_red" || user_color=
-		[ "$current_group" != *" $group "* ] && group_color="$color_fg_red" || group_color=
+		[ "$current_user" == "$user" ] && user_color= || user_color="$color_fg_red"
+		[[ "$current_groups" == *" $group "* ]] && group_color= || group_color="$color_fg_red"
 
 		printf " %s%${longest_user}s%s:%s%-${longest_group}s%s" \
 			"$user_color" "$user" "$color_reset" \
