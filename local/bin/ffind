@@ -5,8 +5,10 @@
 shopt -s extglob
 
 find_args=()
-show_time=0
+show_perm=0
 show_owner=0
+show_size=0
+show_time=0
 stat_user_args='- -'
 
 has_invalid_param=0
@@ -19,14 +21,14 @@ for arg in "$@"; do
 			echo >&2 "$arg is not permitted for ffind, use regular find instead"
 		;;
 
-		+?(c)time)
-			show_time=1
-		;;
+		+noperm?(ission)?(s)) show_perm=0 ;;
+		+perm?(ission)?(s)) show_perm=1 ;;
 
+		+noowner?(s)) show_owner=0 ;;
 		+owner?(s))
 			show_owner=1
 
-			stat_user_args="%u %g"
+			stat_args_owner="%u %g"
 
 			current_user="$(id -u)"
 			current_groups=" $(id -G) "
@@ -34,11 +36,10 @@ for arg in "$@"; do
 			longest_user=$(cat /etc/passwd | cut -d: -f3 | wc -L)
 			longest_group=$(cat /etc/group | cut -d: -f3 | wc -L)
 		;;
-
 		+owner?(s)asname?(s))
 			show_owner=1
 
-			stat_user_args="%U %G"
+			stat_args_owner="%U %G"
 
 			current_user="$(whoami)"
 			current_groups=" $(groups) "
@@ -46,6 +47,12 @@ for arg in "$@"; do
 			longest_user=$(cat /etc/passwd | cut -d: -f1 | wc -L)
 			longest_group=$(cat /etc/group | cut -d: -f1 | wc -L)
 		;;
+
+		+nosize) show_size=0 ;;
+		+size) show_size=1 ;;
+
+		+no?(c)time) show_time=0 ;;
+		+?(c)time) show_time=1 ;;
 
 		+*)
 			has_invalid_param=1
@@ -56,7 +63,9 @@ for arg in "$@"; do
 		+help)
 			echo "Usage: $0 [OPTION]... [ARGUMENT FOR FIND]..."
 			echo
-			echo "  +time           show the last modified time"
+			echo "  +perm           show the permissions"
+			echo "  +size           show the (human-readable) sizes"
+			echo "  +time           show the last modified times"
 			echo "  +owner          show the ids of the owners (user and group)"
 			echo "  +ownerasname    show the names of the owners (user and group)"
 		;;
@@ -68,69 +77,29 @@ for arg in "$@"; do
 done
 [ "$has_invalid_param" -eq 0 ] || exit 1
 
+# Build the format for the stat call.
+stat_args=()
+[ "$show_perm" -eq 1 ] && stat_args=("${stat_args[@]}" '%a')
+[ "$show_owner" -eq 1 ] && stat_args=("${stat_args[@]}" "${stat_args_owner[@]}")
+[ "$show_size" -eq 1 ] && stat_args=("${stat_args[@]}" '%s')
+[ "$show_time" -eq 1 ] && stat_args=("${stat_args[@]}" '%Y')
+stat_args=("${stat_args[@]}" '%N') # Path + symlink. Always present. Must be last, because it is of variable size.
+stat_args="${stat_args[@]}"
+
 source nerdfonts_icons_fa
 source nerdfonts_icons_oct
 while IFS= read -r -d '' path; do
-	name="$path"
-	stats=($(stat -c "%a %s $stat_user_args %Y %N" "$path"))
-	perm="${stats[0]}"
-	size="${stats[1]}"
-	user="${stats[2]}"
-	group="${stats[3]}"
-	ctime="${stats[4]}"
-	# this index is the path, quoted.
-	# this index is '->' if a link exists, and nothing otherwise.
-	eval "linksto=${stats[7]}" # the target path is quoted, so eval to unquote.
+	# Single stat, containing all items needed for the requested options.
+	stats=($(stat -c "$stat_args" "$path"))
+	statsidx=0
 
-	# Color the permissions based on what this means in practice for the current user.
-	perm_color=
-	if [ ! -r "$path" ]; then
-		perm_color="$color_fg_red"
-	elif [ ! -x "$path" ] && [ -d "$path" ]; then
-		perm_color="$color_underline$color_fg_yellow" # Cannot list the files in the directory.
-	elif [ ! -w "$path" ]; then
-		perm_color="$color_fg_yellow"
-	else
-		if [ -x "$path" ] && [ ! -d "$path" ]; then
-			perm_color="$color_fg_blue"
-		fi
-		if [ -k "$path" ] && [ ! -O $(id -u) ]; then
-			perm_color="$color_underline$perm_color" # Cannot rename/delete the path (sticky bit).
-		fi
-	fi
-
-	# The optional items will all be gathered in this variable. These must be of fixed size!
-	optionals=
-
-	# Optionally add the user and group.
-	if [ "$show_owner" -eq 1 ]; then
-		# Color based on whether the current is (part of) these.
-		[ "$current_user" != "$user" ] && user_color="$color_fg_red" || user_color=
-		[ "$current_group" != *" $group "* ] && group_color="$color_fg_red" || group_color=
-		optionals="$optionals $(
-			printf "%s%${longest_user}s%s:%s%-${longest_group}s%s" \
-				"$user_color" "$user" "$color_reset" \
-				"$group_color" "$group" "$color_reset"
-		)"
-	fi
-
-	# Optionally add the last modified at time.
-	if [ "$show_time" -eq 1 ]; then
-		optionals="$optionals $(date --date="@$ctime" +'%b %e %H:%M')"
-	fi
-
-	# In most cases the size is meaningless. Start out with an empty value for it, and only set it if useful.
-	sizeText=
-
-	icon="$i_oct_unverified"
+	# Figure out what this path is, and what the appropriate icon is for that.
 	if [ -d "$path" ]; then
 		[ -h "$path" ] && icon="$i_oct_file_symlink_directory" || icon="$i_oct_file_directory"
 	elif [ -f "$path" ]; then
 		if [ -h "$path" ]; then
 			icon="$i_oct_file_symlink_file"
 		else
-			sizeText="$(echo "$size" | numfmt --to=iec)"
-
 			type="$(file --brief "$path")"
 			case "$type" in
 				*compressed*) icon="$i_oct_file_zip" ;;
@@ -146,17 +115,83 @@ while IFS= read -r -d '' path; do
 	elif [ -h "$path" ]; then
 		# This is a broken symlink.
 		icon="$i_oct_file_symlink_file"
-		linksto="${color_fg_red}${linksto}${color_reset}" # Color the link target red, to indicate brokennes.
+	fi
+	printf '%s%s%s' "$color_fg_cyan" "$icon" "$color_reset"
+
+	### Permissions.
+	if [ "$show_perm" -eq 1 ]; then
+		perm="${stats[statsidx++]}"
+
+		# Color the permissions based on what this means in practice for the current user.
+		perm_color=
+		if [ ! -r "$path" ]; then
+			perm_color="$color_fg_red"
+		elif [ ! -x "$path" ] && [ -d "$path" ]; then
+			perm_color="$color_underline$color_fg_yellow" # Cannot list the files in the directory.
+		elif [ ! -w "$path" ]; then
+			perm_color="$color_fg_yellow"
+		else
+			if [ -x "$path" ] && [ ! -d "$path" ]; then
+				perm_color="$color_fg_blue"
+			fi
+			if [ -k "$path" ] && [ ! -O $(id -u) ]; then
+				perm_color="$color_underline$perm_color" # Cannot rename/delete the path (sticky bit).
+			fi
+		fi
+
+		printf ' %s%4s%s' "$perm_color" "$perm" "$color_reset"
 	fi
 
+	### Ownership.
+	if [ "$show_owner" -eq 1 ]; then
+		user="${stats[statsidx++]}"
+		group="${stats[statsidx++]}"
+
+		# Color based on whether the current is (part of) these.
+		[ "$current_user" != "$user" ] && user_color="$color_fg_red" || user_color=
+		[ "$current_group" != *" $group "* ] && group_color="$color_fg_red" || group_color=
+
+		printf " %s%${longest_user}s%s:%s%-${longest_group}s%s" \
+			"$user_color" "$user" "$color_reset" \
+			"$group_color" "$group" "$color_reset"
+	fi
+
+	### Size.
+	if [ "$show_size" -eq 1 ]; then
+		size="${stats[statsidx++]}"
+
+		if [ -f "$path" ] && [ ! -h "$path" ]; then
+			size="$(echo "$size" | numfmt --to=iec)"
+		else
+			size=
+		fi
+
+		printf ' %4s' "$size"
+	fi
+
+	### Last modified time.
+	if [ "$show_time" -eq 1 ]; then
+		ctime="${stats[statsidx++]}"
+
+		printf ' %13s' "$(date --date="@$ctime" +'%b %e %H:%M')"
+	fi
+
+	# Print the path as it was received from find.
+	printf ' %s' "$path"
+
+	# If the path is a symbolic link, show the target.
+	name="$path"
 	if [ -h "$path" ]; then
-		name="$name -> $linksto"
+		# The first two are the path (quoted), and the literal '->' (not quoted). We ignore both.
+		eval "linksto=${stats[statsidx + 2]}" # the target path is quoted, so eval to unquote.
+
+		# If the path does not exist, this means the symlink is broken.
+		if [ ! -e "$path" ]; then
+			linksto="${color_fg_red}${linksto}${color_reset}"
+		fi
+
+		printf ' -> %s' "$linksto"
 	fi
 
-	printf '%1s%0s%4s%0s %4s%s %s\n' \
-		"$color_fg_cyan$icon$color_reset" \
-		"$perm_color" "$perm" "$color_reset" \
-		"$sizeText" \
-		"$optionals" \
-		"$name"
+	printf '\n'
 done < <(find "${find_args[@]}" -printf '%p\0' | sort -z)
