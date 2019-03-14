@@ -67,6 +67,9 @@ for arg in "$@"; do
 			echo "  +time           show the last modified times"
 			echo "  +owner          show the ids of the owners (user and group)"
 			echo "  +ownerasname    show the names of the owners (user and group)"
+			echo
+			echo "All options can also be prefixed with no (+noperm, for example) to turn them off."
+			echo "Last occurrence is the one that applies (+perm +noperm means no permissions will be shown)."
 		;;
 
 		*)
