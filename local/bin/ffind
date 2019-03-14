@@ -139,7 +139,8 @@ while IFS= read -r -d '' path; do
 			fi
 		fi
 
-		printf ' %s%4s%s' "$perm_color" "$perm" "$color_reset"
+		[ "${#perm}" -eq 3 ] && padding=' ' || padding=
+		printf ' %s%s%s%s' "$padding" "$perm_color" "$perm" "$color_reset"
 	fi
 
 	### Ownership.
