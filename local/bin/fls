@@ -2,19 +2,80 @@
 
 # A fancier-looking ls-like command, based on fancy find.
 
-# Arguments thatb start with a plus are options for ffind, and should be passed on.
-ffind_args=()
-targets=()
-while [ "$#" -gt 0 ]; do
-	arg="$1"
+set -e
+
+push() {
+	var="$1"
 	shift 1
+	eval "tmp=(\"\${$var[@]}\")"
+	tmp=("${tmp[@]}" "$@")
+	eval "$var=(\"\${tmp[@]}\")"
+}
+
+# Arguments to be passed to each ffind call.
+ffind_args=()
+# The target paths.
+targets=()
+
+# Keep track of ls flags that can only be processed once all arguments have been processed.
+ls_all=0
+ls_almost_all=0
+
+# Parse arguments
+args=($(getopt -o '1aABdhlI:nps' -l 'all,almost-all,directory,human-readable,ignore:,indicator-style:numeric-uid-gid,size' -n "$0" -- "$@"))
+i=0
+while [ "$i" -le "${#args[@]}" ]; do
+	arg="${args[i++]}"
 	case "$arg" in
-		+*) ffind_args=("${ffind_args[@]}" "$arg") ;;
-		--) break ;;
-		*) targets=("${targets[@]}" "$arg") ;;
+		# Try to convert ls arguments to find arguments, where possible.
+		-1) ;;
+		-a|--all)
+			ls_all=1
+		;;
+		-A|--almost-all)
+			ls_almost_all=1
+		;;
+		-d|--directory)
+			push ffind_args '-type' 'd'
+		;;
+		-h|--human-readable) ;;
+		-l)
+			push ffind_args '+perm' '+ownerasname' '+size' '+time'
+		;;
+		-I|--ignore)
+			push ffind_args '-not' '-name' "${args[i++]}"
+		;;
+		--indicator-style) $((i++)) ;;
+		-n|--numeric-uid-gid)
+			push ffind_args '+perm' '+owner' '+size' '+time'
+		;;
+		-p) ;;
+		-s|--size)
+			push ffind_args '+size'
+		;;
+
+		# End of arguments. Add the remaining arguments as targets, and stop processing.
+		--)
+			eval "targets=(\"\${targets[@]}\" ${args[@]:i})"
+			break
+		;;
+
+		# Arguments that start with a plus are options for ffind, and should be passed on.
+		+*)
+			push ffind_args "$arg"
+		;;
+
+		# Doesn't appear to be an option, so treat it as a path that should be listed.
+		*)
+			push targets "$arg"
+		;;
 	esac
 done
-targets=("${targets[@]}" "$@")
+
+# Process extra ls flags.
+if [ "$ls_all" -eq 0 ] && [ "$ls_almost_all" -eq 0 ]; then
+	push ffind_args '-not' '-name' '.*'
+fi
 
 # If no targets are given, default to the current directory (as ls does).
 if [ "${#targets[@]}" -eq 0 ]; then
@@ -37,9 +98,13 @@ for path in "${targets[@]}"; do
 	isfirst=false
 
 	if [ -d "$path" ]; then
-		ffind "${ffind_args[@]}" "$path" -mindepth 1 -maxdepth 1 \
-			| awk -v "needle=$path/" '{ sub(needle, ""); print }'
+		(
+			if [ "$ls_all" -eq 1 ]; then
+				ffind "$path/." "$path/.." -maxdepth 0 "${ffind_args[@]}"
+			fi
+			ffind "$path" -mindepth 1 -maxdepth 1 "${ffind_args[@]}"
+		) | awk -v "needle=$path/" '{ sub(needle, ""); print }'
 	else
-		ffind "${ffind_args[@]}" "$path"
+		ffind "$path" -maxdepth 0 "${ffind_args[@]}"
 	fi
 done
