@@ -10,13 +10,28 @@ show_owner=0
 show_size=0
 show_time=0
 
-has_invalid_param=0
+should_exit_0=0
+should_exit_1=0
+
+usage() {
+	echo "Usage: $0 [OPTION]... [ARGUMENT FOR FIND]..."
+	echo
+	echo "  +perm           show the permissions"
+	echo "  +size           show the (human-readable) sizes"
+	echo "  +time           show the last modified times"
+	echo "  +owner          show the ids of the owners (user and group)"
+	echo "  +ownerasname    show the names of the owners (user and group)"
+	echo
+	echo "All options can also be prefixed with no (+noperm, for example) to turn them off."
+	echo "Last occurrence is the one that applies (+perm +noperm means no permissions will be shown)."
+}
+
 for arg in "$@"; do
 	case "$arg" in
 		# These arguments can have side effects, or can alter the output of find. This might break our parsing of its
 		# output, so block this.
 		-delete|-exec|-execdir|-fls|-fprint|-fprint0|-fprintf|-ls|-ok|-okdior|-print|-print0|-printf|-prune)
-			has_invalid_param=1
+			should_exit_1=1
 			echo >&2 "$arg is not permitted for ffind, use regular find instead"
 		;;
 
@@ -53,23 +68,18 @@ for arg in "$@"; do
 		+no?(c)time) show_time=0 ;;
 		+?(c)time) show_time=1 ;;
 
-		+*)
-			has_invalid_param=1
-			echo >&2 "$arg is not a valid argument for ffind"
-			echo
-		;&
-
 		+help)
-			echo "Usage: $0 [OPTION]... [ARGUMENT FOR FIND]..."
-			echo
-			echo "  +perm           show the permissions"
-			echo "  +size           show the (human-readable) sizes"
-			echo "  +time           show the last modified times"
-			echo "  +owner          show the ids of the owners (user and group)"
-			echo "  +ownerasname    show the names of the owners (user and group)"
-			echo
-			echo "All options can also be prefixed with no (+noperm, for example) to turn them off."
-			echo "Last occurrence is the one that applies (+perm +noperm means no permissions will be shown)."
+			should_exit_0=1
+			usage
+		;;
+
+		+*)
+			should_exit_1=1
+			(
+				echo "$arg is not a valid option for ffind"
+				echo
+				usage
+			) >&2
 		;;
 
 		*)
@@ -77,7 +87,8 @@ for arg in "$@"; do
 		;;
 	esac
 done
-[ "$has_invalid_param" -eq 0 ] || exit 1
+[ "$should_exit_1" -eq 1 ] && exit 1
+[ "$should_exit_0" -eq 1 ] && exit 0
 
 # Build the format for the stat call.
 stat_args=()
