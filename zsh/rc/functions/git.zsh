@@ -135,19 +135,26 @@ gitpb() {
 }
 
 # Work with multiple directories
-gitsdir() {
-	(
-		echo "DIR | BRANCH | STATUS"
-		for dir in *; do
-			[ ! -d "$dir" ] && continue
-			[ ! -d "$dir/.git" ] && continue
+_gitdirdo() {
+	for dir in *(/); do
+		[ ! -d "$dir/.git" ] && continue
 
-			pushd "$dir"
-			gitbranch="$(git rev-parse --abbrev-ref HEAD)"
-			gitstatus="$(git diff --shortstat | tr -cd '[0-9 ]' | awk '{ print $1 " files +" $2 " -" $3 }')"
-			popd
-
-			echo "$dir | $gitbranch | $gitstatus"
-		done
-	) | column -t -s '|'
+		(
+			cd "$dir"
+			eval "$@"
+		)
+	done
+}
+gitdirdo() {
+	_gitdirdo 'echo "${color_fg_blue}==> $dir <==$color_reset"; '"$@"'; echo'
+}
+gitdirs() {
+	format="%-20s %-20s %s"
+	_gitdirs() {
+		gitbranch="$(git rev-parse --abbrev-ref HEAD)"
+		gitstatus="$(git diff --shortstat | tr -cd '[0-9 ]' | awk '{ print $1 " files +" $2 " -" $3 }')"
+		printf "$format\n" "$dir" "$gitbranch" "$gitstatus"
+	}
+	printf "%s$format%s\n" "$color_fg_blue" 'DIR' 'BRANCH' 'STATUS' "$color_reset"
+	_gitdirdo _gitdirs
 }
