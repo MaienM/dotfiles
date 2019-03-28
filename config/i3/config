@@ -72,7 +72,7 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+bindsym $mod+p focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -135,6 +135,10 @@ bindsym $mod+Shift+c reload; exec "notify-send 'i3' 'Reloaded config'"
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# "hidden" layer of workspaces. these are nameless, and always linked to the workspace they are a "layer" of.
+bindsym $mod+a exec ~/.config/i3/run-for-layer.sh "~/.config/i3/move-workspace-to-current-output.sh '__target__'"
+bindsym $mod+Shift+a exec ~/.config/i3/run-for-layer.sh "i3-msg 'move container to workspace __target__'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
