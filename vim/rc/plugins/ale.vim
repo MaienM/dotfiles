@@ -10,16 +10,39 @@ map <Leader>cg :ALEFirst<CR>
 map <Leader>cG :ALELast<CR>
 map <Leader>cf :ALEFix<CR>
 
-" Mapping to ignore the current eslint error(s).
+" Mapping to ignore the current error(s).
+let s:ignore_funcs = {
+	\'eslint': {errors -> 'eslint-disable-line ' . join(errors, ', ')},
+\}
+function! s:CreateIgnoreLine(plugin, errors)
+	if has_key(s:ignore_funcs, a:plugin)
+		return s:ignore_funcs[a:plugin](a:errors)
+	else
+		" This variant seems to work for a fair number of linters, so let's use it was default.
+		return a:plugin . ': disable=' . join(a:errors, ', ')
+	endif
+endfunction
 function! ALEIgnore()
-	let errors = ale#list#GetCombinedList()
-	let toIgnore = []
-	for error in errors
-		if error.lnum == line('.') && error.linter_name == 'eslint'
-			let toIgnore += [error.code]
+	" Group the errors by the plugin that reported them.
+	let l:errors = ale#list#GetCombinedList()
+	let l:to_ignore = {}
+	for l:error in l:errors
+		if l:error.lnum == line('.')
+			let l:plugin = l:error.linter_name
+			if has_key(l:to_ignore, l:error.linter_name) == 0
+				let l:to_ignore[l:plugin] = []
+			endif
+			let l:to_ignore[l:error.linter_name] += [l:error.code]
 		endif
 	endfor
-	execute 'normal A // eslint-disable-line ' . join(toIgnore, ', ')
+	" Add an ignore line for each found plugin. This might not work properly if multiple plugins report errors, but
+	" it tries.
+	for [l:plugin, l:errors] in items(l:to_ignore)
+		let l:line = s:CreateIgnoreLine(l:plugin, l:errors)
+		call append('.', l:line)
+		:.+1Commentary
+		join
+	endfor
 endfunction
 map <Leader>ci :call ALEIgnore()<CR>
 
