@@ -5,13 +5,15 @@ source ~/.profile
 
 command -v pyenv &> /dev/null || (echo ">>> pyenv must be installed first"; exit 1)
 command -v rbenv &> /dev/null || (echo ">>> rbenv must be installed first"; exit 1)
+command -v nodenv &> /dev/null || (echo ">>> nodenv must be installed first"; exit 1)
 
 echo ">>> Determining versions..."
 py2_version=$(pyenv install -l | grep '^\s*2\.[0-9.]\+\s*$' | tail -n1 | tr -d ' ')
 py3_version=$(pyenv install -l | grep '^\s*3\.[0-9.]\+\s*$' | tail -n1 | tr -d ' ')
 rb_version=$(rbenv install -l | grep '^\s*[0-9.]\+\s*$' | tail -n1 | tr -d ' ')
-echo ">>> Using python $py2_version, python $py3_version, and ruby $rb_version"
-if [ -z "$py2_version" ] || [ -z "$py3_version" ] || [ -z "$rb_version" ]; then
+node_version=$(nodenv install -l | grep '^\s*[0-9.]\+\s*$' | tail -n1 | tr -d ' ')
+echo ">>> Using python $py2_version, python $py3_version, ruby $rb_version, and node $node_version"
+if [ -z "$py2_version" ] || [ -z "$py3_version" ] || [ -z "$rb_version" ] || [ -z "$node_version" ]; then
   echo ">>> Unable to determine some versions, aborting"
   exit 1;
 fi
@@ -20,6 +22,7 @@ echo ">>> Installing..."
 pyenv install --skip-existing "$py2_version"
 pyenv install --skip-existing "$py3_version"
 rbenv install --skip-existing "$rb_version"
+nodenv install --skip-existing "$node_version"
 echo ">>> Installations complete"
 
 echo ">>> Setting up python $py2_version"
@@ -50,6 +53,14 @@ echo ">>> Setting up ruby $rb_version"
   eval "$(rbenv init -)"
   rbenv shell "$rb_version"
   gem install neovim
+)
+
+echo ">>> Setting up node $node_version"
+(
+  set -o errexit
+  eval "$(nodenv init -)"
+  nodenv shell "$node_version"
+  npm install -g neovim
 )
 
 echo ">>> Done! Add the following lines to your neovim init to use the new environments:"
