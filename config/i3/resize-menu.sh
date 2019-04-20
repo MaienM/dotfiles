@@ -9,6 +9,7 @@ error=$( (
 		(
 			echo '4:3'
 			echo '5:4'
+			echo '5:3 (3DS top screen)'
 			echo '3:2 (GBA)'
 			echo '16:10'
 			echo '16:9'
@@ -17,7 +18,7 @@ error=$( (
 		) | \
 			rofi -dmenu -p 'Pick an aspect ratio' -i
 	)"
-	choice="${choice% *}"
+	choice="${choice%% *}"
 
 	case "$choice" in
 		+([0-9]):+([0-9])) ~/.config/i3/resize-to-aspect-ratio.sh "$choice" "$1" ;;
