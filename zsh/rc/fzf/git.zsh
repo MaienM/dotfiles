@@ -5,7 +5,8 @@ _fzf_pipeline_git_files_source() {
 	git ls-files "$@" \
 	| while read file; do
 		echo "${(q)file} $file"
-	done
+	done \
+	| uniq
 }
 _fzf_pipeline_git_files_preview() {
 	_fzf_util_inspect_fs_item "${(Q)1}"
