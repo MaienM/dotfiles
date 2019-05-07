@@ -1,3 +1,7 @@
 #!/usr/bin/env sh
 
-git clone https://github.com/jenv/jenv ~/.jens
+clone() {
+	[ -d "$2" ] || git clone "$1" "$2"
+}
+
+clone https://github.com/jenv/jenv ~/.jenv

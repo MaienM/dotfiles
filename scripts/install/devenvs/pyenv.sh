@@ -1,5 +1,9 @@
 #!/usr/bin/env sh
 
+clone() {
+	[ -d "$2" ] || git clone "$1" "$2"
+}
+
 curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
-[ -d "$HOME/.pyenv/plugins/pyenv-pyqt-build" ] || git clone https://github.com/montefra/pyenv-pyqt-build "$HOME/.pyenv/plugins/pyenv-pyqt-build"
+clone https://github.com/montefra/pyenv-pyqt-build ~/.pyenv/plugins/pyenv-pyqt-build
 
