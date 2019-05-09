@@ -115,13 +115,17 @@ gitco() {
 # Commit
 gitcj() {
 	local preset
-	if [[ -z $1 ]]; then
-		echo "Please add a commit message!"
-		exit 1
+	if [[ -z "$1" ]]; then
+		echo >&2 "Please add a commit message!"
+		return 1
 	fi
 	preset=$(git rev-parse --abbrev-ref HEAD)
 	preset=${preset#remotes/*/}
 	preset=$(echo $preset | _git_branch_to_jira)
+	if [[ "$preset" != [A-Z]*-[0-9]* ]]; then
+		echo >&2 "Branch name does not appear to be a feature branch"
+		return 1
+	fi
 	git commit -m "$preset: $@"
 }
 
