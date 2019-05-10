@@ -162,3 +162,17 @@ gitdirs() {
 	printf "%s$format%s\n" "$color_fg_blue" 'DIR' 'BRANCH' 'STATUS' "$color_reset"
 	_gitdirdo _gitdirs
 }
+gitdirbranch() {
+	_gitdirbranch() {
+		for branch in "$@"; do
+			if [ $(git rev-parse --abbrev-ref HEAD) = "$branch" ]; then
+				break
+			elif git show-ref --verify --quiet "refs/heads/$branch"; then
+				git checkout "$branch" &> /dev/null
+				echo "Switched $dir to branch '$branch'"
+				break
+			fi
+		done
+	}
+	_gitdirdo "_gitdirbranch ${(q)@}"
+}
