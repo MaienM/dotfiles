@@ -16,6 +16,10 @@ endif
 au ColorScheme * hi Normal ctermbg=none
 au ColorScheme * hi NonText ctermbg=none
 
+" Customize the look of NeoVim floating windows.
+au FileType fzf setlocal nonumber norelativenumber
+au ColorScheme * hi NormalFloat ctermbg=18
+
 " Set the font for gvim.
 if has('gui_running')
 	set guifont=InconsolataGo Nerd Font:h11
