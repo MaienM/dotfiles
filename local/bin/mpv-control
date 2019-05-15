@@ -1,23 +1,13 @@
 #!/usr/bin/env bash
 
-id="$(xdotool search --onlyvisible --class mpv)"
-if [ -z "$id" ]; then
-	echo >&2 "Cannot find MPV"
-	exit 1
+if response="$(echo "$@" | socat - /tmp/mpvsocket)" && [ -z "$response" ]; then
+	exit 0
 fi
 
-declare -A bindings
-bindings[playpause]='space'
-bindings[previous]='shift+comma'
-bindings[next]='shift+period'
-bindings[skipfwd]='Right'
-bindings[skipbwd]='Left'
-
-key="${bindings[$1]}"
-if [ -n "$key" ]; then
-	xdotool key --window="$id" "$key"
-else
-	printf >&2 "Unknown action '%s'. Available actions: " "$1"
-	printf ', %s' "${!bindings[@]}" | cut -c3- >&2
+error="$(echo "$response" | jq -r '.error')"
+if [ "$error" != "success" ]; then
+	echo "$response"
+	echo >&2 "$error"
+	exit 1
 fi
 
