@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+
+set -e
+
+command="$1"
+shift
+
+case "$command" in
+	save-location)
+		path="$HOME/.config/xdotool-utils/locations/$1"
+		mkdir -p "$(dirname "$path")"
+		xdotool getmouselocation | sed 's/[^0-9 ]//g' | cut -d' ' -f1-2 > "$path"
+	;;
+
+	load-location)
+		path="$HOME/.config/xdotool-utils/locations/$1"
+		if [ ! -f "$path" ]; then
+			echo >&2 "No stored location with name '$1'"
+			exit 1
+		fi
+		# shellcheck disable=SC2046
+		xdotool mousemove $(cat "$path")
+	;;
+
+	click-location)
+		name="$1"
+		button="${2:-1}"
+		xdotool-utils save-location _prev
+		xdotool-utils load-location "$name"
+		xdotool click "$button"
+		xdotool-utils load-location _prev
+	;;
+esac
