@@ -13,17 +13,20 @@ mkdir /tmp/font-setup
 	set -o errexit
 	cd /tmp/font-setup
 
-	# Download InconsolataGo
-	echo '>>> Downloading InconsolataGo'
-	curl '-#' -O 'https://levien.com/type/myfonts/inconsolata/InconsolataGo-Regular.ttf'
-	curl '-#' -O 'https://levien.com/type/myfonts/inconsolata/InconsolataGo-Bold.ttf'
+	# Download FiraCode
+	echo '>>> Downloading FiraCode'
+	curl -s -L 'https://github.com/tonsky/FiraCode/releases/latest' \
+		| grep -oE '/tonsky/FiraCode/releases/download/[0-9.]*/FiraCode.*\.zip' \
+		| wget --base=http://github.com/ -i - -O FiraCode.zip
+	unzip -q -j -o FiraCode.zip
+	rm FiraCode.zip
 
 	# Download the nerd-fonts font & scripts
 	echo '>>> Downloading Nerd-Fonts'
 	curl '-#' -O -L 'https://github.com/ryanoasis/nerd-fonts/archive/master.zip'
 	unzip -q -j -o master.zip \
 		'nerd-fonts-master/bin/scripts/lib/*' \
-		'nerd-fonts-master/patched-fonts/InconsolataGo/*' \
+		'nerd-fonts-master/patched-fonts/FiraCode/*' \
 		'nerd-fonts-master/src/glyphs/Symbols-2048-em Nerd Font Complete.ttf' \
 		'nerd-fonts-master/10-nerd-font-symbols.conf'
 	rm master.zip
