@@ -2,6 +2,7 @@
 
 import configparser
 from enum import Enum
+import hashlib
 import os
 import os.path
 import shlex
@@ -19,6 +20,12 @@ CONFIG = os.path.join(ROOT, 'scripts', 'config')
 def err(*args):
 	""" Print to stderr. """
 	print(*args, fd = sys.stderr)
+
+
+def hash_file(path):
+	""" Get a hash of the given path. """
+	with open(path, 'rb') as f:
+		return hashlib.sha256(f.read()).hexdigest()
 
 
 def read_char():
@@ -185,8 +192,13 @@ class Processor(object):
 			return False
 
 		# The target is a file, so it can be replaced entirely, but not without losing something
-		# Prompt the user for confirmation
+		# If the entry is a file with identical contents as the target we can replace it safely
 		isdir = entry.is_dir()
+		if not isdir:
+			if hash_file(target) == hash_file(entry.path):
+				return True
+
+		# Prompt the user for confirmation
 		print(
 			f'Attempting to link {"directory" if isdir else "file"} {fc.path} to {target}, '
 			f'but a file exists in this location.'
