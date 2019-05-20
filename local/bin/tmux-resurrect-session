@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+target="$(find "$HOME/.tmux/resurrect" -name 'tmux_resurrect_[0-9]*.txt' | sort -r | fzf)"
+
+if [ -n "$target" ]; then
+	ln -f "$target" "$HOME/.tmux/resurrect/last"
+fi
