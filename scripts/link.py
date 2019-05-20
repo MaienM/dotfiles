@@ -73,6 +73,7 @@ class FileConfig(object):
 	def load_from_config(self, items):
 		""" Create a FileConfig instance from a config section. """
 		data = dict(items)
+		del data['default']
 
 		# Mark as being explicitly defined
 		self.from_config = True
@@ -80,18 +81,20 @@ class FileConfig(object):
 		# Read and validate the action defined for the path
 		if 'action' in data:
 			try:
-				self.action = FileAction(data['action'])
+				self.action = FileAction(data.pop('action'))
 			except ValueError as e:
-				raise ValueError(f'Invalid action set for {path}')
+				raise ValueError(f'Invalid action set for {self.path}')
 
 		# Read and validate the target(s) set for the path
 		if 'target' in data:
 			if self.action != FileAction.LINK:
 				raise KeyError(f'A target was set for {path}, but the action is {self.action}')
-			self.targets = [t.strip() for t in data['target'].split(',')]
+			self.targets = [t.strip() for t in data.pop('target').split(',')]
 			if not self.targets:
-				raise ValueError(f'Invalid target set for {path}')
+				raise ValueError(f'Invalid target set for {self.path}')
 
+		if data:
+			raise ValueError(f'Unexpected properties for {self.path}: {", ".join(data.keys())}')
 
 class Config(configparser.ConfigParser):
 	"""
