@@ -28,7 +28,7 @@ def hash_file(path):
 		return hashlib.sha256(f.read()).hexdigest()
 
 
-def read_char():
+def _read_char():
 	""" Read a single character from stdin. """
 	fd = sys.stdin.fileno()
 	old_settings = termios.tcgetattr(fd)
@@ -37,6 +37,16 @@ def read_char():
 		return sys.stdin.read(1)
 	finally:
 		termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+
+
+def read_char():
+	""" Read a single character from stdin, and handle special cases with sensible behaviour. """
+	c = _read_char()
+	if c == '\x03':
+		raise KeyboardInterrupt
+	elif c == '\x04':
+		raise EOFError
+	return c
 
 
 class FileAction(Enum):
@@ -206,11 +216,7 @@ class Processor(object):
 		while True:
 			print(f'Do you want to replace it? [yn{"" if isdir else "d"}]')
 			c = read_char().lower()
-			if c == '\x03':
-				raise KeyboardInterrupt
-			elif c == '\x04':
-				raise EOFError
-			elif c == 'y':
+			if c == 'y':
 				return True
 			elif c == 'n':
 				return False
