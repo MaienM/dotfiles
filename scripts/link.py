@@ -249,8 +249,15 @@ def main():
 		if fc.action != FileAction.SKIP and not fc.processed:
 			print(f'{path} is in the config, but has not been processed')
 
-	# Write the commands to a file that can be sourced by the user
+	# If there is nothing to be done, remove old command files and exit
 	cmdpath = os.path.join(ROOT, 'cmds')
+	if not processor.commands:
+		print('Everything seems to be in order')
+		if os.path.exists(cmdpath):
+			os.path.remove(cmdpath)
+		return
+
+	# Write the commands to a file that can be sourced by the user
 	commands = '\n'.join(processor.commands)
 	with open(cmdpath, 'w') as f:
 		f.write(commands)
