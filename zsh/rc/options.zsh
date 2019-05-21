@@ -1,3 +1,6 @@
+# Load zmv.
+autoload zmv
+
 # Make pushd/popd more convenient by integrating them with normal cd usage.
 setopt AUTO_PUSHD
 setopt PUSHD_IGNORE_DUPS
