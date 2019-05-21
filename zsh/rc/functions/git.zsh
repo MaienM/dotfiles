@@ -139,10 +139,14 @@ gitpb() {
 }
 
 # Work with multiple directories
-_gitdirdo() {
+_gitdirlist() {
 	for dir in *(/); do
 		[ ! -d "$dir/.git" ] && continue
-
+		echo "$dir"
+	done
+}
+_gitdirdo() {
+	for dir in $(_gitdirlist); do
 		(
 			cd "$dir"
 			eval "$@"
@@ -153,9 +157,13 @@ gitdirdo() {
 	_gitdirdo 'echo "${color_fg_blue}==> $dir <==$color_reset"; '"$@"'; echo'
 }
 gitdirs() {
-	format="%-20s %-20s %s"
+	size=$(_gitdirlist | wc -L)
+	format="%-${size}s  %-20s  %s"
 	_gitdirs() {
 		gitbranch="$(git rev-parse --abbrev-ref HEAD)"
+		if [ "${#gitbranch}" -gt 20 ]; then
+			gitbranch="${gitbranch:0:17}..."
+		fi
 		gitstatus="$(git diff --shortstat | tr -cd '[0-9 ]' | awk '{ print $1 " files +" $2 " -" $3 }')"
 		printf "$format\n" "$dir" "$gitbranch" "$gitstatus"
 	}
