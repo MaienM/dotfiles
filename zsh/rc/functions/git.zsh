@@ -3,7 +3,10 @@ alias gits='rm -f \\ && git status'
 
 # Log.
 alias gitlv='git log --oneline'
+alias gitll='git log --name-status'
+
 alias gitlvu='gitlv "@{push}.."'
+alias gitllu='gitll "@{push}.."'
 
 # Get the jira item from a branch name
 alias _git_branch_to_jira="sed 's/\\(-[0-9]\\+\\).*$/\\1/g'"
