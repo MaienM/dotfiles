@@ -2,7 +2,7 @@
 alias gits='rm -f \\ && git status'
 
 # Log.
-alias gitlv='git log --oneline --name-status'
+alias gitlv='git log --oneline'
 alias gitlvu='gitlv "@{push}.."'
 
 # Get the jira item from a branch name
