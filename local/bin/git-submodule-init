@@ -1,4 +1,4 @@
 #!/bin/sh
 
 # This will initialize/clone submodules that haven't been cloned yet
-git submodule update --recursive --init
+git submodule update --recursive --init "$@"
