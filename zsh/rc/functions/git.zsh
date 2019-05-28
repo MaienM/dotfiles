@@ -2,8 +2,8 @@
 alias gits='rm -f \\ && git status'
 
 # Log.
-alias gitlv='git log --oneline'
-alias gitll='git log --name-status'
+alias gitlv='git log --pretty="tformat:%C(auto)%h %C(cyan)%<(14,mtrunc)%aN%C(auto)%d %C(auto)%s"'
+alias gitll='git log --pretty="format:%C(yellow)commit %H%n%C(cyan)By %an <%ae> on %ad%n%+s%n%+b"  --name-status'
 
 alias gitlvu='gitlv "@{push}.."'
 alias gitllu='gitll "@{push}.."'
