@@ -5,10 +5,6 @@ alias gits='rm -f \\ && git status'
 alias gitlv='git log --oneline --name-status'
 alias gitlvu='gitlv origin/master..'
 
-# Rebasing.
-alias gitrb='git rebase --interactive'
-alias gitrbu='gitrb origin/master..'
-
 # Get the jira item from a branch name
 alias _git_branch_to_jira="sed 's/\\(-[0-9]\\+\\).*$/\\1/g'"
 
