@@ -21,11 +21,6 @@ join_array() {
 
 declare -A names
 
-# Get colors.
-color_name=$(tput setaf 3)
-color_place=$(tput setaf 4)
-color_reset=$(tput sgr0)
-
 # Get the modules according to the .gitmodules file.
 # Modules are added to this file with `git submodule add`, but not removed with `git rm` or `git submodule deinit`.
 names[gitmodules]='.gitmodules'
