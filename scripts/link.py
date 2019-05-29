@@ -19,7 +19,7 @@ CONFIG = os.path.join(ROOT, 'scripts', 'config')
 
 def err(*args):
 	""" Print to stderr. """
-	print(*args, fd = sys.stderr)
+	print(*args, file = sys.stderr)
 
 
 def hash_file(path):
@@ -63,6 +63,8 @@ class FileConfig(object):
 		self.from_config = False
 		self.processed = False
 		self.targets = [f'.{path}']
+		self.exec_pre = None
+		self.exec_post = None
 
 		# Skip hidden files by default
 		if os.path.basename(path)[0] == '.':
@@ -78,20 +80,23 @@ class FileConfig(object):
 		# Mark as being explicitly defined
 		self.from_config = True
 
-		# Read and validate the action defined for the path
 		if 'action' in data:
 			try:
 				self.action = FileAction(data.pop('action'))
 			except ValueError as e:
 				raise ValueError(f'Invalid action set for {self.path}')
 
-		# Read and validate the target(s) set for the path
 		if 'target' in data:
 			if self.action != FileAction.LINK:
 				raise KeyError(f'A target was set for {path}, but the action is {self.action}')
 			self.targets = [t.strip() for t in data.pop('target').split(',')]
 			if not self.targets:
 				raise ValueError(f'Invalid target set for {self.path}')
+
+		if 'exec_pre' in data:
+			self.exec_pre = data.pop('exec_pre')
+		if 'exec_post' in data:
+			self.exec_post = data.pop('exec_post')
 
 		if data:
 			raise ValueError(f'Unexpected properties for {self.path}: {", ".join(data.keys())}')
@@ -171,15 +176,24 @@ class Processor(object):
 		if entry.is_dir():
 			flags += 's'
 
+		applied_links = False
 		for target in fc.targets:
 			target = os.path.join(os.path.expanduser("~"), target)
 			tflags = flags
 			if self.should_link_be_created(entry, fc, target):
+				if not applied_links:
+					if fc.exec_pre:
+						self.commands.append(fc.exec_pre)
+					applied_links = True
+
 				# If the target lexists, it has to be force replaced
 				if os.path.lexists(target):
 					tflags += 'f'
 				tflags = f'-{tflags} ' if tflags else ''
 				self.commands.append(f'ln {tflags}-- {shlex.quote(entry.path)} {shlex.quote(target)}')
+
+		if applied_links and fc.exec_post:
+			self.commands.append(fc.exec_post)
 
 	def should_link_be_created(self, entry, fc, target):
 		if not os.path.exists(target):
