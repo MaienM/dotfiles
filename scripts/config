@@ -4,6 +4,8 @@ action = skip
 action = skip
 [cmds]
 action = skip
+[scrapbook]
+action = skip
 [scripts]
 action = skip
 [windows-registry]
