@@ -30,7 +30,7 @@ fi
 # Parse as a relative time if it starts with a + or -.
 # Just trying to do both won't work, because something like 'now + 1 hour' will then be 'SOMEDATE now + 1 hour', which
 # is equivalent to 'SOMEDATE + 1 hour'.
-if echo "$targetdate" | grep -qE '^/s*[+-]'; then
+if echo "$targetdate" | grep -qE '^\s*[+-]'; then
 	targetdate="$currentdate $targetdate"
 fi
 targetdate="$(date --date="$targetdate" +%FT%T%Z)"
