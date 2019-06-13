@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+if ! error="$("$@" 2>&1 > /dev/null)"; then
+	notify-send "Command error" "$error" --urgency=critical
+fi
