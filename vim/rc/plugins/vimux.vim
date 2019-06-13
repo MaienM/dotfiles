@@ -8,8 +8,8 @@ function! VimuxInterruptAndRun(command)
 endfunction
 function! VimuxRunZshLast()
 	let l:lines = readfile($HOME . '/.zhistory')
-	let l:lines = l:lines[-25:]
-	let l:command = substitute(l:lines, '^[^;]*;', '', '')
+	let l:line = l:lines[-1]
+	let l:command = substitute(l:line, '^[^;]*;', '', '')
 	call VimuxInterruptAndRun(l:command)
 endfunction
 function! VimuxRunZshList()
