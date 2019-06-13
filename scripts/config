@@ -43,6 +43,17 @@ target = .local/bin/diff-so-fancy
 [opt/ssh-ident/ssh-ident]
 target = .local/bin/ssh
 
+[proxyman]
+action = skip
+[proxyman/proxyman]
+target = .proxyman
+[proxyman/proxyman/proxyman]
+target = .local/bin/proxyman
+exec_post = chmod +x ~/.local/bin/proxyman
+[proxyman/bash-zsh.sh]
+exec_pre = rm ~/.proxyman/bash-zsh.sh
+target = .proxyman/bash-zsh.sh
+
 [tmux/init.conf]
 target = .tmux.conf
 
