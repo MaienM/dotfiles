@@ -20,4 +20,4 @@ function! s:FixColorscheme(timer)
 	endtry
 	exe 'colorscheme ' . l:colorscheme
 endfunction
-let timer = timer_start(1, funcref('<SID>FixColorscheme'))
+au BufWritePost * let timer = timer_start(1, funcref('<SID>FixColorscheme'))
