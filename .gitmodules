@@ -106,9 +106,6 @@
 [submodule "tmux/bundle/battery"]
 	path = tmux/bundle/battery
 	url = https://github.com/tmux-plugins/tmux-battery.git
-[submodule "zsh/bundle/powerlevel9k"]
-	path = zsh/bundle/powerlevel9k
-	url = https://github.com/bhilburn/powerlevel9k.git
 [submodule "zsh/bundle/history-substring-search"]
 	path = zsh/bundle/history-substring-search
 	url = https://github.com/zsh-users/zsh-history-substring-search.git
@@ -196,3 +193,6 @@
 [submodule "proxyman/proxyman"]
 	path = proxyman/proxyman
 	url = https://github.com/himanshub16/ProxyMan.git
+[submodule "zsh/bundle/powerlevel10k"]
+	path = zsh/bundle/powerlevel10k
+	url = https://github.com/romkatv/powerlevel10k.git
