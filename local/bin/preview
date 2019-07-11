@@ -1,12 +1,74 @@
 #!/usr/bin/env sh
 
 fn="$1"
-if [ -d "$fn" ]; then
+if [ -z "$fn" ]; then
+	echo >&2 "Please pass a path to preview"
+	exit 1
+elif [ -d "$fn" ]; then
 	fls "$fn"
 elif [ -f "$fn" ]; then
 	case "$(file --brief "$fn")" in
 		*archive*)
-			7z l "$fn"
+			7z l "$fn" | awk '
+				BEGIN {
+					suffix = "KMGTP"
+					files = 0
+					delete lines[0]
+				}
+
+				function fmtsize(size) {
+					if (size < 1024) {
+						return size
+					}
+					for (i = 0; size >= 1024 && i < length(suffix); i++) {
+						size /= 1024
+					}
+					result = sprintf("%.1f%s", size, substr(suffix, i, 1))
+					sub("\\.0", "", result)
+					return result
+				}
+
+				function fmtratio(size, compr) {
+					ratio = (size > 0) ? compr / size : 1
+					return int(ratio * 100) "%"
+				}
+
+				{
+					if (/^Type =/) {
+						type = $3
+					}
+					if (/^Method =/) {
+						method = $3
+					}
+
+					if (/^-----/) {
+						files += 1
+					} else if (files == 1) {
+						size = $4
+						compr = $5
+						$1 = $2 = $3 = $4 = $5 = ""
+						path = substr($0, 6)
+						lines[length(lines)] = sprintf("%s (%s -> %s, %s)", path, fmtsize(size), fmtsize(compr), fmtratio(size, compr))
+					} else if (files == 2) {
+						totalsize = $3
+						totalcompr = $4
+						totalratio = fmtratio(totalsize, totalcompr)
+						$1 = $2 = $3 = $4 = ""
+						summary = substr($0, 5)
+					}
+				}
+
+				END {
+					if (method) {
+						method = ", " method
+					}
+					sub(", ", " and ", summary)
+					printf "%s archive containing %s (%s -> %s, %s%s)\n\n", type, summary, fmtsize(totalsize), fmtsize(totalcompr), fmtratio(totalsize, totalcompr), method
+					for (i = 0; i < length(lines); i++) {
+						print lines[i]
+					}
+				}
+			'
 		;;
 		*)
 			pygmentize -g -O "full,style=$BASE16_THEME" "$fn"
