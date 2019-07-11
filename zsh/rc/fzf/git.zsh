@@ -9,7 +9,7 @@ _fzf_pipeline_git_files_source() {
 	| uniq
 }
 _fzf_pipeline_git_files_preview() {
-	_fzf_util_inspect_fs_item "${(Q)1}"
+	preview "${(Q)1}"
 }
 _fzf_pipeline_git_files_target() {
 	echo ${(Q)1}

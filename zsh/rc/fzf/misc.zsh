@@ -25,12 +25,30 @@ _fzf_pipeline_parent_directories_source() {
 alias _fzf_pipeline_parent_directories_preview=_fzf_pipeline_directories_preview
 alias _fzf_pipeline_parent_directories_target=_fzf_pipeline_directories_target
 
+# Recent downloads
+_fzf_pipeline_downloads_source() {
+    find ~/Downloads -maxdepth 1 -mindepth 1 -printf '%T@ %p\0' \
+    | sort -z -n -r \
+    | cut -z -d' ' -f2- \
+    | while IFS= read -r -d '' fn; do
+        echo "${(q)fn} ${fn:t}"
+    done
+}
+_fzf_pipeline_downloads_preview() {
+    preview "${(Q)1}"
+}
+_fzf_pipeline_downloads_target() {
+    echo "$1"
+}
+
 # Presets
 alias _fzf_preset_directories='_fzf_config_add directories'
 alias _fzf_preset_parent_directories='_fzf_config_add parent_directories'
+alias _fzf_preset_downloads='_fzf_config_add downloads'
 
 _fzf_register_preset "directories" "Directories" "directories"
 _fzf_register_preset "parent_directories" "Parent directories" "directories:parent"
+_fzf_register_preset "downloads" "Downloads" "downloads"
 
 # Aliases
 bd() {

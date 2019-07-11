@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+fn="$1"
+if [ -d "$fn" ]; then
+	fls "$fn"
+elif [ -f "$fn" ]; then
+	case "$(file --brief "$fn")" in
+		*archive*)
+			7z l "$fn"
+		;;
+		*)
+			pygmentize -g -O "full,style=$BASE16_THEME" "$fn"
+		;;
+	esac
+else
+	stat "$fn"
+fi
