@@ -53,7 +53,7 @@ target = .proxyman
 target = .local/bin/proxyman
 exec_post = chmod +x ~/.local/bin/proxyman
 [proxyman/bash-zsh.sh]
-exec_pre = rm ~/.proxyman/bash-zsh.sh
+exec_pre = rm -f ~/.proxyman/bash-zsh.sh
 target = .proxyman/bash-zsh.sh
 
 [tmux/init.conf]
