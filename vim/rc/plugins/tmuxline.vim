@@ -14,11 +14,6 @@ let g:tmuxline_preset = {
 	\'a': '#S',
 	\'win': s:win,
 	\'cwin': s:win,
-	\'x': [
-		\'#(uptime --pretty)',
-		\'#(cat /proc/loadavg | cut -d" " -f1-3)',
-		\'#(~/.tmux/scripts/battery.sh)',
-	\],
 	\'y': '%Y-%m-%d %H:%M',
 	\'z': '#H',
 	\'options': {

@@ -103,9 +103,6 @@
 [submodule "vim/bundle/tmuxline"]
 	path = vim/bundle/tmuxline
 	url = https://github.com/edkolev/tmuxline.vim
-[submodule "tmux/bundle/battery"]
-	path = tmux/bundle/battery
-	url = https://github.com/tmux-plugins/tmux-battery
 [submodule "zsh/bundle/powerlevel9k"]
 	path = zsh/bundle/powerlevel9k
 	url = https://github.com/bhilburn/powerlevel9k.git
