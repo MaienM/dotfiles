@@ -1,23 +1,27 @@
-# Segments
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context_custom dir vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status command_execution_time root_indicator background_jobs history time)
+source ~/.zsh/bundle/powerlevel10k/config/p10k-lean.zsh
 
-# Multiline with empty line above
-POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
-POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=''
-POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%{%B%F{yellow}%K{18}%}  $user_symbol%{%b%f%k%F{18}%} %{%f%}"
+# Segments.
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
+	dir
+	vcs
+	newline
 
-# Color for the context with base16
-POWERLEVEL9K_CONTEXT_DEFAULT_BACKGROUND='18'
+	prompt_char
+)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
+	status
+	command_execution_time
+	root_indicator
+	background_jobs
+	context_custom
+	time
+)
 
-# Status of last command if needed
-POWERLEVEL9K_STATUS_OK=false
+# Make the time actually useful by making it the start time of the command.
+POWERLEVEL9K_TIME_UPDATE_ON_COMMAND=true
 
-# Short path + write status
-POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
-POWERLEVEL9K_SHORTEN_STRATEGY='truncate_from_right'
-POWERLEVEL9K_DIR_SHOW_WRITABLE=true
+# Show exit code of last command if non-successful. Shorten the signal names.
+POWERLEVEL9K_STATUS_ERROR_CONTENT_EXPANSION='${P9K_CONTENT//SIG}'
 
 # I have multiple names for my default accounts.
 # Figure out which exist on this system.
