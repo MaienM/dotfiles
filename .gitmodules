@@ -196,3 +196,6 @@
 [submodule "zsh/bundle/powerlevel10k"]
 	path = zsh/bundle/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k.git
+[submodule "vim/bundle/suda"]
+	path = vim/bundle/suda
+	url = https://github.com/lambdalisue/suda.vim.git
