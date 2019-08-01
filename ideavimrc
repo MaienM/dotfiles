@@ -1,0 +1,14 @@
+source ~/.vim/rc/general/basic-settings.vim
+source ~/.vim/rc/general/basic-mappings.vim
+source ~/.vim/rc/general/basic-commands.vim
+
+" Enable plugins
+set surround
+set commentary
+
+nmap <Space>r :action UpdateRunningApplication<CR>
+nmap <Space>R :action Rerun<CR>
+nmap <Space>f :action SearchEverywhere<CR>
+nmap <Space>g :action GotoImplementation<CR>
+nmap <Space>/ :action FindInPath<CR>
+nmap <Space>sg :action Annotate<CR>:action Annotate<CR>
