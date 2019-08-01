@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import argparse
 import configparser
 from enum import Enum
 import hashlib
@@ -101,6 +102,7 @@ class FileConfig(object):
 		if data:
 			raise ValueError(f'Unexpected properties for {self.path}: {", ".join(data.keys())}')
 
+
 class Config(configparser.ConfigParser):
 	"""
 	A wrapper around ConfigParser that allows getting a configuration for any path, regardless of whether it appears in
@@ -133,7 +135,8 @@ class Config(configparser.ConfigParser):
 
 class Processor(object):
 	""" A class to process all source files into a series of command to get into the desired state. """
-	def __init__(self, config):
+	def __init__(self, args, config):
+		self.args = args
 		self.config = config
 		self.commands = []
 
@@ -196,6 +199,9 @@ class Processor(object):
 			self.commands.append(fc.exec_post)
 
 	def should_link_be_created(self, entry, fc, target):
+		if self.args.assume_empty:
+			return True
+
 		if not os.path.exists(target):
 			# The target either doesn't exist, or is a broken symlink
 			return True
@@ -243,7 +249,22 @@ class Processor(object):
 				print()
 
 
-def main():
+def parse_args(args):
+	parser = argparse.ArgumentParser(description = (
+		'Generate a list of commands that setup the home directory to use the files in this repository.'
+	))
+	parser.add_argument(
+		'--assume-empty',
+		action = 'store_true',
+		help = (
+			'Pretend the home directory is empty. '
+			'Really only useful for testing, as the generated commands are likely to cause issues.'
+		),
+	)
+	return parser.parse_args(args)
+
+
+def main(args):
 	# Read the config
 	config = Config()
 	with open(CONFIG, 'r') as f:
@@ -254,7 +275,7 @@ def main():
 		config.get_info(path)
 
 	# Process the files in the root directory
-	processor = Processor(config)
+	processor = Processor(args, config)
 	processor.process_dir(ROOT)
 
 	# Make sure no items marked in the config have been missed (unless they are to be skipped anyway)
@@ -284,4 +305,5 @@ def main():
 
 
 if __name__ == '__main__':
-	main()
+	args = parse_args(sys.argv[1:])
+	main(args)
