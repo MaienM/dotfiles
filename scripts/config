@@ -47,14 +47,16 @@ target = .local/bin/ssh
 
 [proxyman]
 action = skip
-[proxyman/proxyman]
-target = .proxyman
-[proxyman/proxyman/proxyman]
+[proxyman/proxyman.sh]
 target = .local/bin/proxyman
-exec_post = chmod +x ~/.local/bin/proxyman
 [proxyman/bash-zsh.sh]
-exec_pre = rm -f ~/.proxyman/bash-zsh.sh
 target = .proxyman/bash-zsh.sh
+[proxyman/proxyman]
+action = recurse
+target = .proxyman
+[proxyman/proxyman/bash-zsh.sh]
+action = skip
+[proxyman/proxyman/proxyman]
 
 [tmux/init.conf]
 target = .tmux.conf
