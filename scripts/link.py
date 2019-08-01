@@ -59,11 +59,15 @@ class FileAction(Enum):
 
 class FileConfig(object):
 	""" The configuration for a given source file. """
-	def __init__(self, path):
+	def __init__(self, path, parent):
 		self.path = path
 		self.from_config = False
 		self.processed = False
-		self.targets = [f'.{path}']
+		if parent:
+			fname = os.path.basename(path)
+			self.targets = [os.path.join(ppath, fname) for ppath in parent.targets]
+		else:
+			self.targets = [f'.{path}']
 		self.exec_pre = None
 		self.exec_post = None
 
@@ -88,7 +92,7 @@ class FileConfig(object):
 				raise ValueError(f'Invalid action set for {self.path}')
 
 		if 'target' in data:
-			if self.action != FileAction.LINK:
+			if self.action == FileAction.SKIP:
 				raise KeyError(f'A target was set for {self.path}, but the action is {self.action}')
 			self.targets = [t.strip() for t in data.pop('target').split(',')]
 			if not self.targets:
@@ -120,8 +124,14 @@ class Config(configparser.ConfigParser):
 		if path in self.path_info:
 			return self.path_info[path]
 
+		# Get the parent config, if any
+		parent_path = os.path.dirname(path)
+		parent = None
+		if parent_path:
+			parent = self.get_info(parent_path)
+
 		# Create a new config
-		config = FileConfig(path)
+		config = FileConfig(path, parent)
 
 		# If there is a section for this path, load the config from it
 		if self.has_section(path):
@@ -171,6 +181,12 @@ class Processor(object):
 		if not entry.is_dir():
 			err(f'Cannot recurse non-directory {fc.path}')
 			return
+
+		# Make sure the target directory exists
+		for target in fc.targets:
+			target = os.path.join(os.path.expanduser("~"), target)
+			if not os.path.exists(target):
+				self.commands.append(f'mkdir -p {shlex.quote(target)}')
 
 		self.process_dir(entry.path)
 
