@@ -1,3 +1,7 @@
+if ! command -v kubectl &> /dev/null; then
+	return
+fi
+
 _fzf_pipeline_kubernetes_base_source() {
     kubectl get "$@" -o template --template="{{range .items}}{{.metadata.selfLink}} $color_fg_yellow{{.metadata.name}}$color_reset {{range \$key, \$value := .metadata.labels}}{{\$key}}=$color_fg_cyan{{\$value}}$color_reset {{end}} $newl{{end}}" \
         | sed 's!^.*/\([^/ ]*/[^/ ]*\) !\1 !'
