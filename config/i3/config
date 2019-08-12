@@ -118,16 +118,16 @@ bindsym $mod+Control+$left move workspace to output left
 bindsym $mod+Control+$right move workspace to output right
 bindsym $mod+Control+Mod1+$left exec ~/.config/i3/move-workspace-to-output-stay.sh left
 bindsym $mod+Control+Mod1+$right exec ~/.config/i3/move-workspace-to-output-stay.sh right
-bindsym $mod+Control+1 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace1"
-bindsym $mod+Control+2 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace2"
-bindsym $mod+Control+3 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace3"
-bindsym $mod+Control+4 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace4"
-bindsym $mod+Control+5 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace5"
-bindsym $mod+Control+6 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace6"
-bindsym $mod+Control+7 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace7"
-bindsym $mod+Control+8 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace8"
-bindsym $mod+Control+9 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace9"
-bindsym $mod+Control+10 exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace10"
+bindsym $mod+Control+1 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace1"
+bindsym $mod+Control+2 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace2"
+bindsym $mod+Control+3 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace3"
+bindsym $mod+Control+4 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace4"
+bindsym $mod+Control+5 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace5"
+bindsym $mod+Control+6 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace6"
+bindsym $mod+Control+7 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace7"
+bindsym $mod+Control+8 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace8"
+bindsym $mod+Control+9 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace9"
+bindsym $mod+Control+10 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace10"
 
 # reload the configuration file
 bindsym $mod+Shift+c reload; exec "notify-send 'i3' 'Reloaded config'"
@@ -137,8 +137,8 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # "hidden" layer of workspaces. these are nameless, and always linked to the workspace they are a "layer" of.
-bindsym $mod+a exec ~/.config/i3/run-for-layer.sh "~/.config/i3/move-workspace-to-current-output.sh '__target__'"
-bindsym $mod+Shift+a exec ~/.config/i3/run-for-layer.sh "i3-msg 'move container to workspace __target__'"
+bindsym $mod+a exec notify-error ~/.config/i3/run-for-layer.sh "~/.config/i3/move-workspace-to-current-output.sh '__target__'"
+bindsym $mod+Shift+a exec notify-error ~/.config/i3/run-for-layer.sh "i3-msg 'move container to workspace __target__'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -158,18 +158,18 @@ mode "resize" {
 	bindsym Mod1+$right resize grow width 10 px or 10 ppt
 
 	# Set height to a be a common ratio between width and height
-	bindsym 4 exec ~/.config/i3/resize-to-aspect-ratio.sh 4:3 height
-	bindsym 5 exec ~/.config/i3/resize-to-aspect-ratio.sh 5:4 height
-	bindsym 9 exec ~/.config/i3/resize-to-aspect-ratio.sh 16:9 height
-	bindsym 0 exec ~/.config/i3/resize-to-aspect-ratio.sh 16:10 height
-	bindsym Mod1+4 exec ~/.config/i3/resize-to-aspect-ratio.sh 4:3 width
-	bindsym Mod1+5 exec ~/.config/i3/resize-to-aspect-ratio.sh 5:4 width
-	bindsym Mod1+9 exec ~/.config/i3/resize-to-aspect-ratio.sh 16:9 width
-	bindsym Mod1+0 exec ~/.config/i3/resize-to-aspect-ratio.sh 16:10 width
+	bindsym 4 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 4:3 height
+	bindsym 5 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 5:4 height
+	bindsym 9 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 16:9 height
+	bindsym 0 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 16:10 height
+	bindsym Mod1+4 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 4:3 width
+	bindsym Mod1+5 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 5:4 width
+	bindsym Mod1+9 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 16:9 width
+	bindsym Mod1+0 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 16:10 width
 
 	# A menu for less common ratios/presets
-	bindsym Tab exec ~/.config/i3/resize-menu.sh height
-	bindsym Mod1+Tab exec ~/.config/i3/resize-menu.sh width
+	bindsym Tab exec notify-error ~/.config/i3/resize-menu.sh height
+	bindsym Mod1+Tab exec notify-error ~/.config/i3/resize-menu.sh width
 
 	# back to normal: Enter or Escape
 	bindsym Return mode "default"
@@ -196,6 +196,7 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec_always --no-startup-id numlockx on
 exec --no-startup-id xscreensaver
 exec --no-startup-id compton
+exec --no-startup-id redshift
 
 ### Window assignments
 assign [class="^discord$"] → $workspace3
