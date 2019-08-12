@@ -219,7 +219,7 @@ class MarkdownFileHandler < BaseFileHandler
 			body,
 			%i(FOOTNOTES VALIDATE_UTF8),
 			%i(table strikethrough autolink tagfilter),
-		).to_html(%i(GITHUB_PRE_LANG SAFE))
+		).to_html(%i(GITHUB_PRE_LANG))
 		body += <<~END
 			<link rel="stylesheet" href="//cdn.rawgit.com/sindresorhus/github-markdown-css/gh-pages/github-markdown.css">
 			<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
