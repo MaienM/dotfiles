@@ -27,7 +27,7 @@ function color(text, name) {
 }
 
 BEGIN {
-	suffix = " KMGTP"
+	suffix = "KMGTP"
 	section = 0
 	delete lines[0]
 	colors["red"] = color_red
