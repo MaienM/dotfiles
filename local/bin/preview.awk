@@ -59,13 +59,17 @@ BEGIN {
 			fcompr = $5
 			$1 = $2 = $3 = $4 = $5 = ""
 			path = substr($0, 6)
-			lines[length(lines)] = sprintf( \
-				"%s (%s -> %s, %s)", \
-				path, \
-				fmtsize(fsize), \
-				fmtsize(fcompr), \
-				fmtratio(fsize, fcompr) \
-			)
+			if (fsize == 0 && fcompr == 0) {
+				lines[length(lines)] = path
+			} else {
+				lines[length(lines)] = sprintf( \
+					"%s (%s -> %s, %s)", \
+					path, \
+					fmtsize(fsize), \
+					fmtsize(fcompr), \
+					fmtratio(fsize, fcompr) \
+				)
+			}
 		}
 	} else if (section == 2) {
 		totalsize = $3
