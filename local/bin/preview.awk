@@ -28,7 +28,7 @@ function color(text, name) {
 
 BEGIN {
 	suffix = " KMGTP"
-	files = 0
+	section = 0
 	delete lines[0]
 	colors["red"] = color_red
 	colors["yellow"] = color_yellow
@@ -46,20 +46,28 @@ BEGIN {
 	}
 
 	if (/^-----/) {
-		files += 1
-	} else if (files == 1) {
-		fsize = $4
-		fcompr = $5
-		$1 = $2 = $3 = $4 = $5 = ""
-		path = substr($0, 6)
-		lines[length(lines)] = sprintf( \
-			"%s (%s -> %s, %s)", \
-			path, \
-			fmtsize(fsize), \
-			fmtsize(fcompr), \
-			fmtratio(fsize, fcompr) \
-		)
-	} else if (files == 2) {
+		section += 1
+	} else if (section == 1) {
+		if ($6 == "") {
+			# This line has no size
+			fcompr = $4
+			$1 = $2 = $3 = $4 = ""
+			path = substr($0, 5)
+			lines[length(lines)] = sprintf("%s (%s)", path, fmtsize(fcompr))
+		} else {
+			fsize = $4
+			fcompr = $5
+			$1 = $2 = $3 = $4 = $5 = ""
+			path = substr($0, 6)
+			lines[length(lines)] = sprintf( \
+				"%s (%s -> %s, %s)", \
+				path, \
+				fmtsize(fsize), \
+				fmtsize(fcompr), \
+				fmtratio(fsize, fcompr) \
+			)
+		}
+	} else if (section == 2) {
 		totalsize = $3
 		totalcompr = $4
 		totalratio = fmtratio(totalsize, totalcompr)
