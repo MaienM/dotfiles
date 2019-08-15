@@ -300,6 +300,10 @@ def main(args):
 		if fc.action != FileAction.SKIP and not fc.processed:
 			print(f'{path} is in the config, but has not been processed')
 
+	# Make sure the order of commands is sensible. Directory creating should always be first, as other commands can
+	# depend on it.
+	processor.commands.sort(key = lambda l: 0 if l.startswith('mkdir') else 1)
+
 	# If there is nothing to be done, remove old command files and exit
 	cmdpath = os.path.join(ROOT, 'cmds')
 	if not processor.commands:

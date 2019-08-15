@@ -56,7 +56,6 @@ action = recurse
 target = .proxyman
 [proxyman/proxyman/bash-zsh.sh]
 action = skip
-[proxyman/proxyman/proxyman]
 
 [tmux/init.conf]
 target = .tmux.conf
