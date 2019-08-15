@@ -8,5 +8,5 @@ restart-zsh() {
 	zle accept-line
 }
 zle -N restart-zsh
-bindkey "$key_info[Escape]$key_info[Control]" restart-zsh
+bindkey "$key_info[Escape]$key_info[Control]r" restart-zsh
 
