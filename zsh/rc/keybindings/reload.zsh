@@ -4,8 +4,7 @@ fi
 
 # Keybind to restart zsh
 restart-zsh() {
-	LBUFFER="exec zsh"
-	RBUFFER=
+	BUFFER="exec zsh"
 	zle accept-line
 }
 zle -N restart-zsh
