@@ -5,7 +5,7 @@ fi
 autoload edit-command-line
 zle -N edit-command-line
 
-# Use a more flexible push-line
+# Edit the current command in $EDITOR.
 for key in "$key_info[Escape]"{i,I}; do
 	bindkey "$key" edit-command-line
 done
