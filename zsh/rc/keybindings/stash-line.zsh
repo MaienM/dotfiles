@@ -3,6 +3,5 @@ if [ -z "$key_info[Escape]" ]; then
 fi
 
 # Use a more flexible push-line
-for key in "$key_info[Escape]"{q,Q}; do
-	bindkey "$key" push-line-or-edit
-done
+bindkey "$key_info[Escape]q" push-line-or-edit
+

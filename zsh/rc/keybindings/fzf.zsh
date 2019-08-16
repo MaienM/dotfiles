@@ -5,7 +5,7 @@ fi
 # Easily complete using presets
 fzf_complete_preset() {
 	local prefix result
-	if [[ "$LBUFFER" == "${LBUFFER%[$IFS]}" ]]; then
+	if [[ "$LBUFFER" != *"$IFS" ]]; then
 		# Doesn't end in ifs, so we'll treat the currently typed word as a preexisting filter
 		prefix=${${(zA)LBUFFER}[-1]}
 	fi
@@ -19,6 +19,5 @@ fzf_complete_preset() {
 	zle redisplay
 }
 zle -N fzf_complete_preset
-for key in "$key_info[Control]"{e,E}; do
-	bindkey "$key" fzf_complete_preset
-done
+bindkey "$key_info[Control]e" fzf_complete_preset
+

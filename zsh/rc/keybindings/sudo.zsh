@@ -21,6 +21,5 @@ function toggle-sudo {
 	fi
 }
 zle -N toggle-sudo
-for key in "$key_info[Escape]"{s,S}; do
-	bindkey "$key" toggle-sudo
-done
+bindkey "$key_info[Escape]s" toggle-sudo
+

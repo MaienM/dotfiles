@@ -3,6 +3,5 @@ if [ -z "$key_info[Escape]" ]; then
 fi
 
 # Expand command name to full path
-for key in "$key_info[Escape]"{E,e}; do
-	bindkey "$key" expand-cmd-path
-done
+bindkey "$key_info[Escape]E" expand-cmd-path
+
