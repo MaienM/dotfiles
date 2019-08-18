@@ -77,7 +77,7 @@ function! s:ALEIgnoreChooseFormat(errors)
 		let formatdef = aleignore#types#NormalizeFormatDef(formatdef)
 		let formatdef = map(formatdef, {name, commentdef -> aleignore#types#NormalizeCommentDef(commentdef)})
 		let s:formats[name] = formatdef
-		let options += [base64#encode(aleignore#preview#FormatDef(formatdef)) . ' ' . name]
+		let options += [aleignore#base64#Encode(aleignore#preview#FormatDef(formatdef)) . ' ' . name]
 	endfor 
 
 	if len(options) == 0
@@ -86,14 +86,13 @@ function! s:ALEIgnoreChooseFormat(errors)
 	elseif len(options) == 1
 		call s:ALEIgnorePerform(options[0])
 	else
+		let commands = aleignore#base64#GetCommands()
 		call fzf#run({ 
 			\'source': options,
 			\'sink': function('<SID>ALEIgnorePerform'),
 			\'options': [
 				\'--with-nth', '2..',
-				\'--preview', 
-					\'printf "%s\n\n" "Preview is only an indication, actual end result may deviate slightly.";' .
-					\'echo {1} | base64 -d',
+				\'--preview', 'echo {1} | ' . commands.decode,
 				\'--preview-window', 'up:50%',
 				\'--bind', '?:toggle-preview',
 			\],

@@ -202,6 +202,3 @@
 [submodule "vim/bundle/tcomment"]
 	path = vim/bundle/tcomment
 	url = https://github.com/tomtom/tcomment_vim.git
-[submodule "vim/bundle/base64"]
-	path = vim/bundle/base64
-	url = https://github.com/christianrondeau/vim-base64.git
