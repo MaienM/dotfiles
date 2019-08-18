@@ -1,0 +1,170 @@
+*ale-ignore*  Add ignore comments for errors found by ALE.
+
+Author: Michon van Dooren
+License: BSD 4-clause
+
+==============================================================================
+
+1. Introduction                                                  *aleignore*
+
+ALE integrates with a bunch of linters to show warnings/errors. This is
+great, but unfortunately not all warnings/errors are created equal.
+There may be cases where rather than fixing a (perceived) fault, you
+would like to silence it.
+
+Many linters offer ways to do this, often by adding a comment somewhere
+around the offending line(s). Unfortunately, the contents and placement
+of these comments varies between linters.
+
+This plugin attempts to streamline this process. It adds a command,
+`:ALEIgnore`, that will interactively guide you through the process. By
+default it supports a fair number of linters, but if your favorite
+linter isn't supported, you can add it easily.
+
+==============================================================================
+
+2. Configuration                                          *aleignore-config*
+
+
+g:aleignore_rules                                        *g:aleignore_rules*
+
+  Type: |Dictionary|
+
+  The rules that dictate how ignore comments for different linters look.
+
+  Keys:
+    Type: |String|
+
+    The name of a linter, as used by ALE.
+
+  Value:
+    Type: |Function|
+
+    Function that when invoked returns information on how to ignore the
+    given errors.
+
+    Arguments:
+      Type: |List| containing |String|
+
+      The error(s) that should be ignored.
+
+    Returns:
+      Type: |aleignore-type-linterdef|
+
+      The way(s) in which these error(s) can be ignored for the given
+      linter.
+
+
+g:Aleignore_fallback                                  *g:Aleignore_fallback*
+
+  Type: |Function|
+
+  The rules that dictate how ignore comments for linters that do not
+  appear in |g:aleignore-rules| look.
+
+  Arguments:
+    Type: |String|
+
+    The name of the linter that the fallback is being used for.
+
+    Type: |List| containing |String|
+
+    The error(s) that should be ignored.
+
+  Returns:
+    Type: |aleignore-type-linterdef|
+
+    The way(s) in which these error(s) can be ignored for the given
+    linter.
+
+
+g:aleignore_commentdef_defaults            *g:aleignore_commentdef_defaults*
+
+  Type: |Dictionary|
+  Default: { 'style': 'G' }
+
+  The default properties for |aleignore-type-commentdef|.
+
+
+==============================================================================
+
+
+3. Type definitions                                       *ale-ignore-types*
+
+
+aleignore-type-linterdef                          *aleignore-type-linterdef*
+
+  Type: |Dictionary|
+
+  Describes the ways in which the given error(s) can be ignored.
+
+  If only a single way exists, you can just use a
+  |aleignore-type-formatdef| in place of this.
+
+  Keys:
+    Type: |String|
+
+    The human-readable name of the format. Must start with an uppercase
+    letter.
+
+  Values:
+    Type: |aleignore-type-formatdef|
+
+    A description of how to ignore an error using one or more comments.
+
+
+aleignore-type-formatdef                          *aleignore-type-formatdef*
+
+  Type: |Dictionary|
+
+  Describes the comment(s) that need(s) to be added to ignore the given
+  error(s).
+
+  If only a single comment is needed, and it is placed 'inline', you can
+  just use a |aleignore-type-commentdef| in place of this.
+
+  above:
+    Type: |aleignore-type-commentdef|
+
+    The comment that should be rendered above the offending line, if
+    any.
+
+  inline:
+    Type: |aleignore-type-commentdef|
+
+    The comment that should be rendered at the end of the offending
+    line, if any.
+
+  below:
+    Type: |aleignore-type-commentdef|
+
+    The comment that should be rendered below the offending line, if
+    any.
+
+
+aleignore-type-commentdef                        *aleignore-type-commentdef*
+
+  Type: |Dictionary|
+
+  Describes the contents and look of a comment.
+
+  If the look doesn't matter, you can just use a |String| in place of
+  this, which will be used as the text of the comment.
+
+  Properties that are not given use the defaults as defined in
+  |g:aleignore_commentdef_defaults|.
+
+  text
+    Type: |String|
+
+    The text that should be put into the comment.
+
+  style
+    Type: |String|
+
+    The comment style to use.
+    See the comment mode section under |tcomment#Comment()| for a list
+    of options.
+
+
+vim:tw=78:et:ft=help:norl:

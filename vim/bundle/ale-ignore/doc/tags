@@ -1,0 +1,10 @@
+ale-ignore	ale-ignore.txt	/*ale-ignore*
+ale-ignore-types	ale-ignore.txt	/*ale-ignore-types*
+aleignore	ale-ignore.txt	/*aleignore*
+aleignore-config	ale-ignore.txt	/*aleignore-config*
+aleignore-type-commentdef	ale-ignore.txt	/*aleignore-type-commentdef*
+aleignore-type-formatdef	ale-ignore.txt	/*aleignore-type-formatdef*
+aleignore-type-linterdef	ale-ignore.txt	/*aleignore-type-linterdef*
+g:Aleignore_fallback	ale-ignore.txt	/*g:Aleignore_fallback*
+g:aleignore_commentdef_defaults	ale-ignore.txt	/*g:aleignore_commentdef_defaults*
+g:aleignore_rules	ale-ignore.txt	/*g:aleignore_rules*
