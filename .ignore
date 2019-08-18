@@ -1,0 +1,9 @@
+config/mpv/bundle/
+fzf/
+opt/
+proxyman/proxyman/
+tmux/bundle/
+vim/bundle-nvim/
+vim/bundle-vim/
+vim/bundle/
+zsh/bundle/
