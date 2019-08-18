@@ -5,7 +5,7 @@ fi
 # Easily complete using presets
 fzf_complete_preset() {
 	local prefix result
-	if [[ "$LBUFFER" != *"$IFS" ]]; then
+	if [[ "$LBUFFER" == "${LBUFFER%[$IFS]}" ]]; then
 		# Doesn't end in ifs, so we'll treat the currently typed word as a preexisting filter
 		prefix=${${(zA)LBUFFER}[-1]}
 	fi
