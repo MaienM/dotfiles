@@ -95,3 +95,10 @@ bindkey "$key_info[Escape]j" backward-transpose-words-with-style-shell
 bindkey "$key_info[Escape]k" forward-transpose-words-with-style-shell
 # }}}
 
+# The forward-word widgets should also accept an equal portion of the autosuggest.
+ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=(
+	"#{ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS[@]}"
+	forward-word-with-style-normal
+	forward-word-with-style-shell
+)
+
