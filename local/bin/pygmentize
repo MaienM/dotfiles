@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 
-exec run-in-pyenv utils pygmentize "$@"
+exec run-in-pyenv utils pygmentize -O "full,style=$BASE16_THEME" "$@"
 

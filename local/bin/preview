@@ -20,7 +20,7 @@ elif [ -f "$fn" ]; then
 				-f "$HOME/.local/bin/preview.awk"
 		;;
 		*)
-			pygmentize -g -O "full,style=$BASE16_THEME" "$fn"
+			pygmentize -g "$fn"
 		;;
 	esac
 else
