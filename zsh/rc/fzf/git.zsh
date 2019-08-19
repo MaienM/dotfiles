@@ -39,6 +39,19 @@ _fzf_pipeline_git_files_others_preview() {
 }
 alias _fzf_pipeline_git_files_others_target='_fzf_pipeline_git_files_target'
 
+# Staged files
+_fzf_pipeline_git_files_staged_source() {
+	git diff --name-only --cached \
+	| while read file; do
+		echo "${(q)file} $file"
+	done \
+	| uniq
+}
+_fzf_pipeline_git_files_staged_preview() {
+	gitd --staged --color -- "${(Q)1}" | diff-so-fancy
+}
+alias _fzf_pipeline_git_files_staged_target='_fzf_pipeline_git_files_target'
+
 # Commits
 _fzf_pipeline_git_commit_source() {
 	git log --pretty=format:"%H ${color_fg_yellow}%h$color_reset %s" "$@"
@@ -104,6 +117,7 @@ alias _fzf_pipeline_git_tag_preview='_fzf_pipeline_git_commit_preview'
 alias _fzf_preset_git_files='_fzf_config_add git_files'
 alias _fzf_preset_git_files_modified='_fzf_config_add git_files_modified'
 alias _fzf_preset_git_files_deleted='_fzf_config_add git_files_deleted'
+alias _fzf_preset_git_files_staged='_fzf_config_add git_files_staged'
 alias _fzf_preset_git_files_others='_fzf_config_add git_files_others'
 _fzf_preset_git_files_dirty() {
 	echo \
@@ -126,6 +140,7 @@ _fzf_register_preset "git_files_modified" "Git files with unstaged changes" "git
 _fzf_register_preset "git_files_deleted" "Git files that are staged for removal" "git:files:deleted"
 _fzf_register_preset "git_files_others" "Git files that are not yet tracked" "git:files:others"
 _fzf_register_preset "git_files_dirty" "Git files (with changes/untracked)" "git:files:dirty"
+_fzf_register_preset "git_files_staged" "Git files that are staged for removal" "git:files:staged"
 _fzf_register_preset "git_commit" "Git commits" "git:commit"
 _fzf_register_preset "git_branch" "Git branches" "git:branch"
 _fzf_register_preset "git_tag" "Git tags" "git:tag"

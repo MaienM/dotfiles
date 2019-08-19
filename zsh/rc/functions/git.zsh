@@ -81,7 +81,6 @@ gitda() {
 
 # Checkout
 gitco() {
-	# Determine files to operate on
 	files=()
 	if [[ $# -eq 0 ]]; then
 		files=($(fzf_run_preset \
@@ -108,6 +107,26 @@ gitco() {
 		fi
 	done
 
+	gits
+}
+
+# Reset
+gitr() {
+	files=()
+	if [[ $# -eq 0 ]]; then
+		files=($(fzf_run_preset \
+			"git:files:staged" \
+			--multi \
+			--header="Pick files to unstage"
+		))
+		[ ${#files} -gt 0 ] || return 0
+		echo "Picked files:"
+		printf "\t$color_fg_cyan%s$color_reset\n" "${files[@]}"
+	else
+		files=("$@")
+	fi
+
+	git reset HEAD -- "${files[@]}"
 	gits
 }
 
