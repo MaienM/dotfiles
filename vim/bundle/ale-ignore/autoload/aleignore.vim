@@ -32,13 +32,15 @@ function! aleignore#ALEIgnore()
 	let errors = ale#list#GetCombinedList()
 	let s:by_linter = {}
 	for error in errors
-		if error.lnum == line('.')
-			let linter = error.linter_name
-			if has_key(s:by_linter, error.linter_name) == 0
-				let s:by_linter[linter] = []
-			endif
-			let s:by_linter[error.linter_name] += [error]
+		if error.lnum != line('.')
+			continue
 		endif
+
+		let linter = error.linter_name
+		if !has_key(s:by_linter, error.linter_name)
+			let s:by_linter[linter] = []
+		endif
+		let s:by_linter[error.linter_name] += [error]
 	endfor
 	call s:ALEIgnoreChooseLinter()
 endfunction
