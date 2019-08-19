@@ -6,5 +6,5 @@ if [ ! -d ~/.local/share/backgrounds ]; then
 	echo "No backgrounds available" >&2
 	exit 1
 else
-	feh --bg-max --randomize --recursive ~/.local/share/backgrounds
+	feh --bg-fill --randomize --recursive ~/.local/share/backgrounds
 fi
