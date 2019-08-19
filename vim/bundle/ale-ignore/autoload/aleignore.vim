@@ -1,13 +1,29 @@
+function! s:AutoloadFunctionExists(name)
+	if exists('*' . a:name)
+		return 1
+	endif
+
+	try
+		exe 'call ' . a:name . '()'
+	catch /^E117/ " Not found.
+		return 0
+	catch /^E119/ " Needs more arguments.
+		return 1
+	catch /.*/
+		return exists('*' . a:name)
+	endtry
+endfunction
+
 function! aleignore#ALEIgnore()
-	if !exists('*ale#list#GetCombinedList')
+	if !s:AutoloadFunctionExists('ale#list#GetCombinedList')
 		echoe "ALE not found, cannot continue."
 		return
 	endif
-	if !exists('*fzf#run')
+	if !s:AutoloadFunctionExists('fzf#run')
 		echoe "FZF not found, cannot continue."
 		return
 	endif
-	if !exists('*tcomment#Comment')
+	if !s:AutoloadFunctionExists('tcomment#Comment')
 		echoe "TComment not found, cannot continue."
 		return
 	endif
