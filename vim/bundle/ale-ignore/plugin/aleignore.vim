@@ -42,5 +42,5 @@ let g:aleignore_commentdef_defaults = {
 	\'style': 'G',
 \}
 
-command! ALEIgnore :call aleignore#ALEIgnore()<CR>
+command! ALEIgnore :call aleignore#ALEIgnore()
 
