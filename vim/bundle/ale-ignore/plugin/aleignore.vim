@@ -27,7 +27,7 @@ let g:aleignore_rules = {
 		\},
 	\}},
 	\'shellcheck': {errors -> {
-		\'above': 'shellcheck disable=' . join(errors, ', '),
+		\'above': 'shellcheck disable=' . join(errors, ','),
 	\}},
 \}
 
