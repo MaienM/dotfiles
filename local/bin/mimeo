@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+exec run-in-pyenv system python -m Mimeo "$@"
+
