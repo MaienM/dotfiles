@@ -137,10 +137,10 @@ _fzf_preset_git_ref() {
 
 _fzf_register_preset "git_files" "Git files" "git:files"
 _fzf_register_preset "git_files_modified" "Git files with unstaged changes" "git:files:modified"
-_fzf_register_preset "git_files_deleted" "Git files that are staged for removal" "git:files:deleted"
+_fzf_register_preset "git_files_deleted" "Git files that are removed" "git:files:deleted"
 _fzf_register_preset "git_files_others" "Git files that are not yet tracked" "git:files:others"
 _fzf_register_preset "git_files_dirty" "Git files (with changes/untracked)" "git:files:dirty"
-_fzf_register_preset "git_files_staged" "Git files that are staged for removal" "git:files:staged"
+_fzf_register_preset "git_files_staged" "Git files that are staged" "git:files:staged"
 _fzf_register_preset "git_commit" "Git commits" "git:commit"
 _fzf_register_preset "git_branch" "Git branches" "git:branch"
 _fzf_register_preset "git_tag" "Git tags" "git:tag"
