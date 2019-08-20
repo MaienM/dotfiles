@@ -197,6 +197,7 @@ exec_always --no-startup-id numlockx on
 exec --no-startup-id xscreensaver
 exec --no-startup-id compton
 exec --no-startup-id redshift
+exec --no-startup-id VBoxClient-all
 
 ### Window assignments
 assign [class="^discord$"] → $workspace3
