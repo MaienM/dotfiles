@@ -51,12 +51,14 @@ function end-of-word-with-style {
 function forward-transpose-words-with-style {
 	end-of-word-with-style
 	match-words-by-style-from-name
+	[ -n "${(j..)matched_words[6,7]}" ] || return
 	LBUFFER="${matched_words[1]}${matched_words[5]}${(j..)matched_words[3,4]}${matched_words[2]}"
 	RBUFFER="${(j..)matched_words[6,7]}"
 }
 function backward-transpose-words-with-style {
 	begin-of-word-with-style
 	match-words-by-style-from-name
+	[ -n "${(j..)matched_words[4,5]}" ] || return
 	LBUFFER="${matched_words[1]}"
 	RBUFFER="${matched_words[5]}${(j..)matched_words[3,4]}${matched_words[2]}${(j..)matched_words[6,7]}"
 }
