@@ -2,12 +2,15 @@ if [ -z "$key_info[Control]" ] || [ -z "$key_info[Escape]" ]; then
 	return 1;
 fi
 
-# I want the word-based actions to be available in two flavors: whitespace (ish) based (the default), and shell argument
-# based. select-word-style with the provided *-match functions can provide both of these, but unfortunately switching
-# between these at runtime doesn't work (due to the syntax highlighting plugin). The core of these functions is the
+# I want the word-based actions to be available in two flavors: word based (the default), and shell argument based.
+# select-word-style with the provided *-match functions can provide both of these, but unfortunately switching between
+# these at runtime doesn't work (due to the syntax highlighting plugin). The core of these functions is the
 # match-words-by-style function, which (luckily) accepts the style to use as an argument, which we can use to
 # reimplement the desired functions fairly easily.
 autoload -Uz match-words-by-style
+
+# Limit the characters that can be part of a word. Alphanumeric is included automatically.
+WORDCHARS='_'
 
 # Implementations of generic functions {{{
 function match-words-by-style-from-name {
@@ -75,7 +78,7 @@ for style in "${word_styles[@]}"; do
 done
 # }}}
 
-# Bindings with control operate on whitespace based words (as default). The same bindings with alt operate on arguments.
+# Bindings with control operate on words (as default). The same bindings with alt operate on arguments.
 
 # Bindings {{{
 # Remove word with mod+w.
