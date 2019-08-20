@@ -107,3 +107,27 @@ ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=(
 	forward-word-with-style-shell
 )
 
+# Utility function to help with development.
+function log-word-style-with-style {
+	match-words-by-style-from-name
+
+	echo
+	printf '%s|%s\n' "$LBUFFER" "$RBUFFER"
+	printf 'LBUFFER -> %q\n' "$LBUFFER" 
+	printf 'RBUFFER -> %q\n' "$RBUFFER"
+	for ((i=1; i<=${#matched_words[@]}; i+=1)); do
+		printf '%i -> %q\n' "$i" "${matched_words[i]}"
+	done
+	echo
+	echo
+	zle fzf-redraw-prompt
+}
+zle -N log-word-style-with-style-normal log-word-style-with-style 
+zle -N log-word-style-with-style-shell log-word-style-with-style 
+# bindkey "$key_info[Control]i" log-word-style-with-style-normal 
+# bindkey "$key_info[Control]y" begin-of-word-with-style-normal
+# bindkey "$key_info[Control]p" end-of-word-with-style-normal
+# bindkey "$key_info[Escape]i" log-word-style-with-style-shell 
+# bindkey "$key_info[Escape]y" begin-of-word-with-style-shell
+# bindkey "$key_info[Escape]p" end-of-word-with-style-shell
+
