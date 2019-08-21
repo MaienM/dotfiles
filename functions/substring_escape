@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# shellcheck source=strip_escape
+. "$HOME/.functions/strip_escape"

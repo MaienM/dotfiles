@@ -8,6 +8,8 @@ action = skip
 action = skip
 [scripts]
 action = skip
+[tests]
+action = skip
 [windows-registry]
 action = skip
 

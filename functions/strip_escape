@@ -1,5 +1,46 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+
+# Based on https://unix.stackexchange.com/a/18979/339582. Requires the /x flag.
+_perl_regex_escape_any='
+	\e[ #%()*+\-.\/]. |
+	(?:\e\[|\x9b) [ -?]* [@-~] \017? | # CSI ... Cmd
+	(?:\e\]|\x9d) .*? (?:\e\\|[\a\x9c]) | # OSC ... (ST|BEL)
+	(?:\e[P^_]|[\x90\x9e\x9f]) .*? (?:\e\\|\x9c) | # (DCS|PM|APC) ... ST
+	\e.|[\x80-\x9f]'
+_perl_regex_escape_reset='\e\[m\017?'
 
 strip_escape() {
-	sed -E 's/[[:cntrl:]]\[[0-9]{0,3}(;[0-9]{1,3}){0,5}[mGK][[:cntrl:]]?//g' "$@"
+	perl -pe "s/$_perl_regex_escape_any//xg"
 }
+
+substring_escape() {
+	start="$1"
+	length="$2"
+
+	if [[ "$length" -eq 0 ]]; then
+		echo >&2 "Length cannot be 0."
+		return 1
+	fi
+
+	char="(?:(?:$_perl_regex_escape_any)*.)"
+	escape="(?:$_perl_regex_escape_reset)"
+
+	if [ "$start" -ge 0 ] && [ "$length" -gt 0 ]; then
+		# start >= 0, length > 0: simple substring.
+		perl -CS -pe "s/^$char{$start}($char{$length}$escape?).*$/\1/x"
+	elif [ "$start" -ge 0 ]; then
+		# start >= 0, length < 0: use length as 'leave this many from end'.
+		perl -CS -pe "s/^$char{$start}($char*?$escape?)$char{0,$((-length))}$/\1/x"
+	elif [ "$length" -gt 0 ]; then
+		# start < 0, length > 0: use start as counted from end, length as normal.
+		[ "$((-start))" -lt "$length" ] && length=$((-start))
+		skip=$((-start - length))
+		perl -CS -pe "s/^.*?($char{$length}$escape?)$char{$skip}$/\1/x"
+	else
+		# start < 0, length < 0: use start as counted from end, length as 'leave this many from end'.
+		reallength=$((length - start))
+		[ "$reallength" -lt 0 ] && return
+		perl -CS -pe "s/^.*?($char{$reallength}$escape?)$char{$((-length))}$/\1/x"
+	fi
+}
+
