@@ -10,7 +10,7 @@ _perl_regex_escape_any='
 _perl_regex_escape_reset='\e\[m\017?'
 
 strip_escape() {
-	perl -pe "s/$_perl_regex_escape_any//xg"
+	perl -CS -pe "s/$_perl_regex_escape_any//xg"
 }
 
 substring_escape() {
