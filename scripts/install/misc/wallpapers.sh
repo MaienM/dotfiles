@@ -1,18 +1,11 @@
 #!/usr/bin/env sh
 
-# The APIKEY is hardcoded in the file. Create a version that does not include this so we can pass it normally.
-script="$(mktemp --suffix='.sh')"
-echo ">>> Creating custom version of the script that can accept APIKEY at '$script'."
-grep -v '^APIKEY=' < opt/wallhaven-downloader/wallhaven.sh > "$script"
-chmod +x "$script"
+set -e
 
-echo ">>> Enter API key (get it at https://wallhaven.cc/settings/account):"
-read -r APIKEY
-export APIKEY
+if [ ! -f "$1" ]; then
+	echo >&2 "Usage: $0 [cookies.txt]"
+	echo >&2 "The cookies.txt file must contain an active login session from wallhaven.cc"
+	exit 1
+fi
 
-"$script" \
-	--location "$HOME/.local/share/backgrounds/" \
-	--type favorites \
-	--user MaienM \
-	--favcollection Nature
-
+./scripts/install/misc/wallpapers.py "$1" "$HOME/local/share/backgrounds" 442033

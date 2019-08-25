@@ -37,8 +37,6 @@ action = recurse
 action = recurse
 [local/share]
 action = recurse
-[local/share/background-sets/photos]
-target = .local/share/backgrounds
 
 [opt]
 action = skip

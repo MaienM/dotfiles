@@ -22,5 +22,6 @@ echo "Installation complete"
 echo ">>> Setting up virtualenv"
 pyenv virtualenv-delete -f utils || true
 pyenv virtualenv "$py_version" utils
+run-in-pyenv utils pip install bs4 requests lxml
 run-in-pyenv utils pip install pygments pygments-base16 
 
