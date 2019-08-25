@@ -32,6 +32,7 @@ get_ratio() {
 }
 
 # Split backgrounds in groups based on ratios (portrait, landscape, other).
+echo ">>> Scanning backgrounds."
 # shellcheck disable=SC2207
 fehoutput=($(feh --recursive ~/.local/share/backgrounds --customlist '%f %w %h' 2> /dev/null))
 for ((i=0; i<${#fehoutput[@]}; i+=3)); do
@@ -40,12 +41,22 @@ for ((i=0; i<${#fehoutput[@]}; i+=3)); do
 	paths=("${paths[@]}" "${fehoutput[i]}")
 done
 
+for ((i=0; i<${#ratios[@]}; i+=3)); do
+	ratio="${ratios[i]}"
+	declare -n "paths=bg_$ratio"
+	echo "Found ${#paths[@]} $ratio background(s)."
+done
+#  shellcheck disable=SC2154
+echo "Found ${#bg_other[@]} other background(s)."
+
 # For each monitor, pick a random background.
+echo ">>> Applying random background to each monitor."
 cmd=feh
 while read -ra moninfo; do
 	ratio="$(get_ratio "${moninfo[2]}" "${moninfo[4]}")"
 	declare -n "paths=bg_$ratio"
 	path="$(printf '%s\n' "${paths[@]}" | shuf -n1)"
+	echo "Picked '$path' from ($ratio) for ${moninfo[6]}."
 	cmd="$(printf '%s --bg-fill %s' "$cmd" "$path")"
 done < <(xrandr --listactivemonitors | tr '/x' ' ' | tail -n+2)
 $cmd
