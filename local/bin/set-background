@@ -1,10 +1,52 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+
+# Randomly assigns backgrounds to all monitors.
+#
+# For each monitor, it will pick a background that fits reasonably well, and then cut & scale it to fit.
 
 set -e
 
 if [ ! -d ~/.local/share/backgrounds ]; then
 	echo "No backgrounds available" >&2
 	exit 1
-else
-	feh --bg-fill --randomize --recursive ~/.local/share/backgrounds
 fi
+
+m() {
+	bc <<< "scale=10; $1"
+}
+
+# Setup ranges of ratios that are grouped together.
+ratios=(
+	landscape "$(m 16/8)" "$(m 16/11)"
+	portrait "$(m 11/16)" "$(m 8/16)"
+)
+get_ratio() {
+	local ratio i
+	ratio="$(m "$1/$2")"
+	for ((i=0; i<${#ratios[@]}; i+=3)); do
+		[ "$(m "(${ratios[i+1]} >= $ratio) + ($ratio >= ${ratios[i+2]})")" -eq 2 ] || continue
+		echo "${ratios[i]}"
+		return
+	done
+	echo "other"
+}
+
+# Split backgrounds in groups based on ratios (portrait, landscape, other).
+# shellcheck disable=SC2207
+fehoutput=($(feh --recursive ~/.local/share/backgrounds --customlist '%f %w %h' 2> /dev/null))
+for ((i=0; i<${#fehoutput[@]}; i+=3)); do
+	ratio="$(get_ratio "${fehoutput[i+1]}" "${fehoutput[i+2]}")"
+	declare -n "paths=bg_$ratio"
+	paths=("${paths[@]}" "${fehoutput[i]}")
+done
+
+# For each monitor, pick a random background.
+cmd=feh
+while read -ra moninfo; do
+	ratio="$(get_ratio "${moninfo[2]}" "${moninfo[4]}")"
+	declare -n "paths=bg_$ratio"
+	path="$(printf '%s\n' "${paths[@]}" | shuf -n1)"
+	cmd="$(printf '%s --bg-fill %s' "$cmd" "$path")"
+done < <(xrandr --listactivemonitors | tr '/x' ' ' | tail -n+2)
+$cmd
+
