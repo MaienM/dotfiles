@@ -14,6 +14,8 @@ fzf_complete_preset() {
 			"$prefix" \
 			--height='30%' \
 			--preview-window='right' \
+			--multi \
+		| tr '\n' ' ' \
 	)
 	[[ -n "$result" ]] && LBUFFER="${LBUFFER%$prefix}$result "
 	zle redisplay
