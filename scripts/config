@@ -35,8 +35,6 @@ target = .fzf, .vim/bundle/fzf-base
 action = recurse
 [local/bin]
 action = recurse
-[local/share]
-action = recurse
 
 [opt]
 action = skip
