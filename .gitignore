@@ -1,6 +1,7 @@
 Xresources.d/colors
 config/mpv/scripts/
 config/mpv/watch_later/
+config/rofi/theme.rasi
 tmux/resurrect/
 vim/.netrwhist
 vim/bundle/fzf-base

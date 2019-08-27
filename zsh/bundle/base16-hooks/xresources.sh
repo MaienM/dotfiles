@@ -1,9 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-set -o errexit
+set -e
 
-# Install the colors.
-cp "$HOME/.zsh/bundle/base16-hooks/base16-xresources/xresources/base16-$BASE16_THEME-256.Xresources" ~/.Xresources.d/colors
-
-# Apply the Xresources.
+ln -f "$HOME/.zsh/bundle/base16-hooks/base16-xresources/xresources/base16-$BASE16_THEME-256.Xresources" ~/.Xresources.d/colors
 xrdb -merge ~/.Xresources

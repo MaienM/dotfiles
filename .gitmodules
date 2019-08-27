@@ -202,3 +202,6 @@
 [submodule "vim/bundle/tcomment"]
 	path = vim/bundle/tcomment
 	url = https://github.com/tomtom/tcomment_vim
+[submodule "config/rofi/base16"]
+	path = config/rofi/base16
+	url = https://github.com/0xdec/base16-rofi
