@@ -17,7 +17,7 @@ fzf_complete_preset() {
 			--multi \
 		| tr '\n' ' ' \
 	)
-	[[ -n "$result" ]] && LBUFFER="${LBUFFER%$prefix}$result "
+	[[ -n "$result" ]] && LBUFFER="${LBUFFER%$prefix}$result"
 	zle redisplay
 }
 zle -N fzf_complete_preset
