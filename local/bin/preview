@@ -19,6 +19,11 @@ elif [ -f "$fn" ]; then
 				-v "color_reset=$color_reset" \
 				-f "$HOME/.local/bin/preview.awk"
 		;;
+		data)
+			echo "No preview available."
+			echo
+			stat "$fn"
+		;;
 		*)
 			pygmentize -g "$fn"
 		;;
