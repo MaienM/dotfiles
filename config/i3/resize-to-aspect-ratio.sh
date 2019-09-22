@@ -40,6 +40,10 @@ case "$target" in
 	;;
 esac
 
+case "$(get_active_window_info | jq -r '.border')" in
+	'none') calc="$calc - 1" ;;
+esac
+
 # Use jq to calculate the desired target size from the client info.
 target_size="$(get_active_window_info | jq ".rect.$calc | nearbyint")"
 
