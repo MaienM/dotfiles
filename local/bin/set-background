@@ -7,7 +7,7 @@
 set -e
 
 if [ ! -d ~/.local/share/backgrounds ]; then
-	echo "No backgrounds available" >&2
+	echo >&2 "No backgrounds available."
 	exit 1
 fi
 
@@ -19,6 +19,7 @@ m() {
 ratios=(
 	landscape "$(m 16/8)" "$(m 16/11)"
 	portrait "$(m 11/16)" "$(m 8/16)"
+	other 0 999999999
 )
 get_ratio() {
 	local ratio i
@@ -39,15 +40,24 @@ for ((i=0; i<${#fehoutput[@]}; i+=3)); do
 	ratio="$(get_ratio "${fehoutput[i+1]}" "${fehoutput[i+2]}")"
 	declare -n "paths=bg_$ratio"
 	paths=("${paths[@]}" "${fehoutput[i]}")
+	bg_all=("${bg_all[@]}" "${fehoutput[i]}")
 done
+
+if [ "${#bg_all[@]}" -eq 0 ]; then
+	echo >&2 "No backgrounds found."
+	exit 1
+fi
 
 for ((i=0; i<${#ratios[@]}; i+=3)); do
 	ratio="${ratios[i]}"
 	declare -n "paths=bg_$ratio"
-	echo "Found ${#paths[@]} $ratio background(s)."
+	printf 'Found %i %s background(s).' "${#paths[@]}" "$ratio"
+	if [ "${#paths[@]}" -eq 0 ]; then
+		paths=("${bg_all[@]}")
+		printf ' Falling back to using all background(s) for this ratio.'
+	fi
+	printf '\n'
 done
-#  shellcheck disable=SC2154
-echo "Found ${#bg_other[@]} other background(s)."
 
 # For each monitor, pick a random background.
 echo ">>> Applying random background to each monitor."
