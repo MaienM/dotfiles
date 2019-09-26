@@ -4,9 +4,12 @@
 #
 # For each monitor, it will pick a background that fits reasonably well, and then cut & scale it to fit.
 
+bgpath="$HOME/.local/share/backgrounds"
+cachepath="$HOME/.local/share/backgrounds/.cache"
+
 set -e
 
-if [ ! -d ~/.local/share/backgrounds ]; then
+if [ ! -d "$bgpath" ]; then
 	echo >&2 "No backgrounds available."
 	exit 1
 fi
@@ -32,22 +35,35 @@ get_ratio() {
 	echo "other"
 }
 
+update_cache() {
+	echo ">>> Updating background cache."
+	feh --recursive "$bgpath" --customlist '%f\n%w\n%h' 2> /dev/null > "$cachepath"
+}
+
+# Update the cache.
+if [ -f "$cachepath" ]; then
+	trap 'update_cache' 0 1
+else 
+	update_cache
+fi
+
 # Split backgrounds in groups based on ratios (portrait, landscape, other).
-echo ">>> Scanning backgrounds."
+echo ">>> Reading background info from cache."
 # shellcheck disable=SC2207
-fehoutput=($(feh --recursive ~/.local/share/backgrounds --customlist '%f %w %h' 2> /dev/null))
+mapfile -t fehoutput < "$cachepath"
 for ((i=0; i<${#fehoutput[@]}; i+=3)); do
+	[ -f "${fehoutput[i]}" ] || continue # File was deleted since the cache was last updated.
 	ratio="$(get_ratio "${fehoutput[i+1]}" "${fehoutput[i+2]}")"
 	declare -n "paths=bg_$ratio"
 	paths=("${paths[@]}" "${fehoutput[i]}")
 	bg_all=("${bg_all[@]}" "${fehoutput[i]}")
 done
 
+# Validate & log the groups.
 if [ "${#bg_all[@]}" -eq 0 ]; then
 	echo >&2 "No backgrounds found."
 	exit 1
 fi
-
 for ((i=0; i<${#ratios[@]}; i+=3)); do
 	ratio="${ratios[i]}"
 	declare -n "paths=bg_$ratio"
