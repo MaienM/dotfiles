@@ -205,3 +205,6 @@
 [submodule "config/rofi/base16"]
 	path = config/rofi/base16
 	url = https://github.com/0xdec/base16-rofi
+[submodule "asdf/asdf"]
+	path = asdf/asdf
+	url = https://github.com/asdf-vm/asdf

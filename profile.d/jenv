@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-
-[ -d "$HOME/.jenv" ] || return
-
-export JENV_ROOT="$HOME/.jenv"
-prepend_to_path "$JENV_ROOT/bin"
-eval "$(jenv init -)"

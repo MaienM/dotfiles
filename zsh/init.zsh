@@ -3,6 +3,10 @@ source ~/.profile
 # Load version checking function, for version guards in the plugins.
 autoload -Uz is-at-least
 
+# Setup completion engine.
+autoload -Uz compinit
+compinit
+
 source ~/.zsh/bundle/autosuggestions.zsh
 source ~/.zsh/bundle/base16.zsh
 source ~/.zsh/bundle/fzf.zsh

@@ -1,8 +1,0 @@
-#!/usr/bin/env sh
-
-[ -d "$HOME/.pyenv" ] || return
-
-export PYENV_ROOT="$HOME/.pyenv"
-export PYTHON_CONFIGURE_OPTS="--enable-shared"
-prepend_to_path "$PYENV_ROOT/bin"
-eval "$(pyenv init -)"

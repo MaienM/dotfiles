@@ -13,6 +13,14 @@ action = skip
 [windows-registry]
 action = skip
 
+[asdf]
+action = skip
+[asdf/asdf]
+target = .asdf
+[asdf/plugins]
+action = recurse
+target = .asdf/plugins
+
 [config]
 action = recurse
 [config/i3]
