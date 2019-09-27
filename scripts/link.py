@@ -16,6 +16,18 @@ import tty
 
 ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 CONFIG = os.path.join(ROOT, 'scripts', 'config')
+BASE_SCRIPT = '''
+#!/usr/bin/env sh
+
+set -e
+
+ln() {
+	[ "$2" == "--" ] && target="$4" || target="$2"
+	tdir="$(dirname "$target")"
+	[ -d "$tdir" ] || mkdir -p "$tdir"
+	command ln "$@"
+}
+'''
 
 
 def err(*args):
@@ -182,12 +194,6 @@ class Processor(object):
 			err(f'Cannot recurse non-directory {fc.path}')
 			return
 
-		# Make sure the target directory exists
-		for target in fc.targets:
-			target = os.path.join(os.path.expanduser("~"), target)
-			if not os.path.exists(target):
-				self.commands.append(f'mkdir -p {shlex.quote(target)}')
-
 		self.process_dir(entry.path)
 
 	def apply_link(self, entry, fc):
@@ -300,10 +306,6 @@ def main(args):
 		if fc.action != FileAction.SKIP and not fc.processed:
 			print(f'{path} is in the config, but has not been processed')
 
-	# Make sure the order of commands is sensible. Directory creating should always be first, as other commands can
-	# depend on it.
-	processor.commands.sort(key = lambda l: 0 if l.startswith('mkdir') else 1)
-
 	# If there is nothing to be done, remove old command files and exit
 	cmdpath = os.path.join(ROOT, 'cmds')
 	if not processor.commands:
@@ -315,13 +317,14 @@ def main(args):
 	# Write the commands to a file that can be sourced by the user
 	commands = '\n'.join(processor.commands)
 	with open(cmdpath, 'w') as f:
+		f.write(f'{BASE_SCRIPT}\n')
 		f.write(commands)
 		f.write(f'\n\nrm {shlex.quote(cmdpath)}')
-	print('Please confirm the following commands are correct:')
+	print('Please confirm the following commands are correct (directories will be created as needed):')
 	print()
 	print(commands)
 	print()
-	print(f'To execute these commands type "source {cmdpath}".')
+	print(f'To execute these commands type "sh {cmdpath}".')
 
 
 if __name__ == '__main__':
