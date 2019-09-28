@@ -12,7 +12,7 @@
 	url = https://github.com/justinmk/vim-sneak.git
 [submodule "vim/bundle/matchit.zip"]
 	path = vim/bundle/matchit
-	url = https://github.com/vim-scripts/matchit.zip.git
+	url = https://github.com/adelarsq/vim-matchit.git
 [submodule "vim/bundle/vim-repeat"]
 	path = vim/bundle/repeat
 	url = https://github.com/tpope/vim-repeat.git
@@ -69,7 +69,7 @@
 	url = https://github.com/christoomey/vim-sort-motion.git
 [submodule "vim/bundle/ReplaceWithRegister"]
 	path = vim/bundle/replace-with-register
-	url = https://github.com/vim-scripts/ReplaceWithRegister.git
+	url = https://github.com/inkarkat/vim-ReplaceWithRegister.git
 [submodule "vim/bundle/targets.vim"]
 	path = vim/bundle/targets.vim
 	url = https://github.com/wellle/targets.vim.git
@@ -180,10 +180,10 @@
 	url = https://github.com/occivink/mpv-scripts.git
 [submodule "vim/bundle/advanced-sorters"]
 	path = vim/bundle/advanced-sorters
-	url = https://github.com/vim-scripts/AdvancedSorters.git
+	url = https://github.com/inkarkat/vim-AdvancedSorters.git
 [submodule "vim/bundle/ingo-library"]
 	path = vim/bundle/ingo-library
-	url = https://github.com/vim-scripts/ingo-library.git
+	url = https://github.com/inkarkat/vim-ingo-library.git
 [submodule "vim/bundle/braceless"]
 	path = vim/bundle/braceless
 	url = https://github.com/tweekmonster/braceless.vim.git
