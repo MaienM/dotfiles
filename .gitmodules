@@ -1,204 +1,204 @@
 [submodule "vim/bundle/securemodelines"]
 	path = vim/bundle/securemodelines
-	url = https://github.com/ciaranm/securemodelines.git
-[submodule "vim/bundle/vim-commentary"]
+	url = https://github.com/ciaranm/securemodelines
+[submodule "vim/bundle/commentary"]
 	path = vim/bundle/commentary
-	url = https://github.com/tpope/vim-commentary.git
-[submodule "vim/bundle/vim-indent-guides"]
+	url = https://github.com/tpope/vim-commentary
+[submodule "vim/bundle/indent-guides"]
 	path = vim/bundle/indent-guides
-	url = https://github.com/nathanaelkane/vim-indent-guides.git
-[submodule "vim/bundle/vim-sneak"]
+	url = https://github.com/nathanaelkane/vim-indent-guides
+[submodule "vim/bundle/sneak"]
 	path = vim/bundle/sneak
-	url = https://github.com/justinmk/vim-sneak.git
-[submodule "vim/bundle/matchit.zip"]
+	url = https://github.com/justinmk/vim-sneak
+[submodule "vim/bundle/matchit"]
 	path = vim/bundle/matchit
-	url = https://github.com/adelarsq/vim-matchit.git
-[submodule "vim/bundle/vim-repeat"]
+	url = https://github.com/adelarsq/vim-matchit
+[submodule "vim/bundle/repeat"]
 	path = vim/bundle/repeat
-	url = https://github.com/tpope/vim-repeat.git
-[submodule "vim/bundle/vim-surround"]
+	url = https://github.com/tpope/vim-repeat
+[submodule "vim/bundle/surround"]
 	path = vim/bundle/surround
-	url = https://github.com/tpope/vim-surround.git
-[submodule "vim/bundle/vim-abolish"]
+	url = https://github.com/tpope/vim-surround
+[submodule "vim/bundle/abolish"]
 	path = vim/bundle/abolish
-	url = https://github.com/tpope/vim-abolish.git
-[submodule "vim/bundle/vim-speeddating"]
+	url = https://github.com/tpope/vim-abolish
+[submodule "vim/bundle/speeddating"]
 	path = vim/bundle/speeddating
-	url = https://github.com/tpope/vim-speeddating.git
-[submodule "vim/bundle/vim-fugitive"]
+	url = https://github.com/tpope/vim-speeddating
+[submodule "vim/bundle/fugitive"]
 	path = vim/bundle/fugitive
-	url = https://github.com/tpope/vim-fugitive.git
+	url = https://github.com/tpope/vim-fugitive
 [submodule "vim/bundle/pathogen"]
 	path = vim/bundle/pathogen
-	url = https://github.com/tpope/vim-pathogen.git
+	url = https://github.com/tpope/vim-pathogen
 [submodule "vim/bundle/vimproc"]
 	path = vim/bundle/vimproc
-	url = https://github.com/Shougo/vimproc.vim.git
+	url = https://github.com/Shougo/vimproc.vim
 [submodule "vim/bundle/polyglot"]
 	path = vim/bundle/polyglot
-	url = https://github.com/sheerun/vim-polyglot.git
+	url = https://github.com/sheerun/vim-polyglot
 [submodule "vim/bundle/sleuth"]
 	path = vim/bundle/sleuth
-	url = https://github.com/tpope/vim-sleuth.git
+	url = https://github.com/tpope/vim-sleuth
 [submodule "vim/bundle/vim-misc"]
 	path = vim/bundle/vim-misc
-	url = https://github.com/xolox/vim-misc.git
+	url = https://github.com/xolox/vim-misc
 [submodule "vim/bundle/projectroot"]
 	path = vim/bundle/projectroot
-	url = https://github.com/dbakker/vim-projectroot.git
+	url = https://github.com/dbakker/vim-projectroot
 [submodule "vim/bundle/easy-align"]
 	path = vim/bundle/easy-align
-	url = https://github.com/junegunn/vim-easy-align.git
+	url = https://github.com/junegunn/vim-easy-align
 [submodule "vim/bundle/undotree"]
 	path = vim/bundle/undotree
-	url = https://github.com/mbbill/undotree.git
+	url = https://github.com/mbbill/undotree
 [submodule "vim/bundle/signature"]
 	path = vim/bundle/signature
-	url = https://github.com/kshenoy/vim-signature.git
+	url = https://github.com/kshenoy/vim-signature
 [submodule "vim/bundle/gitgutter"]
 	path = vim/bundle/gitgutter
-	url = https://github.com/airblade/vim-gitgutter.git
+	url = https://github.com/airblade/vim-gitgutter
 [submodule "vim/bundle/dispatch"]
 	path = vim/bundle/dispatch
-	url = https://github.com/tpope/vim-dispatch.git
+	url = https://github.com/tpope/vim-dispatch
 [submodule "vim/bundle/vimux"]
 	path = vim/bundle/vimux
-	url = https://github.com/benmills/vimux.git
+	url = https://github.com/benmills/vimux
 [submodule "vim/bundle/sort-motion"]
 	path = vim/bundle/sort-motion
-	url = https://github.com/christoomey/vim-sort-motion.git
-[submodule "vim/bundle/ReplaceWithRegister"]
+	url = https://github.com/christoomey/vim-sort-motion
+[submodule "vim/bundle/replace-with-register"]
 	path = vim/bundle/replace-with-register
-	url = https://github.com/inkarkat/vim-ReplaceWithRegister.git
+	url = https://github.com/inkarkat/vim-ReplaceWithRegister
 [submodule "vim/bundle/targets.vim"]
 	path = vim/bundle/targets.vim
-	url = https://github.com/wellle/targets.vim.git
-[submodule "vim/bundle/vim-indent-object"]
+	url = https://github.com/wellle/targets.vim
+[submodule "vim/bundle/indent-object"]
 	path = vim/bundle/indent-object
-	url = https://github.com/michaeljsmith/vim-indent-object.git
+	url = https://github.com/michaeljsmith/vim-indent-object
 [submodule "vim/bundle/argwrap"]
 	path = vim/bundle/argwrap
-	url = https://github.com/FooSoft/vim-argwrap.git
+	url = https://github.com/FooSoft/vim-argwrap
 [submodule "vim/bundle/localvimrc"]
 	path = vim/bundle/localvimrc
-	url = https://github.com/embear/vim-localvimrc.git
+	url = https://github.com/embear/vim-localvimrc
 [submodule "vim/bundle/syntax-graphql"]
 	path = vim/bundle/syntax-graphql
-	url = https://github.com/jparise/vim-graphql.git
+	url = https://github.com/jparise/vim-graphql
 [submodule "vim/bundle-vim/neocomplete"]
 	path = vim/bundle-vim/neocomplete
-	url = https://github.com/Shougo/neocomplete.vim.git
+	url = https://github.com/Shougo/neocomplete.vim
 [submodule "vim/bundle-nvim/deoplete"]
 	path = vim/bundle-nvim/deoplete
-	url = https://github.com/Shougo/deoplete.nvim.git
-[submodule "vim/bundle-nvim/airline"]
+	url = https://github.com/Shougo/deoplete.nvim
+[submodule "vim/bundle/airline"]
 	path = vim/bundle/airline
-	url = https://github.com/vim-airline/vim-airline.git
-[submodule "vim/bundle-nvim/airline-themes"]
+	url = https://github.com/vim-airline/vim-airline
+[submodule "vim/bundle/airline-themes"]
 	path = vim/bundle/airline-themes
-	url = https://github.com/vim-airline/vim-airline-themes.git
-[submodule "bin/ssh-ident"]
+	url = https://github.com/vim-airline/vim-airline-themes
+[submodule "opt/ssh-ident"]
 	path = opt/ssh-ident
-	url = https://github.com/ccontavalli/ssh-ident.git
+	url = https://github.com/ccontavalli/ssh-ident
 [submodule "vim/bundle/tmuxline"]
 	path = vim/bundle/tmuxline
-	url = https://github.com/edkolev/tmuxline.vim.git
+	url = https://github.com/edkolev/tmuxline.vim
 [submodule "tmux/bundle/battery"]
 	path = tmux/bundle/battery
-	url = https://github.com/tmux-plugins/tmux-battery.git
+	url = https://github.com/tmux-plugins/tmux-battery
 [submodule "zsh/bundle/history-substring-search"]
 	path = zsh/bundle/history-substring-search
-	url = https://github.com/zsh-users/zsh-history-substring-search.git
+	url = https://github.com/zsh-users/zsh-history-substring-search
 [submodule "zsh/bundle/autosuggestions"]
 	path = zsh/bundle/autosuggestions
-	url = https://github.com/zsh-users/zsh-autosuggestions.git
+	url = https://github.com/zsh-users/zsh-autosuggestions
 [submodule "zsh/bundle/syntax-highlighting"]
 	path = zsh/bundle/syntax-highlighting
-	url = https://github.com/zdharma/fast-syntax-highlighting.git
+	url = https://github.com/zdharma/fast-syntax-highlighting
 [submodule "zsh/bundle/base16"]
 	path = zsh/bundle/base16
-	url = https://github.com/chriskempson/base16-shell.git
+	url = https://github.com/chriskempson/base16-shell
 [submodule "vim/bundle/base16"]
 	path = vim/bundle/base16
-	url = https://github.com/chriskempson/base16-vim.git
-[submodule "vim/bundle/deoplete-ternjs"]
+	url = https://github.com/chriskempson/base16-vim
+[submodule "vim/bundle-nvim/deoplete-ternjs"]
 	path = vim/bundle-nvim/deoplete-ternjs
-	url = https://github.com/carlitux/deoplete-ternjs.git
+	url = https://github.com/carlitux/deoplete-ternjs
 [submodule "vim/bundle/syntax-renpy"]
 	path = vim/bundle/syntax-renpy
-	url = https://github.com/chaimleib/vim-renpy.git
+	url = https://github.com/chaimleib/vim-renpy
 [submodule "fzf"]
 	path = fzf
-	url = https://github.com/junegunn/fzf.git
+	url = https://github.com/junegunn/fzf
 [submodule "vim/bundle/fzf"]
 	path = vim/bundle/fzf-vim
-	url = https://github.com/junegunn/fzf.vim.git
+	url = https://github.com/junegunn/fzf.vim
 [submodule "vim/bundle/obsession"]
 	path = vim/bundle/obsession
-	url = https://github.com/tpope/vim-obsession.git
+	url = https://github.com/tpope/vim-obsession
 [submodule "tmux/bundle/resurrect"]
 	path = tmux/bundle/resurrect
-	url = https://github.com/tmux-plugins/tmux-resurrect.git
+	url = https://github.com/tmux-plugins/tmux-resurrect
 [submodule "tmux/bundle/continuum"]
 	path = tmux/bundle/continuum
-	url = https://github.com/tmux-plugins/tmux-continuum.git
+	url = https://github.com/tmux-plugins/tmux-continuum
 [submodule "vim/bundle/vim-test"]
 	path = vim/bundle/vim-test
-	url = https://github.com/janko-m/vim-test.git
+	url = https://github.com/janko-m/vim-test
 [submodule "vim/bundle/ale"]
 	path = vim/bundle/ale
-	url = https://github.com/w0rp/ale.git
+	url = https://github.com/w0rp/ale
 [submodule "vim/bundle/rainbow-parentheses"]
 	path = vim/bundle/rainbow-parentheses
-	url = https://github.com/junegunn/rainbow_parentheses.vim.git
+	url = https://github.com/junegunn/rainbow_parentheses.vim
 [submodule "vim/bundle/editorconfig"]
 	path = vim/bundle/editorconfig
-	url = https://github.com/sgur/vim-editorconfig.git
+	url = https://github.com/sgur/vim-editorconfig
 [submodule "vim/bundle/peekaboo"]
 	path = vim/bundle/peekaboo
-	url = https://github.com/junegunn/vim-peekaboo.git
+	url = https://github.com/junegunn/vim-peekaboo
 [submodule "opt/diff-so-fancy"]
 	path = opt/diff-so-fancy
-	url = https://github.com/so-fancy/diff-so-fancy.git
+	url = https://github.com/so-fancy/diff-so-fancy
 [submodule "vim/bundle/limelight"]
 	path = vim/bundle/limelight
-	url = https://github.com/junegunn/limelight.vim.git
+	url = https://github.com/junegunn/limelight.vim
 [submodule "vim/bundle/golden-view"]
 	path = vim/bundle/golden-view
-	url = https://github.com/zhaocai/GoldenView.Vim.git
+	url = https://github.com/zhaocai/GoldenView.Vim
 [submodule "vim/bundle/goyo"]
 	path = vim/bundle/goyo
-	url = https://github.com/junegunn/goyo.vim.git
+	url = https://github.com/junegunn/goyo.vim
 [submodule "zsh/bundle/base16-hooks/base16-xresources"]
 	path = zsh/bundle/base16-hooks/base16-xresources
-	url = https://github.com/chriskempson/base16-xresources.git
+	url = https://github.com/chriskempson/base16-xresources
 [submodule "vim/bundle/eunuch"]
 	path = vim/bundle/eunuch
-	url = https://github.com/tpope/vim-eunuch.git
+	url = https://github.com/tpope/vim-eunuch
 [submodule "config/mpv/bundle/occivink"]
 	path = config/mpv/bundle/occivink
-	url = https://github.com/occivink/mpv-scripts.git
+	url = https://github.com/occivink/mpv-scripts
 [submodule "vim/bundle/advanced-sorters"]
 	path = vim/bundle/advanced-sorters
-	url = https://github.com/inkarkat/vim-AdvancedSorters.git
+	url = https://github.com/inkarkat/vim-AdvancedSorters
 [submodule "vim/bundle/ingo-library"]
 	path = vim/bundle/ingo-library
-	url = https://github.com/inkarkat/vim-ingo-library.git
+	url = https://github.com/inkarkat/vim-ingo-library
 [submodule "vim/bundle/braceless"]
 	path = vim/bundle/braceless
-	url = https://github.com/tweekmonster/braceless.vim.git
+	url = https://github.com/tweekmonster/braceless.vim
 [submodule "config/mpv/bundle/youtube-quality"]
 	path = config/mpv/bundle/youtube-quality
-	url = https://github.com/jgreco/mpv-youtube-quality.git
+	url = https://github.com/jgreco/mpv-youtube-quality
 [submodule "proxyman/proxyman"]
 	path = proxyman/proxyman
-	url = https://github.com/himanshub16/ProxyMan.git
+	url = https://github.com/himanshub16/ProxyMan
 [submodule "zsh/bundle/powerlevel10k"]
 	path = zsh/bundle/powerlevel10k
-	url = https://github.com/romkatv/powerlevel10k.git
+	url = https://github.com/romkatv/powerlevel10k
 [submodule "vim/bundle/suda"]
 	path = vim/bundle/suda
-	url = https://github.com/lambdalisue/suda.vim.git
+	url = https://github.com/lambdalisue/suda.vim
 [submodule "vim/bundle/tcomment"]
 	path = vim/bundle/tcomment
-	url = https://github.com/tomtom/tcomment_vim.git
+	url = https://github.com/tomtom/tcomment_vim
