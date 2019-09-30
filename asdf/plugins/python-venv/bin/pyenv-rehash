@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+asdf reshim python-venv "$ASDF_INSTALL_VERSION"
+asdf reshim python "$ASDF_INSTALL_VERSION"
+

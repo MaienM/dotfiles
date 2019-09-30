@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+dirname "$(asdf where python "$(convert-version "$1")")"
+

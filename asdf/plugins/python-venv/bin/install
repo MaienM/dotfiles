@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [ "$ASDF_INSTALL_TYPE" != "version" ]; then
+	echo >&2 "Cannot install virtualenv from source."
+	exit 1
+fi
+
+# Remove the directory asdf created, to simplify the broken-link checks below.
+rmdir "$ASDF_INSTALL_PATH"
+
+# In order for the virtualenv to be useable in the same way a base python version is (as is the case in pyenv),
+# it has to be linked in the same directory as the regular python installs.
+asdf_alt_install_path="${ASDF_INSTALL_PATH/-venv}"
+if [ -h "$asdf_alt_install_path" ] && [ ! -d "$asdf_alt_install_path" ]; then
+	echo "Found remnant of old virtualenv at $asdf_alt_install_path, cleaning up."
+	rm "$asdf_alt_install_path"
+elif [ -e "$asdf_alt_install_path" ]; then
+	echo >&2 "Path $asdf_alt_install_path already in use."
+	exit 1
+fi
+ln -s "$ASDF_INSTALL_PATH" "$asdf_alt_install_path"
+
+# Base the virtualenv on the current asdf version, as it doesn't seem possible to pass this in during install.
+python_version="$(asdf current python | cut -d' ' -f1)"
+python_install_path="$(dirname "$asdf_alt_install_path")/$python_version"
+if [ ! -d "$python_install_path" ]; then
+	echo >&2 "Cannot find python instance at $python_install_path."
+	exit 1
+fi
+echo "Creating virtualenv $ASDF_INSTALL_VERSION based on Python $python_version."
+
+# The way pyenv-virtualenv is setup it keeps the virtualenvs in a directory in the base python version's location.
+# Make sure this location is available.
+pyenv_virtualenv_install_path="$python_install_path/envs/$ASDF_INSTALL_VERSION"
+if [ -h "$pyenv_virtualenv_install_path" ] && [ ! -d "$pyenv_virtualenv_install_path" ]; then
+	echo "Found remnant of old virtualenv at $pyenv_virtualenv_install_path, cleaning up."
+	rm "$pyenv_virtualenv_install_path"
+fi
+
+# Create the directory structure that pyenv-virtualenv expects.
+mock_pyenv_root="$(mktemp -d)"
+mkdir -p "$mock_pyenv_root/versions"
+ln -sf "$python_install_path" "$mock_pyenv_root/versions/$python_version"
+
+# Place a symlink in the place where ASDF expects the install directory to the place where pyenv-virtualenv will be
+# creating the install, so that commands using it during the install process will work.
+ln -s "$python_install_path/envs/$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
+
+# Run the pyenv-virtualenv command. Provide the binaries in this directory as commands during, to simulate pytest
+# commands used by pyenv-virtualenv.
+env \
+	PATH="$(dirname "$0"):$PATH" \
+	PYENV_ROOT="$mock_pyenv_root" \
+	"$(dirname "$0")/../pyenv-virtualenv/bin/pyenv-virtualenv" "$@" "$python_version" "$ASDF_INSTALL_VERSION"
+
+# Move the virtualenv to the proper location.
+echo "Moving created environment to the correct location."
+rm "$ASDF_INSTALL_PATH"
+mv "$python_install_path/envs/$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
+ln -s "$ASDF_INSTALL_PATH" "$python_install_path/envs/$ASDF_INSTALL_VERSION"
+echo "$python_version" > "$ASDF_INSTALL_PATH/.base_version"
+
+# Rewrite paths in the generated shims to the new locations.
+replacements="s!$mock_pyenv_root/versions/$python_version/envs/$ASDF_INSTALL_VERSION!$ASDF_INSTALL_PATH!"
+replacements="$replacements; s!$mock_pyenv_root/versions/$python_version!$python_install_path!"
+find "$ASDF_INSTALL_PATH/bin" -type f -print0 | xargs -0 sed -i "$replacements"
+
+# Cleanup.
+rm -rf "$mock_pyenv_root"
+

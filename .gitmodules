@@ -208,3 +208,6 @@
 [submodule "asdf/asdf"]
 	path = asdf/asdf
 	url = https://github.com/asdf-vm/asdf
+[submodule "asdf/plugins/python-venv/pyenv-virtualenv"]
+	path = asdf/plugins/python-venv/pyenv-virtualenv
+	url = https://github.com/pyenv/pyenv-virtualenv

@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+echo >&2 "Virtualenv names are freeform, so there is no predefined list of versions."
+echo >&2 "Just pick a name and run install with it, and it'll magically become valid."
+echo >&2
+echo >&2 "To set the python version that the virtualenv should be based on, set ASDF_PYTHON_VERSION."
+echo >&2
+echo >&2 "> ASDF_PYTHON_VERSION='3.7.2' asdf install python-venv virtualenv-name"
+echo >&2 "..."
+echo >&2 "> ASDF_PYTHON_VERSION='virtualenv-name' asdf exec python -v"
+echo >&2 "3.7.2"

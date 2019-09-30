@@ -1,4 +1,5 @@
-asdf/
+asdf/asdf/
+asdf/plugins/*
 config/mpv/bundle/
 fzf/
 opt/
@@ -9,5 +10,6 @@ vim/bundle-vim/
 vim/bundle/*
 zsh/bundle/
 
+!asdf/plugins/python-venv/
 !vim/bundle/ale-ignore/
 
