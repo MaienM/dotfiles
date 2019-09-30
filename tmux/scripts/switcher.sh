@@ -15,9 +15,15 @@ case "$1" in
 		child_command='list-panes -F "#S:#I.#P #S:#W.#P"'
 	;;
 
+	panes)
+		choose_tree_flag=
+		list_command='list-panes -a -F "#S:#I.#P #S: #W: #P (#T)"'
+		child_command='display-message -p -F "#S:#I.#P #S:#W.#P"'
+	;;
+
 	*)
 		[ -n "$1" ] && echo >&2 "Unknown type '$1'."
-		echo >&2 'Please pass a valid type to switch between. Options: sessions, windows.'
+		echo >&2 'Please pass a valid type to switch between. Options: sessions, windows, panes.'
 		exit 1
 	;;
 esac
