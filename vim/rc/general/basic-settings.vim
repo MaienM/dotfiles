@@ -74,9 +74,9 @@ let &showbreak='≫ '
 set breakindent
 set breakindentopt=min:40
 
-" Use the pyenv environment prepared by the install script.
-let g:python_host_prog = $HOME . '/.pyenv/versions/neovim2/bin/python'
-let g:python3_host_prog = $HOME . '/.pyenv/versions/neovim3/bin/python'
+" Use the asdf environment prepared by the install script.
+let g:python_host_prog = $HOME . '/.asdf/installs/python/neovim2/bin/python'
+let g:python3_host_prog = $HOME . '/.asdf/installs/python/neovim3/bin/python'
 
 " Use the X clipboard if possible.
 if v:version >= 600

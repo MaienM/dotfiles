@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 
-exec run-in-pyenv system python -m Mimeo "$@"
+exec env ASDF_PYTHON_VERSION=system asdf exec python -m Mimeo "$@"
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env -S run-in-pyenv utils python
+#!/usr/bin/env -S ASDF_PYTHON_VERSION=utils asdf exec python
 
 import argparse
 import contextlib
