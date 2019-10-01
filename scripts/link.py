@@ -69,8 +69,6 @@ class FileConfig(object):
 			self.targets = [os.path.join(ppath, fname) for ppath in parent.targets]
 		else:
 			self.targets = [f'.{path}']
-		self.exec_pre = None
-		self.exec_post = None
 
 		# Skip hidden files by default
 		if os.path.basename(path)[0] == '.':
@@ -98,11 +96,6 @@ class FileConfig(object):
 			self.targets = [t.strip() for t in data.pop('target').split(',')]
 			if not self.targets:
 				raise ValueError(f'Invalid target set for {self.path}')
-
-		if 'exec_pre' in data:
-			self.exec_pre = data.pop('exec_pre')
-		if 'exec_post' in data:
-			self.exec_post = data.pop('exec_post')
 
 		if data:
 			raise ValueError(f'Unexpected properties for {self.path}: {", ".join(data.keys())}')
@@ -201,18 +194,13 @@ class Processor(object):
 			tflags = flags
 			if self.should_link_be_created(entry, fc, target):
 				if not applied_links:
-					if fc.exec_pre:
-						self.commands.append(fc.exec_pre)
 					applied_links = True
 
 				# If the target lexists, it has to be force replaced
 				if os.path.lexists(target):
 					tflags += 'f'
 				tflags = f'-{tflags} ' if tflags else ''
-				self.commands.append(f'ln {tflags}-- {shlex.quote(entry.path)} {shlex.quote(target)}')
-
-		if applied_links and fc.exec_post:
-			self.commands.append(fc.exec_post)
+				self.commands.append(('ln {tflags}-- {shlex.quote(entry.path)} {shlex.quote(target)}')
 
 	def should_link_be_created(self, entry, fc, target):
 		if self.args.assume_empty:
@@ -239,7 +227,6 @@ class Processor(object):
 				'There is no automatic fix for this.'
 			)
 			return False
-
 		# The target is a file, so it can be replaced entirely, but not without losing something
 		# If the entry is a file with identical contents as the target we can replace it safely
 		isdir = entry.is_dir()
