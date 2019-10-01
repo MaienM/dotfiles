@@ -137,6 +137,18 @@ class Config(configparser.ConfigParser):
 		return config
 
 
+class LinkCommand(object):
+	""" A ln command that has to be executed to get to the desired state. """
+	def __init__(self, source, target, flags = ''):
+		self.source = source
+		self.target = target
+		self.flags = flags
+
+	def __str__(self):
+		flags = f'-{self.flags} ' if self.flags else ''
+		return f'ln {flags}-- {shlex.quote(self.source)} {shlex.quote(self.target)}'
+
+
 class Processor(object):
 	""" A class to process all source files into a series of command to get into the desired state. """
 	def __init__(self, args, config):
@@ -199,8 +211,8 @@ class Processor(object):
 				# If the target lexists, it has to be force replaced
 				if os.path.lexists(target):
 					tflags += 'f'
-				tflags = f'-{tflags} ' if tflags else ''
-				self.commands.append(('ln {tflags}-- {shlex.quote(entry.path)} {shlex.quote(target)}')
+
+				self.commands.append(LinkCommand(entry.path, target, tflags))
 
 	def should_link_be_created(self, entry, fc, target):
 		if self.args.assume_empty:
@@ -281,6 +293,13 @@ def main(args):
 	processor = Processor(args, config)
 	processor.process_dir(ROOT)
 	processor.process_explicit()
+	commands = processor.commands[:]
+
+	# Sort the link commands by target, to prevent ordering issues like the following:
+	# ln bar ~/.foo/bar
+	# ln foo ~/.foo
+	# This would cause the folder ~/.foo to be created, causing foo to end up in ~/.foo/foo instead.
+	commands.sort(key = lambda cmd: cmd.target)
 
 	# Make sure no items marked in the config have been missed (unless they are to be skipped anyway)
 	for path in config.sections():
@@ -297,7 +316,8 @@ def main(args):
 		return
 
 	# Write the commands to a file that can be sourced by the user
-	commands = '\n\t\t\t\t'.join(processor.commands)
+	commands = [str(cmd) for cmd in commands]
+	indented_commands = '\n\t\t\t\t'.join(commands)
 	with open(cmdpath, 'w') as f:
 		f.write(textwrap.dedent(f'''
 			#!/usr/bin/env sh
@@ -312,14 +332,14 @@ def main(args):
 			(
 				set -e
 
-				{commands}
+				{indented_commands}
 
 				rm {shlex.quote(cmdpath)}
 			)
 		'''))
 	print('Please confirm the following commands are correct (directories will be created as needed):')
 	print()
-	print('\n'.join(processor.commands))
+	print('\n'.join(commands))
 	print()
 	print(f'To execute these commands type "sh {cmdpath}".')
 
