@@ -11,23 +11,12 @@ import stat
 import subprocess
 import sys
 import termios
+import textwrap
 import tty
 
 
 ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 CONFIG = os.path.join(ROOT, 'scripts', 'config')
-BASE_SCRIPT = '''
-#!/usr/bin/env sh
-
-set -e
-
-ln() {
-	[ "$2" == "--" ] && target="$4" || target="$2"
-	tdir="$(dirname "$target")"
-	[ -d "$tdir" ] || mkdir -p "$tdir"
-	command ln "$@"
-}
-'''
 
 
 def err(*args):
@@ -321,14 +310,29 @@ def main(args):
 		return
 
 	# Write the commands to a file that can be sourced by the user
-	commands = '\n'.join(processor.commands)
+	commands = '\n\t\t\t\t'.join(processor.commands)
 	with open(cmdpath, 'w') as f:
-		f.write(f'{BASE_SCRIPT}\n')
-		f.write(commands)
-		f.write(f'\n\nrm {shlex.quote(cmdpath)}')
+		f.write(textwrap.dedent(f'''
+			#!/usr/bin/env sh
+
+			ln() {{
+				[ "$1" == "--" ] && target="$3" || target="$4"
+				tdir="$(dirname "$target")"
+				[ -d "$tdir" ] || mkdir -p "$tdir"
+				command ln "$@"
+			}}
+
+			(
+				set -e
+
+				{commands}
+
+				rm {shlex.quote(cmdpath)}
+			)
+		'''))
 	print('Please confirm the following commands are correct (directories will be created as needed):')
 	print()
-	print(commands)
+	print('\n'.join(processor.commands))
 	print()
 	print(f'To execute these commands type "sh {cmdpath}".')
 
