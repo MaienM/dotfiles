@@ -321,16 +321,15 @@ def main(args):
 	with open(cmdpath, 'w') as f:
 		f.write(textwrap.dedent(f'''
 			#!/usr/bin/env sh
-
-			ln() {{
-				[ "$1" == "--" ] && target="$3" || target="$4"
-				tdir="$(dirname "$target")"
-				[ -d "$tdir" ] || mkdir -p "$tdir"
-				command ln "$@"
-			}}
-
 			(
 				set -e
+
+				ln() {{
+					[ "$1" == "--" ] && target="$3" || target="$4"
+					tdir="$(dirname "$target")"
+					[ -d "$tdir" ] || mkdir -p "$tdir"
+					command ln "$@"
+				}}
 
 				{indented_commands}
 
