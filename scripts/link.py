@@ -166,28 +166,33 @@ class Processor(object):
 		for entry in os.scandir(path):
 			fc = self.config.get_info(entry.path)
 
+			if only_explicit and not fc.from_config:
+				continue
+
 			if fc.action == FileAction.RECURSE:
 				self.apply_recurse(entry, fc)
 				fc.processed = True
-			elif entry.is_dir():
-				# Always recurse into directories, so that items inside that are explicitly marked in the config can still
-				# be processed
-				self.process_dir(entry.path, only_explicit = True)
 
-			if only_explicit and not fc.from_config:
-				# While recursing inside non-recurse directories, ignore any items that are not explicitly defined in the
-				# config
-				continue
-
-			if fc.action == FileAction.SKIP:
+			elif fc.action == FileAction.SKIP:
 				fc.processed = True
 
-			if fc.action == FileAction.LINK:
+			elif fc.action == FileAction.LINK:
 				self.apply_link(entry, fc)
 				fc.processed = True
 
-			if not fc.processed:
+			else:
 				err(f'No behaviour has been defined for the action for {path}')
+
+	def process_explicit(self):
+		""" Make sure all paths mentioned explicitly in the config have been processed. """
+		for path in self.config.sections():
+			fc = self.config.get_info(path)
+			if not fc.processed:
+				dirpath = os.path.abspath(os.path.dirname(path))
+				try:
+					self.process_dir(dirpath, True)
+				except FileNotFoundError:
+					err(f'Unable to find parent directory {dirpath} for {path}')
 
 	def apply_recurse(self, entry, fc):
 		if not entry.is_dir():
@@ -299,6 +304,7 @@ def main(args):
 	# Process the files in the root directory
 	processor = Processor(args, config)
 	processor.process_dir(ROOT)
+	processor.process_explicit()
 
 	# Make sure no items marked in the config have been missed (unless they are to be skipped anyway)
 	for path in config.sections():
