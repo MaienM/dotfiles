@@ -312,7 +312,7 @@ def main(args):
 	if not processor.commands:
 		print('Everything seems to be in order')
 		if os.path.exists(cmdpath):
-			os.path.remove(cmdpath)
+			os.remove(cmdpath)
 		return
 
 	# Write the commands to a file that can be sourced by the user
