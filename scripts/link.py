@@ -325,7 +325,7 @@ def main(args):
 				set -e
 
 				ln() {{
-					[ "$1" == "--" ] && target="$3" || target="$4"
+					[ "$1" = "--" ] && target="$3" || target="$4"
 					tdir="$(dirname "$target")"
 					[ -d "$tdir" ] || mkdir -p "$tdir"
 					command ln "$@"
@@ -335,7 +335,7 @@ def main(args):
 
 				rm {shlex.quote(cmdpath)}
 			)
-		'''))
+		''').strip())
 	print('Please confirm the following commands are correct (directories will be created as needed):')
 	print()
 	print('\n'.join(commands))
