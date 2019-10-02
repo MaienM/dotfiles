@@ -160,6 +160,9 @@ class Processor(object):
 		for entry in os.scandir(path):
 			fc = self.config.get_info(entry.path)
 
+			if fc.processed:
+				continue
+
 			if only_explicit and not fc.from_config:
 				continue
 
