@@ -2,6 +2,8 @@
 
 set -o errexit -o pipefail
 
+# shellcheck source=../../../profile.d/asdf
+source profile.d/asdf
 # shellcheck source=_utils.sh
 source scripts/install/misc/_utils.sh
 

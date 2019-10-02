@@ -2,9 +2,9 @@
 
 set -o errexit -o pipefail
 
-# shellcheck disable=SC1090
-source ~/.profile
-#  shellcheck disable=SC1091
+# shellcheck source=../../../profile.d/asdf
+source profile.d/asdf
+# shellcheck source=_utils.sh
 source scripts/install/misc/_utils.sh
 
 echo ">>> Checking dependencies."
