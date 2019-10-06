@@ -3,10 +3,15 @@ _fzf_pipeline_git_files_source() {
 	local file
 
 	git ls-files "$@" \
-	| while read file; do
-		echo "${(q)file} $file"
-	done \
-	| uniq
+	| uniq \
+	| while read -r file; do
+		# Handle files with special characters, which git outputs as a quoted name with escape codes.
+		if [[ "$file" =~ '"*' ]]; then
+			file="$(print $file)"
+			file="${(Q)file}"
+		fi
+		echo "${(q)file} $file" 
+	done 
 }
 _fzf_pipeline_git_files_preview() {
 	preview "${(Q)1}"
