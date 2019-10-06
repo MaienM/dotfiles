@@ -8,7 +8,7 @@
 # command line easily, either as a command or as completion.
 ########################################################################################################################
 
-FZF_PRESETS=''
+declare -A FZF_PRESETS
 
 # Register a preset
 #
@@ -25,7 +25,7 @@ _fzf_register_preset() {
 	local name description fn preset
 
 	if [[ $# -lt 3 ]]; then
-		echo "Not enough arguments" >&2
+		echo >&2 "Not enough arguments"
 		return 1
 	fi
 
@@ -35,37 +35,37 @@ _fzf_register_preset() {
 
 	fn=_fzf_preset_$name
 	if ! which $fn &> /dev/null; then
-		echo "$fn is not a valid command" >&2
+		echo >&2 "$fn is not a valid command"
 		return 1
 	fi
 
 	for preset in $@; do
-		FZF_PRESETS="$FZF_PRESETS $preset $fn ${(q)description}"
+		FZF_PRESETS[$preset]="$fn ${(q)description}"
 	done
 }
 
 # Pipeline that shows all presets
 _fzf_pipeline_fzf_presets_source() {
-	local preset fn description
+	local preset data fn description
 
-	for preset fn description in ${(z)FZF_PRESETS}; do
+	for preset data in ${(kv)FZF_PRESETS[@]}; do
+		read fn description <<<"$data"
 		echo "$preset ${color_fg_cyan}$preset$color_reset ${(Q)description}"
 	done
 }
 _fzf_pipeline_fzf_presets_preview() {
-	local preset fn description
-	for preset fn description in ${(z)FZF_PRESETS}; do
-		[[ "$preset" == "$1" ]] || continue
-		$(resolve_alias $fn) | _fzf_config_get_source | cut -d' ' -f3-
-		return
-	done
-	echo "Unable to preview preset" >&2
-	return 1
+	local fn description
+	read fn description <<<"${FZF_PRESETS[$1]}"
+	if [ -z "$fn" ]; then
+		echo >&2 "Unable to preview preset"
+		return 1
+	fi
+	$(resolve_alias $fn) | _fzf_config_get_source | cut -d' ' -f3-
 }
 
 # Run a preset
 fzf_run_preset() {
-	local fzf_args match_preset preset fn description
+	local match_preset fn description
 
 	# Load/reset colors
 	colors
@@ -78,10 +78,7 @@ fzf_run_preset() {
 	match_preset=$(fzf_run_pipeline fzf_presets --nth=1 --select-1 --exit-0 --query="$match_preset" "$@") || return 1
 
 	# Complete using the preset 
-	for preset fn description in ${(z)FZF_PRESETS}; do
-		[[ "$preset" == "$match_preset" ]] || continue
-		echo | $(resolve_alias $fn) | _fzf_config_run "$@"
-		return
-	done
-	return 1
+	read fn description <<<"${FZF_PRESETS[$match_preset]}"
+	[ -n "$fn" ] || return 1
+	echo | $(resolve_alias $fn) | _fzf_config_run "$@"
 }
