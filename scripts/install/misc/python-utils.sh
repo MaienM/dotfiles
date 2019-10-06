@@ -11,8 +11,8 @@ echo ">>> Determining version."
 py_version="$(find_latest_asdf_version python '^\s*3\.[0-9.]\+\s*$')"
 echo "Using python $py_version."
 if [ -z "$py_version" ]; then
-  echo "Unable to determine version, aborting"
-  exit 1;
+	echo "Unable to determine version, aborting"
+	exit 1;
 fi
 
 echo ">>> Installing."

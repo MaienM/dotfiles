@@ -33,7 +33,7 @@ function! s:goyo_leave()
 	let &showbreak = s:old_showbreak
 	Limelight!
 	let g:peekaboo_window = s:old_peekaboo_window
-   call GoldenView#EnableAutoResize()
+	call GoldenView#EnableAutoResize()
 endfunction
 function! s:resized()
 	" Increase peekaboo size to use all available empty space.

@@ -22,66 +22,66 @@ FZF_PRESETS=''
 # For example, _fzf_register_preset "git_commit" "Git commits" "git:commit" will register the preset that
 # was used as an example earlier.
 _fzf_register_preset() {
-    local name description fn preset
+	local name description fn preset
 
-    if [[ $# -lt 3 ]]; then
-        echo "Not enough arguments" >&2
-        return 1
-    fi
+	if [[ $# -lt 3 ]]; then
+		echo "Not enough arguments" >&2
+		return 1
+	fi
 
-    name=$1
-    description=$2
-    shift 2
+	name=$1
+	description=$2
+	shift 2
 
-    fn=_fzf_preset_$name
-    if ! which $fn &> /dev/null; then
-        echo "$fn is not a valid command" >&2
-        return 1
-    fi
+	fn=_fzf_preset_$name
+	if ! which $fn &> /dev/null; then
+		echo "$fn is not a valid command" >&2
+		return 1
+	fi
 
-    for preset in $@; do
-        FZF_PRESETS="$FZF_PRESETS $preset $fn ${(q)description}"
-    done
+	for preset in $@; do
+		FZF_PRESETS="$FZF_PRESETS $preset $fn ${(q)description}"
+	done
 }
 
 # Pipeline that shows all presets
 _fzf_pipeline_fzf_presets_source() {
-    local preset fn description
+	local preset fn description
 
-    for preset fn description in ${(z)FZF_PRESETS}; do
-        echo "$preset ${color_fg_cyan}$preset$color_reset ${(Q)description}"
-    done
+	for preset fn description in ${(z)FZF_PRESETS}; do
+		echo "$preset ${color_fg_cyan}$preset$color_reset ${(Q)description}"
+	done
 }
 _fzf_pipeline_fzf_presets_preview() {
-    local preset fn description
-    for preset fn description in ${(z)FZF_PRESETS}; do
-        [[ "$preset" == "$1" ]] || continue
-        $(resolve_alias $fn) | _fzf_config_get_source | cut -d' ' -f3-
-        return
-    done
-    echo "Unable to preview preset" >&2
-    return 1
+	local preset fn description
+	for preset fn description in ${(z)FZF_PRESETS}; do
+		[[ "$preset" == "$1" ]] || continue
+		$(resolve_alias $fn) | _fzf_config_get_source | cut -d' ' -f3-
+		return
+	done
+	echo "Unable to preview preset" >&2
+	return 1
 }
 
 # Run a preset
 fzf_run_preset() {
-    local fzf_args match_preset preset fn description
+	local fzf_args match_preset preset fn description
 
-    # Load/reset colors
-    colors
+	# Load/reset colors
+	colors
 
-    # First complete on the preset itself, in case it is a partial/nonexistant preset
-    if [[ $# -ge 1 ]]; then
-        match_preset=${1%:}
-        shift 1
-    fi
-    match_preset=$(fzf_run_pipeline fzf_presets --nth=1 --select-1 --exit-0 --query="$match_preset" "$@") || return 1
+	# First complete on the preset itself, in case it is a partial/nonexistant preset
+	if [[ $# -ge 1 ]]; then
+		match_preset=${1%:}
+		shift 1
+	fi
+	match_preset=$(fzf_run_pipeline fzf_presets --nth=1 --select-1 --exit-0 --query="$match_preset" "$@") || return 1
 
-    # Complete using the preset 
-    for preset fn description in ${(z)FZF_PRESETS}; do
-        [[ "$preset" == "$match_preset" ]] || continue
-        echo | $(resolve_alias $fn) | _fzf_config_run "$@"
-        return
-    done
-    return 1
+	# Complete using the preset 
+	for preset fn description in ${(z)FZF_PRESETS}; do
+		[[ "$preset" == "$match_preset" ]] || continue
+		echo | $(resolve_alias $fn) | _fzf_config_run "$@"
+		return
+	done
+	return 1
 }

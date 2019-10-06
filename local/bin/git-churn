@@ -6,21 +6,21 @@
 # Scriptified by Gary Bernhardt
 #
 # Show churn for whole repo:
-#   $ git churn
+# $ git churn
 #
 # Show churn for specific directories:
-#   $ git churn app lib
+# $ git churn app lib
 #
 # Show churn for a time range:
-#   $ git churn --since='1 month ago'
+# $ git churn --since='1 month ago'
 #
 # (These are all standard arguments to `git log`.)
 
 set -o errexit -o pipefail
 
 git log --all --find-renames --find-copies --name-only --format='format:' "$@" \
-    | sort \
-    | grep -v '^$' \
-    | uniq -c \
-    | sort -n \
-    | awk 'BEGIN {print "count\tfile"} {print $1 "\t" $2}'
+	| sort \
+	| grep -v '^$' \
+	| uniq -c \
+	| sort -n \
+	| awk 'BEGIN {print "count\tfile"} {print $1 "\t" $2}'

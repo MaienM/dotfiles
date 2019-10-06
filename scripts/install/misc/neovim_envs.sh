@@ -21,8 +21,8 @@ rb_version="$(find_latest_asdf_version ruby '^\s*[0-9.]\+\s*$')"
 nodejs_version="$(find_latest_asdf_version nodejs '^\s*[0-9.]\+\s*$')"
 echo "Using python $py2_version, python $py3_version, ruby $rb_version, and nodejs $nodejs_version"
 if [ -z "$py2_version" ] || [ -z "$py3_version" ] || [ -z "$rb_version" ] || [ -z "$nodejs_version" ]; then
-  echo >&2 "Unable to determine some versions, aborting"
-  exit 1;
+	echo >&2 "Unable to determine some versions, aborting"
+	exit 1;
 fi
 
 echo ">>> Installing."
