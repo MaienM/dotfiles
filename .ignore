@@ -1,15 +1,17 @@
-asdf/asdf/
-asdf/plugins/*
-config/mpv/bundle/
-fzf/
-opt/
-proxyman/proxyman/
-tmux/bundle/
-vim/bundle-nvim/
-vim/bundle-vim/
-vim/bundle/*
-zsh/bundle/
+/asdf/asdf/
+/asdf/plugins/*
+/asdf/plugins/python-venv/pyenv-virtualenv/
+/config/mpv/bundle/
+/config/rofi/base16
+/fzf/
+/opt/
+/proxyman/proxyman/
+/tmux/bundle/
+/vim/bundle-nvim/
+/vim/bundle-vim/
+/vim/bundle/*
+/zsh/bundle/
 
-!asdf/plugins/python-venv/
-!vim/bundle/ale-ignore/
+!/asdf/plugins/python-venv/
+!/vim/bundle/ale-ignore/
 
