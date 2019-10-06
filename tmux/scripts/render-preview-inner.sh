@@ -89,7 +89,7 @@ cut_or_pad() {
 # Render all previews, with all decoration as defined in PREVIEW_SYMBOLS.
 # Usage: width height id [id..]
 render_preview() {
-	local columns lines ids titles arg argparts width symbol bwidth
+	local columns lines ids titles arg width symbol bwidth
 
 	columns="$1"
 	lines="$(($2 - 1))"
@@ -102,9 +102,9 @@ render_preview() {
 	titles=()
 	for ((i=0; i<$#; i+=1)); do
 		arg="$((i + 1))"
-		mapfile -t argparts < <(printf '%s' "${!arg}" | tr ' ' $'\n')
-		ids[i]="${argparts[0]}"
-		titles[i]="${argparts[1]:-${argparts[0]}}"
+		arg="${!arg}"
+		ids[i]="${arg// *}"
+		titles[i]="${arg#${ids[$i]} }"
 	done
 
 	# Put all preview lines of all panes in a single array, back to back.

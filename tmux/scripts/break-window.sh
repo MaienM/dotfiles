@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
 
-# shellcheck source=_utils.sh
-source ~/.tmux/scripts/_utils.sh
-
 set -e
 
-CURRENT_SESSION="$1"
-CURRENT_WINDOW="$2"
+CURRENT_WINDOW="$1"
+CURRENT_SESSION="${CURRENT_WINDOW%:*}"
+TARGET_SESSION_NAME="$2"
 
 if ! error="$(tmux list-panes -t "$CURRENT_WINDOW" 2>&1 > /dev/null)"; then
-	tmux display-message "Cannot find window. Reason: $error."
+	tmux display-message "Cannot find window: $error."
 	exit 0
 fi
 
@@ -18,15 +16,25 @@ if [ "$(tmux list-windows -t "$CURRENT_SESSION" | wc -l)" -eq 1 ]; then
 	exit 0
 fi
 
-TARGET_SESSION_NAME="$(tmux-command-prompt-capture -p '(break-window)' -I '#W')"
+if [ -z "$TARGET_SESSION_NAME" ]; then
+	set +e
+	tmux command-prompt -p '(break-window)' -I '#W' \
+		"display-message '~/.tmux/scripts/break-window.sh $(printf '%q ' "$CURRENT_WINDOW") '%%''"
+	exit 0
+fi
 
 if ! error="$(tmux new-session -d -s "$TARGET_SESSION_NAME" 2>&1 > /dev/null)"; then
-	tmux display-message "Unable to create new session. Reason: $error."
+	tmux display-message "Unable to create new session: $error."
 	exit 0
 fi
 
 created_window="$(tmux list-panes -t "$TARGET_SESSION_NAME" -F '#S:#I')"
-tmux swap-window -s "$CURRENT_WINDOW" -t "$created_window"
-tmux kill-window -t "$CURRENT_WINDOW"
-tmux switch-client -t "$created_window"
+if ! error="$(tmux \
+	swap-window -s "$CURRENT_WINDOW" -t "$created_window" \; \
+	switch-client -t "$created_window" \; \
+	kill-window -t "$CURRENT_WINDOW" 2>&1 > /dev/null)"
+then
+	tmux kill-session -t "$TARGET_SESSION_NAME"
+	tmux display-message "Failed to break window: $error."
+fi
 

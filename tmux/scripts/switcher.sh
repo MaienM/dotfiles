@@ -12,21 +12,21 @@ case "$item" in
 		choose_tree_flag="-s"
 		visible_format="$prefix#S (#{session_windows} windows)"
 		list_command="list-sessions -F '#S $visible_format'"
-		child_command='list-windows -F "#S:#I #S:#W"'
+		child_command='list-windows -F "#S:#I #S:#I :: #W"'
 	;;
 
 	windows)
 		choose_tree_flag="-w"
-		visible_format="$prefix#S: #W (#{window_panes} panes)"
+		visible_format="$prefix#S:#I :: #W (#{window_panes} panes)"
 		list_command="list-windows -a -F '#S:#I $visible_format'"
-		child_command='list-panes -F "#S:#I.#P #S:#W.#P"'
+		child_command='list-panes -F "#S:#I.#P #S:#I.#P :: #W :: #T"'
 	;;
 
 	panes)
 		choose_tree_flag=
-		visible_format="$prefix#S: #W: #P (#T)"
+		visible_format="$prefix#S:#I.#P :: #W :: #T"
 		list_command="list-panes -a -F '#S:#I.#P $visible_format'"
-		child_command='display-message -p -F "#S:#I.#P #S:#W.#P"'
+		child_command='display-message -p -F "#S:#I.#P #S:#I.#P :: #W :: #T"'
 	;;
 
 	*)
@@ -37,7 +37,7 @@ case "$item" in
 esac
 
 if command -v fzf > /dev/null 2>&1; then
-	tmux new-window -n "$switcher_window_name" "
+	tmux new-window -n "$switcher_window_name" -t :999 -k "
 		tmux $list_command \
 		| grep -v '$switcher_window_name' \
 		| fzf \
