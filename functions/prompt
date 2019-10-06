@@ -19,13 +19,13 @@ prompt() {
 
 	invalid_opts="$(echo "$opts" | tr -d '[:upper:][:lower:][:digit:]')"
 	if [ -n "$invalid_opts" ]; then
-		echo "Invalid options ($invalid_opts)" >&2
+		echo >&2 "Invalid options ($invalid_opts)"
 		return 1
 	fi
 
 	default=$(echo "$opts" | tr -d '[:lower:]' | tr '[:upper:]' '[:lower:]')
 	if [ ${#default} -gt 1 ]; then
-		echo "Only one default option allowed, got multiple ($default)" >&2
+		echo >&2 "Only one default option allowed, got multiple ($default)"
 		return 1
 	fi
 

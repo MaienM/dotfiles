@@ -8,7 +8,7 @@ _fzf_run_as_complete() {
 	local results
 
 	if [[ $# -lt 1 ]]; then
-		echo "Not enough arguments" >&2
+		echo >&2 "Not enough arguments"
 		return 1
 	fi
 

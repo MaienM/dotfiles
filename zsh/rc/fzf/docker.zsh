@@ -1,7 +1,7 @@
 _fzf_require_sudo() {
 	# When in preview, just fail silently
 	if [ -n "$FZF_PREVIEW_HEIGHT" ]; then
-		echo "This pipeline requires sudo and is not suitable for preview" >&2
+		echo >&2 "This pipeline requires sudo and is not suitable for preview"
 		exit 1;
 	fi
 

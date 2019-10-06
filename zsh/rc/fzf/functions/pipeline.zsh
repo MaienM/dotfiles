@@ -65,19 +65,19 @@ _fzf_config_add() {
 		shift 1
 	fi
 	if [[ -n "$@" ]]; then
-		echo "Extra arguments given to _fzf_config_add ($@)" >&2
+		echo >&2 "Extra arguments given to _fzf_config_add ($@)"
 		return 1
 	fi
 
 	# Validate the arguments and find the functions to use
 	if [[ "$pipeline" == *" "* ]]; then
-		echo "fzf pipeline names cannot contain spaces ($pipeline)" >&2
+		echo >&2 "fzf pipeline names cannot contain spaces ($pipeline)"
 		return 1
 	fi
 
 	sourcefn="_fzf_pipeline_${pipeline}_source"
 	if ! which $sourcefn &> /dev/null; then
-		echo "$sourcefn must be a command" >&2
+		echo >&2 "$sourcefn must be a command"
 		return 1
 	fi
 
@@ -111,7 +111,7 @@ _fzf_config_get() {
 		echo $prefix $sourcefn $targetfn $previewfn
 		return
 	done
-	echo "Pipeline $1 not in config" >&2
+	echo >&2 "Pipeline $1 not in config"
 	return 1
 }
 
@@ -125,7 +125,7 @@ _fzf_config_debug() {
 	# Output debug info
 	for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
 		(
-			echo '--------------------------------------------------------------------------------' >&2
+			echo >&2 '--------------------------------------------------------------------------------'
 			echo pipeline
 			echo "\tvalue: '$pipeline'"
 			echo prefix
@@ -217,7 +217,7 @@ _fzf_config_run() {
 		done
 
 		# Unable to match line to pipeline, so fail
-		echo "Unable to process output" >&2
+		echo >&2 "Unable to process output"
 		return 1
 	done
 }
@@ -233,7 +233,7 @@ _fzf_config_preview() {
 	line="$1"
 	shift 1
 	if [[ -n "$@" ]]; then
-		echo "Extra arguments given to _fzf_config_preview ($@)" >&2
+		echo >&2 "Extra arguments given to _fzf_config_preview ($@)"
 	fi
 
 	# Use the appropriate preview function
@@ -247,7 +247,7 @@ _fzf_config_preview() {
 		${(z)previewfn} "${line[2]//FZF_SEPERATOR_PLACEHOLDER/ }" "${${line[3,-1]}#${(Q)prefix} }"
 		return
 	done
-	echo "No preview available" >&2
+	echo >&2 "No preview available"
 	return 1
 }
 

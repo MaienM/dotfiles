@@ -13,7 +13,7 @@ prompt_confirm() {
 			opts='yN'
 		;;
 		*)    
-			echo "Invalid default ($2), expected 'y' or 'n'" >&2
+			echo >&2 "Invalid default ($2), expected 'y' or 'n'"
 			return 1
 		;;
 	esac

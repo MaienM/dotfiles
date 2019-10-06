@@ -20,7 +20,7 @@ key_info=(
 # Warn on missing keys
 for key in "${(k)key_info[@]}"; do
 	if [[ -z "$key_info[$key]" ]]; then
-		echo "Unable to find escape code for $key, some keybindings may not be available" >&2
+		echo >&2 "Unable to find escape code for $key, some keybindings may not be available"
 	fi
 done
 
