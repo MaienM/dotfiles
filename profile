@@ -25,12 +25,6 @@ fi
 export LC_ALL="$LANG"
 
 #
-# Some constants for use in scripts.
-#
-export newl='
-'
-
-#
 # Set preferred programs.
 #
 if command_exists nvim; then
