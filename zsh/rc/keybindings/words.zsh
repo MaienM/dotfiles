@@ -93,11 +93,11 @@ bindkey "$key_info[Control]l" forward-word-with-style-normal
 bindkey "$key_info[Escape]h" backward-word-with-style-shell
 bindkey "$key_info[Escape]l" forward-word-with-style-shell
 
-# Transpose words with mod+j/k.
-bindkey "$key_info[Control]j" backward-transpose-words-with-style-normal
-bindkey "$key_info[Control]k" forward-transpose-words-with-style-normal
-bindkey "$key_info[Escape]j" backward-transpose-words-with-style-shell
-bindkey "$key_info[Escape]k" forward-transpose-words-with-style-shell
+# Transpose words with mod+y/o.
+bindkey "$key_info[Control]y" backward-transpose-words-with-style-normal
+bindkey "$key_info[Control]o" forward-transpose-words-with-style-normal
+bindkey "$key_info[Escape]y" backward-transpose-words-with-style-shell
+bindkey "$key_info[Escape]o" forward-transpose-words-with-style-shell
 # }}}
 
 # The forward-word widgets should also accept an equal portion of the autosuggest.
