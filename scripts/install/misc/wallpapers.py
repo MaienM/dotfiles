@@ -1,4 +1,4 @@
-#!/usr/bin/env -S ASDF_PYTHON_VERSION=utils asdf exec python
+#!/usr/bin/env -S run-in-asdf python utils python
 
 import argparse
 import contextlib
