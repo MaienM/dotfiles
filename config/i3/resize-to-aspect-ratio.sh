@@ -3,7 +3,7 @@
 set -o errexit -o pipefail
 shopt -s extglob
 
-# shellcheck disable=SC1090
+# shellcheck source=_utils.sh
 . ~/.config/i3/_utils.sh
 
 if [ -z "$*" ]; then

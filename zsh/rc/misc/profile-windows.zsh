@@ -14,5 +14,5 @@ export SHELL
 export DOCKER_HOST=tcp://0.0.0.0:2375
 
 # There is no login session, so ~/.profile is never loaded
-# shellcheck disable=SC1090
+# shellcheck source=../../profile
 . ~/.profile

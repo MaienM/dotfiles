@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2154
 
-# shellcheck disable=SC1090
+# shellcheck source=../functions/strip_escape
 . ~/dotfiles/functions/strip_escape
 
 c1="${color_fg_red}a${color_reset}"
