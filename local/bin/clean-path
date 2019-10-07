@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+# Run a program without most of the $HOME subdirectories in $PATH.
+# Does keep ~/.local/bin.
+
+cleanpath="$HOME/.local/bin:$(echo "$PATH" | tr ':' '\n' | grep -v "^$HOME" | tr '\n' ':')"
+env PATH="$cleanpath" "$@"
+
