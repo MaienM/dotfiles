@@ -121,7 +121,7 @@ endfunction
 function! s:InsertCommentedLine(relativelinenr, commentdef)
 	let linenr = line('.') + a:relativelinenr
 	let commentdef = aleignore#types#NormalizeCommentDef(a:commentdef)
-	let indent = split(getline('.'), '\S')[0]
+	let indent = substitute(getline('.'), '^\s*\zs\S.*$', '', '')
 	call append(linenr, indent . commentdef.text)
 	call tcomment#Comment(linenr + 1, linenr + 1, 'mode=' . commentdef.style)
 endfunction
