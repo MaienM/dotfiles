@@ -55,12 +55,12 @@ _fzf_pipeline_fzf_presets_source() {
 }
 _fzf_pipeline_fzf_presets_preview() {
 	local fn description
-	read fn description <<<"${FZF_PRESETS[$1]}"
+	read fn description <<<"${FZF_PRESETS[${(Q)1}]}"
 	if [ -z "$fn" ]; then
 		echo >&2 "Unable to preview preset"
 		return 1
 	fi
-	$(resolve_alias $fn) | _fzf_config_get_source | cut -d' ' -f3-
+	$(resolve_alias $fn) | _fzf_config_get_source | cut -d' ' -f3- | sed 's/^\s\+//'
 }
 
 # Run a preset

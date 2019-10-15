@@ -1,9 +1,8 @@
 # Find directories
 _fzf_pipeline_directories_source() {
-	local fn
-	find . -type d -print | while read -r fn; do
-		echo "${(q)fn} $fn";
-	done
+	[ -n "$FZF_PREVIEW_LINES" ] && maxdepth=4 || maxdepth=25
+	find . -type d -mindepth 1 -maxdepth "$maxdepth" -exec \
+		zsh -c 'for fn in "$@"; do echo "${(q)fn} $fn"; done' - {} +
 }
 _fzf_pipeline_directories_preview() {
 	ls --color --almost-all --ignore-backups --group-directories-first --human-readable --format=long ${(Q)1}
@@ -27,12 +26,10 @@ alias _fzf_pipeline_parent_directories_target=_fzf_pipeline_directories_target
 
 # Recent downloads
 _fzf_pipeline_downloads_source() {
-	find ~/Downloads -maxdepth 1 -mindepth 1 -printf '%T@ %p\0' \
+	find ~/Downloads -mindepth 1 -maxdepth 1 -printf '%T@ %p\0' \
 	| sort -z -n -r \
 	| cut -z -d' ' -f2- \
-	| while IFS= read -r -d '' fn; do
-		echo "${(q)fn} ${fn:t}"
-	done
+	| xargs -0 zsh -c 'for fn in "$@"; do echo "${(q)fn} ${fn:t}"; done'
 }
 _fzf_pipeline_downloads_preview() {
 	preview "${(Q)1}"
