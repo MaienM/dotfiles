@@ -51,7 +51,7 @@ _fzf_pipeline_fzf_presets_source() {
 	for preset data in ${(kv)FZF_PRESETS[@]}; do
 		read fn description <<<"$data"
 		echo "$preset ${color_fg_cyan}$preset$color_reset ${(Q)description}"
-	done
+	done | sort
 }
 _fzf_pipeline_fzf_presets_preview() {
 	local fn description
