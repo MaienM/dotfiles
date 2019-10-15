@@ -1,3 +1,7 @@
+if ! command -v git &> /dev/null; then
+	return
+fi
+
 # Files
 _fzf_pipeline_git_files_source() {
 	local file
