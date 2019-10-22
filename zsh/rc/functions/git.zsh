@@ -164,15 +164,20 @@ _gitdirlist() {
 	done
 }
 _gitdirdo() {
+	declare -a failures
 	for dir in $(_gitdirlist); do
 		(
 			cd "$dir"
-			eval "$@"
-		)
+			exec eval "$@"
+		) || failures=("${failures[@]}" "$dir")
 	done
+	if [ "${#failures[@]}" -gt 0 ]; then
+		echo >&2 "${color_red}The following directories failed:$color_reset"
+		printf >&2 '\t%s\n' "${failures[@]}"
+	fi
 }
 gitdirdo() {
-	_gitdirdo 'echo "${color_fg_blue}==> $dir <==$color_reset"; '"$@"'; echo'
+	_gitdirdo 'echo "${color_fg_blue}==> $dir <==$color_reset"; ('"$@"'); r=$?; echo; exit $r'
 }
 gitdirs() {
 	size=$(_gitdirlist | wc -L)
