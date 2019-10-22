@@ -202,6 +202,10 @@ gitdirbranch() {
 				git checkout "$branch" &> /dev/null
 				echo "Switched $dir to branch '$branch'"
 				break
+			elif git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+				git checkout "$branch" &> /dev/null
+				echo "Switched $dir to new branch '$branch'"
+				break
 			fi
 		done
 	}
