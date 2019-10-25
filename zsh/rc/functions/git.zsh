@@ -59,7 +59,8 @@ gitda() {
 			"git:files:dirty" \
 			--multi \
 			--header="Pick files to stage" \
-			--bind='alt-p:abort+execute(git add -p {2} >&2 < /dev/tty)'
+			--bind='alt-p:abort+execute(git add -p {2} >&2 < /dev/tty)' \
+			--preview-window='down:75%'
 		))
 		[ ${#files} -gt 0 ] || return 0
 		git add "${files[@]}"
@@ -87,7 +88,8 @@ gitco() {
 			"git:files:dirty" \
 			--multi \
 			--header="Pick files to checkout" \
-			--bind='alt-p:abort+execute(git checkout -p {2} >&2 < /dev/tty)'
+			--bind='alt-p:abort+execute(git checkout -p {2} >&2 < /dev/tty)' \
+			--preview-window='down:75%'
 		))
 		[ ${#files} -gt 0 ] || return 0
 		echo "Picked files:"
@@ -117,7 +119,8 @@ gitr() {
 		files=($(fzf_run_preset \
 			"git:files:staged" \
 			--multi \
-			--header="Pick files to unstage"
+			--header="Pick files to unstage" \
+			--preview-window='down:75%'
 		))
 		[ ${#files} -gt 0 ] || return 0
 		echo "Picked files:"
