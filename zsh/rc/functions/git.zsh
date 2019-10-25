@@ -183,18 +183,74 @@ gitdirdo() {
 	_gitdirdo 'echo "${color_fg_blue}==> $dir <==$color_reset"; ('"$@"'); r=$?; echo; exit $r'
 }
 gitdirs() {
-	size=$(_gitdirlist | wc -L)
-	format="%-${size}s  %-20s  %s"
-	_gitdirs() {
-		gitbranch="$(git rev-parse --abbrev-ref HEAD)"
-		if [ "${#gitbranch}" -gt 20 ]; then
-			gitbranch="${gitbranch:0:17}..."
-		fi
-		gitstatus="$(git diff --shortstat | tr -cd '[0-9 ]' | awk '{ print $1 " files +" $2 " -" $3 }')"
-		printf "$format\n" "$dir" "$gitbranch" "$gitstatus"
+	typeset -Agx names branches statuses
+
+	_dirtoslug() {
+		echo "${${1:t}//[^a-zA-Z0-9_]/_}"
 	}
+
+	_gitstatusresult() {
+		slug="$(_dirtoslug "$VCS_STATUS_WORKDIR")"
+		case "$VCS_STATUS_RESULT" in
+			tout)
+				# Getting result async, wait for the next call.
+				return
+			;;
+
+			norepo-*)
+				# Unlikely to happen, as we check for the presence of a .git directory.
+				branches[$slug]='-'
+				statuses[$slug]='Not a repository'
+			;;
+
+			ok-*)
+				gitstatus="$(P9K_CONTENT= print -P "$POWERLEVEL9K_VCS_CONTENT_EXPANSION")$color_reset"
+				gitbranch="${gitstatus/ *}"
+				gitstatus="${${gitstatus#$gitbranch}## }"
+				gitbranch="${$(echo "$gitbranch" | strip_escape)%\%}"
+
+				if [ "${#gitbranch}" -gt 20 ]; then
+					gitbranch="${gitbranch:0:17}..."
+				fi
+
+				branches[$slug]="$gitbranch"
+				statuses[$slug]="$gitstatus"
+			;;
+
+			*)
+				branches[$slug]='-'
+				statuses[$slug]="GitStatus returned unexpected result '$VCS_STATUS_RESULT'." 
+			;;
+		esac
+		gitstatus_stop "GITDIRS_$slug"
+	}
+
+	maxnamewidth=0
+	for dir in $(_gitdirlist); do
+		name="${dir:t}"
+		[ "${#name}" -gt "$maxnamewidth" ] && maxnamewidth="${#name}"
+
+		slug="$(_dirtoslug "$dir")"
+		names[$slug]="$name"
+
+		gitstatus_start "GITDIRS_$slug"
+		gitstatus_query -d "$dir" -t 0.5 -c _gitstatusresult "GITDIRS_$slug" 
+		_gitstatusresult
+	done
+	format="%-${maxnamewidth}s  %-20s  %s"
+
 	printf "%s$format%s\n" "$color_fg_blue" 'DIR' 'BRANCH' 'STATUS' "$color_reset"
-	_gitdirdo _gitdirs
+	for key in "${(k)names[@]}"; do
+		for i in {0..20}; do
+			[ -n "${branches[$key]}${statuses[$key]}" ] && break
+			sleep 0.05
+		done
+		if [ -z "${branches[$key]}${statuses[$key]}" ]; then
+			branches[$key]='-'
+			statuses[$key]="Timeout while waiting for GitStatus async results."
+		fi
+		printf "$format\n" "${names[$key]}" "${branches[$key]}" "${statuses[$key]}"
+	done
 }
 gitdirbranch() {
 	_gitdirbranch() {
