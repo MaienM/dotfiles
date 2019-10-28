@@ -2,45 +2,40 @@
 
 set -o errexit
 
-if ! command -v unzip &> /dev/null; then
-	echo >&2 "The unzip command is missing"
-	exit 1
-fi
+for cmd in wget svn unzip; do
+	if ! command -v "$cmd" &> /dev/null; then
+		echo >&2 "The $cmd command is missing"
+		exit 1
+	fi
+done
 
 rm /tmp/font-setup -rf
 mkdir /tmp/font-setup
 (
-	set -o errexit
+	set -o errexit -o pipefail
 	cd /tmp/font-setup
 
-	# Download FiraCode
 	echo '>>> Downloading FiraCode'
-	curl -s -L 'https://github.com/tonsky/FiraCode/releases/latest' \
+	wget 'https://github.com/tonsky/FiraCode/releases/latest' -O - \
 		| grep -oE '/tonsky/FiraCode/releases/download/[0-9.]*/FiraCode.*\.zip' \
 		| wget --base=http://github.com/ -i - -O FiraCode.zip
 	unzip -q -j -o FiraCode.zip
 	rm FiraCode.zip
 
-	# Download the nerd-fonts font & scripts
 	echo '>>> Downloading Nerd-Fonts'
-	curl '-#' -O -L 'https://github.com/ryanoasis/nerd-fonts/archive/master.zip'
-	unzip -q -j -o master.zip \
-		'nerd-fonts-master/bin/scripts/lib/*' \
-		'nerd-fonts-master/patched-fonts/FiraCode/*' \
-		'nerd-fonts-master/src/glyphs/Symbols-2048-em Nerd Font Complete.ttf' \
-		'nerd-fonts-master/10-nerd-font-symbols.conf'
-	rm master.zip
-	rm ./*Windows*
+	svn export -q 'https://github.com/ryanoasis/nerd-fonts/trunk/bin/scripts/lib/'
+	svn export -q 'https://github.com/ryanoasis/nerd-fonts/trunk/patched-fonts/FiraCode/'
+	svn export -q 'https://github.com/ryanoasis/nerd-fonts/trunk/src/glyphs/Symbols-2048-em Nerd Font Complete.ttf'
+	svn export -q 'https://github.com/ryanoasis/nerd-fonts/trunk/10-nerd-font-symbols.conf'
 
-	# Install fonts
 	echo '>>> Installing fonts'
 	mkdir -p ~/.local/share/fonts
-	mv ./*.ttf ~/.local/share/fonts/
+	find . -name 'Fira*.ttf' -not -name '*Windows*' -exec mv '{}' ~/.local/share/fonts/ \;
 	mkdir -p ~/.config/fontconfig/conf.d
 	mv ./*.conf ~/.config/fontconfig/conf.d/
 	fc-cache -rf
 
-	# Rewrite the load_all script
+	echo '>>> Installing scripts'
 	(
 		echo '#!/usr/bin/env bash'
 		echo
@@ -49,11 +44,8 @@ mkdir /tmp/font-setup
 		echo '  [[ "$file" == *"_all" ]] || source "$file"'
 		echo 'done'
 		echo 'unset file'
-	) > i_all.sh
-
-	# Install scripts
-	echo '>>> Installing scripts'
-	for file in i_*.sh; do
+	) > ./lib/i_all.sh
+	for file in ./lib/i_*.sh; do
 		chmod +x "$file"
 		name=${file/i_/nerdfonts_icons_}
 		name=${name%.sh}
