@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+
+# Get the path to a nerdfonts icon as an (optionally colored) svg image.
+
+icon_base_path="$HOME/.local/share/icons/nerdfonts"
+icon_path="$icon_base_path/$1.svg"
+
+if [ -z "$1" ]; then
+	echo >&2 "Usage: $0 icon_name [color]"
+	echo >&2
+	echo >&2 "The icon_name should be a nerdfonts icon name, without nf-prefix, with underscores."
+	echo >&2 "For example, for nf-fa-heart use fa_heart."
+	echo >&2
+	echo >&2 "The color can be any valid SVG color specification."
+	exit 1
+elif [ ! -f "$icon_path" ]; then
+	echo >&2 "Cannot find icon named '$1'."
+	echo >&2 "Make sure to pass in the icon name (eg fa_ok), not the icon itself."
+	exit 1
+fi
+
+if [ -n "$2" ]; then
+	color_hash="$(printf '%s' "$2" | md5sum | cut -c-32)"
+	icon_path_original="$icon_path"
+	icon_path="${icon_path_original%.svg}_$color_hash.svg"
+	if [ ! -f "$icon_path" ]; then
+		awk -v color="$2" '{ gsub("currentColor", color, $0); print $0 }'\
+			< "$icon_path_original" \
+			> "$icon_path"
+	fi
+fi
+
+echo "$icon_path"
