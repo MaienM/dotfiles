@@ -1,12 +1,12 @@
 [colors]
-black = ${env:color0}
-red = ${env:color1}
-green = ${env:color2}
-yellow = ${env:color3}
-blue = ${env:color4}
-magenta = ${env:color5}
-cyan = ${env:color6}
-white = ${env:color7}
+black = ${env:base16_color0}
+red = ${env:base16_color1}
+green = ${env:base16_color2}
+yellow = ${env:base16_color3}
+blue = ${env:base16_color4}
+magenta = ${env:base16_color5}
+cyan = ${env:base16_color6}
+white = ${env:base16_color7}
 
 background = ${colors.black}
 foreground = ${colors.white}
@@ -14,8 +14,8 @@ primary = ${colors.blue}
 secondary = ${colors.green}
 alert = ${colors.red}
 
-background-alt = ${env:color18}
-foreground-alt = ${env:color11}
+background-alt = ${env:base16_color18}
+foreground-alt = ${env:base16_color11}
 
 [settings]
 screenchange-reload = true
@@ -103,7 +103,6 @@ label-visible = %name%
 label-visible-background = ${self.label-focused-background}
 label-visible-underline = ${colors.secondary}
 label-visible-padding = ${self.label-focused-padding}
-
 ; urgent = Workspace with urgency hint set
 label-urgent = %name%!
 label-urgent-background = ${colors.alert}
