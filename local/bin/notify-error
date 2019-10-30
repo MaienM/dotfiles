@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
-if ! error="$("$@" 2>&1 > /dev/null)"; then
+error="$("$@" 2>&1 > /dev/null)"
+retval="$?"
+if [ "$retval" -ne 0 ]; then
 	notify-send "Command error" "$error" --urgency=critical
+	exit "$retval"
 fi
