@@ -1,8 +1,10 @@
 #!/usr/bin/env sh
 
-error="$("$@" 2>&1 > /dev/null)"
-retval="$?"
-if [ "$retval" -ne 0 ]; then
-	notify-send "Command error" "$error" --urgency=critical
-	exit "$retval"
-fi
+{
+	error="$("$@" 2>&1 >&3 3>&-)"
+	retval="$?"
+	if [ "$retval" -ne 0 ]; then
+		notify-send "Command error" "$error" --urgency=critical
+		exit "$retval"
+	fi
+} 3>&1
