@@ -15,3 +15,12 @@ kubei() {
 	fi
 }
 
+# Event listing for the given element in the form of type/name.
+kubee() {
+	kind="${1%/*}"
+	kind="$(tr '[:lower:]' '[:upper:]' <<< "${kind:0:1}")${kind:1}"
+	kind="${kind%s}"
+	name="${1#*/}"
+	kubectl get events --all-namespaces --field-selector "involvedObject.kind=$kind,involvedObject.name=$name"
+}
+
