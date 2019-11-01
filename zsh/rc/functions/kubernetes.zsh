@@ -1,4 +1,7 @@
-kubed() {
+alias kubed='kubectl describe'
+
+# A nice interactive inspector for the general state of things.
+kubei() {
 	local cmd
 	cmd=($(fzf_run_preset "kubernetes:all" \
 		--header=$'Usage:\nAlt + d: describe\nAlt + l: logs (+ Ctrl for follow)' \
@@ -11,3 +14,4 @@ kubed() {
 		history_add_and_run ${cmd[@]}
 	fi
 }
+
