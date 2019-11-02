@@ -29,7 +29,7 @@ _fzf_pipeline_downloads_source() {
 	find ~/Downloads -mindepth 1 -maxdepth 1 -printf '%T@ %p\0' \
 	| sort -z -n -r \
 	| cut -z -d' ' -f2- \
-	| xargs -0 zsh -c 'for fn in "$@"; do echo "${(q)fn} ${fn:t}"; done'
+	| xargs -0 zsh -c 'for fn in "$@"; do echo "${(q)fn} ${fn:t}"; done' -
 }
 _fzf_pipeline_downloads_preview() {
 	preview "${(Q)1}"
