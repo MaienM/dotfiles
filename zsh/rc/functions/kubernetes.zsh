@@ -1,4 +1,5 @@
 alias kubed='kubectl describe'
+alias kubeports="kubectl get -o go-template=$'{{range .spec.ports}}{{.nodePort}} -> {{.targetPort}}\n{{end}}'"
 
 # A nice interactive inspector for the general state of things.
 kubei() {
