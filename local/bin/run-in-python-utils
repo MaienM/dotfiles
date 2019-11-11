@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+exec run-in-asdf python utils "$(basename "$0")" "$@"
