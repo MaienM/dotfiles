@@ -40,11 +40,6 @@ if command_exists kitty; then
 fi
 
 #
-# Add local bin to path.
-#
-prepend_to_path "$HOME/.local/bin"
-
-#
 # If present, load the profile file for this specific computer.
 #
 [ -f "$HOME/.profile_local" ] && . "$HOME/.profile_local";
@@ -55,6 +50,11 @@ prepend_to_path "$HOME/.local/bin"
 for file in "$HOME/.profile.d/"*; do
 	. "$file"
 done
+
+#
+# Add local bin to path. This is done (almost) last, because it is unlikely that something should be before it.
+#
+prepend_to_path "$HOME/.local/bin"
 
 #
 # If present, load the post profile file for this specific computer.
