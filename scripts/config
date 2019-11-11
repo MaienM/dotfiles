@@ -75,3 +75,5 @@ target = .vim/vimrc, .config/nvim/init.vim
 
 [zsh/init.zsh]
 target = .zshrc
+
+# vim:ft=dosini
