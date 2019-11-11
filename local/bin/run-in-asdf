@@ -8,6 +8,7 @@ shift 2
 
 if command -v asdf > /dev/null 2>&1; then
 	for version in $versions; do
+		[ "$version" = "system" ] && continue
 		if ! asdf where "$plugin" "$version" > /dev/null 2>&1; then
 			echo >&2 "Version $version for plugin $plugin not installed in ASDF."
 			exit 1
