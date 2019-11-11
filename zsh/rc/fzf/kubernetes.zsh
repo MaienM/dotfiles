@@ -12,7 +12,7 @@ _fzf_pipeline_kubernetes_base_preview() {
 }
 
 # Create a simple pipeline and preset for each resource type
-for resource in configmaps deployments endpoints namespaces nodes pods secrets services; do
+for resource in configmaps deployments replicasets statefulsets endpoints namespaces nodes pods secrets services; do
 	alias "_fzf_pipeline_kubernetes_${resource}_source"="_fzf_pipeline_kubernetes_base_source $resource"
 	alias "_fzf_pipeline_kubernetes_${resource}_preview"='_fzf_pipeline_kubernetes_base_preview'
 	alias "_fzf_preset_kubernetes_$resource"="_fzf_config_add kubernetes_$resource"
@@ -24,6 +24,8 @@ _fzf_preset_kubernetes() {
 	echo \
 		| _fzf_config_add kubernetes_pods "${color_fg_green}pod$color_reset" \
 		| _fzf_config_add kubernetes_deployments "${color_fg_yellow}deployment$color_reset" \
+		| _fzf_config_add kubernetes_replicasets "${color_fg_yellow}replicaset$color_reset" \
+		| _fzf_config_add kubernetes_statefulsets "${color_fg_yellow}statefulset$color_reset" \
 		| _fzf_config_add kubernetes_services "${color_fg_blue}service$color_reset" \
 		| _fzf_config_add kubernetes_configmaps "${color_fg_cyan}configmap$color_reset" \
 		| _fzf_config_add kubernetes_endpoints "${color_fg_cyan}endpoint$color_reset" \
