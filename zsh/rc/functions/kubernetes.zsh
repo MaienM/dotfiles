@@ -25,3 +25,9 @@ kubee() {
 	kubectl get events --all-namespaces --field-selector "involvedObject.kind=$kind,involvedObject.name=$name"
 }
 
+# Switch namespace.
+kuben() {
+	namespace="$(fzf_run_preset "kubernetes:namespaces")"
+	[ -n "$namespace" ] && kubectl config set-context --current --namespace="${namespace#*/}"
+}
+
