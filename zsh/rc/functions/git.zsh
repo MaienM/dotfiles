@@ -1,3 +1,7 @@
+if ! command -v git &> /dev/null; then
+	return
+fi
+
 # Some shortcuts.
 alias gits='rm -f \\ && git status'
 

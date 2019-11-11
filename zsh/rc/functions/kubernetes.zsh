@@ -1,3 +1,7 @@
+if ! command -v kubectl &> /dev/null; then
+	return
+fi
+
 alias kubed='kubectl describe'
 alias kubeports="kubectl get -o go-template=$'{{range .spec.ports}}{{.nodePort}} -> {{.targetPort}}\n{{end}}'"
 

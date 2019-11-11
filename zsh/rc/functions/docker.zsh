@@ -1,3 +1,7 @@
+if ! command -v docker &> /dev/null; then
+	return
+fi
+
 alias docker='sudo -E docker'
 alias dockc='sudo -E docker-compose'
 
