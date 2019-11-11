@@ -31,3 +31,15 @@ kuben() {
 	[ -n "$namespace" ] && kubectl config set-context --current --namespace="${namespace#*/}"
 }
 
+# Apply if possible, re-create otherwise.
+kubeforceapply() {
+	for file in "$@"; do
+		echo ">>> $file"
+		if ! kubectl apply -f "$file" 2> /dev/null; then
+			echo ">> Cannot apply, re-creating instead"
+			kubectl delete -f "$file"
+			kubectl create -f "$file" --save-config
+		fi
+	done
+}
+
