@@ -3,6 +3,7 @@ config/mpv/scripts/
 config/mpv/watch_later/
 config/rofi/theme.rasi
 profile.d/base16
+tmux/frozen/
 tmux/resurrect/
 vim/.netrwhist
 vim/bundle/fzf-base
