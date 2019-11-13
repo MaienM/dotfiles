@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+envpath="$PWD/.envrc"
+
+if [ -f "$envpath" ]; then
+	echo >&2 "There already is a direnv config file at '$envpath'."
+	exit 1
+fi
+
+if [ ! -f "tool-versions" ]; then
+	echo >&2 "There is no .tool_versions file, might want to fix that."
+fi
+
+(
+	echo "source \$(asdf which direnv_use_asdf)"
+	echo "use asdf"
+) > "$envpath"
+echo "Created direnv config file at '$envpath'."
+
+asdf exec direnv allow "$envpath"
