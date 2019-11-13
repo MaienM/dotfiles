@@ -26,6 +26,6 @@ ASDF_PYTHON_VERSION="$py_version" asdf install python-venv utils
 echo ">>> Installing utilities."
 ASDF_PYTHON_VERSION=utils asdf exec pip install -U bs4 requests lxml
 ASDF_PYTHON_VERSION=utils asdf exec pip install -U pygments pygments-base16 
-ASDF_PYTHON_VERSION=utils asdf exec pip install -U tmuxp
+ASDF_PYTHON_VERSION=utils asdf exec pip install -U tmuxp yq
 asdf reshim python utils
 

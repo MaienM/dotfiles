@@ -44,7 +44,7 @@ action = recurse
 [local/bin]
 action = recurse
 [local/bin/run-in-python-utils]
-target = .local/bin/tmuxp
+target = .local/bin/tmuxp, .local/bin/yq
 
 [opt]
 action = skip
