@@ -8,38 +8,37 @@ source profile.d/asdf
 source scripts/install/misc/_utils.sh
 
 echo ">>> Checking dependencies."
-command -v asdf &> /dev/null || (echo "asdf must be installed first"; exit 1)
-asdf plugin-add python || true
-asdf plugin-add ruby || true
-asdf plugin-add nodejs || true
-~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+asdf_guard
+asdf_plugin_add python ruby nodejs
 
-echo ">>> Determining versions."
-py2_version="$(find_latest_asdf_version python '^\s*2\.[0-9.]\+\s*$')"
-py3_version="$(find_latest_asdf_version python '^\s*3\.[0-9.]\+\s*$')"
-rb_version="$(find_latest_asdf_version ruby '^\s*[0-9.]\+\s*$')"
-nodejs_version="$(find_latest_asdf_version nodejs '^\s*[0-9.]\+\s*$')"
-echo "Using python $py2_version, python $py3_version, ruby $rb_version, and nodejs $nodejs_version"
-if [ -z "$py2_version" ] || [ -z "$py3_version" ] || [ -z "$rb_version" ] || [ -z "$nodejs_version" ]; then
-	echo >&2 "Unable to determine some versions, aborting"
-	exit 1;
-fi
+echo ">>> Installing latest python 2.x."
+asdf_install_latest_version python '^\s*2\.[0-9.]\+\s*$'
+py2_version="$version"
+echo "Using python $py2_version."
 
-echo ">>> Installing."
-asdf install python "$py2_version"
-asdf install python "$py3_version"
-asdf install ruby "$rb_version"
-asdf install nodejs "$nodejs_version"
-echo "Installations complete"
+echo ">>> Installing latest python 3.x."
+asdf_install_latest_version python '^\s*3\.[0-9.]\+\s*$'
+py3_version="$version"
+echo "Using python $py3_version."
+
+echo ">>> Installing latest ruby."
+asdf_install_latest_version ruby
+rb_version="$version"
+echo "Using ruby $rb_version."
+
+echo ">>> Installing latest nodejs."
+asdf_install_latest_version nodejs
+nodejs_version="$version"
+echo "Using nodejs $nodejs_version."
 
 echo ">>> Setting up python $py2_version"
-remove_asdf_virtualenv neovim2
+asdf_remove_virtualenv neovim2
 ASDF_PYTHON_VERSION="$py2_version" asdf install python-venv neovim2
 ASDF_PYTHON_VERSION=neovim2 asdf exec pip install neovim
 py2_path=$(ASDF_PYTHON_VERSION=neovim2 asdf which python)
 
 echo ">>> Setting up python $py3_version"
-remove_asdf_virtualenv neovim3
+asdf_remove_virtualenv neovim3
 ASDF_PYTHON_VERSION="$py3_version" asdf install python-venv neovim3
 ASDF_PYTHON_VERSION=neovim3 asdf exec pip install neovim
 py3_path=$(ASDF_PYTHON_VERSION=neovim3 asdf which python)

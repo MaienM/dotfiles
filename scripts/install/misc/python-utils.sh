@@ -7,21 +7,17 @@ source profile.d/asdf
 # shellcheck source=_utils.sh
 source scripts/install/misc/_utils.sh
 
-echo ">>> Determining version."
-py_version="$(find_latest_asdf_version python '^\s*3\.[0-9.]\+\s*$')"
-echo "Using python $py_version."
-if [ -z "$py_version" ]; then
-	echo "Unable to determine version, aborting"
-	exit 1;
-fi
+echo ">>> Checking dependencies."
+asdf_guard
+asdf_plugin_add python
 
-echo ">>> Installing."
-asdf install python "$py_version"
-echo "Installation complete"
+echo ">>> Installing latest python."
+asdf_install_latest_version python
+echo "Using python $version."
 
 echo ">>> Setting up virtualenv."
-remove_asdf_virtualenv utils
-ASDF_PYTHON_VERSION="$py_version" asdf install python-venv utils
+asdf_remove_virtualenv utils
+ASDF_PYTHON_VERSION="$version" asdf install python-venv utils
 
 echo ">>> Installing utilities."
 ASDF_PYTHON_VERSION=utils asdf exec pip install -U bs4 requests lxml
