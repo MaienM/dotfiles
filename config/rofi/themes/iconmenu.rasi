@@ -1,0 +1,52 @@
+@import "theme.rasi"
+
+/**
+ * Not intended to be used directly, as some critical portions are missing.
+ *
+ * Instead, run iconmenu.sh in this folder, pass it the amount of icons that should be displayed, and use the output.
+ */
+
+* {
+	/* font set in generated file */
+}
+
+window {
+	width: 100%;
+	height: 100%;
+	border: none;
+	children: [listview];
+	/* padding set in generated file */
+}
+
+listview {
+	scrollbar: false;
+	border: none;
+	spacing: 0;
+}
+
+element alternate.normal {
+	background-color: @normal-background;
+	text-color:       @normal-foreground;
+}
+element alternate.urgent {
+	background-color: @urgent-background;
+	text-color:       @urgent-foreground;
+}
+element alternate.active {
+	background-color: @active-background;
+	text-color:       @active-foreground;
+}
+
+element {
+	orientation: vertical;
+	/* padding set in generated file */
+	/* spacing set in generated file */
+}
+element-icon {
+	/* size set in generated file */
+}
+element-text {
+	horizontal-align: 0.5;
+	/* width set in generated file */
+}
+
