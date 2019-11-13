@@ -166,7 +166,7 @@ gitpb() {
 # Work with multiple directories
 _gitdirlist() {
 	for dir in *(/); do
-		[ ! -d "$dir/.git" ] && continue
+		[ ! -e "$dir/.git" ] && continue
 		echo "$dir"
 	done
 }
