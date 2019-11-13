@@ -37,7 +37,7 @@ case "$item" in
 esac
 
 if command -v fzf > /dev/null 2>&1; then
-	tmux new-window -n "$switcher_window_name" -t :999 -k "
+	tmux new-window -n "$switcher_window_name" -t :999 -k "\
 		tmux $list_command \
 		| grep -v '$switcher_window_name' \
 		| fzf \
@@ -45,13 +45,13 @@ if command -v fzf > /dev/null 2>&1; then
 			--with-nth=2.. \
 			${prompt:+--prompt=\"$prompt\"} \
 			--preview-window='down:65%' \
-			--preview='
+			--preview=' \
 				tmux $child_command -t {1} \
 				| grep -v \"$switcher_window_name\" \
 				| xargs -d\"\\n\" $HOME/.tmux/scripts/render-preview.sh \
 			' \
 		| cut -d' ' -f1 \
-		| xargs -r -I '%%' $command
+		| xargs -r -I '%%' $command \
 	"
 else
 	tmux choose-tree -Z "$choose_tree_flag" -F "$visible_format" "$command"
