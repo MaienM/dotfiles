@@ -45,6 +45,8 @@ action = recurse
 action = recurse
 [local/bin/run-in-python-utils]
 target = .local/bin/tmuxp, .local/bin/yq
+[local/bin/run-in-system]
+target = .local/bin/pikaur
 
 [opt]
 action = skip

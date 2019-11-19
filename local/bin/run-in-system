@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+(
+	set -e
+	# shellcheck source=../../functions/remove_from_path
+	. ~/.functions/remove_from_path
+	remove_from_path "^$HOME" "E"
+	exec "$(basename "$0")" "$@"
+)
+
