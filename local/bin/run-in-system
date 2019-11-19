@@ -5,6 +5,8 @@
 	# shellcheck source=../../functions/remove_from_path
 	. ~/.functions/remove_from_path
 	remove_from_path "^$HOME" "E"
-	exec "$(basename "$0")" "$@"
+	bin="$(command -v "$(basename "$0")")"
+	prepend_to_path "$HOME/.local/bin"
+	exec "$bin" "$@"
 )
 
