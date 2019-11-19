@@ -12,11 +12,13 @@ in_path() {
 }
 
 prepend_to_path() {
-	in_path "$1" || export PATH="$1:$PATH"
+	in_path "$1" && remove_from_path "$1"
+	export PATH="$1:$PATH"
 }
 
 append_to_path() {
-	in_path "$1" || export PATH="$PATH:$1"
+	in_path "$1" && remove_from_path "$1"
+	export PATH="$PATH:$1"
 }
 
 remove_from_path() {
