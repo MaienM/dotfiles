@@ -21,7 +21,8 @@ append_to_path() {
 	export PATH="$PATH:$1"
 }
 
+# Usage: $0 directory-or-pattern [grep-flags]
 remove_from_path() {
-	PATH="$(echo "$PATH" | tr ':' '\n' | grep -vxF "$1" | tr '\n' ':' | sed 's/^:\+//; s/::\+/:/g; s/:$//')"
+	PATH="$(echo "$PATH" | tr ':' '\n' | grep -v"${2:-xF}" "$1" | tr '\n' ':' | sed 's/^:\+//; s/::\+/:/g; s/:$//')"
 	export PATH
 }
