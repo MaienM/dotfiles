@@ -18,8 +18,7 @@ fi
 
 if [ -z "$TARGET_SESSION_NAME" ]; then
 	set +e
-	tmux command-prompt -p '(break-window)' -I '#W' \
-		"display-message '~/.tmux/scripts/break-window.sh $(printf '%q ' "$CURRENT_WINDOW") '%%''"
+	tmux command-prompt -p '(break-window)' -I '#W' "run '$0 '$CURRENT_WINDOW' '%%''"
 	exit 0
 fi
 
@@ -27,10 +26,10 @@ if ! error="$(tmux new-session -d -s "$TARGET_SESSION_NAME" 2>&1 > /dev/null)"; 
 	tmux display-message "Unable to create new session: $error."
 	exit 0
 fi
+created_window="$(tmux list-panes -t "$TARGET_SESSION_NAME" -F '#S:#I' | head -n1)"
 
-created_window="$(tmux list-panes -t "$TARGET_SESSION_NAME" -F '#S:#I')"
 if ! error="$(tmux \
-	swap-window -s "$CURRENT_WINDOW" -t "$created_window" \; \
+	swap-window -t "$CURRENT_WINDOW" -s "$created_window" \; \
 	switch-client -t "$created_window" \; \
 	kill-window -t "$CURRENT_WINDOW" 2>&1 > /dev/null)"
 then
