@@ -7,14 +7,11 @@ function! VimuxInterruptAndRun(command)
 	call VimuxRunCommand(a:command)
 endfunction
 function! VimuxRunZshLast()
-	let l:lines = readfile($HOME . '/.zhistory')
-	let l:line = l:lines[-1]
-	let l:command = substitute(l:line, '^[^;]*;', '', '')
-	call VimuxInterruptAndRun(l:command)
+	call VimuxInterruptAndRun(shell#lastcommand())
 endfunction
 function! VimuxRunZshList()
 	call fzf#run(fzf#wrap({
-		\'source': 'cut -d";" -f2- < ~/.zhistory | tac',
+		\'source': shell#commands(),
 		\'sink': function('VimuxInterruptAndRun'),
 	\}))
 endfunction
