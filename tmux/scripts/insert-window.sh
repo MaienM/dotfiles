@@ -6,6 +6,5 @@ while tmux list-panes -t "$target"; do
 	tmux swap-window -s "$current" -t "$target"
 	target="$((target + 1))"
 done
-tmux move-window -s "$current" -t "$target"
 tmux select-window -t "$1"
 
