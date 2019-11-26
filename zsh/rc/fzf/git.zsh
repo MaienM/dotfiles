@@ -77,7 +77,7 @@ _fzf_pipeline_git_branch_source() {
 	columns=$(($COLUMNS / 5))
 	git branch --all "$@" \
 	| grep -v HEAD \
-	| sed 's/^[[:space:]*]*//' \
+	| sed 's/^.[[:space:]]*//' \
 	| while read branch; do
 		# Output format: branch_full remote_name branch_name commit_hash
 		echo -n ${branch#remotes/}
@@ -98,10 +98,9 @@ _fzf_pipeline_git_branch_source() {
 	| while read branch __ __ __; do
 		echo -n $branch
 		echo -n ' '${color_fg_yellow}${branch[0,$columns]}$color_reset
-		echo -n ' | '$(git log --pretty=format:%s "$branch" --max-count=1)
+		echo -n ' '$(git log --pretty=format:%s "$branch" --max-count=1)
 		echo
-	done \
-	| column --table --separator='|' --output-separator=''
+	done
 }
 alias _fzf_pipeline_git_branch_preview='_fzf_pipeline_git_commit_preview'
 _fzf_pipeline_git_branch_target() {
