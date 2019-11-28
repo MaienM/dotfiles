@@ -2,7 +2,7 @@
 
 set -o errexit
 
-for cmd in wget svn unzip fontforge python; do
+for cmd in wget svn unzip; do
 	if ! command -v "$cmd" &> /dev/null; then
 		echo >&2 "The $cmd command is missing"
 		exit 1
@@ -47,41 +47,11 @@ mkdir /tmp/font-setup
 	) > ./lib/i_all.sh
 	for file in ./lib/i_*.sh; do
 		chmod +x "$file"
-		name=${file/i_/nerdfonts_icons_}
+		name="$(basename "$file")"
+		name=${name/i_/nerdfonts_icons_}
 		name=${name%.sh}
 		mv "$file" "$HOME/.local/bin/$name"
 		echo "Installed script $name"
 	done
-
-	echo ">>> Exporting symbols as SVGs"
-	# shellcheck disable=SC2016
-	fontforge 2>&1 -quiet -lang=ff -c 'Open($1); SelectWorthOutputting(); foreach Export("%u.svg"); endloop;' \
-		"$HOME/.local/share/fonts/Symbols-2048-em Nerd Font Complete.ttf" \
-	| (grep -v 'mapped to' || true)
-	rm -rf ~/.local/share/icons/nerdfonts/
-	mkdir -p ~/.local/share/icons/nerdfonts/
-	mapped=0
-	missing=0
-	while read -r line; do
-		name="${line%=*}"
-	 	symbol="${line#*=}"
-		if [ -f "$symbol.svg" ]; then
-			mv "$symbol.svg" "$HOME/.local/share/icons/nerdfonts/${name#i_}.svg"
-			mapped=$((mapped + 1))
-		else
-			missing=$((missing + 1))
-		fi
-	done < <(
-		# shellcheck disable=SC1090
-		source ~/.local/bin/nerdfonts_icons_all;
-		set | grep '^i_' | python -c '
-import sys
-for line in sys.stdin: 
-	name, symbol = line.strip().split("=", 2)
-	symbol = symbol.encode("unicode_escape").decode("utf-8")[2:]
-	print(f"{name}={symbol}")
-	'
-)
-	echo "Exported SVGs for $mapped icons, $missing icons do not have an SVG"
 )
 rm /tmp/font-setup -rf
