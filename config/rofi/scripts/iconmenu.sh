@@ -8,6 +8,11 @@
 
 set -o errexit -o pipefail
 
+if [ "$#" -eq 1 ]; then
+	echo >&2 "Cannot render icon menu without any icons."
+	exit 1
+fi
+
 option_pattern="^([^ ]+)[ ]+([^ :]+)(:[^ ]+)?([ ]+(.*[^ ])[ ]*)?$"
 for option in "$@"; do
 	if ! [[ $option =~ $option_pattern ]]; then
