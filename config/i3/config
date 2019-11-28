@@ -127,7 +127,7 @@ bindsym $mod+Control+6 exec notify-error ~/.config/i3/move-workspace-to-current-
 bindsym $mod+Control+7 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace7"
 bindsym $mod+Control+8 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace8"
 bindsym $mod+Control+9 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace9"
-bindsym $mod+Control+10 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace10"
+bindsym $mod+Control+0 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace10"
 
 # reload the configuration file
 bindsym $mod+Shift+c reload; exec "notify-send 'i3' 'Reloaded config'"
