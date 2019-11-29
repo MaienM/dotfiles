@@ -26,5 +26,13 @@ for option in "$@"; do
 	printf '<span size="0">%s</span>%s\0icon\x1f%s\n' \
 		"$id" "$description" "$(nerdfonts-icon-as-svg "$icon" "$icon_color")"
 done \
-	| rofi -theme <(~/.config/rofi/themes/iconmenu.sh "$#") -dmenu -markup-rows -show-icons \
+	| rofi \
+		-dmenu \
+		-theme <(~/.config/rofi/themes/iconmenu.sh "$#") \
+		-markup-rows \
+		-show-icons \
+		-kb-move-char-back '' \
+		-kb-move-char-forward '' \
+		-kb-row-up Left,Up,h,k,Control+p \
+		-kb-row-down Down,Right,j,l,Control+n \
 	| sed 's/^<span size=.0.>\([^<]*\)<.*$/\1/'
