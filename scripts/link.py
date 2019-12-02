@@ -199,7 +199,7 @@ class Processor(object):
 		self.process_dir(entry.path)
 
 	def apply_link(self, entry, fc):
-		flags = ''
+		flags = 'T'
 		if entry.is_dir():
 			flags += 's'
 
@@ -211,7 +211,7 @@ class Processor(object):
 				if not applied_links:
 					applied_links = True
 
-				# If the target lexists, it has to be force replaced
+				# If the target exists, it has to be force replaced
 				if os.path.lexists(target):
 					tflags += 'f'
 
@@ -227,6 +227,7 @@ class Processor(object):
 
 		try:
 			targetinfo = os.stat(target)
+			targetlinfo = os.lstat(target)
 		except OSError as e:
 			err(f'Encountered error while inspecting {target}: {e.message}')
 			return False
@@ -234,6 +235,10 @@ class Processor(object):
 		if os.path.samestat(entry.stat(), targetinfo):
 			# The link is already present, so do nothing
 			return False
+
+		if stat.S_ISLNK(targetlinfo.st_mode):
+			# The target is a symlink, but points to a different location. We can just overwrite this.
+			return True
 
 		if stat.S_ISDIR(targetinfo.st_mode):
 			# The target is a different directory, so we bail out

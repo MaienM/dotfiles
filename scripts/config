@@ -37,6 +37,8 @@ target = .config/mpv/scripts/youtube-quality.lua
 target = .zsh/bundle/base16-hooks/polybar.sh
 
 [fzf]
+action = skip
+[fzf/fzf]
 target = .fzf, .vim/bundle/fzf-base
 
 [local]
