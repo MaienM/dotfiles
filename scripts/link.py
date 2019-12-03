@@ -2,10 +2,13 @@
 
 import argparse
 import configparser
-from enum import Enum
+from enum import Enum, auto
 import hashlib
+import inspect
+import logging
 import os
 import os.path
+from pathlib import Path
 import shlex
 import stat
 import subprocess
@@ -50,6 +53,17 @@ def read_char():
 		raise EOFError
 	return c
 
+
+def to_path(thing):
+	if isinstance(thing, VirtualFileInfo):
+		return Path(thing.path)
+	elif isinstance(thing, Path):
+		return thing
+	else:
+		return Path(thing)
+
+
+# {{{ Config
 
 class FileAction(Enum):
 	""" The actions that can be taken for a given source file. """
@@ -136,28 +150,267 @@ class Config(configparser.ConfigParser):
 
 		return config
 
+# }}}
 
-class LinkCommand(object):
-	""" A ln command that has to be executed to get to the desired state. """
-	def __init__(self, source, target, flags = ''):
-		self.source = source
+
+# {{{ Virtual FS
+
+class VirtualFSError(Exception):
+	""" Error class for fake filesystem errors. """
+
+class VirtualFileExistsError(VirtualFSError, FileExistsError):
+	pass
+
+class VirtualFileNotFoundError(VirtualFSError, FileNotFoundError):
+	pass
+
+class VirtualNotADirectoryError(VirtualFSError, NotADirectoryError):
+	pass
+
+class VirtualPermissionError(VirtualFSError, PermissionError):
+	pass
+
+
+class VirtualFileType(Enum):
+	""" The types of files that can virtually exist. """
+	FILE = auto()
+	DIRECTORY = auto()
+	SYMLINK = auto()
+	NONE = auto() # No such file/directory exists
+	OTHER = auto()
+
+
+class VirtualFileInfo(object):
+	""" Information about a virtual filesystem object. """
+	def __init__(self, fs, path, _type, is_from_fs, *, inode = None, links_to = None):
+		self.fs = fs
+		self.path = Path(path)
+		self.type = _type
+		self.is_from_fs = is_from_fs
+		self.inode = inode
+		self.links_to = os.path.join(os.path.dirname(path), links_to) if links_to else None
+
+	@property
+	def real(self):
+		"""
+		Follow the symlink to the original source.
+
+		Returns a VirtualFileInfo, with a type that is NOT VirtualFileType.SYMLINK.
+		"""
+		if self.type != VirtualFileType.SYMLINK:
+			return self
+		try:
+			return self.fs.get(self.links_to).real
+		except VirtualFSError:
+			return VirtualFileInfo(self.fs, self.links_to, VirtualFileType.NONE, True)
+
+	@property
+	def non_virtual_path(self):
+		""" Get the path to the actual location on disk that this corresponds to, or None if this doesn't exist. """
+		if self.links_to is None:
+			return self.path
+		return self.fs.get(self.links_to).non_virtual_path
+
+	def __repr__(self):
+		parts = []
+		parts.append(f"type {self.type}")
+		parts.append('based on fs' if self.is_from_fs else 'virtual')
+		if self.links_to:
+			parts.append(f"links to '{self.links_to}'")
+		return f"<File info for '{self.path}', {', '.join(parts)}>"
+
+
+class VirtualFS(object):
+	""" A layer that provides information about the filesystem that knows about changes made by previous steps. """
+	def __init__(self):
+		self.cache = {}
+		self.log = logging.getLogger(self.__class__.__name__)
+
+	def get(self, path):
+		""" Get a VirtualFileInfo describing the given path. """
+		path = to_path(path)
+		if path in self.cache:
+			return self.cache[path]
+
+		if path.parent == path:
+			return self._cache(path, self._from_fs(path))
+
+		parent = self.get(path.parent)
+		rparent = parent.real
+
+		if rparent.type == VirtualFileType.DIRECTORY:
+			if rparent.is_from_fs:
+				# Get from filesystem.
+				return self._cache(path, self._from_fs(path))
+			else:
+				# The parent is virtual, so there is no reason to check the filesystem.
+				return self._cache(path, VirtualFileInfo(self, path, VirtualFileType.NONE, False))
+		else:
+			raise VirtualNotADirectoryError(f"Not a directory: '{path}'")
+
+	def delete(self, path):
+		""" Marks the given path as deleted. """
+		path = to_path(path)
+		self._log(logging.DEBUG, f'delete {path}')
+		self._assert_exists(path)
+		entry = self.get(path)
+		real = entry.real
+		if real.type == VirtualFileType.DIRECTORY:
+			for p, e in list(self.cache.items()):
+				if real.path in p.parents:
+					del self.cache[p]
+		self._cache(path, VirtualFileInfo(self, path, VirtualFileType.NONE, False))
+
+	def mkdir(self, path):
+		""" Marks the given path as containing a new directory. """
+		path = to_path(path)
+		self._log(logging.DEBUG, f'mkdir {path}')
+		self._assert_not_exists(path)
+		self._cache(path, VirtualFileInfo(self, path, VirtualFileType.DIRECTORY, False))
+
+	def link(self, source, target):
+		"""
+		Mark the given target path as being a link to the given source.
+
+		Will be a hardlink for a file, and a symlink for anything else.
+		"""
+		source = to_path(source)
+		target = to_path(target)
+		if self.get(source).type == VirtualFileType.FILE:
+			self.hardlink(source, target)
+		else:
+			self.symlink(source, target)
+
+	def symlink(self, source, target):
+		""" Mark the given target path as being a symbolic link to the given source. """
+		self._log(logging.DEBUG, f'symlink {source} to {target}')
+		source = to_path(source)
+		target = to_path(target)
+		self._assert_not_exists(target)
+		self._assert_exists(source) # Not required, but helps prevent problems.
+		self._cache(target, VirtualFileInfo(self, target, VirtualFileType.SYMLINK, False, links_to = source))
+
+	def hardlink(self, source, target):
+		""" Mark the given target path as being a hardlink to the given source. """
+		self._log(logging.DEBUG, f'hardlink {source} to {target}')
+		source = to_path(source)
+		target = to_path(target)
+		self._assert_not_exists(target)
+		self._assert_exists(source)
+		source = self.get(source)
+		if source.type != VirtualFileType.FILE:
+			raise VirtualPermissionError(f"Operation not permitted: '{source}' -> '{target}'")
+		self._cache(target, VirtualFileInfo(
+			self,
+			target,
+			VirtualFileType.FILE,
+			False,
+			inode = source.inode,
+			links_to = source.path,
+		))
+
+	def scandir(self, path):
+		""" Provide a listing of files in a given directory. """
+		path = to_path(path)
+		entry = self.get(path).real
+		self._assert_exists(entry.path)
+		if entry.type != VirtualFileType.DIRECTORY:
+			raise NotADirectoryError(f"Not a directory: '{path}'")
+		if entry.is_from_fs:
+			return (self.get(e.path) for e in os.scandir(entry.path))
+		else:
+			return (e for (p, e) in self.cache.items() if p.parent == entry.path)
+
+	def _assert_exists(self, path):
+		entry = self.get(path)
+		if entry.type == VirtualFileType.NONE:
+			raise VirtualFileNotFoundError(f"No such file or directory: '{path}'")
+
+	def _assert_not_exists(self, path):
+		entry = self.get(path)
+		if entry.type != VirtualFileType.NONE:
+			raise VirtualFileExistsError(f"File exists: '{path}'")
+
+	def _cache(self, path, entry):
+		self.cache[to_path(path)] = entry
+		return entry
+
+	def _from_fs(self, path):
+		try:
+			linfo = os.lstat(path)
+		except FileNotFoundError:
+			return VirtualFileInfo(self, path, VirtualFileType.NONE, True)
+
+		if stat.S_ISLNK(linfo.st_mode):
+			return VirtualFileInfo(self, path, VirtualFileType.SYMLINK, True, links_to = os.readlink(path))
+
+		info = os.stat(path)
+
+		if stat.S_ISDIR(info.st_mode):
+			return VirtualFileInfo(self, path, VirtualFileType.DIRECTORY, True)
+		elif stat.S_ISREG(info.st_mode):
+			return VirtualFileInfo(self, path, VirtualFileType.FILE, True, inode = linfo.st_ino)
+		else:
+			return VirtualFileInfo(self, path, VirtualFileType.OTHER, True)
+
+	def _log(self, level, message):
+		curframe = inspect.currentframe()
+		calframe = inspect.getouterframes(curframe, 2)
+		caller = calframe[2]
+		self.log.log(level, f'{message} - {caller.function}:{caller.lineno}')
+
+# }}}
+
+
+# {{{ Commands
+
+class Command(object):
+	""" A command that has to be executed to get to the desired state. """
+	def __init__(self, target):
 		self.target = target
+
+	def __str__(self):
+		return f'# {shlex.quote(self.target)}'
+
+
+class LinkCommand(Command):
+	""" An ln command that has to be executed to get to the desired state. """
+	def __init__(self, source, target, flags = ''):
+		super().__init__(target)
+		self.source = source
 		self.flags = flags
 
 	def __str__(self):
 		flags = f'-{self.flags} ' if self.flags else ''
-		return f'ln {flags}-- {shlex.quote(self.source)} {shlex.quote(self.target)}'
+		return f'ln {flags}-- {shlex.quote(str(self.source))} {shlex.quote(str(self.target))}'
 
+
+class DeleteCommand(Command):
+	""" An rm command that has to be executed to get to the desired state. """
+	def __str__(self):
+		return f'rm -- {shlex.quote(self.target)}'
+
+
+class MkdirCommand(Command):
+	""" An mkdir command that has to be executed to get to the desired state. """
+	def __str__(self):
+		return f'mkdir {shlex.quote(self.target)}'
+
+# }}}
+
+
+# {{{ Processor
 
 class Processor(object):
 	""" A class to process all source files into a series of command to get into the desired state. """
 	def __init__(self, args, config):
 		self.args = args
 		self.config = config
+		self.fs = VirtualFS()
 		self.commands = []
 
 	def process_dir(self, path, only_explicit = False):
-		for entry in os.scandir(path):
+		for entry in self.fs.scandir(path):
 			fc = self.config.get_info(entry.path)
 
 			if fc.processed:
@@ -190,73 +443,112 @@ class Processor(object):
 					self.process_dir(dirpath, True)
 				except FileNotFoundError:
 					err(f'Unable to find parent directory {dirpath} for {path}')
+					raise
 
 	def apply_recurse(self, entry, fc):
-		if not entry.is_dir():
+		if not entry.real.type == VirtualFileType.DIRECTORY:
 			err(f'Cannot recurse non-directory {fc.path}')
 			return
+
+		# Validate that all targets are actually something we can nest files under
+		for _target in fc.targets[:]:
+			target = os.path.join(os.path.expanduser("~"), _target)
+			tentry = self.fs.get(target)
+			needs_mkdir = False
+			if tentry.type == VirtualFileType.FILE:
+				# The target is a file, but we need it to be a directory
+				if self.confirm_overwrite(fc.path, target, True):
+					self.fs.delete(target)
+					self.commands.append(DeleteCommand(target))
+					needs_mkdir = True
+				else:
+					err(f'Skipping target {target} for {fc.path}, as a file is in the way.')
+					fc.targets.remove(_target)
+			elif tentry.type == VirtualFileType.SYMLINK:
+				# The target is a symlink, which we can just overwrite.
+				self.fs.delete(target)
+				self.commands.append(DeleteCommand(target))
+				needs_mkdir = True
+			elif tentry.type == VirtualFileType.OTHER:
+				# The target is something else (eg a socket), so we bail out
+				err(f'Skipping target {target} for {fc.path}, as something is in the way.')
+				fc.targets.remove(_target)
+			# If we removed whatever was in place of the target, we need to create a directory to take its place
+			if needs_mkdir:
+				self.fs.mkdir(target)
+				self.commands.append(MkdirCommand(target))
 
 		self.process_dir(entry.path)
 
 	def apply_link(self, entry, fc):
-		flags = 'T'
-		if entry.is_dir():
+		flags = ''
+		if entry.real.type == VirtualFileType.DIRECTORY:
 			flags += 's'
 
-		applied_links = False
 		for target in fc.targets:
 			target = os.path.join(os.path.expanduser("~"), target)
 			tflags = flags
 			if self.should_link_be_created(entry, fc, target):
-				if not applied_links:
-					applied_links = True
-
+				tentry = self.fs.get(target)
 				# If the target exists, it has to be force replaced
-				if os.path.lexists(target):
+				if tentry.type != VirtualFileType.NONE:
 					tflags += 'f'
+					self.fs.delete(target)
+				# If the target is a directory, add a flag to prevent the symlink from being created inside it.
+				if tentry.real.type == VirtualFileType.DIRECTORY:
+					tflags += 'T'
 
-				self.commands.append(LinkCommand(entry.path, target, tflags))
+				self.fs.link(entry.path, target)
+				self.commands.append(LinkCommand(entry.non_virtual_path, target, tflags))
 
 	def should_link_be_created(self, entry, fc, target):
+		target = self.fs.get(target)
+
 		if self.args.assume_empty:
 			return True
 
-		if not os.path.exists(target):
+		if target.real.type == VirtualFileType.NONE:
 			# The target either doesn't exist, or is a broken symlink
 			return True
 
-		try:
-			targetinfo = os.stat(target)
-			targetlinfo = os.lstat(target)
-		except OSError as e:
-			err(f'Encountered error while inspecting {target}: {e.message}')
-			return False
-
-		if os.path.samestat(entry.stat(), targetinfo):
+		if entry.real == target.real or entry.real.inode == target.real.inode:
 			# The link is already present, so do nothing
 			return False
 
-		if stat.S_ISLNK(targetlinfo.st_mode):
-			# The target is a symlink, but points to a different location. We can just overwrite this.
+		if target.type == VirtualFileType.SYMLINK:
+			# The target is a symlink, but points to a different location. We can just overwrite this
 			return True
 
-		if stat.S_ISDIR(targetinfo.st_mode):
+		if target.type == VirtualFileType.DIRECTORY:
 			# The target is a different directory, so we bail out
 			err(
 				f'Attempted to link {fc.path} to {target}, but a directory exists in this location. '
 				'There is no automatic fix for this.'
 			)
 			return False
+
+		if target.type == VirtualFileType.OTHER:
+			# The target is something else (eg a socket), so we bail out
+			err(
+				f'Attempted to link {fc.path} to {target}, but something in this location. '
+				'There is no automatic fix for this.'
+			)
+			return False
+
 		# The target is a file, so it can be replaced entirely, but not without losing something
 		# If the entry is a file with identical contents as the target we can replace it safely
-		isdir = entry.is_dir()
+		isdir = entry.real.type == VirtualFileType.DIRECTORY
 		if not isdir:
-			if hash_file(target) == hash_file(entry.path):
+			if hash_file(target.non_virtual_path) == hash_file(entry.non_virtual_path):
 				return True
 
 		# Prompt the user for confirmation
+		return self.confirm_overwrite(fc.path, target.path, isdir)
+
+	@staticmethod
+	def confirm_overwrite(source, target, isdir):
 		print(
-			f'Attempting to link {"directory" if isdir else "file"} {fc.path} to {target}, '
+			f'Attempting to link {"directory" if isdir else "file"} {source} to {target}, '
 			f'but a file exists in this location.'
 		)
 		while True:
@@ -268,8 +560,10 @@ class Processor(object):
 				return False
 			elif c == 'd' and not isdir:
 				print()
-				subprocess.run(['diff', entry.path, target])
+				subprocess.run(['diff', source, target])
 				print()
+
+# }}}
 
 
 def parse_args(args):
@@ -284,6 +578,7 @@ def parse_args(args):
 			'Really only useful for testing, as the generated commands are likely to cause issues.'
 		),
 	)
+	parser.add_argument('--debug', action = 'store_true', help = 'Output more logging information.')
 	return parser.parse_args(args)
 
 
@@ -302,12 +597,6 @@ def main(args):
 	processor.process_dir(ROOT)
 	processor.process_explicit()
 	commands = processor.commands[:]
-
-	# Sort the link commands by target, to prevent ordering issues like the following:
-	# ln bar ~/.foo/bar
-	# ln foo ~/.foo
-	# This would cause the folder ~/.foo to be created, causing foo to end up in ~/.foo/foo instead.
-	commands.sort(key = lambda cmd: cmd.target)
 
 	# Make sure no items marked in the config have been missed (unless they are to be skipped anyway)
 	for path in config.sections():
@@ -332,13 +621,6 @@ def main(args):
 			(
 				set -e
 
-				ln() {{
-					[ "$1" = "--" ] && target="$3" || target="$4"
-					tdir="$(dirname "$target")"
-					[ -d "$tdir" ] || mkdir -p "$tdir"
-					command ln "$@"
-				}}
-
 				{indented_commands}
 
 				rm {shlex.quote(cmdpath)}
@@ -351,6 +633,20 @@ def main(args):
 	print(f'To execute these commands type "sh {cmdpath}".')
 
 
+def setup_logging():
+	formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+	handler = logging.StreamHandler(sys.stdout)
+	handler.setLevel(logging.DEBUG)
+	handler.setFormatter(formatter)
+
+	root = logging.getLogger(None)
+	root.setLevel(logging.DEBUG)
+	root.addHandler(handler)
+
+
 if __name__ == '__main__':
 	args = parse_args(sys.argv[1:])
+	if args.debug:
+		setup_logging()
 	main(args)
