@@ -38,7 +38,10 @@ target = .zsh/bundle/base16-hooks/polybar.sh
 
 [fzf]
 action = skip
+[fzf/base16]
+target = .fzf/base16
 [fzf/fzf]
+action = recurse
 target = .fzf, .vim/bundle/fzf-base
 
 [local]
