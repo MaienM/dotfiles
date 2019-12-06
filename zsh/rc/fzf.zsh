@@ -14,7 +14,7 @@ export FZF_ALT_C_OPTS="$FZF_ALT_C_OPTS --preview 'preview {}'"
 
 # Load the base16 theme
 export FZF_DEFAULT_OPTS=""
-[ -f $HOME/.base16_theme_fzf ] && source $HOME/.base16_theme_fzf
+[ -f "$HOME/.base16_theme_fzf" ] && source "$HOME/.base16_theme_fzf"
 # Remove the background color, to make transparency work
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --color=bg+:-1,bg:-1"
 # Change the multi-select direction, so you can just repeatedly hit tab to select everything
