@@ -20,7 +20,7 @@ file="$(
 	find "$dir" -type f -printf '%p\0' \
 	| while IFS= read -r -d '' fn; do
 		mapfile -t counts < <(jq '(.windows | length), (.windows | map(.panes) | flatten | length)' < "$fn")
-		echo "$fn $(basename "$fn") (${counts[0]} windows, ${counts[1]} panes)"
+		printf '%s %s (%d windows, %d panes)\0' "$fn" "$(basename "$fn")" "${counts[0]}" "${counts[1]}"
 	done \
 	| fzf \
 		--read0 \
