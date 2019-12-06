@@ -7,8 +7,8 @@ if [ -f "$envpath" ]; then
 	exit 1
 fi
 
-if [ ! -f "tool-versions" ]; then
-	echo >&2 "There is no .tool_versions file, might want to fix that."
+if [ ! -f ".tool-versions" ]; then
+	echo >&2 "There is no .tool-versions file, might want to fix that."
 fi
 
 (
@@ -18,3 +18,4 @@ fi
 echo "Created direnv config file at '$envpath'."
 
 asdf exec direnv allow "$envpath"
+asdf exec direnv reload
