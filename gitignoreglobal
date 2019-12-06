@@ -10,11 +10,13 @@ doc/tags
 Session.vim
 
 # Ignore virtualenv files.
+.envrc
 .venv
 .lua-version
 .node-version
 .python-version
 .ruby-version
+.tool-versions
 
 # Ignore stupid OSX garbage
 .DS_STORE
