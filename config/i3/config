@@ -11,6 +11,8 @@
 
 set $alt Mod1
 set $mod Mod4
+set $meh Control+Shift+Mod1
+set $hypr Control+Shift+Mod1+Mod4
 
 # Movement with vim bindings
 set $left h
@@ -191,6 +193,18 @@ bindsym $mod+Escape exec --no-startup-id xscreensaver-command -lock
 bindsym $alt+space exec --no-startup-id rofi -combi-modi drun#ssh -modi combi -show combi -show-icons
 bindsym $mod+Tab exec --no-startup-id rofi -modi window -show window -show-icons
 bindsym $mod+o exec --no-startup-id ~/.config/rofi/scripts/screenlayout.sh
+
+# Media bindings. Designed to be used with a dedicated launchpad (see qmk repo)
+bindsym $meh+XF86AudioLowerVolume exec --no-startup-id notify-error mpv-control playlist-prev
+bindsym $meh+XF86AudioRaiseVolume exec --no-startup-id notify-error mpv-control playlist-next
+bindsym $meh+XF86AudioPrev exec --no-startup-id notify-error mpv-control seek -10
+bindsym $meh+XF86AudioNext exec --no-startup-id notify-error mpv-control seek 10
+bindsym $meh+XF86AudioPause exec --no-startup-id notify-error mpv-control cycle pause
+bindsym $hypr+XF86AudioLowerVolume exec --no-startup-id notify-error mpv-control add chapter -1
+bindsym $hypr+XF86AudioRaiseVolume exec --no-startup-id notify-error mpv-control add chapter 1
+bindsym $hypr+XF86AudioPrev exec --no-startup-id notify-error mpv-control seek -30
+bindsym $hypr+XF86AudioNext exec --no-startup-id notify-error mpv-control seek 30
+bindsym $hypr+XF86AudioPause exec --no-startup-id notify-error mpv-control cycle pause
 
 # Startup applications
 exec_always --no-startup-id set-background
