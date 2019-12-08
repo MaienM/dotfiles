@@ -9,6 +9,7 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
+set $alt Mod1
 set $mod Mod4
 
 # Movement with vim bindings
@@ -116,8 +117,8 @@ bindsym $mod+Shift+0 move container to workspace $workspace10
 # move entire workspace
 bindsym $mod+Control+$left move workspace to output left
 bindsym $mod+Control+$right move workspace to output right
-bindsym $mod+Control+Mod1+$left exec ~/.config/i3/move-workspace-to-output-stay.sh left
-bindsym $mod+Control+Mod1+$right exec ~/.config/i3/move-workspace-to-output-stay.sh right
+bindsym $mod+Control+$alt+$left exec ~/.config/i3/move-workspace-to-output-stay.sh left
+bindsym $mod+Control+$alt+$right exec ~/.config/i3/move-workspace-to-output-stay.sh right
 bindsym $mod+Control+1 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace1"
 bindsym $mod+Control+2 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace2"
 bindsym $mod+Control+3 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace3"
@@ -152,24 +153,24 @@ mode "resize" {
 	bindsym $down resize shrink height 2 px or 2 ppt
 	bindsym $left resize shrink width 2 px or 2 ppt
 	bindsym $right resize grow width 2 px or 2 ppt
-	bindsym Mod1+$up resize grow height 10 px or 10 ppt
-	bindsym Mod1+$down resize shrink height 10 px or 10 ppt
-	bindsym Mod1+$left resize shrink width 10 px or 10 ppt
-	bindsym Mod1+$right resize grow width 10 px or 10 ppt
+	bindsym $alt+$up resize grow height 10 px or 10 ppt
+	bindsym $alt+$down resize shrink height 10 px or 10 ppt
+	bindsym $alt+$left resize shrink width 10 px or 10 ppt
+	bindsym $alt+$right resize grow width 10 px or 10 ppt
 
 	# Set height to a be a common ratio between width and height
 	bindsym 4 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 4:3 height
 	bindsym 5 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 5:4 height
 	bindsym 9 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 16:9 height
 	bindsym 0 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 16:10 height
-	bindsym Mod1+4 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 4:3 width
-	bindsym Mod1+5 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 5:4 width
-	bindsym Mod1+9 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 16:9 width
-	bindsym Mod1+0 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 16:10 width
+	bindsym $alt+4 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 4:3 width
+	bindsym $alt+5 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 5:4 width
+	bindsym $alt+9 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 16:9 width
+	bindsym $alt+0 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 16:10 width
 
 	# A menu for less common ratios/presets
 	bindsym Tab exec notify-error ~/.config/i3/resize-menu.sh height
-	bindsym Mod1+Tab exec notify-error ~/.config/i3/resize-menu.sh width
+	bindsym $alt+Tab exec notify-error ~/.config/i3/resize-menu.sh width
 
 	# back to normal: Enter or Escape
 	bindsym Return mode "default"
@@ -187,7 +188,7 @@ floating_minimum_size 75 x 50
 
 # Keybinds to run programs
 bindsym $mod+Escape exec --no-startup-id xscreensaver-command -lock
-bindsym Mod1+space exec --no-startup-id rofi -combi-modi drun#ssh -modi combi -show combi -show-icons
+bindsym $alt+space exec --no-startup-id rofi -combi-modi drun#ssh -modi combi -show combi -show-icons
 bindsym $mod+Tab exec --no-startup-id rofi -modi window -show window -show-icons
 bindsym $mod+o exec --no-startup-id ~/.config/rofi/scripts/screenlayout.sh
 
