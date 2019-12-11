@@ -1,4 +1,5 @@
-hash -d d="$HOME/dotfiles"
 hash -d c="$HOME/coding"
-hash -d cp="$HOME/coding/projects"
 hash -d ce="$HOME/coding/external"
+hash -d cp="$HOME/coding/projects"
+hash -d d="$HOME/dotfiles"
+hash -d dl="$HOME/Downloads"
