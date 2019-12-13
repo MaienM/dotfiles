@@ -10,6 +10,8 @@
 
 set -e
 
+# shellcheck source=../../../local/bin/commands_require
+. commands_require; commands_require rofi
 # shellcheck disable=SC1091
 . nerdfonts_icons_all
 

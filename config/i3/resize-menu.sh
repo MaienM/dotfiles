@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
+set -e
 shopt -s extglob
 
-set -e
+# shellcheck source=../../local/bin/commands_require
+. commands_require; commands_require rofi
 
 choice="$(
 	(

@@ -3,6 +3,8 @@
 
 set -e
 
+# shellcheck source=../../../local/bin/commands_require
+. commands_require; commands_require rofi scrot
 # shellcheck disable=SC1091
 . nerdfonts_icons_material
 

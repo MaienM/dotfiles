@@ -2,12 +2,8 @@
 
 set -o errexit
 
-for cmd in fontforge python; do
-	if ! command -v "$cmd" &> /dev/null; then
-		echo >&2 "The $cmd command is missing"
-		exit 1
-	fi
-done
+# shellcheck source=../../../local/bin/commands_require
+. commands_require; commands_require fontforge python
 
 rm /tmp/icon-setup -rf
 mkdir /tmp/icon-setup

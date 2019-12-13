@@ -1,7 +1,8 @@
 #!/usr/bin/env sh
 
 asdf_guard() {
-	command -v asdf > /dev/null 2>&1 || (echo "asdf must be installed first"; exit 1)
+	# shellcheck source=../../../local/bin/commands_require
+	. commands_require; commands_require asdf
 }
 
 asdf_plugin_add() {

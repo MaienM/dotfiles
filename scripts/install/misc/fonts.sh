@@ -2,12 +2,8 @@
 
 set -o errexit
 
-for cmd in wget svn unzip; do
-	if ! command -v "$cmd" &> /dev/null; then
-		echo >&2 "The $cmd command is missing"
-		exit 1
-	fi
-done
+# shellcheck source=../../../local/bin/commands_require
+. commands_require; commands_require wget svn unzip
 
 rm /tmp/font-setup -rf
 mkdir /tmp/font-setup
