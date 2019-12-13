@@ -9,6 +9,7 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
+# Modifiers
 set $Alt Mod1
 set $GUI Mod4
 set $Meh Control+Shift+Mod1
@@ -19,6 +20,9 @@ set $left h
 set $up j
 set $down k
 set $right l
+
+# Command execution
+set $exec exec --no-startup-id notify-error
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -119,29 +123,29 @@ bindsym $GUI+Shift+0 move container to workspace $workspace10
 # move entire workspace
 bindsym $GUI+Control+$left move workspace to output left
 bindsym $GUI+Control+$right move workspace to output right
-bindsym $GUI+Control+$Alt+$left exec ~/.config/i3/move-workspace-to-output-stay.sh left
-bindsym $GUI+Control+$Alt+$right exec ~/.config/i3/move-workspace-to-output-stay.sh right
-bindsym $GUI+Control+1 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace1"
-bindsym $GUI+Control+2 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace2"
-bindsym $GUI+Control+3 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace3"
-bindsym $GUI+Control+4 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace4"
-bindsym $GUI+Control+5 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace5"
-bindsym $GUI+Control+6 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace6"
-bindsym $GUI+Control+7 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace7"
-bindsym $GUI+Control+8 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace8"
-bindsym $GUI+Control+9 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace9"
-bindsym $GUI+Control+0 exec notify-error ~/.config/i3/move-workspace-to-current-output.sh "$workspace10"
+bindsym $GUI+Control+$Alt+$left $exec ~/.config/i3/move-workspace-to-output-stay.sh left
+bindsym $GUI+Control+$Alt+$right $exec ~/.config/i3/move-workspace-to-output-stay.sh right
+bindsym $GUI+Control+1 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace1"
+bindsym $GUI+Control+2 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace2"
+bindsym $GUI+Control+3 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace3"
+bindsym $GUI+Control+4 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace4"
+bindsym $GUI+Control+5 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace5"
+bindsym $GUI+Control+6 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace6"
+bindsym $GUI+Control+7 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace7"
+bindsym $GUI+Control+8 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace8"
+bindsym $GUI+Control+9 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace9"
+bindsym $GUI+Control+0 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace10"
 
 # reload the configuration file
-bindsym $GUI+Shift+c reload; exec "notify-send 'i3' 'Reloaded config'"
+bindsym $GUI+Shift+c reload; $exec "notify-send 'i3' 'Reloaded config'"
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $GUI+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $GUI+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $GUI+Shift+e $exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # "hidden" layer of workspaces. these are nameless, and always linked to the workspace they are a "layer" of.
-bindsym $GUI+a exec notify-error ~/.config/i3/run-for-layer.sh "~/.config/i3/move-workspace-to-current-output.sh '__target__'"
-bindsym $GUI+Shift+a exec notify-error ~/.config/i3/run-for-layer.sh "i3-msg 'move container to workspace __target__'"
+bindsym $GUI+a $exec ~/.config/i3/run-for-layer.sh "~/.config/i3/move-workspace-to-current-output.sh '__target__'"
+bindsym $GUI+Shift+a $exec ~/.config/i3/run-for-layer.sh "i3-msg 'move container to workspace __target__'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -161,18 +165,18 @@ mode "resize" {
 	bindsym $Alt+$right resize grow width 10 px or 10 ppt
 
 	# Set height to a be a common ratio between width and height
-	bindsym 4 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 4:3 height
-	bindsym 5 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 5:4 height
-	bindsym 9 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 16:9 height
-	bindsym 0 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 16:10 height
-	bindsym $Alt+4 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 4:3 width
-	bindsym $Alt+5 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 5:4 width
-	bindsym $Alt+9 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 16:9 width
-	bindsym $Alt+0 exec notify-error ~/.config/i3/resize-to-aspect-ratio.sh 16:10 width
+	bindsym 4 $exec ~/.config/i3/resize-to-aspect-ratio.sh 4:3 height
+	bindsym 5 $exec ~/.config/i3/resize-to-aspect-ratio.sh 5:4 height
+	bindsym 9 $exec ~/.config/i3/resize-to-aspect-ratio.sh 16:9 height
+	bindsym 0 $exec ~/.config/i3/resize-to-aspect-ratio.sh 16:10 height
+	bindsym $Alt+4 $exec ~/.config/i3/resize-to-aspect-ratio.sh 4:3 width
+	bindsym $Alt+5 $exec ~/.config/i3/resize-to-aspect-ratio.sh 5:4 width
+	bindsym $Alt+9 $exec ~/.config/i3/resize-to-aspect-ratio.sh 16:9 width
+	bindsym $Alt+0 $exec ~/.config/i3/resize-to-aspect-ratio.sh 16:10 width
 
 	# A menu for less common ratios/presets
-	bindsym Tab exec notify-error ~/.config/i3/resize-menu.sh height
-	bindsym $Alt+Tab exec notify-error ~/.config/i3/resize-menu.sh width
+	bindsym Tab $exec ~/.config/i3/resize-menu.sh height
+	bindsym $Alt+Tab $exec ~/.config/i3/resize-menu.sh width
 
 	# back to normal: Enter or Escape
 	bindsym Return mode "default"
@@ -189,23 +193,23 @@ smart_gaps on
 floating_minimum_size 75 x 50
 
 # Keybinds to run programs
-bindsym $GUI+Escape exec --no-startup-id xscreensaver-command -lock
-bindsym $Alt+space exec --no-startup-id rofi -combi-modi drun#ssh -modi combi -show combi -show-icons
-bindsym $GUI+Tab exec --no-startup-id rofi -modi window -show window -show-icons
-bindsym $GUI+s exec --no-startup-id ~/.config/rofi/scripts/scrot.sh
-bindsym $GUI+o exec --no-startup-id ~/.config/rofi/scripts/screenlayout.sh
+bindsym $GUI+Escape $exec xscreensaver-command -lock
+bindsym $Alt+space $exec rofi -combi-modi drun#ssh -modi combi -show combi -show-icons
+bindsym $GUI+Tab $exec rofi -modi window -show window -show-icons
+bindsym $GUI+s $exec ~/.config/rofi/scripts/scrot.sh
+bindsym $GUI+o $exec ~/.config/rofi/scripts/screenlayout.sh
 
 # Media bindings. Designed to be used with a dedicated launchpad (see qmk repo)
-bindsym $Meh+XF86AudioLowerVolume exec --no-startup-id notify-error mpv-control playlist-prev
-bindsym $Meh+XF86AudioRaiseVolume exec --no-startup-id notify-error mpv-control playlist-next
-bindsym $Meh+XF86AudioPrev exec --no-startup-id notify-error mpv-control seek -10
-bindsym $Meh+XF86AudioNext exec --no-startup-id notify-error mpv-control seek 10
-bindsym $Meh+XF86AudioPause exec --no-startup-id notify-error mpv-control cycle pause
-bindsym $Hyper+XF86AudioLowerVolume exec --no-startup-id notify-error mpv-control add chapter -1
-bindsym $Hyper+XF86AudioRaiseVolume exec --no-startup-id notify-error mpv-control add chapter 1
-bindsym $Hyper+XF86AudioPrev exec --no-startup-id notify-error mpv-control seek -30
-bindsym $Hyper+XF86AudioNext exec --no-startup-id notify-error mpv-control seek 30
-bindsym $Hyper+XF86AudioPause exec --no-startup-id notify-error mpv-control cycle pause
+bindsym $Meh+XF86AudioLowerVolume $exec mpv-control playlist-prev
+bindsym $Meh+XF86AudioRaiseVolume $exec mpv-control playlist-next
+bindsym $Meh+XF86AudioPrev $exec mpv-control seek -10
+bindsym $Meh+XF86AudioNext $exec mpv-control seek 10
+bindsym $Meh+XF86AudioPause $exec mpv-control cycle pause
+bindsym $Hyper+XF86AudioLowerVolume $exec mpv-control add chapter -1
+bindsym $Hyper+XF86AudioRaiseVolume $exec mpv-control add chapter 1
+bindsym $Hyper+XF86AudioPrev $exec mpv-control seek -30
+bindsym $Hyper+XF86AudioNext $exec mpv-control seek 30
+bindsym $Hyper+XF86AudioPause $exec mpv-control cycle pause
 
 # Startup applications
 exec_always --no-startup-id set-background
@@ -225,7 +229,7 @@ assign [class="^Evolution$"] → $workspace4
 for_window [class="^Antimicro$"] floating enable
 for_window [class="^Steam$" title="^Friends list$"] floating enable
 for_window [class="^Steam$" title="^Steam - News"] close
-for_window [class="^mpv$"] exec ~/.config/i3/resize-to-aspect-ratio.sh 16:9 height
+for_window [class="^mpv$"] $exec ~/.config/i3/resize-to-aspect-ratio.sh 16:9 height
 for_window [class="^calibre$" floating] resize set width 70ppt height 70ppt
 for_window [class="^calibre$" title="^Edit Metadata"] resize set width 80ppt height 80ppt
 for_window [class="^calibre$"] move position center
