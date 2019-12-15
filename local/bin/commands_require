@@ -8,7 +8,3 @@ command_require() {
 		fi
 	done
 }
-
-if [ "$#" -gt 0 ]; then
-	command_require "$@"
-fi
