@@ -26,6 +26,7 @@ if [ -z "$targetdate" ]; then
 	echo "> What should the date be set to (optionally relative to author date)?"
 	read -r targetdate
 fi
+[ -n "$targetdate" ] || exit 0
 
 # Parse as a relative time if it starts with a + or -.
 # Just trying to do both won't work, because something like 'now + 1 hour' will then be 'SOMEDATE now + 1 hour', which
