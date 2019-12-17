@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+set -e
+
+size=$(stty size)
+awk \
+	-f "$HOME/.local/bin/color_grid_true.awk" \
+	-v "width=${size#* }" \
+	-v "height=${size% *}" \
+	-v "saturation=${1:-100}" \
+	-v "character=$2"
+read -r

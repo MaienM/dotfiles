@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# shellcheck disable=1091
+. nerdfonts_icons_all
+set | grep '^i_' | grep "$@"
