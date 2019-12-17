@@ -11,7 +11,7 @@ let s:win = [
 \]
 
 let g:tmuxline_preset = {
-	\'a': '#S',
+	\'a': '#{?client_prefix,#[fg=colour042],}#S',
 	\'win': s:win,
 	\'cwin': s:win,
 	\'y': '%Y-%m-%d %H:%M',
