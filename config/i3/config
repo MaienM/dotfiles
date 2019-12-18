@@ -68,9 +68,9 @@ bindsym $GUI+Shift+bar split h
 bindsym $GUI+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $GUI+Shift+s layout stacking
-bindsym $GUI+Shift+w layout tabbed
-bindsym $GUI+Shift+e layout toggle split
+bindsym $GUI+s layout stacking
+bindsym $GUI+w layout tabbed
+bindsym $GUI+e layout toggle split
 
 # toggle tiling / floating
 bindsym $GUI+Shift+space floating toggle
@@ -137,11 +137,11 @@ bindsym $GUI+Control+9 $exec ~/.config/i3/move-workspace-to-current-output.sh "$
 bindsym $GUI+Control+0 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace10"
 
 # reload the configuration file
-bindsym $GUI+Shift+c reload; $exec "notify-send 'i3' 'Reloaded config'"
+bindsym $GUI+Shift+c reload; $exec notify-send 'i3' 'Reloaded config'
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $GUI+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $GUI+Shift+e $exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+# bindsym $GUI+Shift+e $exec i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'
 
 # "hidden" layer of workspaces. these are nameless, and always linked to the workspace they are a "layer" of.
 bindsym $GUI+a $exec ~/.config/i3/run-for-layer.sh "~/.config/i3/move-workspace-to-current-output.sh '__target__'"
@@ -196,7 +196,7 @@ floating_minimum_size 75 x 50
 bindsym $GUI+Escape $exec xscreensaver-command -lock
 bindsym $Alt+space $exec rofi -combi-modi drun#ssh -modi combi -show combi -show-icons
 bindsym $GUI+Tab $exec rofi -modi window -show window -show-icons
-bindsym $GUI+s $exec ~/.config/rofi/scripts/scrot.sh
+bindsym $GUI+Shift+s $exec ~/.config/rofi/scripts/scrot.sh
 bindsym $GUI+o $exec ~/.config/rofi/scripts/screenlayout.sh
 
 # Media bindings. Designed to be used with a dedicated launchpad (see qmk repo)
