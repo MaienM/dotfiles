@@ -13,7 +13,7 @@ choice="$(~/.config/rofi/scripts/iconmenu.sh \
 	"window mdi_window_maximize Window" \
 	"monitor mdi_monitor Monitor" \
 	"all mdi_monitor_multiple All monitors" \
-)"
+)" || exit 0
 
 delay=0
 args=()

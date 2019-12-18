@@ -26,6 +26,6 @@ for script in ~/.config/screenlayouts/*.sh; do
 	args=("${args[@]}" "$script $icon $description")
 done
 
-choice="$(~/.config/rofi/scripts/iconmenu.sh "${args[@]}")"
+choice="$(~/.config/rofi/scripts/iconmenu.sh "${args[@]}")" || exit 0
 sh "$choice"
 
