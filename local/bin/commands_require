@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-command_require() {
+commands_require() {
 	for command in "$@"; do
 		if ! command -v "$command" > /dev/null 2>&1; then
 			echo >&2 "Command $command is not available."
