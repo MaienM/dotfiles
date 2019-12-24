@@ -226,7 +226,7 @@ class VirtualFS(object):
 		self.cache = {}
 		self.log = logging.getLogger(self.__class__.__name__)
 
-	def get(self, path):
+	def get(self, path, *, parent_none_is_none = False):
 		""" Get a VirtualFileInfo describing the given path. """
 		path = to_path(path)
 		if path in self.cache:
@@ -245,8 +245,10 @@ class VirtualFS(object):
 			else:
 				# The parent is virtual, so there is no reason to check the filesystem.
 				return self._cache(path, VirtualFileInfo(self, path, VirtualFileType.NONE, False))
+		elif rparent.type == VirtualFileType.NONE and parent_none_is_none:
+			return self._cache(path, VirtualFileInfo(self, path, VirtualFileType.NONE, False))
 		else:
-			raise VirtualNotADirectoryError(f"Not a directory: '{path}'")
+			raise VirtualNotADirectoryError(f"Parent of '{path}' ('{rparent.path}') is not a directory: {rparent.type}")
 
 	def delete(self, path):
 		""" Marks the given path as deleted. """
@@ -370,7 +372,7 @@ class Command(object):
 		self.target = target
 
 	def __str__(self):
-		return f'# {shlex.quote(self.target)}'
+		return f'# {shlex.quote(str(self.target))}'
 
 
 class LinkCommand(Command):
@@ -388,13 +390,13 @@ class LinkCommand(Command):
 class DeleteCommand(Command):
 	""" An rm command that has to be executed to get to the desired state. """
 	def __str__(self):
-		return f'rm -- {shlex.quote(self.target)}'
+		return f'rm -- {shlex.quote(str(self.target))}'
 
 
 class MkdirCommand(Command):
 	""" An mkdir command that has to be executed to get to the desired state. """
 	def __str__(self):
-		return f'mkdir {shlex.quote(self.target)}'
+		return f'mkdir {shlex.quote(str(self.target))}'
 
 # }}}
 
@@ -489,8 +491,12 @@ class Processor(object):
 			target = os.path.join(os.path.expanduser("~"), target)
 			tflags = flags
 			if self.should_link_be_created(entry, fc, target):
-				tentry = self.fs.get(target)
-				# If the target exists, it has to be force replaced
+				tentry = self.fs.get(target, parent_none_is_none = True)
+				# If the parent path is missing, create it now.
+				tparent = to_path(target).parent
+				if self.fs.get(tparent, parent_none_is_none = True).type == VirtualFileType.NONE:
+					self.mkdirs(tparent)
+				# If the target exists, it has to be force replaced.
 				if tentry.type != VirtualFileType.NONE:
 					tflags += 'f'
 					self.fs.delete(target)
@@ -502,7 +508,7 @@ class Processor(object):
 				self.commands.append(LinkCommand(entry.non_virtual_path, target, tflags))
 
 	def should_link_be_created(self, entry, fc, target):
-		target = self.fs.get(target)
+		target = self.fs.get(target, parent_none_is_none = True)
 
 		if self.args.assume_empty:
 			return True
@@ -563,6 +569,14 @@ class Processor(object):
 				print()
 				subprocess.run(['diff', source, target])
 				print()
+
+	def mkdirs(self, path):
+		path = to_path(path)
+		pinfo = self.fs.get(path.parent, parent_none_is_none = True)
+		if pinfo.type == VirtualFileType.NONE:
+			mkdir_and_parents(path.parent)
+		self.fs.mkdir(path)
+		self.commands.append(MkdirCommand(path))
 
 # }}}
 
