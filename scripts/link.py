@@ -545,12 +545,13 @@ class Processor(object):
 		# Prompt the user for confirmation
 		return self.confirm_overwrite(fc.path, target.path, isdir)
 
-	@staticmethod
-	def confirm_overwrite(source, target, isdir):
+	def confirm_overwrite(self, source, target, isdir):
 		print(
 			f'Attempting to link {"directory" if isdir else "file"} {source} to {target}, '
 			f'but a file exists in this location.'
 		)
+		if self.args.overwrite:
+			return True
 		while True:
 			print(f'Do you want to replace it? [yn{"" if isdir else "d"}]')
 			c = read_char().lower()
@@ -577,6 +578,12 @@ def parse_args(args):
 			'Pretend the home directory is empty. '
 			'Really only useful for testing, as the generated commands are likely to cause issues.'
 		),
+	)
+	parser.add_argument(
+		'-y', '--yes',
+		action = 'store_true',
+		dest = 'overwrite',
+		help = 'Assume yes to all overwrite prompts.',
 	)
 	parser.add_argument('--debug', action = 'store_true', help = 'Output more logging information.')
 	return parser.parse_args(args)
