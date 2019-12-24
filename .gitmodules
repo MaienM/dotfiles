@@ -127,7 +127,7 @@
 [submodule "vim/bundle/syntax-renpy"]
 	path = vim/bundle/syntax-renpy
 	url = https://github.com/chaimleib/vim-renpy
-[submodule "fzf"]
+[submodule "fzf/fzf"]
 	path = fzf/fzf
 	url = https://github.com/junegunn/fzf
 [submodule "vim/bundle/fzf"]
