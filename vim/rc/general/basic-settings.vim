@@ -59,6 +59,9 @@ set tabstop=3
 set softtabstop=3
 set shiftwidth=3
 
+" Stop the python ftplugin from overriding these settings.
+let g:python_recommended_style = 0
+
 " (Mostly) sensible indent behavior.
 set autoindent
 set smarttab
