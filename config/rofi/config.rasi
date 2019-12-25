@@ -1,1 +1,12 @@
 @import "theme.rasi"
+
+@media (min-width: 2560) {
+    * {
+        font: "FiraCode Nerd Font Mono 26";
+    }
+}
+@media (min-width: 3840) {
+    * {
+        font: "FiraCode Nerd Font Mono 34";
+    }
+}
