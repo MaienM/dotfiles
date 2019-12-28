@@ -1,4 +1,4 @@
-[README]
+[README.adoc]
 action = skip
 [Session.vim]
 action = skip

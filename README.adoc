@@ -1,0 +1,32 @@
+= Dotfiles
+
+This repository contains most of my configuration for (primarily) *nix based systems. The configs are distribution
+agnostic, but do on occasion use recent features which might not be available in, for example, debian stable.
+
+== Linking
+
+Run `./scripts/link.py` to link all configs to the home directory of the current user. Running this command will *NOT*
+immediately make any changes, it will instead generate a shell script that makes the desired changes, so you can verify
+these actions before executing them. The goal of this script is to always be able to get to the desired state in a
+single pass.
+
+By default it will link `foo` to `~/.foo`. This can be changed by modifying `scripts/config`. Each key in this config
+refers to a source path, relative to the repository.
+
+The `target` key of a config entry is a comma-separated list of target paths, relative to the home directory. The
+default is `.${path}`.
+
+The `action` key of a config entry dictates what to do for this entry:
+
+- `link` is the default, and means create a link from the target path(s) to the file/directory.
+- `skip` means don't link, and don't recurse if it's a directory.
+- `recurse` can only be used on directories, and it means skip linking the directory itself, and instead process all
+  items in the directory. This can be useful when you want to add to an existing directory (eg `~/.config`), instead of
+  replacing it entirely.
+
+== Install scripts
+
+There are a bunch of installation scripts in `scripts/install` which setup various utilities. These are designed such
+that they can be re-run to reinstall/update the utilities in question. The rest of the repository assumes all utilities
+in `scripts/install/misc` are installed.
+
