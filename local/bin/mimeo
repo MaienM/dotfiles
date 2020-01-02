@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-
-exec run-in-asdf python system python -m Mimeo "$@"
-
