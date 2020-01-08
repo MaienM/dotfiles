@@ -313,7 +313,7 @@ format-prefix-foreground = ${colors.cyan}
 [module/gamemode]
 type = custom/script
 exec-if = command -v gamemoded
-exec = gamemoded -s | grep -q active && echo "$i_mdi_xbox_controller"
+exec = gamemoded -s | grep -qE '\bactive\b' && echo "$i_mdi_xbox_controller"
 interval = 10
 label-foreground = ${colors.cyan}
 
