@@ -214,3 +214,6 @@
 [submodule "fzf/base16"]
 	path = fzf/base16
 	url = https://github.com/nicodebo/base16-fzf
+[submodule "opt/extract_url"]
+	path = opt/extract_url
+	url = https://github.com/m3m0ryh0l3/extracturl
