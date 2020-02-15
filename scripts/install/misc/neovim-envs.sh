@@ -34,13 +34,13 @@ echo "Using nodejs $nodejs_version."
 echo ">>> Setting up python $py2_version"
 asdf_remove_virtualenv neovim2
 ASDF_PYTHON_VERSION="$py2_version" asdf install python-venv neovim2
-ASDF_PYTHON_VERSION=neovim2 asdf exec pip install neovim
+ASDF_PYTHON_VERSION=neovim2 asdf exec pip install pynvim
 py2_path=$(ASDF_PYTHON_VERSION=neovim2 asdf which python)
 
 echo ">>> Setting up python $py3_version"
 asdf_remove_virtualenv neovim3
 ASDF_PYTHON_VERSION="$py3_version" asdf install python-venv neovim3
-ASDF_PYTHON_VERSION=neovim3 asdf exec pip install neovim
+ASDF_PYTHON_VERSION=neovim3 asdf exec pip install pynvim
 py3_path=$(ASDF_PYTHON_VERSION=neovim3 asdf which python)
 
 echo ">>> Setting up ruby $rb_version"
