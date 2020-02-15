@@ -64,6 +64,7 @@ function! s:ALEIgnoreChooseErrors(linter)
 	let s:linter = a:linter
 	let errors = s:by_linter[a:linter]
 	let errors = map(errors, {i, error -> error.code . ' ' . trim(error.text)})
+	uniq(errors)
 
 	if len(errors) == 0
 		echoe "The chosen linter had no errors (this should never happen)."
