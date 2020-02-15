@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+echo "scale=10; $*" | bc
