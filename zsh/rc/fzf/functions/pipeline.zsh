@@ -42,7 +42,7 @@ _fzf_pipeline_default_target() {
 ########################################################################################################################
 
 FZF_PIPELINE_DEFAULT_ARGS='--ansi'
-FZF_SEPERATOR_PLACEHOLDER="\0"
+FZF_SEPARATOR_PLACEHOLDER="\0"
 
 # Add a pipeline to a pipeline config.
 #
@@ -155,9 +155,9 @@ _fzf_config_get_source() {
 		if [[ -n "$prefix" ]]; then
 			prefix="$prefix "
 		fi
-		$(resolve_alias $sourcefn) | while read -r line; do
+		eval $(resolve_alias $sourcefn) | while read -r line; do
 			line=(${(z)line})
-			echo "$pipeline ${line[1]// /FZF_SEPERATOR_PLACEHOLDER} ${(Q)prefix}${line[2,-1]}"
+			echo "$pipeline ${line[1]// /FZF_SEPARATOR_PLACEHOLDER} ${(Q)prefix}${line[2,-1]}"
 		done
 	done
 }
@@ -202,7 +202,7 @@ _fzf_config_run() {
 	fi
 
 	# Run fzf
-	echo $sources | fzf "${fzf_args[@]}" | while read -r line; do
+	printf '%s\n' $sources | fzf "${fzf_args[@]}" | while read -r line; do
 		[[ -n "$line" ]] || return
 
 		# Use the appropriate target function to transform the line
@@ -212,7 +212,7 @@ _fzf_config_run() {
 			# Transform the line using this pipeline
 			prefix=$(echo ${(Q)prefix})
 			line=(${(z)line})
-			$(resolve_alias $targetfn) "${line[2]//FZF_SEPERATOR_PLACEHOLDER/ }" "${${line[3,-1]}#${(Q)prefix} }"
+			$(resolve_alias $targetfn) "${line[2]//FZF_SEPARATOR_PLACEHOLDER/ }" "${${line[3,-1]}#${(Q)prefix} }"
 			continue 2
 		done
 
@@ -244,7 +244,7 @@ _fzf_config_preview() {
 		# Run the preview
 		prefix=$(echo ${(Q)prefix})
 		line=(${(z)line})
-		${(z)previewfn} "${line[2]//FZF_SEPERATOR_PLACEHOLDER/ }" "${${line[3,-1]}#${(Q)prefix} }"
+		${(z)previewfn} "${line[2]//FZF_SEPARATOR_PLACEHOLDER/ }" "${${line[3,-1]}#${(Q)prefix} }"
 		return
 	done
 	echo >&2 "No preview available"
