@@ -4,15 +4,18 @@
 # shellcheck source=../functions/strip_escape
 . ~/dotfiles/functions/strip_escape
 
-c1="${color_fg_red}a${color_reset}"
-c2="${color_bg_red}b${color_reset}"
-c3="${color_fg_green}${color_bg_magenta}c${color_reset}"
-c4="${color_reverse}${color_fg_magenta}d${color_reset}"
+cr="$color_reset"
+cfr="$color_fg_red"
+cfg="$color_fg_green"
+cfm="$color_fg_magenta"
+cbr="$color_bg_red"
+cbm="$color_bg_magenta"
 
-in="12${c1}34${c2}56${c3}78${c4}90"
+#   0,1     2,3    4,5     6,7    8,9          10,11  12,13   15,16  17,18
+in="12${cfr}ab${cr}34${cbr}cd${cr}56${cfg}${cbm}ef${cr}78${cfm}gh${cr}90"
 
 test_substr() {
-	actual="$(printf '%s' "$in" | substring_escape "$1" "$2")"
+	actual="$(printf '%s' "$in" | substring_escape "$1" "$2")" || exit 1
 	expected="$3"
 	if [ "$actual" = "$expected" ]; then
 		printf '%s "%s"\n' "${color_fg_green}✓${color_reset}" "$actual$color_reset"
@@ -25,13 +28,19 @@ test_substr() {
 
 printf 'input "%s" %q\n\n' "$in" "$in"
 
-test_substr 0 3 "12${c1}"
-test_substr 5 2 "${c2}5"
-test_substr 2 -1 "${c1}34${c2}56${c3}78${c4}9"
-test_substr 2 -5 "${c1}34${c2}56${c3}"
+test_substr 0 3 "12${cfr}a${cr}"
+test_substr 6 2 "${cbr}cd${cr}"
+test_substr 3 3 "${cfr}b${cr}34"
+
+test_substr 2 -1 "${cfr}ab${cr}34${cbr}cd${cr}56${cfg}${cbm}ef${cr}78${cfm}gh${cr}9"
+test_substr 3 -5 "${cfr}b${cr}34${cbr}cd${cr}56${cfg}${cbm}ef${cr}7"
 test_substr 2 -20 ""
-test_substr -6 3 "${c3}78"
-test_substr -6 100 "${c3}78${c4}90"
-test_substr -7 -2 "6${c3}78${c4}"
+
+test_substr -6 3 "78${cfm}g${cr}"
+test_substr -6 100 "78${cfm}gh${cr}90"
+test_substr -3 100 "${cfm}h${cr}90"
+
+test_substr -7 -2 "${cfg}${cbm}f${cr}78${cfm}gh${cr}"
+test_substr -6 -2 "78${cfm}gh${cr}"
 test_substr -7 -8 ""
 

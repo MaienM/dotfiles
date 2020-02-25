@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 
 # Based on https://unix.stackexchange.com/a/18979/339582. Requires the /x flag.
-_perl_regex_escape_any='
-	\e[ #%()*+\-.\/]. |
-	(?:\e\[|\x9b) [ -?]* [@-~] \017? | # CSI ... Cmd
-	(?:\e\]|\x9d) .*? (?:\e\\|[\a\x9c]) | # OSC ... (ST|BEL)
-	(?:\e[P^_]|[\x90\x9e\x9f]) .*? (?:\e\\|\x9c) | # (DCS|PM|APC) ... ST
-	\e.|[\x80-\x9f]'
-_perl_regex_escape_reset='\e\[m\017?'
+# _perl_regex_escape_any='
+# 	\e[ #%()*+\-.\/]. |
+# 	(?:\e\[|\x9b) [ -?]* [@-~] \017? | # CSI ... Cmd
+# 	(?:\e\]|\x9d) .*? (?:\e\\|[\a\x9c]) | # OSC ... (ST|BEL)
+# 	(?:\e[P^_]|[\x90\x9e\x9f]) .*? (?:\e\\|\x9c) | # (DCS|PM|APC) ... ST
+# 	\e.|[\x80-\x9f]'
+# Same as above, but doesn't require /x.
+_perl_regex_escape_any='\e[ #%()*+\-.\/].|(?:\e\[|\x9b)[ -?]*[@-~]\017?|(?:\e\]|\x9d).*?(?:\e\\|[\a\x9c])|(?:\e[P^_]|[\x90\x9e\x9f]).*?(?:\e\\|\x9c)|\e.|[\x80-\x9f]'
+_perl_regex_escape_reset='(?:\e\[|\x9b)m\017'
 
 strip_escape() {
 	perl -CS -pe "s/$_perl_regex_escape_any//xg"
@@ -22,25 +24,45 @@ substring_escape() {
 		return 1
 	fi
 
-	char="(?:(?:$_perl_regex_escape_any)*.)"
-	escape="(?:$_perl_regex_escape_reset)"
+	escape="(?:$_perl_regex_escape_any)"
+	char="(?:$escape*.)"
+	reset="(?:$_perl_regex_escape_reset)"
+
+	# In order for the slice to appear the same way it did before slicing, the escape sequences that were active at
+	# the start of the slice need to be applied. The way this is done is by capturing the portion before the slice
+	# and stripping it of any non-escape characters. This is then further optimized by removing any escape
+	# sequences that are later cancelled out by a reset sequence.
+
+	# Store the leading characters in $l, and the slice in $s.
+	replacement="(\$l=\$1),(\$s=\$2)"
+	# Strip all visible characters from the leading capture, only keeping the escape sequences.
+	replacement="$replacement,(\$l=~s!(?:($escape*).)!\1!g)"
+	# Combine the leading escape sequences with the captured slice in $c.
+	replacement="$replacement,(\$c=\$l.\$s)"
+	# Strip escape sequences that are followed by a reset.
+	replacement="$replacement,(\$c=~s!^$escape*$reset!!g)"
+	# If there are escape sequences after the last reset in the combined string, add a reset at the end.
+	# shellcheck disable=SC2154
+	replacement="$replacement,(\$c=~s!((?\!$reset)$escape(?:(?\!$reset).)+)\$!\$1$color_reset!)"
+	# Return result.
+	replacement="$replacement,\$c"
 
 	if [ "$start" -ge 0 ] && [ "$length" -gt 0 ]; then
 		# start >= 0, length > 0: simple substring.
-		perl -CS -pe "s/^$char{$start}($char{$length}$escape?).*$/\1/x"
+		perl -CS -pe "s/^($char{$start})($char{$length}$reset?).*$/$replacement/e"
 	elif [ "$start" -ge 0 ]; then
 		# start >= 0, length < 0: use length as 'leave this many from end'.
-		perl -CS -pe "s/^$char{$start}($char*?$escape?)$char{0,$((-length))}$/\1/x"
+		perl -CS -pe "s/^($char{$start})($char*?$reset?)$char{0,$((-length))}$/$replacement/e"
 	elif [ "$length" -gt 0 ]; then
 		# start < 0, length > 0: use start as counted from end, length as normal.
 		[ "$((-start))" -lt "$length" ] && length=$((-start))
 		skip=$((-start - length))
-		perl -CS -pe "s/^.*?($char{$length}$escape?)$char{$skip}$/\1/x"
+		perl -CS -pe "s/^(.*?)($char{$length}$reset?)$char{$skip}$/$replacement/e"
 	else
 		# start < 0, length < 0: use start as counted from end, length as 'leave this many from end'.
 		reallength=$((length - start))
-		[ "$reallength" -lt 0 ] && return
-		perl -CS -pe "s/^.*?($char{$reallength}$escape?)$char{$((-length))}$/\1/x"
+		[ "$reallength" -le 0 ] && return
+		perl -CS -pe "s/^(.*?)($char{$reallength}$reset?)$char{$((-length))}$/$replacement/e"
 	fi
 }
 
