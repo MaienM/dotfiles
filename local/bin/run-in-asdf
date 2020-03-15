@@ -11,7 +11,13 @@ if command -v asdf > /dev/null 2>&1; then
 		[ "$version" = "system" ] && continue
 		if ! asdf where "$plugin" "$version" > /dev/null 2>&1; then
 			echo >&2 "Version $version for plugin $plugin not installed in ASDF."
-			exit 1
+			[ -n "$RUN_IN_ASDF_SETUP_SCRIPT" ] || exit 1
+			echo "Running setup script '$RUN_IN_ASDF_SETUP_SCRIPT'."
+			sh "$RUN_IN_ASDF_SETUP_SCRIPT"
+			if ! asdf where "$plugin" "$version" > /dev/null 2>&1; then
+				echo >&2 "Version $version for plugin $plugin still not installed in ASDF."
+				exit 1
+			fi
 		fi
 	done
 
