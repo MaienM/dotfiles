@@ -13,6 +13,10 @@ action = skip
 [windows-registry]
 action = skip
 
+[.]
+action = link
+target = .dotfiles
+
 [asdf]
 action = skip
 [asdf/asdf]

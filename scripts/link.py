@@ -413,27 +413,30 @@ class Processor(object):
 
 	def process_dir(self, path, only_explicit = False):
 		for entry in self.fs.scandir(path):
-			fc = self.config.get_info(entry.path)
+			self.process_entry(entry, only_explicit)
 
-			if fc.processed:
-				continue
+	def process_entry(self, entry, only_explicit = False):
+		fc = self.config.get_info(entry.path)
 
-			if only_explicit and not fc.from_config:
-				continue
+		if fc.processed:
+			return
 
-			if fc.action == FileAction.RECURSE:
-				self.apply_recurse(entry, fc)
-				fc.processed = True
+		if only_explicit and not fc.from_config:
+			return
 
-			elif fc.action == FileAction.SKIP:
-				fc.processed = True
+		if fc.action == FileAction.RECURSE:
+			self.apply_recurse(entry, fc)
+			fc.processed = True
 
-			elif fc.action == FileAction.LINK:
-				self.apply_link(entry, fc)
-				fc.processed = True
+		elif fc.action == FileAction.SKIP:
+			fc.processed = True
 
-			else:
-				err(f'No behaviour has been defined for the action for {path}')
+		elif fc.action == FileAction.LINK:
+			self.apply_link(entry, fc)
+			fc.processed = True
+
+		else:
+			err(f'No behaviour has been defined for the action for {entry.path}')
 
 	def process_explicit(self):
 		""" Make sure all paths mentioned explicitly in the config have been processed. """
@@ -617,6 +620,7 @@ def main(args):
 	processor = Processor(args, config)
 	processor.process_dir(ROOT)
 	processor.process_explicit()
+	processor.process_entry(processor.fs.get(ROOT), only_explicit = True)
 	commands = processor.commands[:]
 
 	# Make sure no items marked in the config have been missed (unless they are to be skipped anyway)

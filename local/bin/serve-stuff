@@ -13,8 +13,6 @@ rescue LoadError
 	# Install missing gem
 	puts '----------------------------------------'
 	puts "Missing gem: #{gem_name}"
-	print 'Auto-install it? [yN] '
-	$stdin.gets.strip =~ /y/i or exit(1)
 	system("gem install #{gem_name}") or exit(1)
 
 	# Retry
