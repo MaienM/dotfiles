@@ -2,6 +2,8 @@
 
 set -o errexit -o pipefail
 
+cd ~/.dotfiles
+
 # shellcheck source=../../../profile.d/asdf
 source profile.d/asdf
 # shellcheck source=_utils.sh
