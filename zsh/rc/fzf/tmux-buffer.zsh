@@ -26,9 +26,9 @@ _add_fzf_pipeline_tmux_regex() {
 	# Regex based on https://community.helpsystems.com/forums/intermapper/miscellaneous-topics/5acc4fcf-fa83-e511-80cf-0050568460e4.
 	# Adjusted to match IPv4 as well (not just nested in IPv6), and to not match '::'.
 	local s='(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)'
-	local ipv4_regex="($s(\.$s){3})"
+	local ipv4_regex="($s(\\.$s){3})"
+	_add_fzf_pipeline_tmux_regex "ipv4" "$ipv4_regex" "IPv4 addresses" "buffer:ipv4"
 	local s='[0-9A-Fa-f]{1,4}'
 	local ipv6_regex="((($s:){7}($s|:))|(($s:){6}(:$s|$ipv4_regex|:))|(($s:){5}(((:$s){1,2})|:$ipv4_regex|:))|(($s:){4}(((:$s){1,3})|((:$s)?:$ipv4_regex)|:))|(($s:){3}(((:$s){1,4})|((:$s){0,2}:$ipv4_regex)|:))|(($s:){2}(((:$s){1,5})|((:$s){0,3}:$ipv4_regex)|:))|(($s:){1}(((:$s){1,6})|((:$s){0,4}:$ipv4_regex)|:))|(:(((:$s){1,7})|((:$s){0,5}:$ipv4_regex))))"
-	_add_fzf_pipeline_tmux_regex "ip" "$ipv6_regex|$ipv4_regex" "IP addresses" "buffer:ips"
+	_add_fzf_pipeline_tmux_regex "ipv6" "$ipv6_regex" "IPv6 addresses" "buffer:ipv6"
 }
-
