@@ -2,6 +2,9 @@
 # shellcheck disable=SC2034
 
 colors() {
+	setopt local_options WARN_CREATE_GLOBAL
+	unsetopt WARN_CREATE_GLOBAL
+
 	set -a
 
 	color_names="black red green yellow blue magenta cyan white"
