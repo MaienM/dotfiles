@@ -28,5 +28,6 @@ done
 
 choice="$(~/.config/rofi/scripts/iconmenu.sh "${args[@]}")" || exit 0
 sh "$choice"
+~/.config/polybar/launch.sh
 set-background
 
