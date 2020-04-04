@@ -235,7 +235,7 @@ class VirtualFS(object):
 		if path.parent == path:
 			return self._cache(path, self._from_fs(path))
 
-		parent = self.get(path.parent)
+		parent = self.get(path.parent, parent_none_is_none = parent_none_is_none)
 		rparent = parent.real
 
 		if rparent.type == VirtualFileType.DIRECTORY:
@@ -458,7 +458,7 @@ class Processor(object):
 		# Validate that all targets are actually something we can nest files under
 		for _target in fc.targets[:]:
 			target = os.path.join(os.path.expanduser("~"), _target)
-			tentry = self.fs.get(target)
+			tentry = self.fs.get(target, parent_none_is_none = True)
 			needs_mkdir = False
 			if tentry.type == VirtualFileType.FILE:
 				# The target is a file, but we need it to be a directory
@@ -577,7 +577,7 @@ class Processor(object):
 		path = to_path(path)
 		pinfo = self.fs.get(path.parent, parent_none_is_none = True)
 		if pinfo.type == VirtualFileType.NONE:
-			mkdir_and_parents(path.parent)
+			self.mkdirs(path.parent)
 		self.fs.mkdir(path)
 		self.commands.append(MkdirCommand(path))
 
