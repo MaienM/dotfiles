@@ -8,3 +8,6 @@ if command -v xclip > /dev/null 2>&1; then
 	alias xcs='xclip -out -selection Clipboard | xclip'
 fi
 
+# xprop, stripping the icon from the output
+alias xpropni="xprop | awk -vskip=0 '{ if (/^\S/) { skip = 0 }; if (/^_NET_WM_ICON/) { skip = 1 }; if (skip != 1) { print } }'"
+
