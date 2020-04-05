@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+. commands_require; commands_require polybar 2> /dev/null || exit 0
+
 # Terminate already running bar instances
 killall -q polybar
 
