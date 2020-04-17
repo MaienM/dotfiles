@@ -19,6 +19,7 @@ echo "Using ruby $version."
 ln -s "$HOME/.asdf/installs/ruby/$version" "$HOME/.asdf/installs/ruby/utils"
 
 echo ">>> Installing utilities."
+asdf reshim ruby
 ASDF_RUBY_VERSION=utils asdf exec gem install asciidoctor
 ASDF_RUBY_VERSION=utils asdf exec gem install facets pusher listen webrick commonmarker
 asdf reshim ruby
