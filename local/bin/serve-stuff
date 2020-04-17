@@ -28,8 +28,9 @@ require_or_install 'facets'
 ################################################################################
 
 require 'yaml'
+require_or_install 'xdg'
 
-CONFIG = File.join(Dir.home, '.serve-stuffrc.yml')
+CONFIG = File.join(XDG::Config.new.home, 'serve-stuff.yml')
 DEFAULT_CONFIG = <<~END
 	server:
 		host: '0.0.0.0'
@@ -51,6 +52,8 @@ END
 begin
 	config = YAML::load_file(CONFIG)
 rescue Errno::ENOENT
+	require 'fileutils'
+	FileUtils.mkdir_p(File.dirname(CONFIG))
 	File.write(CONFIG, DEFAULT_CONFIG.gsub("\t", '  '))
 	abort("Config does not exist, creating basic config. Please setup #{CONFIG} and run again")
 rescue => e
