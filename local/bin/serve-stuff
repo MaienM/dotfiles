@@ -52,7 +52,7 @@ begin
 	config = YAML::load_file(CONFIG)
 rescue Errno::ENOENT
 	File.write(CONFIG, DEFAULT_CONFIG.gsub("\t", '  '))
-	abort("Config does not exit, creating basic config. Please setup #{CONFIG} and run again")
+	abort("Config does not exist, creating basic config. Please setup #{CONFIG} and run again")
 rescue => e
 	puts e
 	abort("Unable to load the config file, please setup #{CONFIG}")
