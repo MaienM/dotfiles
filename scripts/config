@@ -53,7 +53,7 @@ action = recurse
 [local/bin]
 action = recurse
 [local/bin/run-in-python-utils]
-target = .local/bin/tmuxp, .local/bin/yq
+target = .local/bin/tmuxp, .local/bin/yq, .local/bin/dotsecrets
 [local/bin/run-in-system]
 target = .local/bin/pikaur
 

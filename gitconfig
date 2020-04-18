@@ -11,3 +11,7 @@
 	default = simple
 [include]
 	path = .gitconfig_local
+[filter "dotsecrets"]
+	clean = dotsecrets clean %f
+	smudge = dotsecrets smudge %f
+	required = true
