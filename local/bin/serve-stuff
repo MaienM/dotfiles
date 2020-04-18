@@ -218,9 +218,9 @@ class MarkdownFileHandler < BaseFileHandler
 		require_or_install 'commonmarker'
 		body = CommonMarker.render_doc(
 			body,
-			%i(FOOTNOTES VALIDATE_UTF8),
+			%i(FOOTNOTES VALIDATE_UTF8 UNSAFE),
 			%i(table strikethrough autolink tagfilter),
-		).to_html(%i(GITHUB_PRE_LANG))
+		).to_html(%i(GITHUB_PRE_LANG UNSAFE))
 		body += <<~END
 			<link rel="stylesheet" href="//cdn.rawgit.com/sindresorhus/github-markdown-css/gh-pages/github-markdown.css">
 			<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
