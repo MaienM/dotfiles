@@ -212,3 +212,15 @@
 [submodule "vim/bundle-coc/json"]
 	path = vim/bundle-coc/json
 	url = https://github.com/neoclide/coc-json
+[submodule "vim/bundle-coc/eslint"]
+	path = vim/bundle-coc/eslint
+	url = https://github.com/neoclide/coc-eslint
+[submodule "vim/bundle-coc/html"]
+	path = vim/bundle-coc/html
+	url = https://github.com/neoclide/coc-html
+[submodule "vim/bundle-coc/css"]
+	path = vim/bundle-coc/css
+	url = https://github.com/neoclide/coc-css
+[submodule "vim/bundle-coc/yaml"]
+	path = vim/bundle-coc/yaml
+	url = https://github.com/neoclide/coc-yaml

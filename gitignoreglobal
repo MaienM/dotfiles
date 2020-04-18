@@ -1,7 +1,7 @@
-# Ignore compiled python files.
+# Compiled python files.
 *\.py[co]
 
-# Ignore vim tags files.
+# Vim tags files.
 doc/tags
 
 # Project-specific vimrc.
@@ -9,7 +9,7 @@ doc/tags
 .lvim/
 Session.vim
 
-# Ignore virtualenv files.
+# Environment files.
 .envrc
 .venv
 .lua-version
@@ -18,5 +18,8 @@ Session.vim
 .ruby-version
 .tool-versions
 
-# Ignore stupid OSX garbage
+# External packages.
+node_modules/
+
+# Stupid OSX garbage.
 .DS_STORE
