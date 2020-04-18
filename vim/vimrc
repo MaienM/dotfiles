@@ -6,10 +6,11 @@ set nocompatible
 " This too has to happen before anything else, so we can be sure that all
 " plugins and such are available for use in the vimrc files.
 let &runtimepath = &runtimepath . ',' . finddir('bundle/pathogen', &runtimepath)
+execute pathogen#infect('bundle/{}')
 if has('nvim')
-	execute pathogen#infect('bundle/{}', 'bundle-nvim/{}')
+	execute pathogen#infect('bundle-nvim/{}')
 else
-	execute pathogen#infect('bundle/{}', 'bundle-vim/{}')
+	execute pathogen#infect('bundle-vim/{}')
 endif
 
 " Load the rest, in a single autogroup, so we can reload safely.

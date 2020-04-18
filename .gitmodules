@@ -136,9 +136,6 @@
 [submodule "vim/bundle/vim-test"]
 	path = vim/bundle/vim-test
 	url = https://github.com/janko-m/vim-test
-[submodule "vim/bundle/ale"]
-	path = vim/bundle/ale
-	url = https://github.com/w0rp/ale
 [submodule "vim/bundle/rainbow-parentheses"]
 	path = vim/bundle/rainbow-parentheses
 	url = https://github.com/junegunn/rainbow_parentheses.vim
@@ -208,3 +205,10 @@
 [submodule "opt/extract_url"]
 	path = opt/extract_url
 	url = https://github.com/m3m0ryh0l3/extracturl
+[submodule "vim/bundle/coc"]
+	path = vim/bundle/coc
+	url = https://github.com/neoclide/coc.nvim
+	branch = release
+[submodule "vim/bundle-coc/json"]
+	path = vim/bundle-coc/json
+	url = https://github.com/neoclide/coc-json

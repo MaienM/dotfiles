@@ -52,7 +52,7 @@ ruby_path=$(ASDF_RUBY_VERSION=neovim asdf which ruby)
 echo ">>> Setting up nodejs $nodejs_version"
 ln -sTf "$HOME/.asdf/installs/nodejs/$nodejs_version" "$HOME/.asdf/installs/nodejs/neovim"
 asdf reshim nodejs neovim
-ASDF_NODEJS_VERSION=neovim asdf exec npm install -g neovim
+ASDF_NODEJS_VERSION=neovim asdf exec npm install -g neovim yarn
 nodejs_path=$(ASDF_NODEJS_VERSION=neovim asdf which node)
 
 echo ">>> Done! Add the following lines to your neovim init to use the new environments:"
