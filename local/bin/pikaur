@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+set -e
+
+if [ ! -f /usr/bin/pikaur ]; then
+	echo "Pikaur is not yet installed, installing now."
+	sudo pacman -S --needed base-devel git
+	rm -rf /tmp/pikaur-repo
+	git clone https://aur.archlinux.org/pikaur.git /tmp/pikaur-repo
+	cd /tmp/pikaur-repo
+	makepkg -fsri
+fi
+
+clean-path pikaur "$@"

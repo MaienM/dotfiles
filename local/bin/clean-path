@@ -1,8 +1,19 @@
 #!/usr/bin/env sh
 
 # Run a program without most of the $HOME subdirectories in $PATH.
-# Does keep ~/.local/bin.
+# Does keep ~/.local/bin in the path, but will skip it when locating the binary to run.
 
-cleanpath="$HOME/.local/bin:$(echo "$PATH" | tr ':' '\n' | grep -v "^$HOME" | tr '\n' ':')"
-env PATH="$cleanpath" "$@"
+(
+	set -e
+
+	# shellcheck source=../../functions/remove_from_path
+	. ~/.functions/remove_from_path
+
+	remove_from_path "^$HOME" "E"
+	bin="$(command -v "$(basename "$1")")"
+	shift 1
+
+	prepend_to_path "$HOME/.local/bin"
+	"$bin" "$@"
+)
 
