@@ -85,12 +85,6 @@
 [submodule "vim/bundle/syntax-graphql"]
 	path = vim/bundle/syntax-graphql
 	url = https://github.com/jparise/vim-graphql
-[submodule "vim/bundle-vim/neocomplete"]
-	path = vim/bundle-vim/neocomplete
-	url = https://github.com/Shougo/neocomplete.vim
-[submodule "vim/bundle-nvim/deoplete"]
-	path = vim/bundle-nvim/deoplete
-	url = https://github.com/Shougo/deoplete.nvim
 [submodule "vim/bundle/airline"]
 	path = vim/bundle/airline
 	url = https://github.com/vim-airline/vim-airline
@@ -121,9 +115,6 @@
 [submodule "vim/bundle/base16"]
 	path = vim/bundle/base16
 	url = https://github.com/chriskempson/base16-vim
-[submodule "vim/bundle-nvim/deoplete-ternjs"]
-	path = vim/bundle-nvim/deoplete-ternjs
-	url = https://github.com/carlitux/deoplete-ternjs
 [submodule "vim/bundle/syntax-renpy"]
 	path = vim/bundle/syntax-renpy
 	url = https://github.com/chaimleib/vim-renpy
