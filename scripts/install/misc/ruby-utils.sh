@@ -16,7 +16,7 @@ asdf_plugin_add ruby
 echo ">>> Installing latest ruby."
 asdf_install_latest_version ruby
 echo "Using ruby $version."
-ln -s "$HOME/.asdf/installs/ruby/$version" "$HOME/.asdf/installs/ruby/utils"
+ln -sTf "$HOME/.asdf/installs/ruby/$version" "$HOME/.asdf/installs/ruby/utils"
 
 echo ">>> Installing utilities."
 asdf reshim ruby

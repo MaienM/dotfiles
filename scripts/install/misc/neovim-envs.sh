@@ -44,12 +44,20 @@ ASDF_PYTHON_VERSION=neovim3 asdf exec pip install pynvim
 py3_path=$(ASDF_PYTHON_VERSION=neovim3 asdf which python)
 
 echo ">>> Setting up ruby $rb_version"
-ASDF_RUBY_VERSION="$rb_version" asdf exec gem install neovim
+ln -sTf "$HOME/.asdf/installs/ruby/$rb_version" "$HOME/.asdf/installs/ruby/neovim"
+asdf reshim ruby neovim
+ASDF_RUBY_VERSION=neovim asdf exec gem install neovim
+ruby_path=$(ASDF_RUBY_VERSION=neovim asdf which ruby)
 
 echo ">>> Setting up nodejs $nodejs_version"
-ASDF_NODEJS_VERSION="$nodejs_version" asdf exec npm install -g neovim
+ln -sTf "$HOME/.asdf/installs/nodejs/$nodejs_version" "$HOME/.asdf/installs/nodejs/neovim"
+asdf reshim nodejs neovim
+ASDF_NODEJS_VERSION=neovim asdf exec npm install -g neovim
+nodejs_path=$(ASDF_NODEJS_VERSION=neovim asdf which node)
 
 echo ">>> Done! Add the following lines to your neovim init to use the new environments:"
 echo "let g:python_host_prog = '$py2_path'"
 echo "let g:python3_host_prog = '$py3_path'"
+echo "let g:ruby_host_prog = '$ruby_path'"
+echo "let g:nodejs_host_prog = '$nodejs_path'"
 

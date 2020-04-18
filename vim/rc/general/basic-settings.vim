@@ -80,6 +80,8 @@ set breakindentopt=min:40
 " Use the asdf environment prepared by the install script.
 let g:python_host_prog = $HOME . '/.asdf/installs/python/neovim2/bin/python'
 let g:python3_host_prog = $HOME . '/.asdf/installs/python/neovim3/bin/python'
+let g:ruby_host_prog = $HOME . '/.asdf/installs/ruby/neovim/bin/ruby'
+let g:nodejs_host_prog = $HOME . '/.asdf/installs/nodejs/neovim/bin/node'
 
 " Use the X clipboard if possible.
 if v:version >= 600
