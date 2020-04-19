@@ -1,0 +1,5 @@
+let g:tcomment_mapleader1 = ''
+let g:tcomment_mapleader2 = ''
+let g:tcomment_mapleader_uncomment_anyway = ''
+let g:tcomment_mapleader_comment_anyway = ''
+let g:tcomment_textobject_inlinecomment = ''

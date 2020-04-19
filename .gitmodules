@@ -224,3 +224,9 @@
 [submodule "vim/bundle-coc/yaml"]
 	path = vim/bundle-coc/yaml
 	url = https://github.com/neoclide/coc-yaml
+[submodule "vim/bundle-coc/tsserver"]
+	path = vim/bundle-coc/tsserver
+	url = https://github.com/neoclide/coc-tsserver
+[submodule "vim/bundle/coc-fzf"]
+	path = vim/bundle/coc-fzf
+	url = https://github.com/antoinemadec/coc-fzf

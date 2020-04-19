@@ -8,5 +8,4 @@ function! s:settings()
 	nmap <buffer> <C-C> :<C-U>q<CR>
 endfunction
 
-" Mappings.
-nnoremap <Leader>gg :Gstatus<CR>
+nnoremap <Leader>vg :Gstatus<CR>
