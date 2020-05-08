@@ -29,6 +29,9 @@ set bufhidden=hide
 " Decent preview window height.
 set previewheight=20
 
+" Trigger CursorHold a lot quicker. This also writes swap files more often, but those are disabled, so this is fine.
+set updatetime=100
+
 " Tab completion in commands.
 set wildmenu
 set wildmode=longest,list,full

@@ -13,7 +13,11 @@ else
 	imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
 
-" Use <Tab>/<S-Tab> to page through options.
+" Use <Tab>/<S-Tab> to page through options. <Tab> also triggers completion if there's non-whitespace before the cursor.
+function! s:check_back_space() abort
+	let col = col('.') - 1
+	return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 inoremap <silent><expr> <TAB>
 	\ pumvisible() ? "\<C-n>" :
 	\ <SID>check_back_space() ? "\<TAB>" :
@@ -24,6 +28,7 @@ inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 nmap <silent> [i <Plug>(coc-diagnostic-prev)
 nmap <silent> ]i <Plug>(coc-diagnostic-next)
 nmap <silent> <Leader>if <Plug>(coc-fix-current)
+nmap <silent> <Leader>iF :<C-u>CocFzfList actions quickfix<CR>
 nmap <silent> <Leader>ii :<C-u>CocFzfList diagnostics<CR>
 " nmap <silent> <Leader>ii <Plug>(coc-diagnostic-info)
 

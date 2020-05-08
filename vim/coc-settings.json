@@ -3,6 +3,26 @@
 	"diagnostic.warningSign": "W",
 	"diagnostic.infoSign": "I",
 	"diagnostic.hintSign": "H",
+	"signature.preferShownAbove": false,
 
 	"npm.binPath": "~/.asdf/installs/nodejs/neovim/bin/npm",
+
+	"languageserver": {
+		"kotlin": {
+			"filetypes": ["kotlin"],
+			"command": "~/.local/share/kotlin-language-server/server/build/install/server/bin/kotlin-language-server",
+			"env": {
+				"CLASSPATH": "/usr/share/kotlin/",
+			},
+			"settings": {
+				"kotlin": {
+					"compiler": {
+						"jvm": {
+							"target": "1.8",
+						},
+					},
+				},
+			},
+		},
+	},
 }

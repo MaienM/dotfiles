@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 
-exec run-in-asdf python utils pygmentize -O "full,style=$BASE16_THEME" "$@"
+exec run-in-asdf python utils pygmentize -O "full,style=base16-$BASE16_THEME" "$@"
 
