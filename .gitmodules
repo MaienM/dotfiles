@@ -230,3 +230,6 @@
 [submodule "vim/bundle/coc-fzf"]
 	path = vim/bundle/coc-fzf
 	url = https://github.com/antoinemadec/coc-fzf
+[submodule "vim/bundle/syntax-nearly"]
+	path = vim/bundle/syntax-nearly
+	url = https://github.com/tjvr/vim-nearley
