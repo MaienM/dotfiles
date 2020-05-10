@@ -233,3 +233,6 @@
 [submodule "vim/bundle/golden-size"]
 	path = vim/bundle/golden-size
 	url = https://github.com/dm1try/golden_size
+[submodule "vim/bundle-coc/diagnostic"]
+	path = vim/bundle-coc/diagnostic
+	url = https://github.com/iamcco/coc-diagnostic
