@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 mtime() {
-	stat --printf '%Y' "$1"
+	stat --printf '%Y' "$1" 2> /dev/null || echo 0
 }
 
 set -e
