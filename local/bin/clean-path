@@ -9,9 +9,19 @@
 	# shellcheck source=../../functions/remove_from_path
 	. ~/.functions/remove_from_path
 
+	case "$0" in
+		*/clean-path)
+			command="$1"
+			shift 1
+		;;
+
+		*)
+			command="$0"
+		;;
+	esac
+
 	remove_from_path "^$HOME" "E"
-	bin="$(command -v "$(basename "$1")")"
-	shift 1
+	bin="$(command -v "$(basename "$command")")"
 
 	prepend_to_path "$HOME/.local/bin"
 	"$bin" "$@"

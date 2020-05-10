@@ -52,6 +52,8 @@ target = .fzf, .vim/bundle/fzf-base
 action = recurse
 [local/bin]
 action = recurse
+[local/bin/clean-path]
+target = .local/bin/clean-path, .local/bin/xdg-open
 [local/bin/run-in-python-utils]
 target = .local/bin/tmuxp, .local/bin/yq, .local/bin/dotsecrets
 
