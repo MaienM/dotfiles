@@ -151,9 +151,6 @@
 [submodule "vim/bundle/limelight"]
 	path = vim/bundle/limelight
 	url = https://github.com/junegunn/limelight.vim
-[submodule "vim/bundle/golden-view"]
-	path = vim/bundle/golden-view
-	url = https://github.com/zhaocai/GoldenView.Vim
 [submodule "vim/bundle/goyo"]
 	path = vim/bundle/goyo
 	url = https://github.com/junegunn/goyo.vim
@@ -233,3 +230,6 @@
 [submodule "vim/bundle/syntax-nearly"]
 	path = vim/bundle/syntax-nearly
 	url = https://github.com/tjvr/vim-nearley
+[submodule "vim/bundle/golden-size"]
+	path = vim/bundle/golden-size
+	url = https://github.com/dm1try/golden_size
