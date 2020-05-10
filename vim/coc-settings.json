@@ -3,6 +3,9 @@
 	"diagnostic.warningSign": "W",
 	"diagnostic.infoSign": "I",
 	"diagnostic.hintSign": "H",
+	"diagnostic.maxWindowHeight": 20,
+	"diagnostic.maxWindowWidth": 120,
+	"signature.maxWindowHeight": 20,
 	"signature.preferShownAbove": false,
 
 	"npm.binPath": "~/.asdf/installs/nodejs/neovim/bin/npm",
