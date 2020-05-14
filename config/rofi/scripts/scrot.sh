@@ -30,6 +30,9 @@ fi
 
 # shellcheck disable=SC2016
 if fn="$(notify-error scrot "${args[@]}" -e 'echo $f')"; then
+	echo "$fn"
+	fn="$PWD/$fn"
+	printf '%s' "$fn" | xclip -selection Clipboard
 	notify-send "Screenshot" "Saved screenshot to $fn"
 fi
 
