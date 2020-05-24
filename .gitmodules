@@ -236,3 +236,6 @@
 [submodule "vim/bundle-coc/diagnostic"]
 	path = vim/bundle-coc/diagnostic
 	url = https://github.com/iamcco/coc-diagnostic
+[submodule "zsh/bundle/fzf-tab"]
+	path = zsh/bundle/fzf-tab
+	url = https://github.com/Aloxaf/fzf-tab

@@ -10,6 +10,7 @@ compinit
 source ~/.zsh/bundle/autosuggestions.zsh
 source ~/.zsh/bundle/base16.zsh
 source ~/.zsh/bundle/fzf.zsh
+source ~/.zsh/bundle/fzf-tab/fzf-tab.plugin.zsh
 source ~/.zsh/bundle/powerlevel10k/powerlevel10k.zsh-theme
 source ~/.zsh/bundle/prezto-history/init.zsh
 
