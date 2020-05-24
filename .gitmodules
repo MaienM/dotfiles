@@ -239,3 +239,6 @@
 [submodule "zsh/bundle/fzf-tab"]
 	path = zsh/bundle/fzf-tab
 	url = https://github.com/Aloxaf/fzf-tab
+[submodule "zsh/bundle/histdb"]
+	path = zsh/bundle/histdb
+	url = https://github.com/larkery/zsh-histdb
