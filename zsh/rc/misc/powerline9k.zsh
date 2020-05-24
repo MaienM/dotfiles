@@ -30,6 +30,9 @@ POWERLEVEL9K_TIME_UPDATE_ON_COMMAND=true
 # Show exit code of last command if non-successful. Shorten the signal names.
 POWERLEVEL9K_STATUS_ERROR_CONTENT_EXPANSION='${P9K_CONTENT//SIG}'
 
+# Compact the prompts of previous commands, but keep directory changes extra visible.
+POWERLEVEL9K_TRANSIENT_PROMPT=same-dir
+
 # I have multiple names for my default accounts.
 # Figure out which exist on this system.
 possible=(michon maienm)
@@ -45,8 +48,9 @@ if [ ${#existing} -eq 1 ]; then
 	DEFAULT_USER=${existing[1]}
 fi
 
+# Hostname can be relevant, but it usually isn't. I'm only interested in it if connected over SSH, but not when also
+# inside TMUX, as this already includes this information in the statusline.
 prompt_context_custom() {
-	# The tmux statusline already includes the hostname, so don't make SSH show the context when in tmux.
 	if [[ -n "$TMUX" ]]; then
 		SSH_CLIENT= SSH_TTY= POWERLEVEL9K_CONTEXT_TEMPLATE="%n" prompt_context "$@"
 	else
