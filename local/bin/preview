@@ -17,7 +17,7 @@ elif [ -f "$fn" ]; then
 				-v 'color_cyan'=$color_fg_cyan \
 				-v 'color_magenta'=$color_fg_magenta \
 				-v "color_reset=$color_reset" \
-				-f "$HOME/.local/bin/preview.awk"
+				-f "$HOME/.local/bin/preview-7z.awk"
 		;;
 		*'ASCII text'*)
 			pygmentize -g "$fn"
