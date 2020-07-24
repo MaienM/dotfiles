@@ -212,6 +212,10 @@ bindsym $Hyper+XF86AudioPrev $exec mpv-control seek -30
 bindsym $Hyper+XF86AudioNext $exec mpv-control seek 30
 bindsym $Hyper+XF86AudioPause $exec mpv-control cycle pause
 
+# Miscellaneous keybinds. 
+bindsym XF86MonBrightnessUp $exec brightnessctl set +5%
+bindsym XF86MonBrightnessDown $exec brightnessctl set 5%-
+
 # Startup applications
 exec_always --no-startup-id set-background
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
