@@ -7,6 +7,6 @@ append_to_path "$HOME/.asdf/bin"
 
 # Remove shims and function, in case asdf was setup.
 remove_from_path "$HOME/.asdf/shims"
-unfunction asdf
+[ "$(type -w asdf)" = "asdf: function" ] && unfunction asdf
 
 eval "$(asdf exec direnv hook zsh)"

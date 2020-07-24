@@ -1,1 +1,4 @@
-. $HOME/.asdf/completions/asdf.bash
+fpath=($HOME/.asdf/completions $fpath)
+
+autoload -Uz compinit
+compinit
