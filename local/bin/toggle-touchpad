@@ -1,4 +1,4 @@
-#!/usr/env/bin bash
+#!/usr/bin/env bash
 
 id="$(xinput list | grep -Eio '(touchpad|glidepoint)\s*id\=[0-9]{1,2}' | grep -Eo '[0-9]{1,2}' | head -n1)"
 state="$(xinput list-props "$id" | grep 'Device Enabled' | awk '{print $4}')"
