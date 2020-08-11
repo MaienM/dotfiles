@@ -141,7 +141,7 @@
 	url = https://github.com/junegunn/rainbow_parentheses.vim
 [submodule "vim/bundle/editorconfig"]
 	path = vim/bundle/editorconfig
-	url = https://github.com/sgur/vim-editorconfig
+	url = https://github.com/editorconfig/editorconfig-vim
 [submodule "vim/bundle/peekaboo"]
 	path = vim/bundle/peekaboo
 	url = https://github.com/junegunn/vim-peekaboo
