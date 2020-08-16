@@ -26,7 +26,10 @@ alias _fzf_pipeline_parent_directories_target=_fzf_pipeline_directories_target
 
 # Recent downloads
 _fzf_pipeline_downloads_source() {
-	find ~/Downloads -mindepth 1 -maxdepth 1 -printf '%T@ %p\0' \
+	# Ignore files that aren't fully downloaded yet.
+	# Chrome has files named with a .crdownload extension until they are done. Firefox creates the file with its normal
+	# name and a size of 0, and uses a .part extension, but is otherwise the same.
+	find ~/Downloads -mindepth 1 -maxdepth 1 -not \( -name '*.crdownload' -or -name '*.part' -or -size 0 \) -printf '%T@ %p\0' \
 	| sort -z -n -r \
 	| cut -z -d' ' -f2- \
 	| xargs -0 zsh -c 'for fn in "$@"; do echo "${(q)fn} ${fn:t}"; done' -
