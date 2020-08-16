@@ -20,7 +20,7 @@ elif [ -f "$fn" ]; then
 				-f "$HOME/.local/bin/preview-7z.awk"
 		;;
 		*'ASCII text'*)
-			pygmentize -g "$fn"
+			bat --color=always "$fn"
 		;;
 		*)
 			echo "No preview available."
