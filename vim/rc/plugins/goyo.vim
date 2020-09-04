@@ -23,7 +23,12 @@ function! s:goyo_enter()
 	" Set old peekaboo size to restore later.
 	let s:old_peekaboo_window = g:peekaboo_window
 	" Disable auto resizing.
-	call GoldenView#DisableAutoResize()
+	if exists(b:golden_ratio_resizing_ignored) && b:golden_ratio_resizing_ignored
+		let b:old_golden_ratio_resizing_ignored = 1
+	else
+		let b:old_golden_ratio_resizing_ignored = 0
+	endif
+	let b:golden_ratio_resizing_ignored = 1
 endfunction
 function! s:goyo_leave()
 	let s:goyo = 0
@@ -33,7 +38,7 @@ function! s:goyo_leave()
 	let &showbreak = s:old_showbreak
 	Limelight!
 	let g:peekaboo_window = s:old_peekaboo_window
-	call GoldenView#EnableAutoResize()
+	let b:golden_ratio_resizing_ignored = b:old_golden_ratio_resizing_ignored
 endfunction
 function! s:resized()
 	" Increase peekaboo size to use all available empty space.

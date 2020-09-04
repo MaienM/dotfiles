@@ -230,9 +230,6 @@
 [submodule "vim/bundle/syntax-nearly"]
 	path = vim/bundle/syntax-nearly
 	url = https://github.com/tjvr/vim-nearley
-[submodule "vim/bundle/golden-size"]
-	path = vim/bundle/golden-size
-	url = https://github.com/dm1try/golden_size
 [submodule "vim/bundle-coc/diagnostic"]
 	path = vim/bundle-coc/diagnostic
 	url = https://github.com/iamcco/coc-diagnostic
@@ -245,3 +242,9 @@
 [submodule "vim/bundle-coc/python"]
 	path = vim/bundle-coc/python
 	url = https://github.com/neoclide/coc-python
+[submodule "vim/bundle/neuron"]
+	path = vim/bundle/neuron
+	url = https://github.com/ihsanturk/neuron.vim
+[submodule "vim/bundle/golden-ratio"]
+	path = vim/bundle/golden-ratio
+	url = https://github.com/roman/golden-ratio
