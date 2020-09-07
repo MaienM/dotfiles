@@ -58,6 +58,8 @@ action = recurse
 target = .local/bin/clean-path, .local/bin/xdg-open
 [local/bin/run-in-python-utils]
 target = .local/bin/tmuxp, .local/bin/yq, .local/bin/dotsecrets
+[local/bin/run-with-sudo]
+target = .local/bin/docker, .local/bin/docker-compose
 
 [opt]
 action = skip
