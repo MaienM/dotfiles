@@ -4,6 +4,8 @@ action = skip
 action = skip
 [cmds]
 action = skip
+[private]
+action = skip
 [scrapbook]
 action = skip
 [scripts]
