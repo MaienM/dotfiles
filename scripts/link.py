@@ -18,10 +18,6 @@ import textwrap
 import tty
 
 
-ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
-CONFIG = os.path.join(ROOT, 'scripts', 'config')
-
-
 def err(*args):
 	""" Print to stderr. """
 	print(*args, file = sys.stderr)
@@ -120,13 +116,16 @@ class Config(configparser.ConfigParser):
 	A wrapper around ConfigParser that allows getting a configuration for any path, regardless of whether it appears in
 	the config file.
 	"""
-	def __init__(self, *args, **kwargs):
+	def __init__(self, root_path, config_path, *args, **kwargs):
 		super(Config, self).__init__(self, *args, **kwargs)
 		self.path_info = {}
+		self.root_path = root_path
+		with open(config_path, 'r') as f:
+			self.read_file(f)
 
 	def get_info(self, path):
 		# Paths in the config are always relative to the root folder of the repository
-		path = os.path.relpath(path, ROOT)
+		path = os.path.relpath(path, self.root_path)
 
 		# Re-use a previously made config object if available
 		if path in self.path_info:
@@ -602,15 +601,16 @@ def parse_args(args):
 		dest = 'overwrite',
 		help = 'Assume yes to all overwrite prompts.',
 	)
+	root = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
+	parser.add_argument('-r', '--root', default = root, help = f'Path to the root folder.')
+	parser.add_argument('-c', '--config', default = os.path.join(root, 'scripts', 'config'), help = 'Path to the config.')
 	parser.add_argument('--debug', action = 'store_true', help = 'Output more logging information.')
 	return parser.parse_args(args)
 
 
 def main(args):
 	# Read the config
-	config = Config()
-	with open(CONFIG, 'r') as f:
-		config.read_file(f)
+	config = Config(args.root, args.config)
 
 	# Read all the available config items, to detect errors
 	for path in config.sections():
@@ -618,9 +618,9 @@ def main(args):
 
 	# Process the files in the root directory
 	processor = Processor(args, config)
-	processor.process_dir(ROOT)
+	processor.process_dir(args.root)
 	processor.process_explicit()
-	processor.process_entry(processor.fs.get(ROOT), only_explicit = True)
+	processor.process_entry(processor.fs.get(args.root), only_explicit = True)
 	commands = processor.commands[:]
 
 	# Make sure no items marked in the config have been missed (unless they are to be skipped anyway)
@@ -630,7 +630,7 @@ def main(args):
 			print(f'{path} is in the config, but has not been processed')
 
 	# If there is nothing to be done, remove old command files and exit
-	cmdpath = os.path.join(ROOT, 'cmds')
+	cmdpath = os.path.join(args.root, 'cmds')
 	if not processor.commands:
 		print('Everything seems to be in order')
 		if os.path.exists(cmdpath):
