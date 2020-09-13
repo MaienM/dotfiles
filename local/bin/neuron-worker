@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+dir="${1:-$PWD}"
+if ! [ -d "$dir" ]; then
+	echo >&2 "'$dir' is not a directory."
+	exit 1
+fi
+
+hash="$(md5sum <<<"$dir" | cut -c1-32)"
+containername="neuron-$hash"
+inputsocket="/tmp/neuron-socket-in-$hash"
+outputstatussocket="/tmp/neuron-socket-out-status-$hash"
+outputstdoutsocket="/tmp/neuron-socket-out-stdout-$hash"
+outputstderrsocket="/tmp/neuron-socket-out-stderr-$hash"
+
+trap 'rm -rf "$inputsocket" "$outputstatussocket" "$outputstdoutsocket" "$outputstderrsocket"' EXIT ERR INT
+sudo rm -rf "$inputsocket" "$outputstatussocket" "$outputstdoutsocket" "$outputstderrsocket"
+
+mkfifo -m 600 "$inputsocket"
+mkfifo -m 600 "$outputstatussocket"
+mkfifo -m 600 "$outputstdoutsocket"
+mkfifo -m 600 "$outputstderrsocket"
+
+echo "Running neuron worker for '$dir' (hash $hash)."
+docker run \
+	--rm \
+	-it \
+	--name="$containername" \
+	--volume "$dir:/zettelkasten" \
+	--volume "$inputsocket:/input" \
+	--volume "$outputstatussocket:/status" \
+	--volume "$outputstdoutsocket:/stdout" \
+	--volume "$outputstderrsocket:/stderr" \
+	sridca/neuron \
+	bash -c '
+		echo "Listening for commands."
+		exec 4</input
+		exec 5>/status
+		exec 6>/stdout
+		exec 7>/stderr
+		while true; do
+			if read -u 4 -r command; then
+				printf "Received command %s.\n" "$command"
+				$command >&6 2>&7
+				echo $? >&5
+			else
+				sleep 0.1
+				continue
+			fi
+		done
+	'
