@@ -15,25 +15,36 @@ dir="$(realpath "$dir")"
 
 hash="$(md5sum <<<"$dir" | cut -c1-32)"
 inputsocket="/tmp/neuron-socket-in-$hash"
-outputstatussocket="/tmp/neuron-socket-out-status-$hash"
-outputstdoutsocket="/tmp/neuron-socket-out-stdout-$hash"
-outputstderrsocket="/tmp/neuron-socket-out-stderr-$hash"
+output="/tmp/neuron-socket-out-$hash"
 
-if [ ! -p "$inputsocket" ] || [ ! -p "$outputstatussocket" ] || [ ! -p "$outputstdoutsocket" ] || [ ! -p "$outputstderrsocket" ]; then
+if [ ! -p "$inputsocket" ] || [ ! -d "$output" ]; then
 	echo >&2 "No neuron worker is running for '$dir', please start one first."
 	exit 1
 fi
 
+pid="$$"
+outputpid="$output/$pid"
+outputstatussocket="$outputpid/status"
+outputstdoutsocket="$outputpid/stdout"
+outputstderrsocket="$outputpid/stderr"
+
+trap 'rm -rf "$outputpid"' EXIT ERR INT
+rm -rf "$outputpid"
+
+mkdir "$outputpid"
+mkfifo -m 600 "$outputstatussocket"
+mkfifo -m 600 "$outputstdoutsocket"
+mkfifo -m 600 "$outputstderrsocket"
+
 exec 4>"$inputsocket"
+(
+	printf '%q ' "$pid" neuron -d /zettelkasten "${args[@]}"
+	printf '\n'
+) >&4
+
 exec 5<"$outputstatussocket"
 cat "$outputstdoutsocket" &
 cat "$outputstderrsocket" >&2 &
 
-(
-	printf '%q ' neuron -d /zettelkasten "${args[@]}"
-	printf '\n'
-) >&4
-
 read -u 5 -r status
-jobs -p | xargs kill
 exit "$status"

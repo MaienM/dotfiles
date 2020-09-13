@@ -9,40 +9,39 @@ fi
 hash="$(md5sum <<<"$dir" | cut -c1-32)"
 containername="neuron-$hash"
 inputsocket="/tmp/neuron-socket-in-$hash"
-outputstatussocket="/tmp/neuron-socket-out-status-$hash"
-outputstdoutsocket="/tmp/neuron-socket-out-stdout-$hash"
-outputstderrsocket="/tmp/neuron-socket-out-stderr-$hash"
+output="/tmp/neuron-socket-out-$hash"
 
-trap 'rm -rf "$inputsocket" "$outputstatussocket" "$outputstdoutsocket" "$outputstderrsocket"' EXIT ERR INT
-sudo rm -rf "$inputsocket" "$outputstatussocket" "$outputstdoutsocket" "$outputstderrsocket"
+trap 'rm -rf "$inputsocket" "$output"' EXIT ERR INT
+sudo rm -rf "$inputsocket" "$output"
 
 mkfifo -m 600 "$inputsocket"
-mkfifo -m 600 "$outputstatussocket"
-mkfifo -m 600 "$outputstdoutsocket"
-mkfifo -m 600 "$outputstderrsocket"
+mkdir "$output"
 
 echo "Running neuron worker for '$dir' (hash $hash)."
 docker run \
 	--rm \
 	-it \
+	--user "$(id -u):$(id -g)" \
 	--name="$containername" \
 	--volume "$dir:/zettelkasten" \
 	--volume "$inputsocket:/input" \
-	--volume "$outputstatussocket:/status" \
-	--volume "$outputstdoutsocket:/stdout" \
-	--volume "$outputstderrsocket:/stderr" \
+	--volume "$output:/output" \
 	sridca/neuron \
 	bash -c '
 		echo "Listening for commands."
 		exec 4</input
-		exec 5>/status
-		exec 6>/stdout
-		exec 7>/stderr
 		while true; do
 			if read -u 4 -r command; then
-				printf "Received command %s.\n" "$command"
-				$command >&6 2>&7
-				echo $? >&5
+				pid="${command%% *}"
+				command="${command#$pid }"
+				printf "Received command %s from process %s.\n" "$command" "$pid"
+				(
+					exec 5>/output/$pid/status
+					exec 6>/output/$pid/stdout
+					exec 7>/output/$pid/stderr
+					$command >&6 2>&7
+					echo $? >&5
+				) &
 			else
 				sleep 0.1
 				continue
