@@ -11,10 +11,7 @@ if [ ! -f ".tool-versions" ]; then
 	echo >&2 "There is no .tool-versions file, might want to fix that."
 fi
 
-(
-	echo "source \$(asdf which direnv_use_asdf)"
-	echo "use asdf"
-) > "$envpath"
+echo "use asdf" > "$envpath"
 echo "Created direnv config file at '$envpath'."
 
 asdf exec direnv allow "$envpath"

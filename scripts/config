@@ -29,6 +29,8 @@ target = .asdf/plugins
 
 [config]
 action = recurse
+[config/direnv]
+action = recurse
 [config/i3]
 action = recurse
 [config/mpv/bundle/occivink/scripts/crop.lua]
