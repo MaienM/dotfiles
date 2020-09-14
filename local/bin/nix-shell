@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+# shellcheck source=../../local/bin/commands_require
+. commands_require; commands_require nix-user-chroot
+
+if [ ! -d ~/.nix ]; then
+	echo >&2 "Nix is not yet installed, run scripts/install/misc/nix.sh."
+	exit 1
+fi
+
+# shellcheck disable=2016
+nix-user-chroot ~/.nix bash -l -c 'export NIX_CONF_DIR=/nix/etc/nix; $0 "$@"' "$@"
