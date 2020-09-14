@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+set -o errexit -o pipefail
+
+if [ $# -lt 2 ]; then
+	echo >&2 "Usage: $0 worker-name command [args]"
+	echo >&2 "Available workers:"
+	find /tmp/docker-worker -mindepth 1 -maxdepth 1 -type d -printf '\t%f\n' >&2
+	exit 1
+fi
+
+name="$1"
+shift
+
+socketdir="/tmp/docker-worker/$name"
+inputsocket="$socketdir/socket-in"
+output="$socketdir/sockets-out"
+
+if [ ! -p "$inputsocket" ] || [ ! -d "$output" ]; then
+	echo >&2 "No worker named '$name' is running, please start one first."
+	exit 1
+fi
+
+pid="$$"
+pidsocketdir="$output/$pid"
+outputstatussocket="$pidsocketdir/status"
+outputstdoutsocket="$pidsocketdir/stdout"
+outputstderrsocket="$pidsocketdir/stderr"
+
+trap 'rm -rf "$pidsocketdir"' EXIT ERR INT
+rm -rf "$pidsocketdir"
+
+mkdir "$pidsocketdir"
+mkfifo -m 600 "$outputstatussocket"
+mkfifo -m 600 "$outputstdoutsocket"
+mkfifo -m 600 "$outputstderrsocket"
+
+exec 4>"$inputsocket"
+(
+	printf '%q ' "$pid" "$@"
+	printf '\n'
+) >&4
+
+exec 5<"$outputstatussocket"
+cat "$outputstdoutsocket" &
+cat "$outputstderrsocket" >&2 &
+
+read -u 5 -r status
+exit "$status"

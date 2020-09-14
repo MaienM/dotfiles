@@ -8,43 +8,9 @@ fi
 
 hash="$(md5sum <<<"$dir" | cut -c1-32)"
 containername="neuron-$hash"
-inputsocket="/tmp/neuron-socket-in-$hash"
-output="/tmp/neuron-socket-out-$hash"
 
-trap 'rm -rf "$inputsocket" "$output"' EXIT ERR INT
-sudo rm -rf "$inputsocket" "$output"
-
-mkfifo -m 600 "$inputsocket"
-mkdir "$output"
-
-echo "Running neuron worker for '$dir' (hash $hash)."
-docker run \
-	--rm \
-	-it \
-	--user "$(id -u):$(id -g)" \
-	--name="$containername" \
-	--volume "$dir:/zettelkasten" \
-	--volume "$inputsocket:/input" \
-	--volume "$output:/output" \
+exec docker-worker-start \
 	sridca/neuron \
-	bash -c '
-		echo "Listening for commands."
-		exec 4</input
-		while true; do
-			if read -u 4 -r command; then
-				pid="${command%% *}"
-				command="${command#$pid }"
-				printf "Received command %s from process %s.\n" "$command" "$pid"
-				(
-					exec 5>/output/$pid/status
-					exec 6>/output/$pid/stdout
-					exec 7>/output/$pid/stderr
-					$command >&6 2>&7
-					echo $? >&5
-				) &
-			else
-				sleep 0.1
-				continue
-			fi
-		done
-	'
+	--name "$containername" \
+	--user "$(id -u):$(id -g)" \
+	--volume "$dir:/zettelkasten"

@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+
+set -o errexit -o pipefail
+
+if [ $# -lt 1 ]; then
+	echo >&2 "Usage: $0 image [name] [options...]"
+	exit 1
+fi
+
+image="$1"
+optionhash="$(md5sum <<<"$@" | cut -c1-32)"
+shift
+
+opts=()
+while [ $# -gt 0 ]; do
+	case "$1" in
+		--name)
+			name="$2"
+			shift 2
+			continue
+		;;
+		--name=*)
+			name="${1#--name=}"
+			shift
+			continue
+		;;
+	esac
+	opts=("${opts[@]}" "$1")
+	shift
+done
+
+if [ -z "$name" ]; then
+	name="${image#*/}"
+	name="${name%:*}"
+	name="$name-$optionhash"
+fi
+
+socketdir="/tmp/docker-worker/$name"
+inputsocket="$socketdir/socket-in"
+output="$socketdir/sockets-out"
+
+trap 'rm -rf "$socketdir"' EXIT ERR INT
+sudo rm -rf "$socketdir"
+
+mkdir -p "$socketdir"
+mkfifo -m 600 "$inputsocket"
+mkdir "$output"
+
+echo "Running worker ${color_fg_cyan}$name${color_reset} using image ${color_fg_cyan}$image${color_reset}."
+docker run \
+	"${opts[@]}" \
+	--rm \
+	-it \
+	--name="$name" \
+	--volume "$inputsocket:/input" \
+	--volume "$output:/output" \
+	"$image" \
+	bash -c '
+		echo "Listening for commands."
+		exec 4</input
+		while true; do
+			if read -u 4 -r command; then
+				pid="${command%% *}"
+				command="${command#$pid }"
+				printf "Received command %s from process %s.\n" "$command" "$pid"
+
+				if [ "$command" = "exit" ]; then
+					(
+						exec 5>/output/$pid/status
+						echo 0 >&5
+					)
+					exit 0
+				fi
+
+				(
+					exec 5>/output/$pid/status
+					exec 6>/output/$pid/stdout
+					exec 7>/output/$pid/stderr
+					$command >&6 2>&7
+					echo $? >&5
+				) &
+			else
+				sleep 0.1
+				continue
+			fi
+		done
+	'
