@@ -60,6 +60,8 @@ target = .local/bin/clean-path, .local/bin/xdg-open
 target = .local/bin/tmuxp, .local/bin/yq, .local/bin/dotsecrets
 [local/bin/run-with-sudo]
 target = .local/bin/docker, .local/bin/docker-compose
+[local/bin/run-in-nix]
+target = .local/bin/neuron
 
 [opt]
 action = skip
