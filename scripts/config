@@ -50,18 +50,27 @@ action = skip
 target = .fzf/base16
 [fzf/fzf]
 action = recurse
-target = .fzf, .vim/bundle/fzf-base
+target =
+	.fzf,
+	.vim/bundle/fzf-base,
 
 [local]
 action = recurse
 [local/bin]
 action = recurse
 [local/bin/clean-path]
-target = .local/bin/clean-path, .local/bin/xdg-open
+target =
+	.local/bin/clean-path,
+	.local/bin/xdg-open,
 [local/bin/run-in-python-utils]
-target = .local/bin/tmuxp, .local/bin/yq, .local/bin/dotsecrets
+target =
+	.local/bin/dotsecrets,
+	.local/bin/tmuxp,
+	.local/bin/yq,
 [local/bin/run-with-sudo]
-target = .local/bin/docker, .local/bin/docker-compose
+target =
+	.local/bin/docker,
+	.local/bin/docker-compose,
 [local/bin/run-in-nix]
 target = .local/bin/neuron
 
@@ -90,9 +99,13 @@ action = skip
 target = .tmux.conf
 
 [vim]
-target = .vim, .config/nvim
+target =
+	.config/nvim,
+	.vim,
 [vim/vimrc]
-target = .vim/vimrc, .config/nvim/init.vim
+target =
+	.config/nvim/init.vim,
+	.vim/vimrc,
 
 [zsh/init.zsh]
 target = .zshrc

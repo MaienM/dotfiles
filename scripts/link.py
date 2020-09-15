@@ -103,7 +103,7 @@ class FileConfig(object):
 		if 'target' in data:
 			if self.action == FileAction.SKIP:
 				raise KeyError(f'A target was set for {self.path}, but the action is {self.action}')
-			self.targets = [t.strip() for t in data.pop('target').split(',')]
+			self.targets = [t.strip() for t in data.pop('target').split(',') if t.strip()]
 			if not self.targets:
 				raise ValueError(f'Invalid target set for {self.path}')
 
