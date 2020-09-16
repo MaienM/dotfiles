@@ -242,7 +242,6 @@ exec --no-startup-id VBoxClient-all
 ### Window assignments
 assign [class="^FML"] → $workspace1
 assign [class="^Minecraft"] → $workspace1
-assign [class="^firefox$" workspace="$workspace4"] -> $workspace2
 assign [class="^discord$"] → $workspace3
 assign [class="^Slack$"] → $workspace3
 assign [class="^Microsoft Teams"] → $workspace3
