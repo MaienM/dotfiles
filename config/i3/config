@@ -137,6 +137,18 @@ bindsym $GUI+Control+8 $exec ~/.config/i3/move-workspace-to-current-output.sh "$
 bindsym $GUI+Control+9 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace9"
 bindsym $GUI+Control+0 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace10"
 
+# exchange workspaces on windows
+# bindsym $GUI+Control+1 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace1"
+# bindsym $GUI+Control+2 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace2"
+# bindsym $GUI+Control+3 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace3"
+# bindsym $GUI+Control+4 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace4"
+# bindsym $GUI+Control+5 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace5"
+# bindsym $GUI+Control+6 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace6"
+# bindsym $GUI+Control+7 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace7"
+# bindsym $GUI+Control+8 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace8"
+# bindsym $GUI+Control+9 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace9"
+# bindsym $GUI+Control+0 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace10"
+
 # reload the configuration file
 bindsym $GUI+Shift+c reload; $exec notify-send 'i3' 'Reloaded config'
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
