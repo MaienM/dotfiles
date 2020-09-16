@@ -204,6 +204,7 @@ gaps inner 04
 smart_borders on
 smart_gaps on
 floating_minimum_size 75 x 50
+focus_on_window_activation urgent
 
 # Keybinds to run programs
 bindsym $GUI+Escape $exec xscreensaver-command -lock
