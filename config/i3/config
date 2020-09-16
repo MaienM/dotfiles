@@ -240,15 +240,23 @@ exec --no-startup-id dunst
 exec --no-startup-id VBoxClient-all
 
 ### Window assignments
+assign [class="^FML"] → $workspace1
+assign [class="^Minecraft"] → $workspace1
+assign [class="^firefox$" workspace="$workspace4"] -> $workspace2
 assign [class="^discord$"] → $workspace3
 assign [class="^Slack$"] → $workspace3
+assign [class="^Microsoft Teams"] → $workspace3
 assign [class="^Evolution$"] → $workspace4
+assign [class="^mpv$"] → $workspace7
 
 ### Window rules
 for_window [class="^Antimicro$"] floating enable
 for_window [class="^Steam$" title="^Friends list$"] floating enable
 for_window [class="^Steam$" title="^Steam - News"] close
 for_window [class="^mpv$"] exec --no-startup-id ~/.config/i3/resize-to-aspect-ratio.sh 16:9 height
+for_window [class="^mpv$"] fullscreen enable
 for_window [class="^calibre$" floating] resize set width 70ppt height 70ppt
 for_window [class="^calibre$" title="^Edit Metadata"] resize set width 80ppt height 80ppt
 for_window [class="^calibre$"] move position center
+for_window [class="^java$"] floating enable
+for_window [window_type="notification"] floating enable
