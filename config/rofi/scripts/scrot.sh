@@ -28,11 +28,17 @@ if [ "$delay" -gt 1 ]; then
 	sleep "$delay"
 fi
 
+screenshotdir="$HOME/Screenshots"
+if [ ! -d "$screenshotdir" ]; then
+	mkdir -p "$screenshotdir"
+fi
+
 # shellcheck disable=SC2016
 if fn="$(notify-error scrot "${args[@]}" -e 'echo $f')"; then
+	ffn="$screenshotdir/$fn"
+	mv "$fn" "$ffn"
 	echo "$fn"
-	fn="$PWD/$fn"
-	printf '%s' "$fn" | xclip -selection Clipboard
+	printf '%s' "$ffn" | xclip -selection Clipboard
 	notify-send "Screenshot" "Saved screenshot to $fn"
 fi
 
