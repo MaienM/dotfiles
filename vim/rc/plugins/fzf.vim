@@ -1,28 +1,12 @@
-" If available, use NeoVim's floating windows for fzf.
-if exists('*nvim_open_win')
-	let $FZF_DEFAULT_OPTS='--layout=reverse'
-	let g:fzf_layout = { 'window': 'call FloatingFZF()' }
-
-	function! FloatingFZF()
-		let buf = nvim_create_buf(v:false, v:true)
-		call setbufvar(buf, '&signcolumn', 'no')
-
-		let width = float2nr(&columns - (&columns / 10))
-		let height = float2nr(&lines - (&lines / 10 * 3))
-		let col = float2nr((&columns - width) / 2)
-		let row = float2nr((&lines - height) / 2)
-
-		let opts = {
-			\'relative': 'editor',
-			\'width': width,
-			\'height': height,
-			\'col': col,
-			\'row': row
-		\}
-
-		call nvim_open_win(buf, v:true, opts)
-	endfunction
-endif
+let $FZF_DEFAULT_OPTS='--layout=reverse'
+let g:fzf_layout = {
+	\'tmux': '-p 85%,85%',
+	\'window': {
+		\'width': 0.85,
+		\'height': 0.85,
+		\'border': 'sharp',
+	\},
+\}
 
 command! -bang -nargs=* Rg call fzf#vim#grep(
 	\'rg --column --line-number --no-heading --color=always --smart-case ' . shellescape(<q-args>),
