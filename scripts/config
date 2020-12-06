@@ -43,6 +43,10 @@ target = .config/mpv/scripts/seek-to.lua
 target = .config/mpv/scripts/youtube-quality.lua
 [config/polybar/launch.sh]
 target = .zsh/bundle/base16-hooks/polybar.sh
+[config/youtube-dlc]
+target =
+	.config/youtube-dlc,
+	.config/youtube-dl,
 
 [fzf]
 action = skip
