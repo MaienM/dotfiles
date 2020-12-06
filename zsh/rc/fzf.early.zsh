@@ -7,4 +7,10 @@ export FZF_BIND_OPTS=(
 	# Allow moving the preview with the same keys using alt instead of control
 	--bind 'alt-j:preview-down,alt-k:preview-up'
 	--bind 'alt-h:preview-page-up,alt-l:preview-page-down'
+	# Toggle showing the preview
+	--bind 'ctrl-p:toggle-preview'
+	# Toggle the sorting
+	--bind 'ctrl-s:toggle-sort'
+	# Alternative select in case something is messing with the default binding
+	--bind 'ctrl-a:accept'
 )
