@@ -9,8 +9,8 @@ for file in ~/.zsh/rc/fzf/**/*.zsh; do
 done
 
 # Add a preview to the built-in ctrl-t keybinding
-export FZF_CTRL_T_OPTS="$FZF_CTRL_T_OPTS --preview 'preview {}'"
-export FZF_ALT_C_OPTS="$FZF_ALT_C_OPTS --preview 'preview {}'"
+[[ "$FZF_CTRL_T_OPTS" = *'--preview'* ]] || export FZF_CTRL_T_OPTS="$FZF_CTRL_T_OPTS --preview 'preview {}'"
+[[ "$FZF_ALT_C_OPTS" = *'--preview'* ]] || export FZF_ALT_C_OPTS="$FZF_ALT_C_OPTS --preview 'preview {}'"
 
 # Load the base16 theme
 export FZF_DEFAULT_OPTS=""
