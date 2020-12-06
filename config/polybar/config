@@ -54,7 +54,7 @@ modules-left = i3
 modules-right = xbacklight utilization/cpu memory/ram temperature/cpu utilization/gpu memory/gpu temperature/gpu gamemode wlan eth battery date
 
 [bar/primary]
-inherits = bar/base
+inherit = bar/base
 
 modules-center = xwindow
 
@@ -63,7 +63,7 @@ tray-padding = 1
 tray-maxsize = 13.5
 
 [bar/secondary]
-inherits = bar/base
+inherit = bar/base
 
 padding-right = 1.5
 
