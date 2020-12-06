@@ -121,6 +121,13 @@ _fzf_pipeline_git_tag_source() {
 }
 alias _fzf_pipeline_git_tag_preview='_fzf_pipeline_git_commit_preview'
 
+# Reflog
+_fzf_pipeline_git_reflog_source() {
+	git reflog \
+	| sed 's/HEAD@{[0-9]\+}: //' \
+	| sed "s/ \([^: ]\+\)\( [^:(]\+\)\?\( ([^)]\+)\)\?:/ $color_fg_cyan\1$color_fg_green\2$color_fg_red\3$color_reset/"
+}
+
 # Presets
 alias _fzf_preset_git_files='_fzf_config_add git_files'
 alias _fzf_preset_git_files_modified='_fzf_config_add git_files_modified'
@@ -142,6 +149,7 @@ _fzf_preset_git_ref() {
 	| _fzf_config_add "git_tag" "${color_fg_blue}tag$color_reset" \
 	| _fzf_config_add "git_commit" "${color_fg_cyan}commit$color_reset"
 }
+alias _fzf_preset_git_reflog='_fzf_config_add git_reflog'
 
 _fzf_register_preset "git_files" "Git files" "git:files"
 _fzf_register_preset "git_files_modified" "Git files with unstaged changes" "git:files:modified"
@@ -153,3 +161,4 @@ _fzf_register_preset "git_commit" "Git commits" "git:commit"
 _fzf_register_preset "git_branch" "Git branches" "git:branch"
 _fzf_register_preset "git_tag" "Git tags" "git:tag"
 _fzf_register_preset "git_ref" "Git refs (commits, branches and tags)" "git:ref"
+_fzf_register_preset "git_reflog" "Git reflog" "git:reflog"
