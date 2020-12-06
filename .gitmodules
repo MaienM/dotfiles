@@ -248,3 +248,6 @@
 [submodule "vim/bundle/golden-ratio"]
 	path = vim/bundle/golden-ratio
 	url = https://github.com/roman/golden-ratio
+[submodule "zsh/bundle/completion-gradle"]
+	path = zsh/bundle/completion-gradle
+	url = https://github.com/gradle/gradle-completion
