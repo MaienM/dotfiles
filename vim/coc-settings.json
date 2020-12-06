@@ -8,7 +8,10 @@
 	"signature.maxWindowHeight": 20,
 	"signature.preferShownAbove": false,
 
+	"python.venvPath": "~/.asdf/installs/python",
 	"npm.binPath": "~/.asdf/installs/nodejs/neovim/bin/npm",
+
+	"html.format.enable": true,
 
 	"diagnostic-languageserver.filetypes": {
 		"sh": ["shellcheck"],
@@ -30,6 +33,10 @@
 					},
 				},
 			},
+		},
+		"neuron": {
+			"filetypes": ["markdown"],
+			"command": "~/go/bin/neuron-language-server",
 		},
 	},
 }
