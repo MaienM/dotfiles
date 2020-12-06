@@ -202,7 +202,7 @@ _fzf_config_run() {
 	fi
 
 	# Run fzf
-	printf '%s\n' $sources | fzf "${fzf_args[@]}" | while read -r line; do
+	printf '%s\n' $sources | fzf-tmux "${fzf_args[@]}" | while read -r line; do
 		[[ -n "$line" ]] || return
 
 		# Use the appropriate target function to transform the line
