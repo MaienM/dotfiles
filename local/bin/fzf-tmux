@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+if [ "$TMUX_SUPPORT_POPUP" = 1 ]; then
+	exec ~/.fzf/bin/fzf-tmux -p "85%,85%" "$@"
+else
+	exec ~/.fzf/bin/fzf-tmux "$@"
+fi
