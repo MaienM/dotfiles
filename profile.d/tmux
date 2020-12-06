@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+if [ -z "$TMUX_SUPPORT_POPUP" ]; then
+	[ "$(tmux popup --help 2>&1)" = 'unknown command: popup' ] && export TMUX_SUPPORT_POPUP=0 || export TMUX_SUPPORT_POPUP=1
+fi
