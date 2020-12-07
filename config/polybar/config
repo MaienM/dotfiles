@@ -51,7 +51,7 @@ cursor-click = pointer
 cursor-scroll = ns-resize
 
 modules-left = i3
-modules-right = xbacklight updates utilization/cpu memory/ram temperature/cpu utilization/gpu memory/gpu temperature/gpu gamemode eth0 eth1 eth2 wlan0 wlan1 wlan2 battery date
+modules-right = xbacklight updates utilization/cpu memory/ram temperature/cpu utilization/gpu memory/gpu temperature/gpu gamemode eth0 eth1 eth2 wlan0 wlan1 wlan2 vpn battery date
 
 [bar/primary]
 inherit = bar/base
@@ -125,60 +125,6 @@ bar-empty = ─
 bar-empty-font = 2
 bar-empty-foreground = ${colors.foreground-alt}
 
-[module/eth]
-type = internal/network
-interval = 3.0
-
-format-connected-underline = #55aa55
-format-connected-prefix = ${env:i_mdi_lan_connect}
-format-connected-prefix-foreground = ${colors.foreground-alt}
-label-connected = %local_ip%
-
-format-disconnected =
-;format-disconnected = <label-disconnected>
-;format-disconnected-underline = ${self.format-connected-underline}
-;label-disconnected = %ifname% disconnected
-;label-disconnected-foreground = ${colors.foreground-alt}
-
-[module/eth0]
-inherit = module/eth
-interface = ${env:eth0}
-
-[module/eth1]
-inherit = module/eth
-interface = ${env:eth1}
-
-[module/eth2]
-inherit = module/eth
-interface = ${env:eth2}
-
-[module/wlan]
-type = internal/network
-interval = 3.0
-
-format-connected = <ramp-signal> <label-connected>
-format-connected-underline = #9f78e1
-label-connected = %essid%
-
-ramp-signal-0 = ${env:i_mdi_wifi}
-; ramp-signal-0 = ${env:i_mdi_wifi_strength_1}
-; ramp-signal-1 = ${env:i_mdi_wifi_strength_2}
-; ramp-signal-2 = ${env:i_mdi_wifi_strength_3}
-; ramp-signal-3 = ${env:i_mdi_wifi_strength_4}
-ramp-signal-foreground = ${colors.foreground-alt}
-
-[module/wlan0]
-inherit = module/wlan
-interface = ${env:wlan0}
-
-[module/wlan1]
-inherit = module/wlan
-interface = ${env:wlan1}
-
-[module/wlan2]
-inherit = module/wlan
-interface = ${env:wlan2}
-
 [module/date]
 type = internal/date
 interval = 5
@@ -242,6 +188,69 @@ animation-discharging-8 = ${env:i_mdi_battery_20}
 animation-discharging-9 = ${env:i_mdi_battery_10}
 animation-discharging-10 = ${env:i_mdi_battery_outline}
 animation-discharging-foreground = ${colors.foreground-alt}
+
+; Networking
+
+[module/eth]
+type = internal/network
+interval = 3.0
+
+format-connected-underline = #55aa55
+format-connected-prefix = ${env:i_mdi_lan_connect}
+format-connected-prefix-foreground = ${colors.foreground-alt}
+label-connected = %local_ip%
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+[module/eth0]
+inherit = module/eth
+interface = ${env:eth0}
+
+[module/eth1]
+inherit = module/eth
+interface = ${env:eth1}
+
+[module/eth2]
+inherit = module/eth
+interface = ${env:eth2}
+
+[module/wlan]
+type = internal/network
+interval = 3.0
+
+format-connected = <ramp-signal> <label-connected>
+format-connected-underline = #9f78e1
+label-connected = %essid%
+
+ramp-signal-0 = ${env:i_mdi_wifi}
+; ramp-signal-0 = ${env:i_mdi_wifi_strength_1}
+; ramp-signal-1 = ${env:i_mdi_wifi_strength_2}
+; ramp-signal-2 = ${env:i_mdi_wifi_strength_3}
+; ramp-signal-3 = ${env:i_mdi_wifi_strength_4}
+ramp-signal-foreground = ${colors.foreground-alt}
+
+[module/wlan0]
+inherit = module/wlan
+interface = ${env:wlan0}
+
+[module/wlan1]
+inherit = module/wlan
+interface = ${env:wlan1}
+
+[module/wlan2]
+inherit = module/wlan
+interface = ${env:wlan2}
+
+[module/vpn]
+type = custom/script
+exec-if = command -v nordvpn
+exec = ~/.config/polybar/scripts/nordvpn.sh
+interval = 10
+format-prefix = ${env:i_mdi_vpn}
 
 ; System utilization
 
