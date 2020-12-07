@@ -51,12 +51,12 @@ cursor-click = pointer
 cursor-scroll = ns-resize
 
 modules-left = i3
-modules-right = xbacklight updates utilization/cpu memory/ram temperature/cpu utilization/gpu memory/gpu temperature/gpu gamemode eth0 eth1 eth2 wlan0 wlan1 wlan2 vpn battery date
 
 [bar/primary]
 inherit = bar/base
 
 modules-center = xwindow
+modules-right = xbacklight updates utilization/cpu memory/ram temperature/cpu utilization/gpu memory/gpu temperature/gpu gamemode eth0 eth1 eth2 wlan0 wlan1 wlan2 vpn battery date
 
 tray-position = right
 tray-padding = 1
@@ -64,6 +64,8 @@ tray-maxsize = 13.5
 
 [bar/secondary]
 inherit = bar/base
+
+modules-right = xbacklight utilization/cpu memory/ram temperature/cpu utilization/gpu memory/gpu temperature/gpu gamemode battery date
 
 padding-right = 1.5
 
