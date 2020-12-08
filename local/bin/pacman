@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Chances are this is being run as root, so reset the HOME environment variable first.
+HOME="$(awk -F: -v v="${SUDO_USER:-$USER}" '{if ($1==v) print $6}' /etc/passwd)"
+
+trap '$HOME/.config/polybar/scripts/send-interrupt.sh updates' ERR EXIT
+
+clean-path pacman "$@"

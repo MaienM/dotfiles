@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 set -e
 
@@ -10,5 +10,7 @@ if [ ! -f /usr/bin/pikaur ]; then
 	cd /tmp/pikaur-repo
 	makepkg -fsri
 fi
+
+trap '$HOME/.config/polybar/scripts/send-interrupt.sh updates' ERR EXIT
 
 clean-path pikaur "$@"

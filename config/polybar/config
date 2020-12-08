@@ -328,8 +328,8 @@ label-foreground = ${colors.cyan}
 [module/updates]
 type = custom/script
 exec-if = command -v checkupdates && command -v pikaur
-exec = ~/.config/polybar/scripts/updates.sh
-interval = 3600
+exec = ~/.config/polybar/scripts/watch-with-interrupt.sh updates 3600 ~/.config/polybar/scripts/updates.sh
+tail = true
 format-prefix = ${env:i_linux_archlinux}
 
 ; vim:ft=dosini
