@@ -250,8 +250,8 @@ interface = ${env:wlan2}
 [module/vpn]
 type = custom/script
 exec-if = command -v nordvpn
-exec = ~/.config/polybar/scripts/nordvpn.sh
-interval = 10
+exec = ~/.config/polybar/scripts/watch-with-interrupt.sh nordvpn 60 ~/.config/polybar/scripts/nordvpn.sh
+tail = true
 format-prefix = ${env:i_mdi_vpn}
 
 ; System utilization
