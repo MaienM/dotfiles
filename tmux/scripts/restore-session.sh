@@ -33,5 +33,5 @@ file="$(
 )"
 
 if [ -f "$file" ]; then
-	tmuxp load "$file"
+	tmuxp load -y "$file"
 fi
