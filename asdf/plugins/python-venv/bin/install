@@ -23,9 +23,9 @@ fi
 ln -s "$ASDF_INSTALL_PATH" "$asdf_alt_install_path"
 
 # Base the virtualenv on the current asdf version, as it doesn't seem possible to pass this in during install.
-python_version="$(asdf current python | cut -d' ' -f1)"
+python_version="$(asdf current python | awk '{ print $2 }')"
 python_install_path="$(dirname "$asdf_alt_install_path")/$python_version"
-if [ ! -d "$python_install_path" ]; then
+if [ -z "$python_version" ] || [ ! -d "$python_install_path" ]; then
 	echo >&2 "Cannot find python instance at $python_install_path."
 	exit 1
 fi
