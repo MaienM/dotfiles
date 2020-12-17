@@ -69,6 +69,7 @@ target =
 [local/bin/run-in-python-utils]
 target =
 	.local/bin/dotsecrets,
+	.local/bin/qmk,
 	.local/bin/tmuxp,
 	.local/bin/yq,
 [local/bin/run-with-sudo]

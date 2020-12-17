@@ -25,5 +25,6 @@ echo ">>> Installing utilities."
 ASDF_PYTHON_VERSION=utils asdf exec pip install -U bs4 requests lxml
 ASDF_PYTHON_VERSION=utils asdf exec pip install -U tmuxp yq
 ASDF_PYTHON_VERSION=utils asdf exec pip install -U dotsecrets
+ASDF_PYTHON_VERSION=utils asdf exec pip install -U qmk
 asdf reshim python utils
 
