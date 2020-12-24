@@ -18,6 +18,7 @@ dir="$HOME/.tmux/frozen"
 mkdir -p "$dir"
 file="$(
 	find "$dir" -type f -printf '%p\0' \
+	| sort -z \
 	| while IFS= read -r -d '' fn; do
 		mapfile -t counts < <(jq '(.windows | length), (.windows | map(.panes) | flatten | length)' < "$fn")
 		printf '%s %s (%d windows, %d panes)\0' "$fn" "$(basename "$fn")" "${counts[0]}" "${counts[1]}"
