@@ -251,3 +251,6 @@
 [submodule "zsh/bundle/completion-gradle"]
 	path = zsh/bundle/completion-gradle
 	url = https://github.com/gradle/gradle-completion
+[submodule "vim/bundle/unimpaired"]
+	path = vim/bundle/unimpaired
+	url = https://github.com/tpope/vim-unimpaired
