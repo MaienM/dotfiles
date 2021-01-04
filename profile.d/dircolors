@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+[ -f "$HOME/.dircolors" ] || return
+
+eval "$(dircolors "$HOME/.dircolors")"
+
