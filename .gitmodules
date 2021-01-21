@@ -254,3 +254,6 @@
 [submodule "vim/bundle/unimpaired"]
 	path = vim/bundle/unimpaired
 	url = https://github.com/tpope/vim-unimpaired
+[submodule "config/mpv/bundle/sponsorblock"]
+	path = config/mpv/bundle/sponsorblock
+	url = https://github.com/po5/mpv_sponsorblock

@@ -39,6 +39,10 @@ target = .config/mpv/scripts/crop.lua
 target = .config/mpv/scripts/encode.lua
 [config/mpv/bundle/occivink/scripts/seek-to.lua]
 target = .config/mpv/scripts/seek-to.lua
+[config/mpv/bundle/sponsorblock/sponsorblock.lua]
+target = .config/mpv/scripts/sponsorblock.lua
+[config/mpv/bundle/sponsorblock/sponsorblock_shared]
+target = .config/mpv/scripts/sponsorblock_shared
 [config/mpv/bundle/youtube-quality/youtube-quality.lua]
 target = .config/mpv/scripts/youtube-quality.lua
 [config/polybar/launch.sh]
