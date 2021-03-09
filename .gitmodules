@@ -239,9 +239,6 @@
 [submodule "zsh/bundle/histdb"]
 	path = zsh/bundle/histdb
 	url = https://github.com/larkery/zsh-histdb
-[submodule "vim/bundle-coc/python"]
-	path = vim/bundle-coc/python
-	url = https://github.com/neoclide/coc-python
 [submodule "vim/bundle/neuron"]
 	path = vim/bundle/neuron
 	url = https://github.com/fiatjaf/neuron.vim
@@ -257,3 +254,6 @@
 [submodule "config/mpv/bundle/sponsorblock"]
 	path = config/mpv/bundle/sponsorblock
 	url = https://github.com/po5/mpv_sponsorblock
+[submodule "vim/bundle-coc/jedi"]
+	path = vim/bundle-coc/jedi
+	url = https://github.com/pappasam/coc-jedi
