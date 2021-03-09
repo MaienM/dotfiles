@@ -253,5 +253,10 @@ timeout = 8
 #    appname = Pidgin
 #    summary = *twitter.com*
 #    urgency = normal
-#
+
+[twitchnotifier-offline]
+appname = TwitchNotifier
+summary = IGNORE
+format = ""
+
 # vim: ft=cfg
