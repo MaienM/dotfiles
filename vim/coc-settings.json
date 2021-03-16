@@ -18,6 +18,10 @@
 	},
 
 	"languageserver": {
+		"clojure": {
+			"filetypes": ["clojure", "clojurescript"],
+			"command": "~/.local/bin/clojure-lsp",
+		},
 		"kotlin": {
 			"filetypes": ["kotlin"],
 			"command": "~/.local/share/kotlin-language-server/server/build/install/server/bin/kotlin-language-server",
