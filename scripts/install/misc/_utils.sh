@@ -37,10 +37,9 @@ asdf_install_latest_version() {
 	asdf install "$plugin" "$version"
 }
 
-asdf_remove_virtualenv() {
+asdf_remove() {
 	asdf_guard
-	if asdf list python-venv 2> /dev/null | grep -q "^\s*$1\s*$"; then
-		asdf uninstall python-venv "$1"
+	if asdf list "$1" 2> /dev/null | grep -q "^\s*$1\s*$"; then
+		asdf uninstall "$1" "$2"
 	fi
 }
-

@@ -18,7 +18,7 @@ asdf_install_latest_version python
 echo "Using python $version."
 
 echo ">>> Setting up virtualenv."
-asdf_remove_virtualenv utils
+asdf_remove python-venv utils
 ASDF_PYTHON_VERSION="$version" asdf install python-venv utils
 
 echo ">>> Installing utilities."
