@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# A wrapper around rofi -dmenu that allows each entry to separate what is shown from what will be returned upon a selection.
+
+set -o errexit -o pipefail
+
+while read -r line; do
+	key="${line%%|*}"
+	text="${line#$key|}"
+	printf '<span size="0">%s</span>%s\n' "$key" "$text"
+done \
+| rofi -dmenu -markup-rows "$@" \
+| sed 's/^<span size=.0.>\([^<]*\)<.*$/\1/'

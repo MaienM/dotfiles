@@ -23,16 +23,12 @@ for option in "$@"; do
 	icon="${BASH_REMATCH[2]}"
 	icon_color="${BASH_REMATCH[3]+$base16_foreground}"
 	description="${BASH_REMATCH[5]}"
-	printf '<span size="0">%s</span>%s\0icon\x1f%s\n' \
-		"$id" "$description" "$(nerdfonts-icon-as-svg "$icon" "$icon_color")"
+	printf '%s|%s\0icon\x1f%s\n' "$id" "$description" "$(nerdfonts-icon-as-svg "$icon" "$icon_color")"
 done \
-	| rofi \
-		-dmenu \
+	| rofi-dmenu-with-key \
 		-theme <(~/.config/rofi/themes/iconmenu.sh "$#") \
-		-markup-rows \
 		-show-icons \
 		-kb-move-char-back '' \
 		-kb-move-char-forward '' \
 		-kb-row-up Left,Up,h,k,Control+p \
-		-kb-row-down Down,Right,j,l,Control+n \
-	| sed 's/^<span size=.0.>\([^<]*\)<.*$/\1/'
+		-kb-row-down Down,Right,j,l,Control+n

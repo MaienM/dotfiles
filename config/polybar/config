@@ -264,7 +264,10 @@ interface = ${env:wlan2}
 [module/vpn]
 type = custom/script
 exec-if = command -v nordvpn
-exec = ~/.config/polybar/scripts/watch-with-interrupt.sh nordvpn 60 ~/.config/polybar/scripts/nordvpn.sh
+exec = ~/.config/polybar/scripts/watch-with-interrupt.sh nordvpn 60 ~/.config/polybar/scripts/nordvpn-status.sh
+click-left = ~/.config/polybar/scripts/nordvpn-quick-connect.sh
+click-middle = ~/.config/polybar/scripts/nordvpn-menu.sh
+click-right = nordvpn d
 tail = true
 format-prefix = ${env:i_mdi_vpn}
 

@@ -11,11 +11,10 @@ Uptime: .*\
 "
 
 if ! [[ "$(nordvpn status)" =~ $status_pattern ]]; then
-	echo "Off"
-	exit 0
+	export connected=0
+	return
 fi
 
-country="${BASH_REMATCH[1]}"
-city="${BASH_REMATCH[2]}"
-
-echo "$country/$city"
+export connected=1
+export country="${BASH_REMATCH[1]}"
+export city="${BASH_REMATCH[2]}"
