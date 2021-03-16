@@ -49,7 +49,7 @@ while read -r volume mountpoint used available; do
 		"$(ps used)" \
 		"$(ps available)" \
 		"$(c "100 * used / available")"
-done < <(df --output=source,target,used,size -x zfs -x tmpfs -x devtmpfs | tail -n+2)
+done < <(df --output=source,target,used,size --block-size=1 -x zfs -x tmpfs -x devtmpfs | tail -n+2)
 
 if command -v zfs > /dev/null 2>&1; then
 	mapfile -t volumes < <(zfs list -H -o name)
