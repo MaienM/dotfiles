@@ -86,16 +86,18 @@ bindsym $GUI+p focus parent
 #bindsym $GUI+d focus child
 
 # workspace names
-set $workspace1 1: code
+set $workspace1 1: cli
 set $workspace2 2: web
-set $workspace3 3: chat
-set $workspace4 4: mail
+set $workspace3 3: mail
+set $workspace4 4
 set $workspace5 5
 set $workspace6 6
 set $workspace7 7
 set $workspace8 8
 set $workspace9 9
-set $workspace10 10: media
+set $workspace10 10: chat
+set $workspace11 11: media
+set $workspace12 12: scratch
 
 # switch to workspace
 bindsym $GUI+1 workspace $workspace1
@@ -108,6 +110,8 @@ bindsym $GUI+7 workspace $workspace7
 bindsym $GUI+8 workspace $workspace8
 bindsym $GUI+9 workspace $workspace9
 bindsym $GUI+0 workspace $workspace10
+bindsym $GUI+minus workspace $workspace11
+bindsym $GUI+equal workspace $workspace12
 
 # move focused container to workspace
 bindsym $GUI+Shift+1 move container to workspace $workspace1
@@ -120,6 +124,8 @@ bindsym $GUI+Shift+7 move container to workspace $workspace7
 bindsym $GUI+Shift+8 move container to workspace $workspace8
 bindsym $GUI+Shift+9 move container to workspace $workspace9
 bindsym $GUI+Shift+0 move container to workspace $workspace10
+bindsym $GUI+Shift+minus move container to workspace $workspace11
+bindsym $GUI+Shift+equal move container to workspace $workspace12
 
 # move entire workspace
 bindsym $GUI+Control+$left move workspace to output left
@@ -136,6 +142,8 @@ bindsym $GUI+Control+7 $exec ~/.config/i3/move-workspace-to-current-output.sh "$
 bindsym $GUI+Control+8 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace8"
 bindsym $GUI+Control+9 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace9"
 bindsym $GUI+Control+0 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace10"
+bindsym $GUI+Control+minus $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace11"
+bindsym $GUI+Control+equal $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace12"
 
 # exchange workspaces on windows
 # bindsym $GUI+Control+1 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace1"
@@ -242,11 +250,11 @@ exec --no-startup-id VBoxClient-all
 ### Window assignments
 assign [class="^FML"] → $workspace1
 assign [class="^Minecraft"] → $workspace1
-assign [class="^discord$"] → $workspace3
-assign [class="^Slack$"] → $workspace3
-assign [class="^Microsoft Teams"] → $workspace3
-assign [class="^Evolution$"] → $workspace4
-assign [class="^mpv$"] → $workspace7
+assign [class="^discord$"] → $workspace10
+assign [class="^Slack$"] → $workspace10
+assign [class="^Microsoft Teams"] → $workspace10
+assign [class="^teams-for-linux$"] → $workspace10
+assign [class="^Evolution$"] → $workspace3
 
 ### Window rules
 for_window [class="^Antimicro$"] floating enable
@@ -259,3 +267,4 @@ for_window [class="^calibre$" title="^Edit Metadata"] resize set width 80ppt hei
 for_window [class="^calibre$"] move position center
 for_window [class="^java$"] floating enable
 for_window [window_type="notification"] floating enable
+for_window [class="^mpv$" workspace="^(?!$workspace8).*$"] move container to workspace $workspace11
