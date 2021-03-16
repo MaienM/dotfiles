@@ -2,6 +2,10 @@ alias zmv='noglob zmv'
 alias zcp='noglob zmv -C'
 alias zln='noglob zmv -L'
 
+function duh() {
+	du -maxd 1 -h "$@" | sort -h
+}
+
 if command -v xclip > /dev/null 2>&1; then
 	# x selection to clipboard (and vice versa).
 	alias xsc='xclip -out | xclip -selection Clipboard'
@@ -10,4 +14,3 @@ fi
 
 # xprop, stripping the icon from the output
 alias xpropni="xprop | awk -vskip=0 '{ if (/^\S/) { skip = 0 }; if (/^_NET_WM_ICON/) { skip = 1 }; if (skip != 1) { print } }'"
-
