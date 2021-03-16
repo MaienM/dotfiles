@@ -34,8 +34,23 @@ cs() {
 	format_size "$(c "$1")"
 }
 
+get_column() {
+	df --output="$1" --block-size=1 -x zfs -x tmpfs -x devtmpfs -x squashfs -x overlay | tail -n+2
+}
+
+mapfile -t list_volume < <(get_column source)
+mapfile -t list_mountpoint < <(get_column target)
+mapfile -t list_used < <(get_column used)
+mapfile -t list_available < <(get_column size)
 (
-while read -r volume mountpoint used available; do
+for i in {0..999}; do
+	[ "$i" -lt "${#list_volume[@]}" ] || break
+
+	volume="${list_volume[$i]}"
+	mountpoint="${list_mountpoint[$i]}"
+	used="${list_used[$i]}"
+	available="${list_available[$i]}"
+
 	unset properties
 	declare -A properties
 
@@ -49,7 +64,7 @@ while read -r volume mountpoint used available; do
 		"$(ps used)" \
 		"$(ps available)" \
 		"$(c "100 * used / available")"
-done < <(df --output=source,target,used,size --block-size=1 -x zfs -x tmpfs -x devtmpfs -x squashfs -x overlay | tail -n+2)
+done
 
 if command -v zfs > /dev/null 2>&1; then
 	mapfile -t volumes < <(zfs list -H -o name)
