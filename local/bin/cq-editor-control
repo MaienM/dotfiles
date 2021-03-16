@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+id="$(xwininfo -name 'CadQuery GUI (PyQT)' -int | head -n2 | cut -d' ' -f4)"
+if [ ! "$id" -gt 0 ]; then
+	echo >&2 "Cannot find cq-editor window."
+	exit 1
+fi
+
+case "$1" in
+	wireframe)
+		xdotool key -window "$id" --delay 0.1 alt+v Down Down Down Down Down Down Down Down Return
+	;;
+	shaded)
+		xdotool key -window "$id" --delay 0.1 alt+v Down Down Down Down Down Down Down Down Down Return
+	;;
+	*)
+		echo >&2 "Invalid action."
+		exit 2
+	;;
+esac
