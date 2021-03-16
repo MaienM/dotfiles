@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+SHELLCHECK_OPTS="-x"
+export SHELLCHECK_OPTS
