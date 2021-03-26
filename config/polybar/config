@@ -50,7 +50,7 @@ font-3 = siji:pixelsize=10;1
 cursor-click = pointer
 cursor-scroll = ns-resize
 
-modules-left = i3
+modules-left = i3 yubikey
 
 [bar/primary]
 inherit = bar/base
@@ -288,7 +288,6 @@ format-prefix = ${env:i_mdi_memory}
 format-prefix-foreground = ${colors.foreground-alt}
 format-underline = #4bffdc
 label = %percentage_used%%
-animation-discharging-framerate = 200
 
 [module/temperature/cpu]
 type = internal/temperature
@@ -348,5 +347,19 @@ exec-if = command -v checkupdates && command -v pikaur
 exec = ~/.config/polybar/scripts/watch-with-interrupt.sh updates 3600 ~/.config/polybar/scripts/updates.sh
 tail = true
 format-prefix = ${env:i_linux_archlinux}
+
+[module/yubikey]
+type = custom/script
+exec-if = command -v yubikey-touch-detector
+exec = ~/.config/polybar/scripts/yubikey.sh
+tail = true
+
+format-prefix = ${env:i_fa_key}
+format-suffix = ${env:i_fa_key}
+format-background = ${colors.foreground}
+format-foreground = ${colors.background}
+format-margin = 2
+format-padding = 2
+label-padding = 2
 
 ; vim:ft=dosini
