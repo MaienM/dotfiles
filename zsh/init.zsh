@@ -1,4 +1,4 @@
-source ~/.profile
+source ~/.profile.d/autoload
 
 # Load version checking function, for version guards in the plugins.
 autoload -Uz is-at-least

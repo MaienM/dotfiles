@@ -96,6 +96,11 @@ target = .local/bin/extract-url
 [opt/ssh-ident/ssh-ident]
 target = .local/bin/ssh
 
+[profile]
+target =
+	.bash_profile,
+	.zprofile,
+
 [proxyman]
 action = skip
 [proxyman/proxyman.sh]

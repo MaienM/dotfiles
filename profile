@@ -2,19 +2,6 @@
 # shellcheck disable=SC1090
 
 #
-# Setup autoloading functions.
-#
-for file in "$HOME/.functions"/*; do
-	name=$(basename "$file")
-	echo "$name" | grep -qF . && continue
-	eval "$name() {
-		unset \"$name\"
-		. \"$file\"
-		\"$name\" \"\$@\"
-	}"
-done
-
-#
 # Force English as language.
 #
 if locale -a | grep -q en_GB; then
@@ -23,6 +10,18 @@ else
 	export LANG=en_US.UTF-8
 fi
 export LC_ALL="$LANG"
+
+#
+# If present, load the profile file for this specific computer.
+#
+[ -f "$HOME/.profile_local" ] && . "$HOME/.profile_local";
+
+#
+# Load other profile files.
+#
+for file in "$HOME/.profile.d/"*; do
+	. "$file"
+done
 
 #
 # Set preferred programs.
@@ -38,18 +37,6 @@ fi
 if command_exists kitty; then
 	export TERMINAL="kitty"
 fi
-
-#
-# If present, load the profile file for this specific computer.
-#
-[ -f "$HOME/.profile_local" ] && . "$HOME/.profile_local";
-
-#
-# Load other profile files.
-#
-for file in "$HOME/.profile.d/"*; do
-	. "$file"
-done
 
 #
 # Add local bin to path. This is done (almost) last, because it is unlikely that something should be before it.
