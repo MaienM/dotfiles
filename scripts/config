@@ -62,6 +62,9 @@ target =
 	.fzf,
 	.vim/bundle/fzf-base,
 
+[gnupg]
+action = recurse
+
 [local]
 action = recurse
 [local/bin]
@@ -110,6 +113,9 @@ action = recurse
 target = .proxyman
 [proxyman/proxyman/bash-zsh.sh]
 action = skip
+
+[ssh]
+action = recurse
 
 [tmux/init.conf]
 target = .tmux.conf
