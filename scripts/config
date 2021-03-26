@@ -94,8 +94,6 @@ action = skip
 target = .local/bin/diff-so-fancy
 [opt/extract_url/extract_url.pl]
 target = .local/bin/extract-url
-[opt/ssh-ident/ssh-ident]
-target = .local/bin/ssh
 
 [profile]
 target =
