@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-# Run a program inside nix.
-
-exec nix-shell "$(basename "$0")" "$@"
-

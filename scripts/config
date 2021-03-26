@@ -80,8 +80,6 @@ target =
 target =
 	.local/bin/docker,
 	.local/bin/docker-compose,
-[local/bin/run-in-nix]
-target = .local/bin/neuron
 [local/share]
 action = recurse
 [local/share/applications]
