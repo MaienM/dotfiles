@@ -1,6 +1,0 @@
-#!/usr/bin/env sh
-
-[ -d "$HOME/.asdf" ] || return
-
-#shellcheck disable=SC1090
-. "$HOME/.asdf/asdf.sh"
