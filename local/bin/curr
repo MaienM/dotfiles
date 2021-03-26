@@ -1,0 +1,37 @@
+#!/usr/bin/env -S RUN_IN_ASDF_SETUP_SCRIPT="${HOME}/.dotfiles/scripts/install/misc/python-utils.sh" run-in-asdf python utils python
+# vi:ft=python
+
+import sys
+import time
+
+from pathlib import Path
+
+from currency_converter.__main__ import main as ccmain
+from requests import get
+
+
+CACHE_PATH = Path.home().joinpath('.cache', 'currency-rate.zip')
+CACHE_MAX_AGE = 60 * 60 * 12 # in seconds
+
+
+def update():
+	with get('http://www.ecb.int/stats/eurofxref/eurofxref-hist.zip') as new:
+		new.raise_for_status()
+		CACHE_PATH.write_bytes(new.content)
+
+
+def main():
+	try:
+		stat = CACHE_PATH.stat()
+		if time.time() - stat.st_mtime > CACHE_MAX_AGE:
+			update()
+	except FileNotFoundError:
+		update()
+
+	# Inject the cache path into the argument list at the start, so that in case the user supplies a --file argument it will overwrite the one we pass in here.
+	sys.argv = sys.argv[:1] + ['--file', str(CACHE_PATH)] + sys.argv[1:]
+	ccmain()
+
+
+if __name__ == '__main__':
+	main()

@@ -27,5 +27,6 @@ ASDF_PYTHON_VERSION=utils asdf exec pip install -U tmuxp yq
 ASDF_PYTHON_VERSION=utils asdf exec pip install -U dotsecrets
 ASDF_PYTHON_VERSION=utils asdf exec pip install -U qmk
 ASDF_PYTHON_VERSION=utils asdf exec pip install -U pybase16-builder
+ASDF_PYTHON_VERSION=utils asdf exec pip install -U CurrencyConverter
 asdf reshim python utils
 
