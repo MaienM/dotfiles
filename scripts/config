@@ -114,6 +114,8 @@ action = skip
 
 [ssh]
 action = recurse
+[ssh/config.d]
+action = recurse
 
 [tmux/init.conf]
 target = .tmux.conf

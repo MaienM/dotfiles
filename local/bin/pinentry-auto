@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+# shellcheck disable=2093
+
+use_tty=
+case "$PINENTRY_USER_DATA" in
+	TTY=) ;;
+	TTY=*) use_tty=${PINENTRY_USER_DATA#TTY=} ;;
+esac
+
+if [ -n "$use_tty" ]; then
+	for pinentry in /usr/bin/pinentry-tty /usr/bin/pinentry-curses; do
+		[ -f "$pinentry" ] || continue
+		exec "$pinentry" "$@"
+	done
+fi
+
+for pinentry in /usr/bin/pinentry-gtk-2 /usr/bin/pinentry-gnome3 /usr/bin/pinentry-qt; do
+	[ -f "$pinentry" ] || continue
+	exec "$pinentry" "$@"
+done

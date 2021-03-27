@@ -1,0 +1,2 @@
+Match host * exec "gpg-connect-agent updatestartuptty /bye"
+Match host * exec "export PINENTRY_USER_DATA"
