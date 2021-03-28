@@ -1,12 +1,15 @@
 [user]
 	email = me@maienm.com
 	name = Michon van Dooren
+	signingKey = 28094744BA81C6A9
 [core]
 	excludesfile = ~/.gitignoreglobal
 	pager = diff-so-fancy | less --tabs=4 -RFX
 [color]
 	diff = auto
 	branch = auto
+[commit]
+	gpgsign = true
 [push]
 	default = simple
 [include]
