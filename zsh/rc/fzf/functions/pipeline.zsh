@@ -171,13 +171,13 @@ _fzf_config_run() {
 	# Read the config
 	read -r config
 
-	# Get all source lines
-	sources=$(echo ${(z)config} | _fzf_config_get_source)
-
 	# Determine if a preview is needed
 	has_preview=0
 	for pipeline prefix sourcefn targetfn previewfn in ${(z)config}; do
-		[[ -n "${previewfn}" ]] && has_preview=1
+		if [[ -n "${previewfn}" ]]; then
+			has_preview=1
+			break
+		fi
 	done
 
 	# Build the arguments
@@ -202,7 +202,7 @@ _fzf_config_run() {
 	fi
 
 	# Run fzf
-	printf '%s\n' $sources | fzf-tmux "${fzf_args[@]}" | while read -r line; do
+	echo ${(z)config} | _fzf_config_get_source | ${FZF_COMMAND:-fzf-tmux} "${fzf_args[@]}" | while read -r line; do
 		[[ -n "$line" ]] || return
 
 		# Use the appropriate target function to transform the line
