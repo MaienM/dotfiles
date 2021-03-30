@@ -65,20 +65,24 @@ _fzf_pipeline_fzf_presets_preview() {
 
 # Run a preset
 fzf_run_preset() {
-	local match_preset fn description
+	local preset_name fn description
 
 	# Load/reset colors
 	colors
 
-	# First complete on the preset itself, in case it is a partial/nonexistant preset
+	# If an argument is passed use it as (partial) preset name
 	if [[ $# -ge 1 ]]; then
-		match_preset=${1%:}
+		preset_name=${1%:}
 		shift 1
 	fi
-	match_preset=$(fzf_run_pipeline fzf_presets --nth=1 --select-1 --exit-0 --query="$match_preset" "$@") || return 1
+
+	# Complete on the preset itself if the preset name is not an exact match
+	if [[ -z "${FZF_PRESETS[$preset_name]}" ]]; then
+		preset_name=$(fzf_run_pipeline fzf_presets --nth=1 --select-1 --exit-0 --query="$preset_name" "$@") || return 1
+	fi
 
 	# Complete using the preset 
-	read fn description <<<"${FZF_PRESETS[$match_preset]}"
+	read fn description <<<"${FZF_PRESETS[$preset_name]}"
 	[ -n "$fn" ] || return 1
 	echo | $(resolve_alias $fn) | _fzf_config_run "$@"
 }
