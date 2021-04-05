@@ -254,3 +254,6 @@
 [submodule "vim/bundle-coc/jedi"]
 	path = vim/bundle-coc/jedi
 	url = https://github.com/pappasam/coc-jedi
+[submodule "opt/gpgedit"]
+	path = opt/gpgedit
+	url = https://gist.github.com/641d5e3ca0bb9c1d8bd1.git

@@ -4,10 +4,6 @@
 
 set -o errexit -o pipefail
 
-while read -r line; do
-	key="${line%%|*}"
-	text="${line#$key|}"
-	printf '<span size="0">%s</span>%s\n' "$key" "$text"
-done \
+sed 's!^\([^|]*\)|\(.*\)$!<span size="0">\1</span>\2!' \
 | rofi -dmenu -markup-rows "$@" \
 | sed 's/^<span size=.0.>\([^<]*\)<.*$/\1/'
