@@ -257,3 +257,6 @@
 [submodule "opt/gpgedit"]
 	path = opt/gpgedit
 	url = https://gist.github.com/641d5e3ca0bb9c1d8bd1.git
+[submodule "vim/bundle-coc/stylelintplus"]
+	path = vim/bundle-coc/stylelintplus
+	url = https://github.com/bmatcuk/coc-stylelintplus
