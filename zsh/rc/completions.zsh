@@ -6,3 +6,7 @@ fpath=(
 
 autoload -Uz compinit
 compinit
+
+if [[ $commands[kubectl] ]]; then
+	source <(kubectl completion zsh)
+fi
