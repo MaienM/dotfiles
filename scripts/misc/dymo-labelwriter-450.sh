@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # Install driver from aur
-pikaur -S dymo-cups-drivers
+pikaur -S --needed dymo-cups-drivers
 
 # Add printer
 sudo lpadmin -x Dymo_LabelWriter_450 

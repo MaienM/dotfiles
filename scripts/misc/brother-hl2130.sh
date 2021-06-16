@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # Install driver from aur
-pikaur -S brother-hl2130
+pikaur -S --needed brother-hl2130
 
 # Add printer
 sudo lpadmin -x Brother_HL_2130 
