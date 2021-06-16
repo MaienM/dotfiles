@@ -41,7 +41,7 @@ get_column() {
 mapfile -t list_volume < <(get_column source)
 mapfile -t list_mountpoint < <(get_column target)
 mapfile -t list_used < <(get_column used)
-mapfile -t list_available < <(get_column size)
+mapfile -t list_available < <(get_column avail)
 (
 for i in {0..999}; do
 	[ "$i" -lt "${#list_volume[@]}" ] || break
@@ -49,21 +49,21 @@ for i in {0..999}; do
 	volume="${list_volume[$i]}"
 	mountpoint="${list_mountpoint[$i]}"
 	used="${list_used[$i]}"
-	available="${list_available[$i]}"
+	total="$((list_used[$i] + list_available[$i]))"
 
 	unset properties
 	declare -A properties
 
 	properties[used]="$used"
-	properties[available]="$available"
+	properties[total]="$total"
 	properties[mountpoint]="$mountpoint"
 
 	printf '%s | %s | %s/%s (%.1f%%)\n' \
 		"$volume" \
 		"$mountpoint" \
 		"$(ps used)" \
-		"$(ps available)" \
-		"$(c "100 * used / available")"
+		"$(ps total)" \
+		"$(c "100 * used / total")"
 done
 
 if command -v zfs > /dev/null 2>&1; then
@@ -75,17 +75,18 @@ if command -v zfs > /dev/null 2>&1; then
 		while read -r prop value; do
 			properties+=(["$prop"]="$value")
 		done < <(zfs get -Hp -o property,value used,available,compressratio,usedbydataset,mountpoint "$volume")
+		properties[total]="$(c "used + available")"
 
 		printf '%s | %s | %s/%s (%.1f%%) | (%s self) | compression %.2fx, effective %s/%s\n' \
 			"$volume" \
 			"$(p mountpoint | sed 's/^none$//')" \
 			"$(ps used)" \
-			"$(ps available)" \
-			"$(c "100 * used / available")" \
+			"$(ps total)" \
+			"$(c "100 * used / total")" \
 			"$(ps usedbydataset)" \
 			"$(p compressratio)" \
 			"$(cs "used * compressratio")" \
-			"$(cs "available * compressratio")"
+			"$(cs "total * compressratio")"
 	done
 fi
 ) | column -t -s '|'
