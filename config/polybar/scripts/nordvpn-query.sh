@@ -5,10 +5,7 @@ Status: Connected
 Current server: .*
 Country: (.*)
 City: (.*)
-Your new IP: .*
-Transfer: .*
-Uptime: .*\
-"
+Server IP: .*"
 
 if ! [[ "$(nordvpn status)" =~ $status_pattern ]]; then
 	export connected=0
