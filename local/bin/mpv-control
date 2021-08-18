@@ -4,9 +4,9 @@ if response="$(echo "$@" | socat - /tmp/mpvsocket)" && [ -z "$response" ]; then
 	exit 0
 fi
 
+echo "$response"
 error="$(echo "$response" | jq -r '.error')"
 if [ "$error" != "success" ]; then
-	echo "$response"
 	echo >&2 "$error"
 	exit 1
 fi
