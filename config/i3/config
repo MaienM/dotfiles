@@ -46,8 +46,8 @@ floating_modifier $GUI
 bindsym $GUI+Return exec i3-sensible-terminal
 
 # kill focused window
-bindsym $GUI+Shift+q kill
-bindsym --release $GUI+$Alt+q $exec xkill
+bindsym $GUI+Shift+x kill
+bindsym --release $GUI+$Alt+x $exec xkill
 
 # change focus
 bindsym $GUI+$left focus left
@@ -69,18 +69,18 @@ bindsym $GUI+Shift+bar split h
 bindsym $GUI+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $GUI+s layout stacking
-bindsym $GUI+w layout tabbed
-bindsym $GUI+e layout toggle split
+bindsym $GUI+c layout stacking
+bindsym $GUI+v layout tabbed
+bindsym $GUI+b layout toggle split
 
 # toggle tiling / floating
-bindsym $GUI+Shift+space floating toggle
+bindsym $GUI+Shift+f floating toggle
 
 # change focus between tiling / floating windows
-bindsym $GUI+space focus mode_toggle
+bindsym $GUI+g focus mode_toggle
 
 # focus the parent container
-bindsym $GUI+p focus parent
+bindsym $GUI+semicolon focus parent
 
 # focus the child container
 #bindsym $GUI+d focus child
@@ -99,68 +99,83 @@ set $workspace10 10: chat
 set $workspace11 11: media
 set $workspace12 12: scratch
 
+set $workspaceKey1 Tab
+set $workspaceKey2 q
+set $workspaceKey3 w
+set $workspaceKey4 e
+set $workspaceKey5 r
+set $workspaceKey6 t
+set $workspaceKey7 y
+set $workspaceKey8 u
+set $workspaceKey9 i
+set $workspaceKey10 o
+set $workspaceKey11 p
+set $workspaceKey12 BackSpace
+
 # switch to workspace
-bindsym $GUI+1 workspace $workspace1
-bindsym $GUI+2 workspace $workspace2
-bindsym $GUI+3 workspace $workspace3
-bindsym $GUI+4 workspace $workspace4
-bindsym $GUI+5 workspace $workspace5
-bindsym $GUI+6 workspace $workspace6
-bindsym $GUI+7 workspace $workspace7
-bindsym $GUI+8 workspace $workspace8
-bindsym $GUI+9 workspace $workspace9
-bindsym $GUI+0 workspace $workspace10
-bindsym $GUI+minus workspace $workspace11
-bindsym $GUI+equal workspace $workspace12
+bindsym $GUI+$workspaceKey1 workspace $workspace1
+bindsym $GUI+$workspaceKey2 workspace $workspace2
+bindsym $GUI+$workspaceKey3 workspace $workspace3
+bindsym $GUI+$workspaceKey4 workspace $workspace4
+bindsym $GUI+$workspaceKey5 workspace $workspace5
+bindsym $GUI+$workspaceKey6 workspace $workspace6
+bindsym $GUI+$workspaceKey7 workspace $workspace7
+bindsym $GUI+$workspaceKey8 workspace $workspace8
+bindsym $GUI+$workspaceKey9 workspace $workspace9
+bindsym $GUI+$workspaceKey10 workspace $workspace10
+bindsym $GUI$workspaceKey11 workspace $workspace11
+bindsym $GUI$workspaceKey12 workspace $workspace12
 
 # move focused container to workspace
-bindsym $GUI+Shift+1 move container to workspace $workspace1
-bindsym $GUI+Shift+2 move container to workspace $workspace2
-bindsym $GUI+Shift+3 move container to workspace $workspace3
-bindsym $GUI+Shift+4 move container to workspace $workspace4
-bindsym $GUI+Shift+5 move container to workspace $workspace5
-bindsym $GUI+Shift+6 move container to workspace $workspace6
-bindsym $GUI+Shift+7 move container to workspace $workspace7
-bindsym $GUI+Shift+8 move container to workspace $workspace8
-bindsym $GUI+Shift+9 move container to workspace $workspace9
-bindsym $GUI+Shift+0 move container to workspace $workspace10
-bindsym $GUI+Shift+minus move container to workspace $workspace11
-bindsym $GUI+Shift+equal move container to workspace $workspace12
+bindsym $GUI+Shift+$workspaceKey1 move container to workspace $workspace1
+bindsym $GUI+Shift+$workspaceKey2 move container to workspace $workspace2
+bindsym $GUI+Shift+$workspaceKey3 move container to workspace $workspace3
+bindsym $GUI+Shift+$workspaceKey4 move container to workspace $workspace4
+bindsym $GUI+Shift+$workspaceKey5 move container to workspace $workspace5
+bindsym $GUI+Shift+$workspaceKey6 move container to workspace $workspace6
+bindsym $GUI+Shift+$workspaceKey7 move container to workspace $workspace7
+bindsym $GUI+Shift+$workspaceKey8 move container to workspace $workspace8
+bindsym $GUI+Shift+$workspaceKey9 move container to workspace $workspace9
+bindsym $GUI+Shift+$workspaceKey10 move container to workspace $workspace10
+bindsym $GUI+Shift$workspaceKey11 move container to workspace $workspace11
+bindsym $GUI+Shift$workspaceKey12 move container to workspace $workspace12
 
 # move entire workspace
 bindsym $GUI+Control+$left move workspace to output left
 bindsym $GUI+Control+$right move workspace to output right
 bindsym $GUI+Control+Shift+$left $exec ~/.config/i3/move-workspace-to-output-stay.sh left
 bindsym $GUI+Control+Shift+$right $exec ~/.config/i3/move-workspace-to-output-stay.sh right
-bindsym $GUI+Control+1 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace1"
-bindsym $GUI+Control+2 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace2"
-bindsym $GUI+Control+3 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace3"
-bindsym $GUI+Control+4 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace4"
-bindsym $GUI+Control+5 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace5"
-bindsym $GUI+Control+6 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace6"
-bindsym $GUI+Control+7 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace7"
-bindsym $GUI+Control+8 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace8"
-bindsym $GUI+Control+9 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace9"
-bindsym $GUI+Control+0 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace10"
-bindsym $GUI+Control+minus $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace11"
-bindsym $GUI+Control+equal $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace12"
+bindsym $GUI+Control+$workspaceKey1 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace1"
+bindsym $GUI+Control+$workspaceKey2 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace2"
+bindsym $GUI+Control+$workspaceKey3 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace3"
+bindsym $GUI+Control+$workspaceKey4 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace4"
+bindsym $GUI+Control+$workspaceKey5 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace5"
+bindsym $GUI+Control+$workspaceKey6 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace6"
+bindsym $GUI+Control+$workspaceKey7 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace7"
+bindsym $GUI+Control+$workspaceKey8 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace8"
+bindsym $GUI+Control+$workspaceKey9 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace9"
+bindsym $GUI+Control+$workspaceKey10 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace10"
+bindsym $GUI+Control$workspaceKey11 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace11"
+bindsym $GUI+Control$workspaceKey12 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace12"
 
 # exchange workspaces on windows
-# bindsym $GUI+Control+1 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace1"
-# bindsym $GUI+Control+2 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace2"
-# bindsym $GUI+Control+3 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace3"
-# bindsym $GUI+Control+4 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace4"
-# bindsym $GUI+Control+5 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace5"
-# bindsym $GUI+Control+6 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace6"
-# bindsym $GUI+Control+7 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace7"
-# bindsym $GUI+Control+8 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace8"
-# bindsym $GUI+Control+9 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace9"
-# bindsym $GUI+Control+0 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace10"
+# bindsym $GUI+Control+$workspaceKey1 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace1"
+# bindsym $GUI+Control+$workspaceKey2 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace2"
+# bindsym $GUI+Control+$workspaceKey3 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace3"
+# bindsym $GUI+Control+$workspaceKey4 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace4"
+# bindsym $GUI+Control+$workspaceKey5 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace5"
+# bindsym $GUI+Control+$workspaceKey6 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace6"
+# bindsym $GUI+Control+$workspaceKey7 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace7"
+# bindsym $GUI+Control+$workspaceKey8 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace8"
+# bindsym $GUI+Control+$workspaceKey9 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace9"
+# bindsym $GUI+Control+$workspaceKey10 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace10"
+# bindsym $GUI+Control+$workspaceKey11 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace11"
+# bindsym $GUI+Control+$workspaceKey12 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace12"
 
 # reload the configuration file
-bindsym $GUI+Shift+c reload; $exec notify-send 'i3' 'Reloaded config'
+bindsym $GUI+Shift+n reload; $exec notify-send 'i3' 'Reloaded config'
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $GUI+Shift+r restart
+bindsym $GUI+Shift+m restart
 # exit i3 (logs you out of your X session)
 # bindsym $GUI+Shift+e $exec i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'
 
@@ -204,7 +219,7 @@ mode "resize" {
 	bindsym Escape mode "default"
 }
 
-bindsym $GUI+r mode "resize"
+bindsym $GUI+s mode "resize"
 
 # Look & feel of windows
 new_window 1pixel
@@ -215,11 +230,11 @@ floating_minimum_size 75 x 50
 focus_on_window_activation urgent
 
 # Keybinds to run programs
-bindsym $GUI+Escape $exec xscreensaver-command -lock
+# bindsym $GUI+Escape $exec xscreensaver-command -lock
 bindsym $Alt+space $exec rofi -combi-modi drun#ssh -modi combi -show combi -show-icons
-bindsym $GUI+Tab $exec rofi -modi window -show window -show-icons
+bindsym $GUI+space $exec rofi -modi window -show window -show-icons
 bindsym $GUI+Shift+s $exec ~/.config/rofi/scripts/scrot.sh
-bindsym $GUI+o $exec ~/.config/rofi/scripts/screenlayout.sh
+bindsym $GUI+d $exec ~/.config/rofi/scripts/screenlayout.sh
 
 # Media bindings. Designed to be used with a dedicated launchpad (see qmk repo)
 bindsym $Meh+XF86AudioLowerVolume $exec mpv-control playlist-prev

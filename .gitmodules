@@ -263,3 +263,6 @@
 [submodule "vim/bundle/qf"]
 	path = vim/bundle/qf
 	url = https://github.com/romainl/vim-qf
+[submodule "zsh/bundle/completions"]
+	path = zsh/bundle/completions
+	url = https://github.com/zsh-users/zsh-completions
