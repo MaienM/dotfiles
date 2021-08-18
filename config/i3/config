@@ -272,16 +272,23 @@ assign [class="^Slack$"] → $workspace10
 assign [class="^Microsoft Teams"] → $workspace10
 assign [class="^teams-for-linux$"] → $workspace10
 assign [class="^Evolution$"] → $workspace3
+assign [instance="^yubioath-desktop$"] → $workspace3
 
 ### Window rules
 for_window [class="^Antimicro$"] floating enable
 for_window [class="^Steam$" title="^Friends list$"] floating enable
+for_window [class="^Steam$" title="^Steam Guard"] floating enable
 for_window [class="^Steam$" title="^Steam - News"] close
-for_window [class="^mpv$"] exec --no-startup-id ~/.config/i3/resize-to-aspect-ratio.sh 16:9 height
-for_window [class="^mpv$"] fullscreen enable
+for_window [class="^cadence\.py$"] floating enable
 for_window [class="^calibre$" floating] resize set width 70ppt height 70ppt
 for_window [class="^calibre$" title="^Edit Metadata"] resize set width 80ppt height 80ppt
 for_window [class="^calibre$"] move position center
+for_window [class="^feh$"] floating enable
 for_window [class="^java$"] floating enable
-for_window [window_type="notification"] floating enable
 for_window [class="^mpv$" workspace="^(?!$workspace8).*$"] move container to workspace $workspace11
+for_window [class="^mpv$"] exec --no-startup-id ~/.config/i3/resize-to-aspect-ratio.sh 16:9 height
+for_window [class="^mpv$"] fullscreen enable
+for_window [instance="^yubioath-desktop$"] floating enable
+for_window [instance="^yubioath-desktop$"] resize set width 350px height 427px
+for_window [window_type="notification"] floating enable
+for_window [class="^kicad$" title="^Symbol Library Briwser"] floating enable
