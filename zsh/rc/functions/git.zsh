@@ -4,6 +4,9 @@ fi
 
 # Some shortcuts.
 alias gits='rm -f \\ && git status'
+alias gitc='git commit -m'
+alias gitca='git commit --amend --no-edit'
+alias gitcae='git commit --amend'
 
 # Log.
 alias gitlv='git log --pretty="tformat:%C(auto)%h %C(cyan)%<(14,mtrunc)%aN%C(auto)%d %C(auto)%s"'
