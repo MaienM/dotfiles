@@ -256,11 +256,13 @@ bindsym XF86MonBrightnessDown $exec brightnessctl set 5%-
 exec_always --no-startup-id set-background
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec_always --no-startup-id numlockx on
+exec_always --no-startup-id ~/.config/local/i3-always.sh
 exec --no-startup-id xscreensaver
 exec --no-startup-id picom
 exec --no-startup-id redshift
 exec --no-startup-id dunst
 exec --no-startup-id VBoxClient-all
+exec --no-startup-id ~/.config/local/i3-once.sh
 
 ### Window assignments
 assign [class="^FML"] → $workspace1
