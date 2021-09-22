@@ -33,6 +33,8 @@ action = recurse
 action = recurse
 [config/i3]
 action = recurse
+[config/k9s]
+action = recurse
 [config/mpv/bundle/occivink/scripts/crop.lua]
 target = .config/mpv/scripts/crop.lua
 [config/mpv/bundle/occivink/scripts/encode.lua]
