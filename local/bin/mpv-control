@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if response="$(echo "$@" | socat - /tmp/mpvsocket)" && [ -z "$response" ]; then
+if response="$(echo "$@" | socat - "${socket:-/tmp/mpvsocket}")" && [ -z "$response" ]; then
 	exit 0
 fi
 

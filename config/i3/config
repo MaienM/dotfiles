@@ -239,14 +239,14 @@ bindsym $GUI+d $exec ~/.config/rofi/scripts/screenlayout.sh
 # Media bindings. Designed to be used with a dedicated launchpad (see qmk repo)
 bindsym $Meh+XF86AudioLowerVolume $exec mpv-control playlist-prev
 bindsym $Meh+XF86AudioRaiseVolume $exec mpv-control playlist-next
-bindsym $Meh+XF86AudioPrev $exec mpv-control seek -10
-bindsym $Meh+XF86AudioNext $exec mpv-control seek 10
-bindsym $Meh+XF86AudioPause $exec mpv-control cycle pause
+bindsym $Meh+XF86AudioPrev $exec mpv-control-all seek -10
+bindsym $Meh+XF86AudioNext $exec mpv-control-all seek 10
+bindsym $Meh+XF86AudioPause $exec mpv-control-all cycle pause
 bindsym $Hyper+XF86AudioLowerVolume $exec mpv-control add chapter -1
 bindsym $Hyper+XF86AudioRaiseVolume $exec mpv-control add chapter 1
-bindsym $Hyper+XF86AudioPrev $exec mpv-control seek -30
-bindsym $Hyper+XF86AudioNext $exec mpv-control seek 30
-bindsym $Hyper+XF86AudioPause $exec mpv-control cycle pause
+bindsym $Hyper+XF86AudioPrev $exec mpv-control-all seek -30
+bindsym $Hyper+XF86AudioNext $exec mpv-control-all seek 30
+bindsym $Hyper+XF86AudioPause $exec mpv-control-all cycle pause
 
 # Miscellaneous keybinds. 
 bindsym XF86MonBrightnessUp $exec brightnessctl set +5%

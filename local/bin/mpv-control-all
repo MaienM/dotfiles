@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+for s in /tmp/mpvsocket*; do
+	([ -S "$s" ] && echo '{ "command": ["get_version"] }' | socat - "$s" > /dev/null 2>&1) || continue
+	socket="$s" mpv-control "$@"
+done
