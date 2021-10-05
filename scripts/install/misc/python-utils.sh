@@ -4,10 +4,8 @@ set -o errexit -o pipefail
 
 cd ~/.dotfiles
 
-# shellcheck source=../../../profile.d/asdf
-source profile.d/asdf
-# shellcheck source=_utils.sh
-source scripts/install/misc/_utils.sh
+# shellcheck source=../_asdf_utils.sh
+source scripts/install/_asdf_utils.sh
 
 echo ">>> Checking dependencies."
 asdf_guard

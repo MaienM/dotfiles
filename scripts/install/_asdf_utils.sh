@@ -1,10 +1,13 @@
 #!/usr/bin/env sh
 
+# Make sure asdf is available.
 asdf_guard() {
 	# shellcheck source=../../../local/bin/commands_require
 	. commands_require; commands_require asdf
 }
 
+# Ensure the latest version of an asdf plugin is installed.
+# Usage: plugin
 asdf_plugin_add() {
 	asdf_guard
 	for plugin in "$@"; do
@@ -19,6 +22,8 @@ asdf_plugin_add() {
 	done
 }
 
+# Find the latest available version (optionally matching a filter) of an asdf install and store it in $version.
+# Usage: plugin [filter]
 asdf_find_latest_version() {
 	plugin="$1"
 	filter="${2:-^\s*[0-9.]\+\s*$}"
@@ -31,12 +36,16 @@ asdf_find_latest_version() {
 	fi
 }
 
+# As asdf_find_latest_version, but also installs the found version.
+# Usage: plugin [filter]
 asdf_install_latest_version() {
 	plugin="$1"
 	asdf_find_latest_version "$@"
 	asdf install "$plugin" "$version"
 }
 
+# Remove a specific install if it exists.
+# Usage: plugin version
 asdf_remove() {
 	asdf_guard
 	if asdf list "$1" 2> /dev/null | grep -q "^\s*$1\s*$"; then
