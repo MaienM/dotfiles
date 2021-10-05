@@ -52,3 +52,15 @@ asdf_remove() {
 		asdf uninstall "$1" "$2"
 	fi
 }
+
+# Create an executable in ~/.local/bin that executes the given command in the given install.
+# Usage: plugin version command
+asdf_link_command() {
+	bin="$HOME/.local/bin/$3"
+	echo "Creating '$bin'."
+	(
+		printf '#!/usr/bin/env sh\n'
+		printf 'exec %q %q %q %q "$@"\n' "$HOME/.local/bin/run-in-asdf" "$1" "$2" "$3"
+	) > "$bin"
+	chmod +x "$bin"
+}

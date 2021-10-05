@@ -13,7 +13,7 @@ mkdir /tmp/font-setup
 
 	echo '>>> Downloading FiraCode'
 	wget 'https://github.com/tonsky/FiraCode/releases/latest' -O - \
-		| grep -oE '/tonsky/FiraCode/releases/download/[0-9.]*/FiraCode.*\.zip' \
+		| grep -oE '/tonsky/FiraCode/releases/download/[0-9.]*/Fira_?Code.*\.zip' \
 		| wget --base=http://github.com/ -i - -O FiraCode.zip
 	unzip -q -j -o FiraCode.zip
 	rm FiraCode.zip
