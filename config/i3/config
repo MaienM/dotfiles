@@ -224,6 +224,7 @@ bindsym $GUI+s mode "resize"
 # Look & feel of windows
 new_window 1pixel
 gaps inner 04
+workspace "$workspace11" gaps inner 0
 smart_borders on
 smart_gaps on
 floating_minimum_size 75 x 50
@@ -288,6 +289,7 @@ for_window [class="^java$"] floating enable
 for_window [class="^mpv$" workspace="^(?!$workspace8).*$"] move container to workspace $workspace11
 for_window [class="^mpv$"] exec --no-startup-id ~/.config/i3/resize-to-aspect-ratio.sh 16:9 height
 for_window [class="^mpv$"] fullscreen enable
+for_window [class="^mpv$"] border pixel 0
 for_window [instance="^yubioath-desktop$"] floating enable
 for_window [instance="^yubioath-desktop$"] resize set width 350px height 427px
 for_window [window_type="notification"] floating enable
