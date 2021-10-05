@@ -80,6 +80,8 @@ target =
 	.local/bin/dotsecrets,
 	.local/bin/qmk,
 	.local/bin/tmuxp,
+	.local/bin/tomlq,
+	.local/bin/xq,
 	.local/bin/yq,
 [local/bin/run-with-sudo]
 target =
