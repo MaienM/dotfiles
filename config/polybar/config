@@ -311,7 +311,7 @@ ramp-foreground = ${colors.foreground-alt}
 [module/utilization/gpu]
 type = custom/script
 exec-if = command -v nvidia-smi
-exec = echo "$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits)%"
+exec = echo "$(modinfo nvidia > /dev/null 2>&1 && nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits || echo '??')%"
 interval = 10
 format-prefix = ${env:i_mdi_speedometer} 
 format-prefix-foreground = ${colors.cyan}
@@ -319,7 +319,7 @@ format-prefix-foreground = ${colors.cyan}
 [module/memory/gpu]
 type = custom/script
 exec-if = command -v nvidia-smi
-exec = echo "$(nvidia-smi --query-gpu=utilization.memory --format=csv,noheader,nounits)%"
+exec = echo "$(modinfo nvidia > /dev/null 2>&1 && nvidia-smi --query-gpu=utilization.memory --format=csv,noheader,nounits || echo '??')%"
 interval = 10
 format-prefix = ${env:i_mdi_memory}
 format-prefix-foreground = ${colors.cyan}
@@ -327,7 +327,7 @@ format-prefix-foreground = ${colors.cyan}
 [module/temperature/gpu]
 type = custom/script
 exec-if = command -v nvidia-smi
-exec = echo "$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits)°C"
+exec = echo "$(modinfo nvidia > /dev/null 2>&1 && nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits || echo '??')°C"
 interval = 10
 format-prefix = ${env:i_mdi_thermometer}
 format-prefix-foreground = ${colors.cyan}
