@@ -2,7 +2,7 @@ if ! command -v docker &> /dev/null; then
 	return
 fi
 
-alias dockc='docker-compose'
+alias dockc='docker compose'
 
 ### Viewing running containers ###
 

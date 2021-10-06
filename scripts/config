@@ -86,7 +86,6 @@ target =
 [local/bin/run-with-sudo]
 target =
 	.local/bin/docker,
-	.local/bin/docker-compose,
 [local/share]
 action = recurse
 [local/share/applications]
