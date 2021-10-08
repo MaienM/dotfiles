@@ -18,6 +18,7 @@ let g:tmuxline_preset = {
 	\'a': '#{?client_prefix,#[fg=colour042],}#S',
 	\'win': s:win,
 	\'cwin': s:win,
+	\'x': '#(prefix= ~/.config/polybar/scripts/watch-with-interrupt.sh updates 3600 ~/.config/polybar/scripts/updates.sh)',
 	\'y': '%Y-%m-%d %H:%M',
 	\'z': '#H',
 	\'options': {
