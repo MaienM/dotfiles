@@ -269,3 +269,6 @@
 [submodule "config/k9s/base16"]
 	path = config/k9s/base16
 	url = https://github.com/Sacro/base16-k9s
+[submodule "vim/bundle-nvim/treesitter"]
+	path = vim/bundle-nvim/treesitter
+	url = https://github.com/nvim-treesitter/nvim-treesitter
