@@ -11,6 +11,8 @@ export FZF_BIND_OPTS=(
 	--bind 'ctrl-p:toggle-preview'
 	# Toggle the sorting
 	--bind 'ctrl-s:toggle-sort'
+	# Toggle select all
+	--bind 'ctrl-a:toggle-all'
 	# Alternative select in case something is messing with the default binding
-	--bind 'ctrl-a:accept'
+	--bind 'alt-a:accept'
 )
