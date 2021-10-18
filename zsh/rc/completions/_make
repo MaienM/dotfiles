@@ -1,0 +1,86 @@
+#compdef make gmake pmake dmake freebsd-make bmake remake
+
+# Load the original make completions file
+orig_path="$(whereis -B "${fpath[@]}" -f _make | cut -d' ' -f3)"
+if [[ "$orig_path" = *'zsh/rc/completions'* ]]; then
+	_make_orig() {}
+else
+	eval "$(head -n-1 "$orig_path" | sed '
+		# Rename the functions that are overridden here
+		s/^_make\s*()/_make_orig()/;
+		s/^_make-parseMakefile\s*()/_make_orig-parseMakefile()/;
+		# Change the option_specs to add instead of overwrite so that we can add the remake options to the default list
+		s/^\(\s*option_specs\)=/\1+=/;
+		# Rename some of the variable definitions. The result of this is that the variables are not defined as local so we
+		# can capture them and use them in our own _make.
+		s/local\b.*\b\(TARGETS\)\b/&_/;
+		s/local\b.*\b\(VARIABLES\)\b/&_/;
+		s/local\b.*\b\(basedir\)\b/&_/;
+		s/local\b.*\b\(file\)\b/&_/;
+		s/local\b.*\b\(is_gnu\)\b/&_/;
+		s/local\b.*\b\(keys\)\b/&_/;
+		s/local\b.*\b\(option_specs\)\b/&_/;
+		s/local\b.*\b\(state\)\b/&_/;
+	')"
+fi
+
+_make-parseMakefile () {
+	_make_orig-parseMakefile
+
+	if [[ $commands[remake] ]]; then
+		{
+			local IFS=$'\n'
+			TARGETS=($(remake -f "$file" --no-builtin-rules --targets | sed 's/^\s*//; s/^\(.*\S\)\s*#\s*\(.*\)$/\1/'))
+			TASKS=($(remake -f "$file" --no-builtin-rules --tasks | sed 's/^\(\S*\)\s\+\(.*\)$/\1/'))
+		}
+	fi
+}
+
+_make() {
+	local ret
+	local basedir file is_gnu state
+	local -a option_specs
+	local -A VARIABLES
+	local -aU TARGETS TASKS keys
+
+	if [[ "${words[1]}" = 'remake' ]]; then
+		option_specs=(
+			'(-c --search-parent)'{-s,--search-parent}'[search parent directory for makefile]'
+			'--no-extended-errors[do not give additional error reporting]'
+			'(-P --profile)'{-P,--profile}'[print profiling information for each target]'
+			'--targets[give list of explicitly-named targets]'
+			'--tasks[give list of targets which have descriptions associated with them]'
+			'--trace[print tracing information]'
+			'--verbosity=[set verbosity level]: :((terse no-header full))'
+			'(-x --trace)'{-x,--trace=}'[trace command execution]: :((command read normal noshell full))'
+			'--debugger-stop'{--debugger-stop=}'[which point to enter debugger. only makes sense with -X set]: :((goal preread preaction full error fatal))'
+			'(-X --debugger)'{-X,--debugger}'[enter debugger]'
+			'(-! --post-mortem)'{-!,--post-mortem}'[go into debugger on error. same as --debugger --debugger-stop=error]'
+			'--no-readline[do not use GNU ReadLine in debugger]'
+		)
+	fi
+
+	_alternative() {}
+	_make_orig "$@"
+	ret=$?
+	[[ $state = (target) ]] || return $ret
+	[[ $PREFIX = *'='* ]] && return $ret
+	[[ $is_gnu = gnu ]] || return $ret
+	typeset -p curcontext VARIABLES TARGETS TASKS >> log
+
+	ret=1
+
+	_alternative () {
+		# undefined
+		builtin autoload -XUz
+	}
+	_alternative \
+		'targets:make target:compadd -Q -a TARGETS' \
+		'tasks:make task:compadd -Q -a TASKS' \
+		'variables:make variable:compadd -S = -F keys -k VARIABLES' \
+		'*:file:_files -W $basedir' && ret=0
+
+	return $ret
+}
+
+_make "$@"
