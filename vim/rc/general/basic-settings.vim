@@ -37,10 +37,15 @@ set wildmenu
 set wildmode=longest,list,full
 
 " Default to folding by marker. If a filetype has support for syntax, it should set this.
-set foldmethod=marker
+" set foldmethod=marker
 set foldnestmax=4
+set foldlevelstart=20
 " Don't automatically open folds when searching.
 set foldopen-=search
+" Make the folds prettier/more readable
+set foldtext=substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').'...'.trim(getline(v:foldend))
+set fillchars=fold:\ 
+set foldminlines=1
 
 " Show certain invisible characters. Only used when 'list' is enabled, which it is not by default.
 set listchars=tab:>-,trail:-
