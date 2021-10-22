@@ -4,8 +4,8 @@
 [submodule "vim/bundle/commentary"]
 	path = vim/bundle/commentary
 	url = https://github.com/tpope/vim-commentary
-[submodule "vim/bundle/indent-guides"]
-	path = vim/bundle/indent-guides
+[submodule "vim/bundle-vim/indent-guides"]
+	path = vim/bundle-vim/indent-guides
 	url = https://github.com/nathanaelkane/vim-indent-guides
 [submodule "vim/bundle/sneak"]
 	path = vim/bundle/sneak
@@ -272,3 +272,6 @@
 [submodule "vim/bundle-nvim/treesitter"]
 	path = vim/bundle-nvim/treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
+[submodule "vim/bundle-nvim/indent-blankline"]
+	path = vim/bundle-nvim/indent-blankline
+	url = https://github.com/lukas-reineke/indent-blankline.nvim
