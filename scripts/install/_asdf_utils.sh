@@ -26,7 +26,8 @@ asdf_plugin_add() {
 # Usage: plugin [filter]
 asdf_find_latest_version() {
 	plugin="$1"
-	filter="${2:-^\s*[0-9.]\+\s*$}"
+	filter="^\s*[0-9.]\+\s*$"
+	filter="${2:-$filter}"
 
 	asdf_guard
 	version="$(asdf list-all "$plugin" | grep "$filter" | tail -n1 | tr -d ' ')"
@@ -48,7 +49,7 @@ asdf_install_latest_version() {
 # Usage: plugin version
 asdf_remove() {
 	asdf_guard
-	if asdf list "$1" 2> /dev/null | grep -q "^\s*$1\s*$"; then
+	if asdf list "$1" 2> /dev/null | grep -q "^\s*$2\s*$"; then
 		asdf uninstall "$1" "$2"
 	fi
 }
