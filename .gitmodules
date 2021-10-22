@@ -142,9 +142,6 @@
 [submodule "vim/bundle/peekaboo"]
 	path = vim/bundle/peekaboo
 	url = https://github.com/junegunn/vim-peekaboo
-[submodule "opt/diff-so-fancy"]
-	path = opt/diff-so-fancy
-	url = https://github.com/so-fancy/diff-so-fancy
 [submodule "vim/bundle/limelight"]
 	path = vim/bundle/limelight
 	url = https://github.com/junegunn/limelight.vim
