@@ -216,8 +216,6 @@ timeout = 8
 #   script appname summary body icon urgency
 # where urgency can be "LOW", "NORMAL" or "CRITICAL".
 #
-# NOTE: if you don't want a notification to be displayed, set the format
-# to "".
 # NOTE: It might be helpful to run dunst -print in a terminal in order
 # to find fitting options for rules.
 
@@ -232,7 +230,7 @@ timeout = 8
 #[ignore]
 #    # This notification will not be displayed
 #    summary = "foobar"
-#    format = ""
+#    skip_display = true
 
 #[signed_on]
 #    appname = Pidgin
@@ -258,5 +256,6 @@ timeout = 8
 appname = TwitchNotifier
 summary = IGNORE
 format = ""
+skip_display = true
 
 # vim: ft=cfg
