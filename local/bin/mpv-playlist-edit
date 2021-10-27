@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -o errexit -o pipefail
+
+playlist="$(mktemp --suffix='.json')"
+file="$(mktemp)"
+new_playlist="$(mktemp --suffix='.m3u8')"
+
+mpv-control '{"command":["get_property", "playlist"]}' > "$playlist"
+jq -r '.data | map([.id, .title] | join(" ")) | .[]' < "$playlist" > "$file"
+
+"$EDITOR" "$file"
+
+(
+	echo '#EXTM3U'
+	for id in $(cut -d' ' -f1 < "$file"); do
+		entry="$(jq ".data | map(select(.id == $id))[0]" < "$playlist")"
+		echo "#EXTINF:0,$(jq -r '.title' <<<"$entry")"
+		jq -r '.filename' <<<"$entry"
+	done
+) > "$new_playlist"
+mpv-control '{"command":["loadlist", "'"$new_playlist"'"]}'
