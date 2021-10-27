@@ -3,7 +3,7 @@ Version=1.0
 Type=Application
 Name=Microsoft Teams - Team Rockstars IT
 Comment=Microsoft Teams for Linux is your chat-centered workspace in Office 365.
-Exec=sh -c 'env HOME="${XDG_CONFIG_HOME:-$HOME/.config}/teams-rockstars" teams "$@"' -- %U
+Exec=chromium --user-data-dir="${XDG_CONFIG_HOME:-$HOME/.config}/teams-for-linux-rockstars" --app='https://teams.microsoft.com'
 Icon=teams
 Terminal=false
 StartupNotify=true
