@@ -3,4 +3,6 @@ if &rtp !~ '.*indent-guides.*'
 endif
 
 " After loading the file, reapply the indent guides.
-au User LocalVimRCPost :IndentGuidesEnable
+if !has('nvim')
+	au User LocalVimRCPost :IndentGuidesEnable
+endif
