@@ -40,7 +40,7 @@ nnoremap L $
 set pastetoggle=<F5>
 
 " Mapping to use a temp file as 'clipboard', in case other clipboards don't want to cooperate.
-vmap <Leader><Leader>y :w! /tmp/vitmp<CR>                                                                   
+vmap <Leader><Leader>y :w! /tmp/vitmp<CR>
 nmap <Leader><Leader>p :r! cat /tmp/vitmp<CR>
 
 " Paste from shell history.
