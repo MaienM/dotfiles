@@ -93,10 +93,10 @@ action = recurse
 
 [opt]
 action = skip
-[opt/diff-so-fancy/third_party/build_fatpack/diff-so-fancy]
-target = .local/bin/diff-so-fancy
 [opt/extract_url/extract_url.pl]
 target = .local/bin/extract-url
+[opt/gpgedit/gpgedit]
+target = .local/bin/gpgedit
 
 [profile]
 target =
