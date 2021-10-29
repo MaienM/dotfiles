@@ -2,7 +2,22 @@
 
 set -o errexit -o pipefail
 
+checksum() {
+	yj -yj < "$1" | md5sum | cut -c-32
+}
+
 file="$(mktemp --suffix='.yaml')"
 mpv-control '{"command":["get_property", "'$1'"]}' | jq '.data' | yj -jy > "$file"
-"$EDITOR" "$file"
-mpv-control '{"command":["set_property", "vf",'$(yj -yj < "$file")']}'
+while true; do
+	sumold="$(checksum "$file")"
+	"$EDITOR" "$file"
+	sumnew="$(checksum "$file")"
+	if [ "$sumold" = "$sumnew" ]; then
+		break
+	fi
+
+	if error="$(mpv-control '{"command":["set_property", "vf",'$(yj -yj < "$file")']}' 2>&1 > /dev/null)"; then
+		break
+	fi
+	sed -i "1i # $error" "$file"
+done
