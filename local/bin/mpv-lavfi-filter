@@ -1,0 +1,40 @@
+#!/usr/bin/env sh
+
+file="$(mktemp --suffix='.json')"
+mpv-control '{"command":["get_property", "vf"]}' | jq '.data' > "$file"
+
+mapfile -t filters < <(jq -r 'map("\(.name)=\(.params | to_entries | map("\(.key)=\(.value)") | join(":"))") | .[]' "$file")
+case "$(jq -r 'map(.name) | join("/")' "$file")" in
+	'crop/crop')
+		# Two crops, assume side-by-side in order left, right.
+		result="
+			[vid1] split [vl][vr];
+			[vl] ${filters[0]} [vl];
+			[vr] ${filters[1]} [vr];
+			[vl][vr] hstack
+		"
+	;;
+	'crop/crop/crop/crop')
+		# Two crops, assume 2x2 grid in order top left, top right, bottom left, bottom right.
+		result="
+			[vid1] split [vt][vb];
+			[vt] split [vtl][vtr];
+			[vtl] ${filters[0]} [vtl];
+			[vtr] ${filters[1]} [vtr];
+			[vtl][vtr] hstack [vt];
+			[vb] split [vbl][vbr];
+			[vbl] ${filters[2]} [vbl];
+			[vbr] ${filters[3]} [vbr];
+			[vbl][vbr] hstack [vb];
+			[vt][vb] vstack
+		"
+	;;
+	*)
+		# Other, don't make any assumptions.
+		result="$(printf '%s\n' "${filters[@]}")"
+	;;
+esac
+result="$(echo "$result" | sed '/^\s*$/d; s/^\s*//')"
+echo 0 | jq '[{ "name": "lavfi", "enabled": true, "params": { "graph": $result } }]' --arg result "$result" > "$file"
+
+mpv-edit-property vf "$file"
