@@ -2,7 +2,7 @@
 
 set -o errexit -o pipefail
 
-file="$(mktemp --suffix='.json')"
-mpv-control '{"command":["get_property", "'$1'"]}' | jq '.data' > "$file"
+file="$(mktemp --suffix='.yaml')"
+mpv-control '{"command":["get_property", "'$1'"]}' | jq '.data' | yj -jy > "$file"
 "$EDITOR" "$file"
-mpv-control '{"command":["set_property", "vf",'$(cat "$file")']}'
+mpv-control '{"command":["set_property", "vf",'$(yj -yj < "$file")']}'
