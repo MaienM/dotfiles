@@ -7,14 +7,19 @@ checksum() {
 }
 
 file="$(mktemp --suffix='.yaml')"
-mpv-control '{"command":["get_property", "'$1'"]}' | jq '.data' | yj -jy > "$file"
-while true; do
+if [ -n "$2" ]; then
+	yj -jy < "$2" > "$file"
+else
+	mpv-control '{"command":["get_property", "'$1'"]}' | jq '.data' | yj -jy > "$file"
 	sumold="$(checksum "$file")"
+fi
+while true; do
 	"$EDITOR" "$file"
 	sumnew="$(checksum "$file")"
 	if [ "$sumold" = "$sumnew" ]; then
 		break
 	fi
+	sumold="$sumnew"
 
 	if error="$(mpv-control '{"command":["set_property", "vf",'$(yj -yj < "$file")']}' 2>&1 > /dev/null)"; then
 		break
