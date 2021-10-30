@@ -1,10 +1,13 @@
 #!/usr/bin/env sh
 
-file="$(mktemp --suffix='.json')"
-mpv-control '{"command":["get_property", "vf"]}' | jq '.data' > "$file"
+set -e
 
-mapfile -t filters < <(jq -r 'map("\(.name)=\(.params | to_entries | map("\(.key)=\(.value)") | join(":"))") | .[]' "$file")
-case "$(jq -r 'map(.name) | join("/")' "$file")" in
+input="$(mktemp --suffix='.json')"
+output="$(mktemp --suffix='.json')"
+mpv-control '{"command":["get_property", "vf"]}' | jq '.data' > "$input"
+
+mapfile -t filters < <(jq -r 'map("\(.name)=\(.params | to_entries | map("\(.key)=\(.value)") | join(":"))") | .[]' "$input")
+case "$(jq -r 'map(.name) | join("/")' "$input")" in
 	'crop/crop')
 		# Two crops, assume side-by-side in order left, right.
 		result="
@@ -35,6 +38,6 @@ case "$(jq -r 'map(.name) | join("/")' "$file")" in
 	;;
 esac
 result="$(echo "$result" | sed '/^\s*$/d; s/^\s*//')"
-echo 0 | jq '[{ "name": "lavfi", "enabled": true, "params": { "graph": $result } }]' --arg result "$result" > "$file"
+jq 'map(. + { "name": "\(.name)-disabled", "enabled": false }) + [{ "name": "lavfi", "enabled": true, "params": { "graph": $result } }]' --arg result "$result" < "$input" > "$output"
 
-mpv-edit-property vf "$file"
+mpv-edit-property vf "$output"
