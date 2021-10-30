@@ -374,14 +374,31 @@ class Command(object):
 
 class LinkCommand(Command):
 	""" An ln command that has to be executed to get to the desired state. """
-	def __init__(self, source: Path, target: Path, flags: str = ''):
+	def __init__(
+		self,
+		source: Path,
+		target: Path,
+		flags: str = '',
+		/,
+		symbolic: bool = False,
+		force: bool = False,
+		no_target_directory: bool = False,
+	):
 		super().__init__(target)
 		self.source = source.resolve()
-		self.flags = flags
+		self.symbolic = symbolic
+		self.force = force
+		self.no_target_directory = no_target_directory
 
 	def __str__(self) -> str:
-		flags = f'-{self.flags} ' if self.flags else ''
-		return f'ln {flags}-- {shlex.quote(str(self.source))} {shlex.quote(str(self.target))}'
+		flags = ''
+		if self.symbolic:
+			flags += 's'
+		if self.force:
+			flags += 'f'
+		if self.no_target_directory:
+			flags += 'T'
+		return f'ln {f"-{flags} " if flags else ""}-- {shlex.quote(str(self.source))} {shlex.quote(str(self.target))}'
 
 
 class DeleteCommand(Command):
@@ -484,29 +501,30 @@ class Processor(object):
 		self.process_dir(entry.path)
 
 	def apply_link(self, entry: VirtualFileInfo, fc: FileConfig) -> None:
-		flags = ''
-		if entry.real.type == VirtualFileType.DIRECTORY:
-			flags += 's'
-
+		symbolic = (entry.real.type == VirtualFileType.DIRECTORY)
 		for targetname in fc.targets:
 			target = Path.home() / targetname
-			tflags = flags
 			if self.should_link_be_created(entry, fc, target):
 				tentry = self.fs.get(target, parent_none_is_none = True)
 				# If the parent path is missing, create it now.
 				if self.fs.get(target.parent, parent_none_is_none = True).type == VirtualFileType.NONE:
 					self.mkdirs(target.parent)
 				# If the target exists, it has to be force replaced.
-				if tentry.type != VirtualFileType.NONE:
-					tflags += 'f'
+				force = (tentry.type != VirtualFileType.NONE)
+				if force:
 					self.fs.delete(target)
 				# If the target is a directory, add a flag to prevent the symlink from being created inside it.
-				if tentry.real.type == VirtualFileType.DIRECTORY:
-					tflags += 'T'
+				no_target_directory = (tentry.real.type == VirtualFileType.DIRECTORY)
 
 				self.fs.link(entry.path, target)
 				assert entry.non_virtual_path is not None
-				self.commands.append(LinkCommand(entry.non_virtual_path, target, tflags))
+				self.commands.append(LinkCommand(
+					entry.non_virtual_path,
+					target,
+					symbolic = symbolic,
+					force = force,
+					no_target_directory = no_target_directory,
+				))
 
 	def should_link_be_created(self, entry: VirtualFileInfo, fc: FileConfig, target_path: Path) -> bool:
 		target = self.fs.get(target_path, parent_none_is_none = True)
