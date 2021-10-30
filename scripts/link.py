@@ -2,6 +2,7 @@
 
 import argparse
 import configparser
+from collections.abc import Iterable
 from enum import Enum, auto
 import hashlib
 import inspect
@@ -16,20 +17,31 @@ import sys
 import termios
 import textwrap
 import tty
+from typing import (
+	Any,
+	Dict,
+	List,
+	Optional,
+	Tuple,
+	Union,
+)
 
 
-def err(*args):
+PathLike = Union['VirtualFileInfo', Path, str]
+
+
+def err(*args: Any) -> None:
 	""" Print to stderr. """
 	print(*args, file = sys.stderr)
 
 
-def hash_file(path):
+def hash_file(path: Union[str, Path]) -> str:
 	""" Get a hash of the given path. """
 	with open(path, 'rb') as f:
 		return hashlib.sha256(f.read()).hexdigest()
 
 
-def _read_char():
+def _read_char() -> str:
 	""" Read a single character from stdin. """
 	fd = sys.stdin.fileno()
 	old_settings = termios.tcgetattr(fd)
@@ -40,7 +52,7 @@ def _read_char():
 		termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
 
-def read_char():
+def read_char() -> str:
 	""" Read a single character from stdin, and handle special cases with sensible behaviour. """
 	c = _read_char()
 	if c == '\x03':
@@ -50,7 +62,7 @@ def read_char():
 	return c
 
 
-def to_path(thing):
+def to_path(thing: PathLike) -> Path:
 	if isinstance(thing, VirtualFileInfo):
 		return Path(thing.path)
 	elif isinstance(thing, Path):
@@ -70,10 +82,11 @@ class FileAction(Enum):
 
 class FileConfig(object):
 	""" The configuration for a given source file. """
-	def __init__(self, path, parent):
+	def __init__(self, path: str, parent: Optional['FileConfig']):
 		self.path = path
 		self.from_config = False
 		self.processed = False
+		self.targets: List[str]
 		if parent:
 			fname = os.path.basename(path)
 			self.targets = [os.path.join(ppath, fname) for ppath in parent.targets]
@@ -81,15 +94,15 @@ class FileConfig(object):
 			self.targets = [f'.{path}']
 
 		# Skip hidden files by default
+		self.action: FileAction
 		if os.path.basename(path)[0] == '.':
 			self.action = FileAction.SKIP
 		else:
 			self.action = FileAction.LINK
 
-	def load_from_config(self, items):
+	def load_from_config(self, items: List[Tuple[str, str]]) -> None:
 		""" Create a FileConfig instance from a config section. """
 		data = dict(items)
-		del data['default']
 
 		# Mark as being explicitly defined
 		self.from_config = True
@@ -116,20 +129,20 @@ class Config(configparser.ConfigParser):
 	A wrapper around ConfigParser that allows getting a configuration for any path, regardless of whether it appears in
 	the config file.
 	"""
-	def __init__(self, root_path, config_path, *args, **kwargs):
-		super(Config, self).__init__(self, *args, **kwargs)
-		self.path_info = {}
-		self.root_path = root_path
+	def __init__(self, root_path: str, config_path: str, *args: Any, **kwargs: Any):
+		super().__init__(*args, **kwargs)
+		self._path_info: Dict[str, FileConfig] = {}
+		self._root_path = root_path
 		with open(config_path, 'r') as f:
 			self.read_file(f)
 
-	def get_info(self, path):
+	def get_info(self, path: Union[str, Path]) -> FileConfig:
 		# Paths in the config are always relative to the root folder of the repository
-		path = os.path.relpath(path, self.root_path)
+		path = os.path.relpath(path, self._root_path)
 
 		# Re-use a previously made config object if available
-		if path in self.path_info:
-			return self.path_info[path]
+		if path in self._path_info:
+			return self._path_info[path]
 
 		# Get the parent config, if any
 		parent_path = os.path.dirname(path)
@@ -145,7 +158,7 @@ class Config(configparser.ConfigParser):
 			config.load_from_config(self.items(path))
 
 		# Store for later use
-		self.path_info[path] = config
+		self._path_info[path] = config
 
 		return config
 
@@ -181,16 +194,25 @@ class VirtualFileType(Enum):
 
 class VirtualFileInfo(object):
 	""" Information about a virtual filesystem object. """
-	def __init__(self, fs, path, _type, is_from_fs, *, inode = None, links_to = None):
+	def __init__(
+		self,
+		fs: 'VirtualFS',
+		path: Union[str, Path],
+		type_: VirtualFileType,
+		is_from_fs: bool,
+		*,
+		inode: Optional[int] = None,
+		links_to: Optional[Union[str, Path]] = None,
+	):
 		self.fs = fs
 		self.path = Path(path)
-		self.type = _type
+		self.type = type_
 		self.is_from_fs = is_from_fs
 		self.inode = inode
 		self.links_to = os.path.join(os.path.dirname(path), links_to) if links_to else None
 
 	@property
-	def real(self):
+	def real(self) -> 'VirtualFileInfo':
 		"""
 		Follow the symlink to the original source.
 
@@ -198,19 +220,20 @@ class VirtualFileInfo(object):
 		"""
 		if self.type != VirtualFileType.SYMLINK:
 			return self
+		assert self.links_to is not None
 		try:
 			return self.fs.get(self.links_to).real
 		except VirtualFSError:
 			return VirtualFileInfo(self.fs, self.links_to, VirtualFileType.NONE, True)
 
 	@property
-	def non_virtual_path(self):
+	def non_virtual_path(self) -> Optional[Path]:
 		""" Get the path to the actual location on disk that this corresponds to, or None if this doesn't exist. """
 		if self.links_to is None:
 			return self.path
 		return self.fs.get(self.links_to).non_virtual_path
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		parts = []
 		parts.append(f"type {self.type}")
 		parts.append('based on fs' if self.is_from_fs else 'virtual')
@@ -221,11 +244,11 @@ class VirtualFileInfo(object):
 
 class VirtualFS(object):
 	""" A layer that provides information about the filesystem that knows about changes made by previous steps. """
-	def __init__(self):
-		self.cache = {}
+	def __init__(self) -> None:
+		self.cache: Dict[Path, VirtualFileInfo] = {}
 		self.log = logging.getLogger(self.__class__.__name__)
 
-	def get(self, path, *, parent_none_is_none = False):
+	def get(self, path: PathLike, *, parent_none_is_none: bool = False) -> VirtualFileInfo:
 		""" Get a VirtualFileInfo describing the given path. """
 		path = to_path(path)
 		if path in self.cache:
@@ -249,7 +272,7 @@ class VirtualFS(object):
 		else:
 			raise VirtualNotADirectoryError(f"Parent of '{path}' ('{rparent.path}') is not a directory: {rparent.type}")
 
-	def delete(self, path):
+	def delete(self, path: PathLike) -> None:
 		""" Marks the given path as deleted. """
 		path = to_path(path)
 		self._log(logging.DEBUG, f'delete {path}')
@@ -262,14 +285,14 @@ class VirtualFS(object):
 					del self.cache[p]
 		self._cache(path, VirtualFileInfo(self, path, VirtualFileType.NONE, False))
 
-	def mkdir(self, path):
+	def mkdir(self, path: PathLike) -> None:
 		""" Marks the given path as containing a new directory. """
 		path = to_path(path)
 		self._log(logging.DEBUG, f'mkdir {path}')
 		self._assert_not_exists(path)
 		self._cache(path, VirtualFileInfo(self, path, VirtualFileType.DIRECTORY, False))
 
-	def link(self, source, target):
+	def link(self, source: PathLike, target: PathLike) -> None:
 		"""
 		Mark the given target path as being a link to the given source.
 
@@ -282,7 +305,7 @@ class VirtualFS(object):
 		else:
 			self.symlink(source, target)
 
-	def symlink(self, source, target):
+	def symlink(self, source: PathLike, target: PathLike) -> None:
 		""" Mark the given target path as being a symbolic link to the given source. """
 		self._log(logging.DEBUG, f'symlink {source} to {target}')
 		source = to_path(source)
@@ -291,7 +314,7 @@ class VirtualFS(object):
 		self._assert_exists(source) # Not required, but helps prevent problems.
 		self._cache(target, VirtualFileInfo(self, target, VirtualFileType.SYMLINK, False, links_to = source))
 
-	def hardlink(self, source, target):
+	def hardlink(self, source: PathLike, target: PathLike) -> None:
 		""" Mark the given target path as being a hardlink to the given source. """
 		self._log(logging.DEBUG, f'hardlink {source} to {target}')
 		source = to_path(source)
@@ -310,7 +333,7 @@ class VirtualFS(object):
 			links_to = source.path,
 		))
 
-	def scandir(self, path):
+	def scandir(self, path: PathLike) -> Iterable[VirtualFileInfo]:
 		""" Provide a listing of files in a given directory. """
 		path = to_path(path)
 		entry = self.get(path).real
@@ -322,21 +345,21 @@ class VirtualFS(object):
 		else:
 			return (e for (p, e) in self.cache.items() if p.parent == entry.path)
 
-	def _assert_exists(self, path):
+	def _assert_exists(self, path: PathLike) -> None:
 		entry = self.get(path)
 		if entry.type == VirtualFileType.NONE:
 			raise VirtualFileNotFoundError(f"No such file or directory: '{path}'")
 
-	def _assert_not_exists(self, path):
+	def _assert_not_exists(self, path: PathLike) -> None:
 		entry = self.get(path)
 		if entry.type != VirtualFileType.NONE:
 			raise VirtualFileExistsError(f"File exists: '{path}'")
 
-	def _cache(self, path, entry):
+	def _cache(self, path: PathLike, entry: VirtualFileInfo) -> VirtualFileInfo:
 		self.cache[to_path(path)] = entry
 		return entry
 
-	def _from_fs(self, path):
+	def _from_fs(self, path: Path) -> VirtualFileInfo:
 		try:
 			linfo = os.lstat(path)
 		except FileNotFoundError:
@@ -354,7 +377,7 @@ class VirtualFS(object):
 		else:
 			return VirtualFileInfo(self, path, VirtualFileType.OTHER, True)
 
-	def _log(self, level, message):
+	def _log(self, level: int, message: str) -> None:
 		curframe = inspect.currentframe()
 		calframe = inspect.getouterframes(curframe, 2)
 		caller = calframe[2]
@@ -367,34 +390,34 @@ class VirtualFS(object):
 
 class Command(object):
 	""" A command that has to be executed to get to the desired state. """
-	def __init__(self, target):
+	def __init__(self, target: Union[str, Path]):
 		self.target = target
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return f'# {shlex.quote(str(self.target))}'
 
 
 class LinkCommand(Command):
 	""" An ln command that has to be executed to get to the desired state. """
-	def __init__(self, source, target, flags = ''):
+	def __init__(self, source: Union[str, Path], target: str, flags: str = ''):
 		super().__init__(target)
 		self.source = source
 		self.flags = flags
 
-	def __str__(self):
+	def __str__(self) -> str:
 		flags = f'-{self.flags} ' if self.flags else ''
 		return f'ln {flags}-- {shlex.quote(str(self.source))} {shlex.quote(str(self.target))}'
 
 
 class DeleteCommand(Command):
 	""" An rm command that has to be executed to get to the desired state. """
-	def __str__(self):
+	def __str__(self) -> str:
 		return f'rm -- {shlex.quote(str(self.target))}'
 
 
 class MkdirCommand(Command):
 	""" An mkdir command that has to be executed to get to the desired state. """
-	def __str__(self):
+	def __str__(self) -> str:
 		return f'mkdir {shlex.quote(str(self.target))}'
 
 # }}}
@@ -404,17 +427,17 @@ class MkdirCommand(Command):
 
 class Processor(object):
 	""" A class to process all source files into a series of command to get into the desired state. """
-	def __init__(self, args, config):
+	def __init__(self, args: 'Args', config: Config):
 		self.args = args
 		self.config = config
 		self.fs = VirtualFS()
-		self.commands = []
+		self.commands: List[Command] = []
 
-	def process_dir(self, path, only_explicit = False):
+	def process_dir(self, path: PathLike, only_explicit: bool = False) -> None:
 		for entry in self.fs.scandir(path):
 			self.process_entry(entry, only_explicit)
 
-	def process_entry(self, entry, only_explicit = False):
+	def process_entry(self, entry: VirtualFileInfo, only_explicit: bool = False) -> None:
 		fc = self.config.get_info(entry.path)
 
 		if fc.processed:
@@ -437,7 +460,7 @@ class Processor(object):
 		else:
 			err(f'No behaviour has been defined for the action for {entry.path}')
 
-	def process_explicit(self):
+	def process_explicit(self) -> None:
 		""" Make sure all paths mentioned explicitly in the config have been processed. """
 		for path in self.config.sections():
 			fc = self.config.get_info(path)
@@ -449,7 +472,7 @@ class Processor(object):
 					err(f'Unable to find parent directory {dirpath} for {path}')
 					raise
 
-	def apply_recurse(self, entry, fc):
+	def apply_recurse(self, entry: VirtualFileInfo, fc: FileConfig) -> None:
 		if not entry.real.type == VirtualFileType.DIRECTORY:
 			err(f'Cannot recurse non-directory {fc.path}')
 			return
@@ -484,7 +507,7 @@ class Processor(object):
 
 		self.process_dir(entry.path)
 
-	def apply_link(self, entry, fc):
+	def apply_link(self, entry: VirtualFileInfo, fc: FileConfig) -> None:
 		flags = ''
 		if entry.real.type == VirtualFileType.DIRECTORY:
 			flags += 's'
@@ -507,10 +530,11 @@ class Processor(object):
 					tflags += 'T'
 
 				self.fs.link(entry.path, target)
+				assert entry.non_virtual_path is not None
 				self.commands.append(LinkCommand(entry.non_virtual_path, target, tflags))
 
-	def should_link_be_created(self, entry, fc, target):
-		target = self.fs.get(target, parent_none_is_none = True)
+	def should_link_be_created(self, entry: VirtualFileInfo, fc: FileConfig, target_path: str) -> bool:
+		target = self.fs.get(target_path, parent_none_is_none = True)
 
 		if self.args.assume_empty:
 			return True
@@ -547,13 +571,15 @@ class Processor(object):
 		# If the entry is a file with identical contents as the target we can replace it safely
 		isdir = entry.real.type == VirtualFileType.DIRECTORY
 		if not isdir:
+			assert target.non_virtual_path is not None
+			assert entry.non_virtual_path is not None
 			if hash_file(target.non_virtual_path) == hash_file(entry.non_virtual_path):
 				return True
 
 		# Prompt the user for confirmation
 		return self.confirm_overwrite(fc.path, target.path, isdir)
 
-	def confirm_overwrite(self, source, target, isdir):
+	def confirm_overwrite(self, source: Union[str, Path], target: Union[str, Path], isdir: bool) -> bool:
 		print(
 			f'Attempting to link {"directory" if isdir else "file"} {source} to {target}, '
 			f'but a file exists in this location.'
@@ -572,7 +598,7 @@ class Processor(object):
 				subprocess.run(['diff', source, target])
 				print()
 
-	def mkdirs(self, path):
+	def mkdirs(self, path: PathLike) -> None:
 		path = to_path(path)
 		pinfo = self.fs.get(path.parent, parent_none_is_none = True)
 		if pinfo.type == VirtualFileType.NONE:
@@ -583,7 +609,15 @@ class Processor(object):
 # }}}
 
 
-def parse_args(args):
+class Args(argparse.Namespace):
+	assume_empty: bool
+	overwrite: bool
+	root: str
+	config: str
+	debug: bool
+
+
+def parse_args() -> Args:
 	parser = argparse.ArgumentParser(description = (
 		'Generate a list of commands that setup the home directory to use the files in this repository.'
 	))
@@ -605,10 +639,10 @@ def parse_args(args):
 	parser.add_argument('-r', '--root', default = root, help = f'Path to the root folder.')
 	parser.add_argument('-c', '--config', default = os.path.join(root, 'scripts', 'config'), help = 'Path to the config.')
 	parser.add_argument('--debug', action = 'store_true', help = 'Output more logging information.')
-	return parser.parse_args(args)
+	return parser.parse_args(namespace = Args())
 
 
-def main(args):
+def main(args: Args) -> None:
 	# Read the config
 	config = Config(args.root, args.config)
 
@@ -621,7 +655,6 @@ def main(args):
 	processor.process_dir(args.root)
 	processor.process_explicit()
 	processor.process_entry(processor.fs.get(args.root), only_explicit = True)
-	commands = processor.commands[:]
 
 	# Make sure no items marked in the config have been missed (unless they are to be skipped anyway)
 	for path in config.sections():
@@ -638,7 +671,7 @@ def main(args):
 		return
 
 	# Write the commands to a file that can be sourced by the user
-	commands = [str(cmd) for cmd in commands]
+	commands = [str(cmd) for cmd in processor.commands]
 	indented_commands = '\n\t\t\t\t'.join(commands)
 	with open(cmdpath, 'w') as f:
 		f.write(textwrap.dedent(f'''
@@ -658,7 +691,7 @@ def main(args):
 	print(f'To execute these commands type "sh {cmdpath}".')
 
 
-def setup_logging():
+def setup_logging() -> None:
 	formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 	handler = logging.StreamHandler(sys.stdout)
@@ -671,7 +704,7 @@ def setup_logging():
 
 
 if __name__ == '__main__':
-	args = parse_args(sys.argv[1:])
+	args = parse_args()
 	if args.debug:
 		setup_logging()
 	main(args)
