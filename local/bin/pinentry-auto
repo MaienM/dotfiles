@@ -8,9 +8,11 @@ case "$PINENTRY_USER_DATA" in
 esac
 
 # Make sure the tty that is to be used is not broken and not in -echo mode, because if it is using a TTY pinentry will turn into a mess.
-if [ -n "$use_tty" ] && (!stty -F "$use_tty" > /dev/null 2>&1 || stty -F "$use_tty" 2>&1 | grep -q '\b-echo\b'); then
+if [ -n "$use_tty" ] && (!stty -F "$use_tty" > /dev/null 2>&1 || stty -F "$use_tty" 2>&1 | grep -q '-echo'); then
 	use_tty=
 fi
+
+echo "$PINENTRY_USER_DATA -> $use_tty" > /tmp/pinentry.log
 
 if [ -n "$use_tty" ]; then
 	for pinentry in /usr/bin/pinentry-tty /usr/bin/pinentry-curses; do
