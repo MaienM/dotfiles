@@ -13,10 +13,14 @@ jq -r '.data | map([.id, .title] | join(" ")) | .[]' < "$playlist" > "$file"
 
 (
 	echo '#EXTM3U'
-	for id in $(cut -d' ' -f1 < "$file"); do
-		entry="$(jq ".data | map(select(.id == $id))[0]" < "$playlist")"
-		echo "#EXTINF:0,$(jq -r '.title' <<<"$entry")"
-		jq -r '.filename' <<<"$entry"
-	done
+
+	ids=()
+	while read -r line; do
+		ids=("${ids[@]}" "${line/ *}")
+	done < "$file"
+	jq -r --arg ids "${ids[*]}" '
+		(.data | map({ key: .id | tostring, value: . }) | from_entries) as $map |
+		$ids | split(" ") | map($map[.]) | map("#EXTINF:0,\(.title)\n\(.filename)") | .[]
+	' < "$playlist"
 ) > "$new_playlist"
 mpv-control '{"command":["loadlist", "'"$new_playlist"'"]}'
