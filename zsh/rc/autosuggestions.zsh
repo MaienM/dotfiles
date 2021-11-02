@@ -1,3 +1,9 @@
+# Stop if tmux is not available, we're in a session nested in something, or we're not connected through SSH
+if [ $+functions[_histdb_query] -eq 0 ]; then
+	echo >&2 "Histdb unvailable (is sqlite installed?)."
+	return 1
+fi
+
 # Use histdb to determine the autosuggestions based on previous commands in the current directory.
 _zsh_autosuggest_strategy_histdb_top() {
    local query
