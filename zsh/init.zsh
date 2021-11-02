@@ -19,5 +19,5 @@ for file in ~/.zsh/rc/*.zsh; do
 	source "$file"
 done
 
-source ~/.zsh/bundle/syntax-highlighting.zsh # Wraps zle widgets, should be as late as possible.
+source ~/.zsh/bundle/fast-syntax-highlighting.zsh # Wraps zle widgets, should be as late as possible.
 source ~/.zsh/bundle/history-substring-search.zsh # Must be after syntax highlighting.

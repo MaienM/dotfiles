@@ -103,9 +103,9 @@
 [submodule "zsh/bundle/autosuggestions"]
 	path = zsh/bundle/autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions
-[submodule "zsh/bundle/syntax-highlighting"]
-	path = zsh/bundle/syntax-highlighting
-	url = https://github.com/zdharma/fast-syntax-highlighting
+[submodule "zsh/bundle/fast-syntax-highlighting"]
+	path = zsh/bundle/fast-syntax-highlighting
+	url= https://github.com/zdharma-continuum/fast-syntax-highlighting
 [submodule "zsh/bundle/base16"]
 	path = zsh/bundle/base16
 	url = https://github.com/chriskempson/base16-shell
