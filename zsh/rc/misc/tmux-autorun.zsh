@@ -1,6 +1,6 @@
 # Stop if tmux is not available, we're in a session nested in something, or we're not connected through SSH
 if (
-	[ ! $+commands[tmux] ] ||
+	[ $+commands[tmux] -eq 0 ] ||
 	[ -n "$TMUX" ] ||
 	[ -n "$EMACS" ] || 
 	[ -n "$VIM" ] ||
