@@ -29,7 +29,9 @@
 	syntax-theme = base16-256
 	features = line-numbers decorations
 	plus-style = green
+	plus-emph-style = black green
 	minus-style = red
+	minus-emph-style = black red
 [delta "decorations"]
 	commit-decoration-style = bold yellow box ul
 	file-decoration-style = bold blue box
