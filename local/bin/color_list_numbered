@@ -1,3 +1,8 @@
 #!/usr/bin/env zsh
 
-for i in {0..255}; do print -Pn "%${i}F${(l:3::0:)i}%f " ${${(M)$(((i+4)%6)):#1}:+$'\n'}; done
+letter='F'
+if [ "$1" = "bg" ]; then
+	letter='K'
+fi
+
+for i in {0..255}; do print -rPn "%${letter}{${i}}${(l:3::0:)i}%f%k " ${${(M)$(((i+4)%6)):#1}:+$'\n'}; done
