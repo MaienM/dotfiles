@@ -4,7 +4,7 @@ set -e
 
 input="$(mktemp --suffix='.json')"
 output="$(mktemp --suffix='.json')"
-mpv-control '{"command":["get_property", "vf"]}' | jq '.data' > "$input"
+mpv-control '{"command":["get_property", "vf"]}' | jq '.data | map(select(.name | endswith("-disabled") | not))' > "$input"
 
 mapfile -t filters < <(jq -r 'map("\(.name)=\(.params | to_entries | map("\(.key)=\(.value)") | join(":"))") | .[]' "$input")
 case "$(jq -r 'map(.name) | join("/")' "$input")" in
