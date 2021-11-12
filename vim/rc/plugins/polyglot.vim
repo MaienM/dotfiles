@@ -1,3 +1,5 @@
+let g:polyglot_disabled=[]
+
 "=== LaTeX ===
 
 " Don't mess with indents.
@@ -15,3 +17,8 @@ au FileType javascript setlocal foldmethod=syntax
 
 " Use the same highlighting for XML (and JSX) end tags as for the start tags.
 hi link xmlEndTag xmlTag
+
+"=== Python ===
+
+" The indent plugin assumes PEP8, which is not true for my personal scripts since I prefer tabs over spaces.
+call add(g:polyglot_disabled, 'python-indent')
