@@ -17,4 +17,4 @@ if ! git merge-base --is-ancestor "$COMMIT" HEAD; then
 	exit 1
 fi
 git commit --fixup="$COMMIT" "$@"
-GIT_EDITOR=true git rebase --interactive --autostash --autosquash "$COMMIT~1"
+GIT_EDITOR=true git rebase --interactive --autostash --autosquash "$COMMIT~1" || git reset --soft HEAD~1
