@@ -43,6 +43,7 @@ element {
 	/* spacing set in generated file */
 }
 element-icon {
+	horizontal-align: 0.5;
 	/* size set in generated file */
 }
 element-text {
