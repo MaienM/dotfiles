@@ -229,7 +229,7 @@ gitdirs() {
 				statuses[$slug]="GitStatus returned unexpected result '$VCS_STATUS_RESULT'." 
 			;;
 		esac
-		gitstatus_stop "GITDIRS_$slug"
+		gitstatus_stop_p9k_ "GITDIRS_$slug"
 	}
 
 	maxnamewidth=0
@@ -240,8 +240,8 @@ gitdirs() {
 		slug="$(_dirtoslug "$dir")"
 		names[$slug]="$name"
 
-		gitstatus_start "GITDIRS_$slug"
-		gitstatus_query -d "$dir" -t 0.5 -c _gitstatusresult "GITDIRS_$slug" 
+		gitstatus_start_p9k_ "GITDIRS_$slug"
+		gitstatus_query_p9k_ -d "$dir" -t 0.5 -c _gitstatusresult "GITDIRS_$slug" 
 		_gitstatusresult
 	done
 	format="%-${maxnamewidth}s  %-20s  %s"
