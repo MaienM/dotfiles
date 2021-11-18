@@ -2,25 +2,30 @@
 
 set -o errexit -o pipefail
 
+. edit-loop
+
 playlist="$(mktemp --suffix='.json')"
-file="$(mktemp)"
 new_playlist="$(mktemp --suffix='.m3u8')"
 
-mpv-control '{"command":["get_property", "playlist"]}' > "$playlist"
-jq -r '.data | map([.id, .title] | join(" ")) | .[]' < "$playlist" > "$file"
+load() {
+	mpv-control '{"command":["get_property", "playlist"]}' > "$playlist"
+	jq -r '.data | map([.id, .title] | join(" ")) | .[]' < "$playlist" > "$1"
+}
 
-"$EDITOR" "$file"
+save() {
+	(
+		echo '#EXTM3U'
 
-(
-	echo '#EXTM3U'
+		ids=()
+		while read -r line; do
+			ids=("${ids[@]}" "${line/ *}")
+		done < "$1"
+		jq -r --arg ids "${ids[*]}" '
+			(.data | map({ key: .id | tostring, value: . }) | from_entries) as $map |
+			$ids | split(" ") | map($map[.]) | map("#EXTINF:0,\(.title)\n\(.filename)") | .[]
+		' < "$playlist"
+	) > "$new_playlist"
+	mpv-control '{"command":["loadlist", "'"$new_playlist"'"]}'
+}
 
-	ids=()
-	while read -r line; do
-		ids=("${ids[@]}" "${line/ *}")
-	done < "$file"
-	jq -r --arg ids "${ids[*]}" '
-		(.data | map({ key: .id | tostring, value: . }) | from_entries) as $map |
-		$ids | split(" ") | map($map[.]) | map("#EXTINF:0,\(.title)\n\(.filename)") | .[]
-	' < "$playlist"
-) > "$new_playlist"
-mpv-control '{"command":["loadlist", "'"$new_playlist"'"]}'
+edit-loop "$(mktemp)" load save

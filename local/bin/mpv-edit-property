@@ -2,27 +2,23 @@
 
 set -o errexit -o pipefail
 
-checksum() {
-	yj -yj < "$1" | md5sum | cut -c-32
+. edit-loop
+
+prop="$1"
+seed="$2"
+
+load() {
+	mpv-control '{"command":["get_property", "'$prop'"]}' | jq '.data' | yj -jy > "$1"
 }
 
-file="$(mktemp --suffix='.yaml')"
-if [ -n "$2" ]; then
-	yj -jy < "$2" > "$file"
-else
-	mpv-control '{"command":["get_property", "'$1'"]}' | jq '.data' | yj -jy > "$file"
-	sumold="$(checksum "$file")"
-fi
-while true; do
-	"$EDITOR" "$file"
-	sumnew="$(checksum "$file")"
-	if [ "$sumold" = "$sumnew" ]; then
-		break
-	fi
-	sumold="$sumnew"
+save() {
+	mpv-control '{"command":["set_property", "vf",'$(yj -yj < "$1")']}' 2>&1 > /dev/null
+}
 
-	if error="$(mpv-control '{"command":["set_property", "vf",'$(yj -yj < "$file")']}' 2>&1 > /dev/null)"; then
-		break
-	fi
-	sed -i "1i # $error" "$file"
-done
+file="/tmp/mpv-edit-property-$prop.yaml"
+if [ -n "$seed" ]; then
+	yj -jy < "$seed" > "$file.seed"
+	seed="$file.seed"
+fi
+
+edit-loop "$file" load save "$seed"

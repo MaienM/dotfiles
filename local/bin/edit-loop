@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+# Usage: edit-loop path load-func save-func [start-state]
+#
+# This provides a utility to easily implement interactive editing of _something_, with the following basic:
+#   1. The starting state is loaded into `path` using `load-func $path`.
+#   2. This file is opened in $EDITOR.
+#   3. The user makes changes to the file.
+#   4. The state from the file is applied using `save-func $path`.
+#   5. If this succeeds, we're done. If not, show the error and go back to step 2.
+#
+# If the user doesn't make any changes the process is aborted, and the state is not applied. This both gives the user an
+# out, and avoids applying state needlessly.
+#   1a. Get the old checksum of `path` (sumold).
+#   3a. Get the new checksum of `path` (sumnew). Stop if the old and new checksum match. If they don't, replace sumold with sumnew.
+#
+# If a `start-state` file is provided this file will be used as the starting state instead of the one loaded from
+# `load-func`. Note that `load_func` _will_ still be called, and that the starting checksum will be based on the value
+# loaded from this. This means that if the user doesn't make any changes on the first run the `start-state` file will
+# still be applied (unless it was equal to the loaded state).
+#   1b. If `start-state` is provided, overwrite the data in `path` with the data in `start-state`.
+
+checksum() {
+	md5sum "$1" | cut -c-32
+}
+
+edit-loop() {
+	set -o errexit -o pipefail
+
+	path="$1"
+	load_func="$2"
+	save_func="$3"
+	start_state="$4"
+
+	if [ -f "$path" ]; then
+		mv "$path" "$path.bak"
+	fi
+
+	$load_func "$path"
+	sumold="$(checksum "$path")"
+	if [ -n "$start_state" ]; then
+		cp "$start_state" "$path"
+	fi
+
+	while true; do
+		"$EDITOR" "$path"
+		if [ ! -f "$path" ]; then
+			return
+		fi
+
+		sumnew="$(checksum "$path")"
+		if [ "$sumold" = "$sumnew" ]; then
+			return
+		fi
+		sumold="$sumnew"
+
+		if $save_func "$path"; then
+			return
+		fi
+	done
+}
+
+if [ "$0" == */edit-loop ]; then
+	edit-loop "$@"
+fi
+
