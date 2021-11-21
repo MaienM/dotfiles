@@ -4,10 +4,28 @@ set -e
 
 input="$(mktemp --suffix='.json')"
 output="$(mktemp --suffix='.json')"
-mpv-control '{"command":["get_property", "vf"]}' | jq '.data | map(select(.name | endswith("-disabled") | not))' > "$input"
+mpv-control '{"command":["get_property", "vf"]}' | jq '.data' > "$input"
+mapfile -t picks < <(
+	jq -r \
+		'
+		to_entries |
+		map(
+			(.value.name | rtrimstr("-disabled")) as $name |
+			select($name != "lavfi") |
+			[
+				.key,
+				(.value | tostring),
+				"\($name)=\(.value.params | to_entries | map("\(.key)=\(.value)") | join(":"))",
+				if .value.label then "(\(.value.label))" else "" end
+			] | join(" ")
+		) | .[]' \
+		"$input" \
+	| fzf --multi --with-nth='3..' --preview='echo {2} | yj -jy'
+)
+mapfile -t ids < <(printf '%s\n' "${picks[@]}" | awk '{ print $1 }')
+mapfile -t filters < <(printf '%s\n' "${picks[@]}" | awk '{ print $3 }')
 
-mapfile -t filters < <(jq -r 'map("\(.name)=\(.params | to_entries | map("\(.key)=\(.value)") | join(":"))") | .[]' "$input")
-case "$(jq -r 'map(.name) | join("/")' "$input")" in
+case "$(printf '%s\n' "${picks[@]}" | awk '{ print $2 }' | jq -s -r 'map(.name) | join("/")')" in 
 	'crop/crop')
 		# Two crops, assume side-by-side in order left, right.
 		result="
@@ -18,7 +36,7 @@ case "$(jq -r 'map(.name) | join("/")' "$input")" in
 		"
 	;;
 	'crop/crop/crop/crop')
-		# Two crops, assume 2x2 grid in order top left, top right, bottom left, bottom right.
+		# Four crops, assume 2x2 grid in order top left, top right, bottom left, bottom right.
 		result="
 			[vid1] split [vt][vb];
 			[vt] split [vtl][vtr];
@@ -38,6 +56,24 @@ case "$(jq -r 'map(.name) | join("/")' "$input")" in
 	;;
 esac
 result="$(echo "$result" | sed '/^\s*$/d; s/^\s*//')"
-jq 'map(. + { "name": "\(.name)-disabled", "enabled": false }) + [{ "name": "lavfi", "enabled": true, "params": { "graph": $result } }]' --arg result "$result" < "$input" > "$output"
+jq \
+	--arg ids "${ids[*]}" \
+	--arg result "$result" \
+	'
+		($ids | split(" ") | map(tonumber)) as $ids |
+		. |
+		to_entries |
+		map(
+			if (.key | in($ids)) then
+				.value + { "name": "\(.value.name | rtrimstr("-disabled"))-disabled", "enabled": false }
+			else
+				.value
+			end
+		) + [{
+			"name": "lavfi",
+			"enabled": true,
+			"params": { "graph": $result },
+		}]
+	' "$input" > "$output"
 
 mpv-edit-property vf "$output"
