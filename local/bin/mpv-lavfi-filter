@@ -4,7 +4,9 @@ set -e
 
 input="$(mktemp --suffix='.json')"
 output="$(mktemp --suffix='.json')"
+
 mpv-control '{"command":["get_property", "vf"]}' | jq '.data' > "$input"
+
 mapfile -t picks < <(
 	jq -r \
 		'
@@ -22,6 +24,12 @@ mapfile -t picks < <(
 		"$input" \
 	| fzf --multi --with-nth='3..' --preview='echo {2} | yj -jy'
 )
+
+if [ "${#picks[@]}" -le 1 ]; then
+	echo >&2 "Must pick at least two filters."
+	exit 1
+fi
+
 mapfile -t ids < <(printf '%s\n' "${picks[@]}" | awk '{ print $1 }')
 mapfile -t filters < <(printf '%s\n' "${picks[@]}" | awk '{ print $3 }')
 
