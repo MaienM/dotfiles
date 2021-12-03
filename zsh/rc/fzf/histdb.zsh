@@ -1,4 +1,7 @@
 if ! command -v histdb &> /dev/null; then
+	source "$HOME/.zsh/bundle/histdb/zsh-histdb.plugin.zsh"
+fi
+if ! command -v histdb &> /dev/null; then
 	return
 fi
 
@@ -6,17 +9,20 @@ SEC_IN_MINUTE=60
 SEC_IN_HOUR=$((60 * SEC_IN_MINUTE))
 SEC_IN_DAY=$((24 * SEC_IN_HOUR))
 format_time() {
+	local duration
 	duration="$1"
-	if [ "$duration" -eq -1 ]; then
-		echo 'Unknown'
-		return
-	fi
-	printf '%id %ih %im %is' \
-		"$((duration / SEC_IN_DAY))" \
-		"$(((duration % SEC_IN_DAY) / SEC_IN_HOUR))" \
-		"$(((duration % SEC_IN_HOUR) / SEC_IN_MINUTE))" \
-		"$((duration % SEC_IN_MINUTE))" \
-		| sed 's/^\(0*[a-z]\s*\)*//'
+	case "$duration" in
+		-*) echo 'Unknown' ;;
+		0) echo '0s' ;;
+		*)
+			printf '%id %ih %im %is' \
+				"$((duration / SEC_IN_DAY))" \
+				"$(((duration % SEC_IN_DAY) / SEC_IN_HOUR))" \
+				"$(((duration % SEC_IN_HOUR) / SEC_IN_MINUTE))" \
+				"$((duration % SEC_IN_MINUTE))" \
+				| sed 's/^\(0*[a-z]\s*\)*//'
+		;;
+	esac
 }
 
 _fzf_pipeline_histdb_commands_source() {
@@ -30,7 +36,7 @@ _fzf_pipeline_histdb_commands_source() {
 }
 _fzf_pipeline_histdb_commands_preview() {
 	read -r  hdb_exit_status hdb_start_time hdb_duration < <(_histdb_query -separator ' ' "
-		SELECT history.exit_status, history.start_time, history.duration
+		SELECT IFNULL(history.exit_status, 0), IFNULL(history.start_time, 0), IFNULL(history.duration, -1)
 		FROM history
 		WHERE history.id = "$1"
 		LIMIT 1
@@ -49,6 +55,7 @@ _fzf_pipeline_histdb_commands_preview() {
 		WHERE history.id = "$1"
 		LIMIT 1
 	")"
+
 	echo "ID:\t\t$1"
 	echo "Command:\t$hdb_cmd"
 	echo "Directory:\t$hdb_pwd"
