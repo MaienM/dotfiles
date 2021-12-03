@@ -30,7 +30,7 @@ if [ "${#picks[@]}" -le 1 ]; then
 	exit 1
 fi
 
-mapfile -t ids < <(printf '%s\n' "${picks[@]}" | awk '{ print $1 }')
+mapfile -t idxs < <(printf '%s\n' "${picks[@]}" | awk '{ print $1 }')
 mapfile -t filters < <(printf '%s\n' "${picks[@]}" | awk '{ print $3 }')
 
 case "$(printf '%s\n' "${picks[@]}" | awk '{ print $2 }' | jq -s -r 'map(.name) | join("/")')" in 
@@ -77,14 +77,15 @@ case "$(printf '%s\n' "${picks[@]}" | awk '{ print $2 }' | jq -s -r 'map(.name) 
 esac
 result="$(echo "$result" | sed '/^\s*$/d; s/^\s*//')"
 jq \
-	--arg ids "${ids[*]}" \
+	--arg idxs "${idxs[*]}" \
 	--arg result "$result" \
 	'
-		($ids | split(" ") | map(tonumber)) as $ids |
+		($idxs | split(" ") | map(tonumber)) as $idxs |
 		. |
 		to_entries |
 		map(
-			if (.key | in($ids)) then
+			.key as $idx |
+			if ($idxs | index($idx) != null) then
 				.value + { "name": "\(.value.name | rtrimstr("-disabled"))-disabled", "enabled": false }
 			else
 				.value
