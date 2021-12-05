@@ -349,7 +349,6 @@ class VirtualFS(object):
 			VirtualFileType.FILE,
 			False,
 			inode = source_info.inode,
-			links_to = source,
 		))
 
 	def scandir(self, path: AbsoluteVirtualPath) -> Iterable[VirtualFileInfo]:

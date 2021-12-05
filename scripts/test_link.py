@@ -431,7 +431,6 @@ class TestVirtualFSGet(object):
 				vfs.symlink(p(mock_structure.path / 'dir1'), p(mock_structure.path / 'dir2'))
 
 	class TestHardlink(object):
-		@pytest.mark.xfail(reason = 'Broken: links_to should be None for hardlinks.', strict = True)
 		def test_file(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.hardlink(p(mock_structure.path / 'fileA'), p(mock_structure.path / 'hardA'))
 			entry = vfs.get(p(mock_structure.path / 'hardA'))
