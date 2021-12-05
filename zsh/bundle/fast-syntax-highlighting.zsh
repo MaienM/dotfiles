@@ -1,3 +1,5 @@
+autoload -U is-at-least
+
 if ! is-at-least 4.3.11; then
 	return 1
 fi

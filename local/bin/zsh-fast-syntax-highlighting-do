@@ -1,0 +1,80 @@
+#!/usr/bin/env zsh
+
+source "$HOME/.zsh/bundle/fast-syntax-highlighting.zsh"
+source "$HOME/.zsh/rc/options.zsh"
+
+zsh-syntax-highlight-to-color-code() {
+	local part
+	for part in "${(s[,])1}"; do
+		case "$part" in
+			'fg=black') tput setaf 0 ;;
+			'fg=red') tput setaf 1 ;;
+			'fg=green') tput setaf 2 ;;
+			'fg=yellow') tput setaf 3 ;;
+			'fg=blue') tput setaf 4 ;;
+			'fg=magenta') tput setaf 5 ;;
+			'fg=cyan') tput setaf 6 ;;
+			'fg=white') tput setaf 7 ;;
+			'fg='[0-9]*) tput setaf "${part#fg=}" ;;
+
+			'bg=black') tput setab 0 ;;
+			'bg=red') tput setab 1 ;;
+			'bg=green') tput setab 2 ;;
+			'bg=yellow') tput setab 3 ;;
+			'bg=blue') tput setab 4 ;;
+			'bg=magenta') tput setab 5 ;;
+			'bg=cyan') tput setab 6 ;;
+			'bg=white') tput setab 7 ;;
+			'bg='[0-9]*) tput setab "${part#bg=}" ;;
+
+			'bold') tput bold ;;
+			'dim') tput dim ;;
+			'underline') tput smul ;;
+			'reverse') tput rev ;;
+			'stanout') tput smso ;;
+			'none') tput sgr0; tput rmul; tput rmso ;;
+			'') ;;
+			*)
+				print -- "\nUnknown color command '$part'." >&2
+				exit 1
+			;;
+		esac
+	done
+}
+
+zsh-syntax-highlight-input() {
+	local cmd reply stack i recolor item
+
+	cmd="$1"
+
+	reply=()
+	-fast-highlight-process "" "$cmd" 0
+	IFS=$'\0' reply=($(printf '%s\0' "${reply[@]}" | sort -z -k 1n,2n))
+	# typeset -p reply
+
+	stack=()
+	for ((i=0; i<${#cmd}; i++)); do
+		recolor=0
+		while [[ "${stack[-1]}" = "$i "* ]]; do
+			stack=("${stack[@]:0:-1}")
+			recolor=1
+		done
+		while [[ "${reply[1]}" = "$i "* ]]; do
+			stack=("${stack[@]}" "${reply[1]#$i }")
+			reply=("${reply[@]:1}")
+			recolor=1
+		done
+		# print -- "${cmd[i+1]} $i :: $(typeset -p stack | cut -c18- | sed 's/( /(/; s/ )/)/')"
+		# continue
+		if [ "$recolor" -eq 1 ]; then
+			zsh-syntax-highlight-to-color-code none
+			for item in "${stack[@]}"; do
+				zsh-syntax-highlight-to-color-code "${item#[0-9]* }"
+			done
+		fi
+		print -n -- "${cmd[i+1]}"
+	done
+	print -n -- "$color_reset"
+}
+
+zsh-syntax-highlight-input "$1"
