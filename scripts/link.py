@@ -261,13 +261,6 @@ class VirtualFileInfo(object):
 		except VirtualFSError:
 			return VirtualFileInfo(self.fs, self.links_to, VirtualFileType.NONE, True)
 
-	@property
-	def non_virtual_path(self) -> Optional[AbsoluteRealPath]:
-		""" Get the path to the actual location on disk that this corresponds to, or None if this doesn't exist. """
-		if self.links_to is None:
-			return make_absolute_real_path(str(self.path))
-		return self.fs.get(self.links_to).non_virtual_path
-
 	def __repr__(self) -> str:
 		parts = []
 		parts.append(f"type {self.type}")
@@ -574,9 +567,8 @@ class Processor(object):
 				no_target_directory = (tentry.real.type == VirtualFileType.DIRECTORY)
 
 				self.fs.link(entry.path, target)
-				assert entry.non_virtual_path is not None
 				self.commands.append(LinkCommand(
-					entry.non_virtual_path,
+					entry.path,
 					target,
 					symbolic = symbolic,
 					force = force,
@@ -621,9 +613,7 @@ class Processor(object):
 		# If the entry is a file with identical contents as the target we can replace it safely
 		isdir = entry.real.type == VirtualFileType.DIRECTORY
 		if not isdir:
-			assert target.non_virtual_path is not None
-			assert entry.non_virtual_path is not None
-			if hash_file(target.non_virtual_path) == hash_file(entry.non_virtual_path):
+			if hash_file(target.path) == hash_file(entry.path):
 				return True
 
 		# Prompt the user for confirmation

@@ -80,7 +80,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.DIRECTORY
 			assert entry.is_from_fs
 			assert entry.links_to is None
-			assert entry.non_virtual_path == entry.path
 			assert entry.real is entry
 
 		def test_file(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
@@ -90,7 +89,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.FILE
 			assert entry.is_from_fs
 			assert entry.links_to is None
-			assert entry.non_virtual_path == entry.path
 			assert entry.real is entry
 
 		def test_missing(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
@@ -100,7 +98,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.NONE
 			assert entry.is_from_fs
 			assert entry.links_to is None
-			assert entry.non_virtual_path == entry.path
 			assert entry.real is entry
 
 		def test_fifo(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
@@ -114,7 +111,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.OTHER
 			assert entry.is_from_fs
 			assert entry.links_to is None
-			assert entry.non_virtual_path == entry.path
 			assert entry.real is entry
 
 		def test_symlink(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
@@ -124,7 +120,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.SYMLINK
 			assert entry.is_from_fs
 			assert entry.links_to == mock_structure.path / 'fileA'
-			assert entry.non_virtual_path == entry.links_to
 
 			real = entry.real
 			assert real is not entry
@@ -132,7 +127,6 @@ class TestVirtualFSGet(object):
 			assert real.type == VirtualFileType.FILE
 			assert real.is_from_fs
 			assert real.links_to is None
-			assert real.non_virtual_path == real.path
 
 		def test_double_symlink(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			entry = vfs.get(p(mock_structure.path / 'symsymA'))
@@ -141,7 +135,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.SYMLINK
 			assert entry.is_from_fs
 			assert entry.links_to == mock_structure.path / 'symA'
-			assert entry.non_virtual_path == mock_structure.path / 'fileA'
 
 			real = entry.real
 			assert real is not entry
@@ -149,7 +142,6 @@ class TestVirtualFSGet(object):
 			assert real.type == VirtualFileType.FILE
 			assert real.is_from_fs
 			assert real.links_to is None
-			assert real.non_virtual_path == real.path
 
 		def test_hardlink(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			entry = vfs.get(p(mock_structure.path / 'hardB'))
@@ -158,7 +150,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.FILE
 			assert entry.is_from_fs
 			assert entry.links_to is None
-			assert entry.non_virtual_path == entry.path
 			assert entry.real is entry
 			assert entry.inode == (mock_structure.path / 'fileB').stat().st_ino
 
@@ -169,7 +160,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.FILE
 			assert entry.is_from_fs
 			assert entry.links_to is None
-			assert entry.non_virtual_path == entry.path
 			assert entry.real is entry
 
 		def test_nested_symlink(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
@@ -179,7 +169,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.SYMLINK
 			assert entry.is_from_fs
 			assert entry.links_to == mock_structure.path / 'fileA'
-			assert entry.non_virtual_path == entry.links_to
 
 			real = entry.real
 			assert real is not entry
@@ -187,7 +176,6 @@ class TestVirtualFSGet(object):
 			assert real.type == VirtualFileType.FILE
 			assert real.is_from_fs
 			assert real.links_to is None
-			assert real.non_virtual_path == real.path
 
 		def test_nested_missing(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(NotADirectoryError):
@@ -204,7 +192,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.NONE
 			assert entry.is_from_fs
 			assert entry.links_to is None
-			assert entry.non_virtual_path == entry.links_to
 
 		def test_parent_file(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(NotADirectoryError):
@@ -223,7 +210,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.SYMLINK
 			assert entry.is_from_fs
 			assert entry.links_to == mock_structure.path / 'does_not_exist'
-			assert entry.non_virtual_path == entry.links_to
 
 			real = entry.real
 			assert real is not entry
@@ -231,12 +217,7 @@ class TestVirtualFSGet(object):
 			assert real.type == VirtualFileType.NONE
 			assert real.is_from_fs
 			assert real.links_to is None
-			assert real.non_virtual_path == real.path
 
-		@pytest.mark.xfail(
-			reason = 'Broken: non_virtual_path throws NotADirectoryError.',
-			strict = True,
-		)
 		def test_broken_symlink_nested(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			path = mock_structure.path / 'broken'
 			path.symlink_to(mock_structure.path /  'does' / 'not' / 'exist')
@@ -248,7 +229,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.SYMLINK
 			assert entry.is_from_fs
 			assert entry.links_to == mock_structure.path / 'does' / 'not' / 'exist'
-			assert entry.non_virtual_path is entry.links_to
 
 			real = entry.real
 			assert real is not entry
@@ -256,7 +236,6 @@ class TestVirtualFSGet(object):
 			assert real.type == VirtualFileType.NONE
 			assert real.is_from_fs
 			assert real.links_to is None
-			assert real.non_virtual_path == real.path
 
 	class TestDelete(object):
 		def test_file(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
@@ -267,7 +246,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.NONE
 			assert not entry.is_from_fs
 			assert entry.links_to is None
-			assert entry.non_virtual_path == entry.path
 			assert entry.real is entry
 
 		def test_dir(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
@@ -278,7 +256,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.NONE
 			assert not entry.is_from_fs
 			assert entry.links_to is None
-			assert entry.non_virtual_path == entry.path
 			assert entry.real is entry
 
 		def test_nested(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
@@ -305,7 +282,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.DIRECTORY
 			assert not entry.is_from_fs
 			assert entry.links_to is None
-			assert entry.non_virtual_path == entry.path
 			assert entry.real is entry
 
 		def test_nested_file(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
@@ -316,7 +292,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.NONE
 			assert not entry.is_from_fs
 			assert entry.links_to is None
-			assert entry.non_virtual_path == entry.path
 			assert entry.real is entry
 
 		def test_parent_file(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
@@ -382,7 +357,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.SYMLINK
 			assert not entry.is_from_fs
 			assert entry.links_to == mock_structure.path / 'fileB'
-			assert entry.non_virtual_path == entry.links_to
 
 			real = entry.real
 			assert real is not entry
@@ -390,7 +364,6 @@ class TestVirtualFSGet(object):
 			assert real.type == VirtualFileType.FILE
 			assert real.is_from_fs
 			assert real.links_to is None
-			assert real.non_virtual_path == real.path
 
 		def test_dir(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.symlink(p(mock_structure.path / 'dir2'), p(mock_structure.path / 'sym2'))
@@ -400,7 +373,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.SYMLINK
 			assert not entry.is_from_fs
 			assert entry.links_to == mock_structure.path / 'dir2'
-			assert entry.non_virtual_path == entry.links_to
 
 			real = entry.real
 			assert real is not entry
@@ -408,7 +380,6 @@ class TestVirtualFSGet(object):
 			assert real.type == VirtualFileType.DIRECTORY
 			assert real.is_from_fs
 			assert real.links_to is None
-			assert real.non_virtual_path == real.path
 
 		def test_symlink(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.symlink(p(mock_structure.path / 'sym1A'), p(mock_structure.path / 'symsym1A'))
@@ -418,7 +389,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.SYMLINK
 			assert not entry.is_from_fs
 			assert entry.links_to == mock_structure.path / 'sym1A'
-			assert entry.non_virtual_path == mock_structure.path / 'dir1' / 'file1A'
 
 			real = entry.real
 			assert real is not entry
@@ -426,7 +396,6 @@ class TestVirtualFSGet(object):
 			assert real.type == VirtualFileType.FILE
 			assert real.is_from_fs
 			assert real.links_to is None
-			assert real.non_virtual_path == real.path
 
 		def test_virtual(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.mkdir(p(mock_structure.path / 'dir3'))
@@ -437,7 +406,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.SYMLINK
 			assert not entry.is_from_fs
 			assert entry.links_to == mock_structure.path / 'dir3'
-			assert entry.non_virtual_path == entry.links_to
 
 			real = entry.real
 			assert real is not entry
@@ -445,7 +413,6 @@ class TestVirtualFSGet(object):
 			assert real.type == VirtualFileType.DIRECTORY
 			assert not real.is_from_fs
 			assert real.links_to is None
-			assert real.non_virtual_path == real.path
 
 		def test_missing(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(FileNotFoundError):
@@ -473,7 +440,6 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.FILE
 			assert not entry.is_from_fs
 			assert entry.links_to is None
-			assert entry.non_virtual_path == entry.path
 			assert entry.inode == (mock_structure.path / 'fileA').stat().st_ino
 
 		def test_dir(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
