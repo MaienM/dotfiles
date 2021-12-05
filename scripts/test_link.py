@@ -181,10 +181,6 @@ class TestVirtualFSGet(object):
 			with pytest.raises(NotADirectoryError):
 				vfs.get(p(mock_structure.path / 'dir3' / 'file3A'))
 
-		@pytest.mark.xfail(
-			reason = "Broken: is_from_fs should match the parent's is_from_fs and should thus be True.",
-			strict = True,
-		)
 		def test_nested_missing_allowed(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			entry = vfs.get(p(mock_structure.path / 'dir3' / 'file3A'), parent_none_is_none = True)
 

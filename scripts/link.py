@@ -295,7 +295,7 @@ class VirtualFS(object):
 				# The parent is virtual, so there is no reason to check the filesystem.
 				return self._cache(path, VirtualFileInfo(self, path, VirtualFileType.NONE, False))
 		elif rparent.type == VirtualFileType.NONE and parent_none_is_none:
-			return self._cache(path, VirtualFileInfo(self, path, VirtualFileType.NONE, False))
+			return self._cache(path, VirtualFileInfo(self, path, VirtualFileType.NONE, rparent.is_from_fs))
 		else:
 			raise VirtualNotADirectoryError(f"Parent of '{path}' ('{rparent.path}') is not a directory: {rparent.type}")
 
