@@ -497,17 +497,12 @@ class TestVirtualFSGet(object):
 			with pytest.raises(FileNotFoundError):
 				vfs.scandir(p(mock_structure.path / 'dir3'))
 
-		@pytest.mark.xfail(
-			reason = 'Broken: deleted items in a real directory should not appear in scandir.',
-			strict = True,
-		)
 		def test_real_delete(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.delete(p(mock_structure.path / 'dir2' / 'file2A'))
 			paths = {entry.path for entry in vfs.scandir(p(mock_structure.path / 'dir2'))}
 
 			assert paths == set()
 
-		@pytest.mark.xfail(reason = 'Broken: added items in a real directory should appear in scandir.', strict = True)
 		def test_real_mkdir(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.mkdir(p(mock_structure.path / 'dir2' / 'dir22'))
 			paths = {entry.path for entry in vfs.scandir(p(mock_structure.path / 'dir2'))}
@@ -517,7 +512,6 @@ class TestVirtualFSGet(object):
 				mock_structure.path / 'dir2' / 'dir22',
 			}
 
-		@pytest.mark.xfail(reason = 'Broken: added items in a real directory should appear in scandir.', strict = True)
 		def test_real_symlink(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.symlink(p(mock_structure.path / 'fileA'), p(mock_structure.path / 'dir2' / 'symA'))
 			paths = {entry.path for entry in vfs.scandir(p(mock_structure.path / 'dir2'))}
@@ -533,10 +527,6 @@ class TestVirtualFSGet(object):
 
 			assert paths == set()
 
-		@pytest.mark.xfail(
-			reason = 'Broken: deleted items in a fake directory should not appear in scandir.',
-			strict = True,
-		)
 		def test_fake_delete(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.mkdir(p(mock_structure.path / 'dir3'))
 			vfs.mkdir(p(mock_structure.path / 'dir3' / 'dir31'))

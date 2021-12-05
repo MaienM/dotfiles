@@ -357,10 +357,11 @@ class VirtualFS(object):
 		self._assert_exists(entry.path)
 		if entry.type != VirtualFileType.DIRECTORY:
 			raise NotADirectoryError(f"Not a directory: '{path}'")
+		entries = set()
 		if entry.is_from_fs:
-			return (self.get(AbsoluteVirtualPath(p)) for p in Path(entry.path).glob('*'))
-		else:
-			return (e for (p, e) in self.cache.items() if p.parent == entry.path)
+			entries |= set(self.get(AbsoluteVirtualPath(p)) for p in Path(entry.path).glob('*'))
+		entries |= set(e for (p, e) in self.cache.items() if p.parent == entry.path)
+		return (e for e in entries if e.type != VirtualFileType.NONE)
 
 	def _assert_exists(self, path: AbsoluteVirtualPath) -> None:
 		entry = self.get(path)
