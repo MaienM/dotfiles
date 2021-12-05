@@ -596,17 +596,17 @@ class Processor(object):
 		if target.type == VirtualFileType.DIRECTORY:
 			# The target is a different directory, so we bail out
 			err(
-					f'Attempted to link {fc.path} to {target}, but a directory exists in this location. '
-					'There is no automatic fix for this.'
-					)
+				f'Attempted to link {fc.path} to {target}, but a directory exists in this location. '
+				'There is no automatic fix for this.'
+			)
 			return False
 
 		if target.type == VirtualFileType.OTHER:
 			# The target is something else (eg a socket), so we bail out
 			err(
-					f'Attempted to link {fc.path} to {target}, but something in this location. '
-					'There is no automatic fix for this.'
-					)
+				f'Attempted to link {fc.path} to {target}, but something in this location. '
+				'There is no automatic fix for this.'
+			)
 			return False
 
 		# The target is a file, so it can be replaced entirely, but not without losing something
@@ -621,9 +621,9 @@ class Processor(object):
 
 	def confirm_overwrite(self, source: VirtualPath, target: VirtualPath, isdir: bool) -> bool:
 		print(
-				f'Attempting to link {"directory" if isdir else "file"} {source} to {target}, '
-				f'but a file exists in this location.'
-				)
+			f'Attempting to link {"directory" if isdir else "file"} {source} to {target}, '
+			'but a file exists in this location.'
+		)
 		if self.args.overwrite:
 			return True
 		while True:
@@ -659,17 +659,17 @@ class Args(argparse.Namespace):
 def parse_args() -> Args:
 	parser = argparse.ArgumentParser(description = (
 		'Generate a list of commands that setup the home directory to use the files in this repository.'
-		))
+	))
 	parser.add_argument(
-			'--assume-empty',
-			action = 'store_true',
-			help = (
-				'Pretend the home directory is empty. '
-				'Really only useful for testing, as the generated commands are likely to cause issues.'
-				),
-			)
+		'--assume-empty',
+		action = 'store_true',
+		help = (
+			'Pretend the home directory is empty. '
+			'Really only useful for testing, as the generated commands are likely to cause issues.'
+		),
+	)
 	parser.add_argument(
-			'-y', '--yes',
+		'-y', '--yes',
 		action = 'store_true',
 		dest = 'overwrite',
 		help = 'Assume yes to all overwrite prompts.',
