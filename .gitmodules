@@ -272,3 +272,6 @@
 [submodule "vim/bundle-nvim/indent-blankline"]
 	path = vim/bundle-nvim/indent-blankline
 	url = https://github.com/lukas-reineke/indent-blankline.nvim
+[submodule "vim/bundle-coc/rust-analyser"]
+	path = vim/bundle-coc/rust-analyser
+	url = https://github.com/fannheyward/coc-rust-analyzer
