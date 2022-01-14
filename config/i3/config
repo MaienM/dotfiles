@@ -234,7 +234,7 @@ focus_on_window_activation urgent
 # bindsym $GUI+Escape $exec xscreensaver-command -lock
 bindsym $Alt+space $exec rofi -combi-modi drun#ssh -modi combi -show combi -show-icons
 bindsym $GUI+space $exec rofi -modi window -show window -show-icons
-bindsym $GUI+Shift+s $exec ~/.config/rofi/scripts/scrot.sh
+bindsym $GUI+Shift+s $exec ~/.config/rofi/scripts/screenshot.sh
 bindsym $GUI+d $exec ~/.config/rofi/scripts/screenlayout.sh
 
 # Media bindings. Designed to be used with a dedicated launchpad (see qmk repo)
