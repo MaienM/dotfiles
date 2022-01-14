@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+set -o errexit -o pipefail -o monitor
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+
+fn="$1"
+if [ -z "$fn" ]; then
+	echo >&2 "Usage: $0 path"
+	exit 1
+fi
+if ! [ -f "$fn" ]; then
+	echo >&2 "No such file: $fn."
+	exit 1
+fi
+
+iwh="$(identify -format '%w %h' "$fn")"
+iwidth="${iwh% *}"
+iheight="${iwh#* }"
+swh="$(xdotool getdisplaygeometry)"
+swidth="${swh% *}"
+sheight="${swh#* }"
+twh="$(bc <<<"
+	scale = 10
+	factor = 0.9
+	ar = $iheight / $iwidth
+	sar = $sheight / $swidth
+
+	if (ar > sar) {
+		h = $sheight * factor
+		w = h / ar
+	} else {
+		w = $swidth * factor
+		h = w * ar
+	}
+
+	scale = 0
+	print (w / 1), \" \", (w * ar / 1)
+")"
+twidth="${twh%% *}"
+theight="${twh#* }"
+
+feh "$fn" --geometry "${twidth}x${theight}" --keep-zoom-vp &
+
+winid=
+for _attempt in {0..20}; do
+	winid="$(xwininfo -root -tree | grep -F "$fn" | awk '{ print $1 }' || true)"
+	[ -z "$winid" ] || break
+	sleep 0.05
+done
+if [ -z "$winid" ]; then
+	echo >&2 "Unable to find spawned window."
+	exit 1
+fi
+
+xdotool key --window "$winid" exclam
+
+fg > /dev/null
