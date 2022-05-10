@@ -19,6 +19,9 @@
 # loaded from this. This means that if the user doesn't make any changes on the first run the `start-state` file will
 # still be applied (unless it was equal to the loaded state).
 #   1b. If `start-state` is provided, overwrite the data in `path` with the data in `start-state`.
+#
+# If the enviroment variable LOOP is set step 5 is changed to always go back to step 2, even on a success. This way you
+# can repeatedly make and apply changes, and you an exit by just saving without making a chance.
 
 checksum() {
 	md5sum "$1" | cut -c-32
@@ -55,7 +58,9 @@ edit-loop() {
 		sumold="$sumnew"
 
 		if $save_func "$path"; then
-			return
+			if [ -z "$LOOP" ]; then
+				return
+			fi
 		fi
 	done
 }
