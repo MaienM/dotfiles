@@ -7,6 +7,7 @@ alias gits='rm -f \\ && git status'
 alias gitc='git commit -m'
 alias gitca='git commit --amend --no-edit'
 alias gitcae='git commit --amend'
+alias gitac='git amend-commit "$(fzf_run_preset "git:commit")"'
 
 # Log.
 alias gitlv='git log --pretty="tformat:%C(auto)%h %C(cyan)%<(14,mtrunc)%aN%C(auto)%d %C(auto)%s"'
