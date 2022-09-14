@@ -12,7 +12,7 @@ if [ -n "$use_tty" ] && (!stty -F "$use_tty" > /dev/null 2>&1 || stty -F "$use_t
 	use_tty=
 fi
 
-echo "$PINENTRY_USER_DATA -> $use_tty" > /tmp/pinentry.log
+echo "$(date) $PINENTRY_USER_DATA -> $use_tty" > /tmp/pinentry.log
 
 if [ -n "$use_tty" ]; then
 	for pinentry in /usr/bin/pinentry-tty /usr/bin/pinentry-curses; do
