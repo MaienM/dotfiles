@@ -42,3 +42,5 @@
 	line-numbers-plus-style = green
 	line-numbers-left-style = blue
 	line-numbers-right-style = blue
+[init]
+	defaultBranch = main
