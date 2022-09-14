@@ -36,6 +36,7 @@ AbsoluteVirtualPath = NewType('AbsoluteVirtualPath', PurePath)
 RealPath = Union[AbsoluteRealPath, RelativeRealPath]
 VirtualPath = Union[AbsoluteVirtualPath, RelativeVirtualPath]
 
+
 def make_absolute_real_path(path: str) -> AbsoluteRealPath:
 	return AbsoluteRealPath(Path(path))
 def make_relative_real_path(path: str) -> RelativeRealPath:
@@ -68,6 +69,18 @@ def join(root: RelativeVirtualPath, *segments: RelativeVirtualPath) -> RelativeV
 
 def join(root: Any, *segments: Any) -> Any:
 	return root.joinpath(*segments)
+
+
+@overload
+def make_absolute(path: RealPath) -> AbsoluteRealPath:
+	...
+
+@overload
+def make_absolute(path: VirtualPath) -> AbsoluteVirtualPath:
+	...
+
+def make_absolute(path: Any) -> Any:
+	return Path.cwd() / path
 
 # }}}
 
@@ -261,6 +274,12 @@ class VirtualFileInfo(object):
 		except VirtualFSError:
 			return VirtualFileInfo(self.fs, self.links_to, VirtualFileType.NONE, True)
 
+	@property
+	def real_path(self) -> AbsoluteRealPath:
+		""" Get the path as an absolute real path provided it comes from the real filesystem. """
+		assert self.is_from_fs, 'This entry is virtual and cannot return a real path.'
+		return self.path  # type: ignore
+
 	def __repr__(self) -> str:
 		parts = []
 		parts.append(f"type {self.type}")
@@ -316,6 +335,23 @@ class VirtualFS(object):
 		self._log(logging.DEBUG, f'mkdir {path}')
 		self._assert_not_exists(path)
 		self._cache(path, VirtualFileInfo(self, path, VirtualFileType.DIRECTORY, False))
+
+	def move(self, source: AbsoluteVirtualPath, target: AbsoluteVirtualPath) -> None:
+		""" Mark the given source as being removed, and the target as containing what was previously at the source. """
+		self._log(logging.DEBUG, f'mp {source} {target}')
+		self._assert_exists(source)
+		self._assert_not_exists(target)
+
+		pairs = [(source, target)]
+		while pairs:
+			psource, ptarget = pairs.pop(0)
+
+			entry = self.get(psource)
+			self._cache(ptarget, VirtualFileInfo(self, ptarget, entry.type, False, links_to=entry.links_to))
+			if entry.type == VirtualFileType.DIRECTORY:
+				for subentry in self.scandir(psource):
+					pairs.append((subentry.path, ptarget / subentry.path.relative_to(psource)))
+		self.delete(source)
 
 	def link(self, source: AbsoluteVirtualPath, target: AbsoluteVirtualPath) -> None:
 		"""
@@ -422,7 +458,17 @@ class Command(object):
 		return f'# {shlex.quote(str(self.target))}'
 
 
-class LinkCommand(Command):
+class MoveCommand(Command):
+	""" An mv command that has to be executed to get to the desired state. """
+	def __init__(self, source: AbsoluteRealPath, target: AbsoluteVirtualPath):
+		super().__init__(target)
+		self.source = source
+
+	def __str__(self) -> str:
+		return f'mv -- {shlex.quote(str(self.source))} {shlex.quote(str(self.target))}'
+
+
+class LinkCommand(MoveCommand):
 	""" An ln command that has to be executed to get to the desired state. """
 	def __init__(
 		self,
@@ -434,8 +480,7 @@ class LinkCommand(Command):
 		force: bool = False,
 		no_target_directory: bool = False,
 	):
-		super().__init__(target)
-		self.source = source
+		super().__init__(source, target)
 		self.symbolic = symbolic
 		self.force = force
 		self.no_target_directory = no_target_directory
@@ -527,7 +572,7 @@ class Processor(object):
 			needs_mkdir = False
 			if tentry.type == VirtualFileType.FILE:
 				# The target is a file, but we need it to be a directory
-				if self.confirm_overwrite(fc.path, target, True):
+				if self.confirm_overwrite(make_absolute(fc.path), target, True):
 					self.fs.delete(target)
 					self.commands.append(DeleteCommand(target))
 					needs_mkdir = True
@@ -568,7 +613,7 @@ class Processor(object):
 
 				self.fs.link(entry.path, target)
 				self.commands.append(LinkCommand(
-					entry.path,
+					entry.real_path,
 					target,
 					symbolic = symbolic,
 					force = force,
@@ -613,30 +658,46 @@ class Processor(object):
 		# If the entry is a file with identical contents as the target we can replace it safely
 		isdir = entry.real.type == VirtualFileType.DIRECTORY
 		if not isdir:
-			if hash_file(target.path) == hash_file(entry.path):
+			if hash_file(target.real_path) == hash_file(entry.real_path):
 				return True
 
 		# Prompt the user for confirmation
-		return self.confirm_overwrite(fc.path, target.path, isdir)
+		return self.confirm_overwrite(make_absolute(fc.path), target.path, isdir)
 
-	def confirm_overwrite(self, source: VirtualPath, target: VirtualPath, isdir: bool) -> bool:
+	def confirm_overwrite(self, source: AbsoluteVirtualPath, target: AbsoluteVirtualPath, isdir: bool) -> bool:
 		print(
 			f'Attempting to link {"directory" if isdir else "file"} {source} to {target}, '
 			'but a file exists in this location.'
 		)
 		if self.args.overwrite:
 			return True
+
+		tentry = self.fs.get(target)
+		options = 'yn'
+		if not isdir:
+			options += 'd'
+			if tentry.is_from_fs:
+				options += 'u'
+
 		while True:
-			print(f'Do you want to replace it? [yn{"" if isdir else "d"}]')
+			print(f'Do you want to replace it? [{options}]')
 			c = read_char().lower()
-			if c == 'y':
+			if c not in options:
+				continue
+			elif c == 'y':
 				return True
 			elif c == 'n':
 				return False
-			elif c == 'd' and not isdir:
+			elif c == 'd':
 				print()
 				subprocess.run(['diff', source, target])
 				print()
+			elif c == 'u':
+				self.fs.delete(source)
+				self.commands.append(DeleteCommand(source))
+				self.fs.move(target, source)
+				self.commands.append(MoveCommand(tentry.real_path, source))
+				return True
 
 	def mkdirs(self, path: AbsoluteVirtualPath) -> None:
 		pinfo = self.fs.get(path.parent, parent_none_is_none = True)

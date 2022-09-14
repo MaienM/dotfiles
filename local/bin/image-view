@@ -34,10 +34,11 @@ twh="$(bc <<<"
 	}
 
 	scale = 0
-	print (w / 1), \" \", (w * ar / 1)
+	print (w / 1), \" \", (h / 1)
 ")"
 twidth="${twh%% *}"
 theight="${twh#* }"
+# echo "Showing ${iwidth}x${iheight} as ${twidth}x${theight} to fit into ${swidth}x${sheight}."
 
 feh "$fn" --geometry "${twidth}x${theight}" --keep-zoom-vp &
 
