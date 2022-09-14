@@ -3,7 +3,7 @@ Version=1.0
 Type=Application
 Name=Microsoft Teams - Customer
 Comment=Microsoft Teams for Linux is your chat-centered workspace in Office 365.
-Exec=sh -c 'chromium --user-data-dir="${XDG_CONFIG_HOME:-$HOME/.config}/teams-for-linux-customer/chromium" --app="https://teams.microsoft.com"'
+Exec=sh -c 'run-with-home "${XDG_CONFIG_HOME:-$HOME/.config}/teams-customer" teams "$@"' -- %U
 Icon=teams
 Terminal=false
 StartupNotify=true

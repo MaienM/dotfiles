@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+# Run a program with a custom $HOME directory.
+# This will disable most functions/things in regular $HOME/.local/bin.
+
+(
+	set -e
+
+	home="$1"
+	shift 1
+
+	# shellcheck source=../../functions/remove_from_path
+	. ~/.functions/remove_from_path
+
+	remove_from_path "^$HOME" "E"
+	prepend_to_path "$home/.local/bin"
+
+	exec env HOME="$home" "$@"
+)
+
