@@ -2,6 +2,12 @@ declare -A generated
 generated[ferium]="ferium complete zsh"
 generated[kubectl]="kubectl completion zsh"
 generated[poetry]="poetry completions zsh"
+generated[pnpm]="
+	HOME=\"\$(mktemp -d)\"
+	pnpm install-completion zsh > /dev/null
+	echo '#compdef pnpm'
+	cat ~/.config/tabtab/zsh/pnpm.zsh
+"
 
 fn="/tmp/$USER-zsh-completion-last-regen"
 regen=false
@@ -16,8 +22,8 @@ for cmd gencmd in "${(kv)generated[@]}"; do
 	fi
 
 	fn="$HOME/.zsh/rc/completions/generated/_$cmd"
-	if $regen || ! [ -f "$fn" ]; then
-		${(z)gencmd} > "$fn"
+	if $regen || ! [ -s "$fn" ]; then
+		zsh -c "$gencmd" > "$fn"
 	fi
 done
 
