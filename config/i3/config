@@ -280,6 +280,7 @@ assign [class="^Wfica$"] → 99 # Citrix
 
 ### Window rules
 for_window [class="^Antimicro$"] floating enable
+for_window [class="^Google-chrome$" title="^Tabs Outliner$"] move container to workspace 22
 for_window [class="^Minecraft"] fullscreen enable
 for_window [class="^Steam$" title="^Friends list$"] floating enable
 for_window [class="^Steam$" title="^Steam - News"] close
@@ -289,6 +290,8 @@ for_window [class="^calibre$" floating] resize set width 70ppt height 70ppt
 for_window [class="^calibre$" title="^Edit Metadata"] resize set width 80ppt height 80ppt
 for_window [class="^calibre$"] move position center
 for_window [class="^feh$"] floating enable
+for_window [class="^firefox$" title="^Extension: \(Tabs Outliner\)"] floating disable
+for_window [class="^firefox$" title="^Extension: \(Tabs Outliner\)"] move container to workspace 22
 for_window [class="^java$"] floating enable
 for_window [class="^kicad$" title="^Symbol Library Briwser"] floating enable
 for_window [class="^mpv$" workspace="^(?!$workspace8).*$"] move container to workspace $workspace11
@@ -298,4 +301,6 @@ for_window [class="^mpv$"] fullscreen enable
 for_window [instance="^yubioath-desktop$"] floating enable
 for_window [instance="^yubioath-desktop$"] resize set width 350px height 427px
 for_window [title="^Certificaat voor authenticatie selecteren$"] floating enable # Citrix
+for_window [title="^Workrave$"] border pixel 1
 for_window [window_type="notification"] floating enable
+for_window [class="^Workrave$" title="^Workrave$"] move container to workspace $workspace10
