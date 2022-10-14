@@ -1,0 +1,48 @@
+#!/usr/bin/env sh
+
+url="$1"
+dir="${2%%/}"
+fn="$(basename "$url")"
+
+if [ -z "$url" ] || [ -z "$dir" ]; then
+	echo >&2 "Usage: $0 url dir"
+	exit 1
+fi
+if [ ! -d "$dir" ]; then
+	echo >&2 "'$dir' is not a directory."
+	exit 1
+fi
+
+md5() {
+	md5sum "$1" | cut -c-32
+}
+sha256() {
+	sha256sum "$1" | cut -c-64
+}
+
+tmp="$(wget --directory-prefix=/tmp "$url" 2>&1 | grep -E '^Saving to:' | sed 's/^Saving to:\s*\S\(.*\)\S\s*$/\1/')"
+if [ -z "$tmp" ]; then
+	echo >&2 "Unable to get filename of downloaded file."
+	exit 1
+fi
+
+md5new="$(md5 "$tmp")"
+ext="${fn##*.}"
+for target in "$dir/$fn" "$dir/$md5new.$ext"; do
+	if [ ! -f "$target" ]; then
+		mv "$tmp" "$target"
+		notify-new-file "$target" "Downloaded to $target"
+		exit 0
+	elif [ "$(md5 "$target")" = "$md5new" ] && [ "$(sha256 "$target")" = "$(sha256 "$tmp")" ]; then
+		rm "$tmp"
+		notify-new-file "$target" "File already exists at $target"
+		exit 0
+	fi
+done
+
+# This realy only happens if we already have a file with the same md5 sum, but a different sha256 sum. This is very unlikely, but it's also easy enough to handle, so might as well.
+while [ -f "$target" ]; do
+	target="$dir/$RANDOM.$ext"
+done
+mv "$tmp" "$target"
+notify-new-file "$target" "Downloaded to $target"
