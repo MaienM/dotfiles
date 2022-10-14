@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+
+if [ -z "$1" ] || [ -z "$2" ] || [ ! -f "$1" ]; then
+	echo >&2 "Usage: $0 [fn] [message]"
+	exit 1
+fi
+
+(
+	notify-send.py \
+		"$2" \
+		--icon "$1" \
+		--action default:Open delete:Delete
+) | (
+	read -r action
+	read -r id
+	case "$action" in
+		default)
+			xdg-open "$1"
+		;;
+		delete) 
+			rm "$1"
+			notify-send.py \
+				--replaces-id "$id" \
+				--urgency low \
+				"Deleted $1"
+		;;
+	esac
+)

@@ -28,6 +28,10 @@ case "$choice" in
 	"window") delay=3 cmd=(maim -i "$(xdotool getactivewindow)") ;;
 	"monitor") delay=3 cmd=(scrot) ;;
 	"all") cmd=(maim) ;;
+	*)
+		echo >&2 "Invalid choice $choice."
+		exit 1
+	;;
 esac
 
 id=0
@@ -43,29 +47,11 @@ while [ $delay -gt 0 ]; do
 done
 
 tmp="$(mktemp --suffix '.png')"
+echo notify-error "${cmd[@]}" "$tmp"
 notify-error "${cmd[@]}" "$tmp"
 
 fn="$screenshotdir/$(date +'%Y-%m-%dT%H:%M:%S%z')-$(identify -format '%wx%h' "$tmp").png"
 mv "$tmp" "$fn"
 
 printf '%s' "$fn" | xclip -selection Clipboard
-(
-	notify-send.py \
-		'Screenshot' \
-		--replaces-id "$id" \
-		--icon "$fn" \
-		--action default:Open delete:Delete
-) | (
-	read -r action
-	read -r id
-	case "$action" in
-		default) image-view "$fn" ;;
-		delete) 
-			rm "$fn"
-			notify-send.py \
-				--replaces-id "$id" \
-				--urgency low \
-				'Screenshot deleted'
-		;;
-	esac
-)
+notify-new-file "$fn" 'Screenshot'
