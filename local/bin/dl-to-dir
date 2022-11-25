@@ -1,10 +1,14 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-url="$1"
+shopt -s extglob
+
+orig_url="$1"
 dir="${2%%/}"
-fn="$(basename "$url")"
 
-if [ -z "$url" ] || [ -z "$dir" ]; then
+echo "url=$orig_url"
+echo "dir=$dir"
+
+if [ -z "$orig_url" ] || [ -z "$dir" ]; then
 	echo >&2 "Usage: $0 url dir"
 	exit 1
 fi
@@ -20,17 +24,54 @@ sha256() {
 	sha256sum "$1" | cut -c-64
 }
 
-tmp="$(wget --directory-prefix=/tmp "$url" 2>&1 | grep -E '^Saving to:' | sed 's/^Saving to:\s*\S\(.*\)\S\s*$/\1/')"
+# Try alternative urls.
+urls=(
+	# Strip query parameters in case they lower the resolution.
+	"$(echo "$orig_url" | sed 's/width=[[:digit:]]\+[?&]\?//g; s/height=[[:digit:]]\+[?&]\?//g; s/?$//')"
+	"${orig_url%%\?*}"
+	# The original url.
+	"$orig_url"
+	# The original url with a suffix, for cases like a non-hotlinked imgur url.
+	"$orig_url.png"
+	"$orig_url.jpg"
+)
+while [ -z "$tmp" ] && read -r url; do
+	echo "Trying url '$url'."
+
+	# Download the file and grab the resulting filename.
+	tmp="$(wget --directory-prefix=/tmp "$url" --output-file=- --no-verbose | grep -E -- '-> "/tmp' | sed 's!^.* -> "\(/tmp/.*\)" \[1]$!\1!')"
+	if [ -z "$tmp" ]; then
+		echo >&2 "Unable to get filename of downloaded file."
+		continue
+	fi
+
+	# Make sure the downloaded file is an image or video, otherwise fall back to opening normally.
+	case "$(file --brief --mime-type "$tmp")" in
+		video/*) ;;
+		image/*) ;;
+
+		*)
+			echo "Attempted URL did not refer an image or video."
+			tmp=
+		;;
+	esac
+done < <(printf '%s\n' "${urls[@]}" | uniq)
 if [ -z "$tmp" ]; then
-	echo >&2 "Unable to get filename of downloaded file."
+	echo >&2 "URL did not refer to an image or video."
 	exit 1
 fi
 
+# Get the filename.
+fn="$(basename "$tmp")"
+fn="${fn%%.*([0-9])}"
+fn="${fn%%\?*}"
+
+# Try to move the file into the target directory while avoiding naming conflicts.
 md5new="$(md5 "$tmp")"
 ext="${fn##*.}"
 for target in "$dir/$fn" "$dir/$md5new.$ext"; do
 	if [ ! -f "$target" ]; then
-		mv "$tmp" "$target"
+		mv -n "$tmp" "$target"
 		notify-new-file "$target" "Downloaded to $target"
 		exit 0
 	elif [ "$(md5 "$target")" = "$md5new" ] && [ "$(sha256 "$target")" = "$(sha256 "$tmp")" ]; then
@@ -44,5 +85,5 @@ done
 while [ -f "$target" ]; do
 	target="$dir/$RANDOM.$ext"
 done
-mv "$tmp" "$target"
+mv -n "$tmp" "$target"
 notify-new-file "$target" "Downloaded to $target"
