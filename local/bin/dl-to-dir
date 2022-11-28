@@ -25,83 +25,111 @@ sha256() {
 	sha256sum "$1" | cut -c-64
 }
 
-# Try alternative urls.
-urls=(
-	# Strip query parameters in case they lower the resolution.
-	"$(echo "$orig_url" | sed 's/width=[[:digit:]]\+[?&]\?//g; s/height=[[:digit:]]\+[?&]\?//g; s/?$//')"
-	"${orig_url%%\?*}"
-	# The original url.
-	"$orig_url"
-	# The original url with a suffix, for cases like a non-hotlinked imgur url.
-	"$orig_url.png"
-	"$orig_url.jpg"
-)
-best=('' -1)
-while [ -z "$tmp" ] && read -r url; do
-	printf 'Checking url %q.\n' "$url"
+download_generic() {
+	# Try alternative urls.
+	urls=(
+		# Strip query parameters in case they lower the resolution.
+		"$(echo "$orig_url" | sed 's/width=[[:digit:]]\+[?&]\?//g; s/height=[[:digit:]]\+[?&]\?//g; s/?$//')"
+		"${orig_url%%\?*}"
+		# The original url.
+		"$orig_url"
+		# The original url with a suffix, for cases like a non-hotlinked imgur url.
+		"$orig_url.png"
+		"$orig_url.jpg"
+	)
+	best=('' -1)
+	while [ -z "$tmp" ] && read -r url; do
+		printf 'Checking url %q.\n' "$url"
 
-	# Get the content-type and size.
-	output="$(curl --head --silent --show-error "$url")"
-	type="$(echo "$output" | grep -iE '^content-type:' | cut -d: -f2- | tr -d '[[:space:]]')"
-	size="$(echo "$output" | grep -iE '^content-length:' | cut -d: -f2- | tr -d '[[:space:]]')"
+		# Get the content-type and size.
+		output="$(curl --head --silent --show-error "$url")"
+		type="$(echo "$output" | grep -iE '^content-type:' | cut -d: -f2- | tr -d '[[:space:]]')"
+		size="$(echo "$output" | grep -iE '^content-length:' | cut -d: -f2- | tr -d '[[:space:]]')"
 
-	# Make sure the content type is an image or video.
-	printf '  Found %q with size %s.' "$type" "$size"
-	case "$type" in
-		video/*) echo ;;
-		image/*) echo ;;
+		# Make sure the content type is an image or video.
+		printf '  Found %q with size %s.' "$type" "$size"
+		case "$type" in
+			video/*) echo ;;
+			image/*) echo ;;
 
-		*)
-			echo " This is not an image or video, skipping."
-			continue
-		;;
-	esac
+			*)
+				echo " This is not an image or video, skipping."
+				continue
+			;;
+		esac
 
-	# Check whether the size is larger than any other attempted urls.
-	if [ "$size" -gt "${best[1]}" ]; then
-		echo "  This is the best option thus far."
-		best=("$url" "$size")
-	else
-		echo "  This is not better than previous options, skipping."
+		# Check whether the size is larger than any other attempted urls.
+		if [ "$size" -gt "${best[1]}" ]; then
+			echo "  This is the best option thus far."
+			best=("$url" "$size")
+		else
+			echo "  This is not better than previous options, skipping."
+		fi
+	done < <(printf '%s\n' "${urls[@]}" | sort -u)
+	url="${best[0]}"
+	if [ -z "$url" ]; then
+		echo >&2 "URL did not refer to an image or video."
+		exit 1
 	fi
-done < <(printf '%s\n' "${urls[@]}" | sort -u)
-url="${best[0]}"
-if [ -z "$url" ]; then
-	echo >&2 "URL did not refer to an image or video."
+	echo "Best option is $url."
+
+	# Download the file and grab the resulting filename.
+	tmp="$(wget --directory-prefix=/tmp "$url" --output-file=- --no-verbose | grep -E -- '-> "/tmp' | sed 's!^.* -> "\(/tmp/.*\)" \[1]$!\1!')"
+	if [ -z "$tmp" ]; then
+		echo >&2 "Unable to get filename of downloaded file."
+		exit 1
+	fi
+
+	# Get the filename.
+	fn="$(basename "$tmp")"
+	fn="${fn%%.*([0-9])}"
+	fn="${fn%%\?*}"
+
+	files=(["$fn"]="$tmp")
+}
+
+download_twitter() {
+	output="$(twmd --no-banner --tweet="${orig_url#*/status/}" --output=/tmp)"
+	while read -r -d $'\n' fn; do
+		files["$fn"]="/tmp/$fn"
+	done < <(echo "$output" | grep -E '^Downloaded' | sed 's/^Downloaded //')
+}
+
+
+# Download the files.
+declare -A files
+case "$orig_url" in
+	https://vxtwitter.com/*/status/*) download_twitter ;;
+	https://twitter.com/*/status/*) download_twitter ;;
+	*) download_generic ;;
+esac
+if [ "${#files[@]}" -eq 0 ]; then
+	echo >&2 "No files downloaded."
 	exit 1
 fi
-echo "Best option is $url."
 
-# Download the file and grab the resulting filename.
-tmp="$(wget --directory-prefix=/tmp "$url" --output-file=- --no-verbose | grep -E -- '-> "/tmp' | sed 's!^.* -> "\(/tmp/.*\)" \[1]$!\1!')"
-if [ -z "$tmp" ]; then
-	echo >&2 "Unable to get filename of downloaded file."
-	exit 1
-fi
+for fn in "${!files[@]}"; do
+	tmp="${files["$fn"]}"
 
-# Get the filename.
-fn="$(basename "$tmp")"
-fn="${fn%%.*([0-9])}"
-fn="${fn%%\?*}"
+	# Try to move the file into the target directory while avoiding naming conflicts.
+	md5new="$(md5 "$tmp")"
+	ext="${fn##*.}"
+	for target in "$dir/$fn" "$dir/$md5new.$ext"; do
+		if [ ! -f "$target" ]; then
+			mv -n "$tmp" "$target"
+			notify-new-file "$target" "Downloaded to $target"
+			exit 0
+		elif [ "$(md5 "$target")" = "$md5new" ] && [ "$(sha256 "$target")" = "$(sha256 "$tmp")" ]; then
+			rm "$tmp"
+			notify-new-file "$target" "File already exists at $target"
+			exit 0
+		fi
+	done
 
-# Try to move the file into the target directory while avoiding naming conflicts.
-md5new="$(md5 "$tmp")"
-ext="${fn##*.}"
-for target in "$dir/$fn" "$dir/$md5new.$ext"; do
-	if [ ! -f "$target" ]; then
-		mv -n "$tmp" "$target"
-		notify-new-file "$target" "Downloaded to $target"
-		exit 0
-	elif [ "$(md5 "$target")" = "$md5new" ] && [ "$(sha256 "$target")" = "$(sha256 "$tmp")" ]; then
-		rm "$tmp"
-		notify-new-file "$target" "File already exists at $target"
-		exit 0
-	fi
+	# This realy only happens if we already have a file with the same md5 sum, but a different sha256 sum. This is very unlikely, but it's also easy enough to handle, so might as well.
+	while [ -f "$target" ]; do
+		target="$dir/$RANDOM.$ext"
+	done
+	mv -n "$tmp" "$target"
+	notify-new-file "$target" "Downloaded to $target" &
 done
-
-# This realy only happens if we already have a file with the same md5 sum, but a different sha256 sum. This is very unlikely, but it's also easy enough to handle, so might as well.
-while [ -f "$target" ]; do
-	target="$dir/$RANDOM.$ext"
-done
-mv -n "$tmp" "$target"
-notify-new-file "$target" "Downloaded to $target"
