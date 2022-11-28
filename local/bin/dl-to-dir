@@ -5,8 +5,9 @@ shopt -s extglob
 orig_url="$1"
 dir="${2%%/}"
 
-echo "url=$orig_url"
-echo "dir=$dir"
+printf 'url=%q\n' "$orig_url"
+printf 'dir=%q\n' "$dir"
+echo
 
 if [ -z "$orig_url" ] || [ -z "$dir" ]; then
 	echo >&2 "Usage: $0 url dir"
@@ -35,29 +36,46 @@ urls=(
 	"$orig_url.png"
 	"$orig_url.jpg"
 )
+best=('' -1)
 while [ -z "$tmp" ] && read -r url; do
-	echo "Trying url '$url'."
+	printf 'Checking url %q.\n' "$url"
 
-	# Download the file and grab the resulting filename.
-	tmp="$(wget --directory-prefix=/tmp "$url" --output-file=- --no-verbose | grep -E -- '-> "/tmp' | sed 's!^.* -> "\(/tmp/.*\)" \[1]$!\1!')"
-	if [ -z "$tmp" ]; then
-		echo >&2 "Unable to get filename of downloaded file."
-		continue
-	fi
+	# Get the content-type and size.
+	output="$(curl --head --silent --show-error "$url")"
+	type="$(echo "$output" | grep -iE '^content-type:' | cut -d: -f2- | tr -d '[[:space:]]')"
+	size="$(echo "$output" | grep -iE '^content-length:' | cut -d: -f2- | tr -d '[[:space:]]')"
 
-	# Make sure the downloaded file is an image or video, otherwise fall back to opening normally.
-	case "$(file --brief --mime-type "$tmp")" in
-		video/*) ;;
-		image/*) ;;
+	# Make sure the content type is an image or video.
+	printf '  Found %q with size %s.' "$type" "$size"
+	case "$type" in
+		video/*) echo ;;
+		image/*) echo ;;
 
 		*)
-			echo "Attempted URL did not refer an image or video."
-			tmp=
+			echo " This is not an image or video, skipping."
+			continue
 		;;
 	esac
-done < <(printf '%s\n' "${urls[@]}" | uniq)
-if [ -z "$tmp" ]; then
+
+	# Check whether the size is larger than any other attempted urls.
+	if [ "$size" -gt "${best[1]}" ]; then
+		echo "  This is the best option thus far."
+		best=("$url" "$size")
+	else
+		echo "  This is not better than previous options, skipping."
+	fi
+done < <(printf '%s\n' "${urls[@]}" | sort -u)
+url="${best[0]}"
+if [ -z "$url" ]; then
 	echo >&2 "URL did not refer to an image or video."
+	exit 1
+fi
+echo "Best option is $url."
+
+# Download the file and grab the resulting filename.
+tmp="$(wget --directory-prefix=/tmp "$url" --output-file=- --no-verbose | grep -E -- '-> "/tmp' | sed 's!^.* -> "\(/tmp/.*\)" \[1]$!\1!')"
+if [ -z "$tmp" ]; then
+	echo >&2 "Unable to get filename of downloaded file."
 	exit 1
 fi
 
