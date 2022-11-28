@@ -42,9 +42,13 @@ download_generic() {
 		printf 'Checking url %q.\n' "$url"
 
 		# Get the content-type and size.
-		output="$(curl --head --silent --show-error "$url")"
-		type="$(echo "$output" | grep -iE '^content-type:' | cut -d: -f2- | tr -d '[[:space:]]')"
-		size="$(echo "$output" | grep -iE '^content-length:' | cut -d: -f2- | tr -d '[[:space:]]')"
+		output="$(curl --head --location --silent --show-error "$url")"
+		type="$(echo "$output" | grep -iE '^content-type:' | cut -d: -f2- | tr -d '[[:space:]]' | tail -n1)"
+		size="$(echo "$output" | grep -iE '^content-length:' | cut -d: -f2- | tr -d '[[:space:]]' | tail -n1)"
+		location="$(echo "$output" | grep -iE '^location:' | cut -d: -f2- | tr -d '[[:space:]]' | tail -n1)"
+		if [ -n "$location" ]; then
+			url="$location"
+		fi
 
 		# Make sure the content type is an image or video.
 		printf '  Found %q with size %s.' "$type" "$size"
