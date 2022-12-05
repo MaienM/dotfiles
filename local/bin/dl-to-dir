@@ -2,21 +2,14 @@
 
 shopt -s extglob
 
-orig_url="$1"
-dir="${2%%/}"
-
-printf 'url=%q\n' "$orig_url"
-printf 'dir=%q\n' "$dir"
-echo
-
-if [ -z "$orig_url" ] || [ -z "$dir" ]; then
-	echo >&2 "Usage: $0 url dir"
-	exit 1
-fi
-if [ ! -d "$dir" ]; then
-	echo >&2 "'$dir' is not a directory."
-	exit 1
-fi
+ALWAYS_RENAME=(
+	'?'
+	'??'
+	'???'
+	'????'
+	'?????'
+	'unknown*'
+)
 
 md5() {
 	md5sum "$1" | cut -c-32
@@ -93,12 +86,32 @@ download_generic() {
 }
 
 download_twitter() {
-	output="$(twmd --no-banner --tweet="${orig_url#*/status/}" --output=/tmp)"
+	tweet="${orig_url#*/status/}"
+	tweet="${tweet%\?*}"
+	echo "tweet=$tweet"
+
+	output="$(twmd --no-banner --tweet="$tweet" --output=/tmp)"
 	while read -r -d $'\n' fn; do
 		files["$fn"]="/tmp/$fn"
 	done < <(echo "$output" | grep -E '^Downloaded' | sed 's/^Downloaded //')
 }
 
+
+orig_url="$1"
+dir="${2%%/}"
+
+printf 'url=%q\n' "$orig_url"
+printf 'dir=%q\n' "$dir"
+echo
+
+if [ -z "$orig_url" ] || [ -z "$dir" ]; then
+	echo >&2 "Usage: $0 url dir"
+	exit 1
+fi
+if [ ! -d "$dir" ]; then
+	echo >&2 "'$dir' is not a directory."
+	exit 1
+fi
 
 # Download the files.
 declare -A files
@@ -113,27 +126,52 @@ if [ "${#files[@]}" -eq 0 ]; then
 fi
 
 for fn in "${!files[@]}"; do
-	tmp="${files["$fn"]}"
-
-	# Try to move the file into the target directory while avoiding naming conflicts.
-	md5new="$(md5 "$tmp")"
 	ext="${fn##*.}"
-	for target in "$dir/$fn" "$dir/$md5new.$ext"; do
-		if [ ! -f "$target" ]; then
-			mv -n "$tmp" "$target"
-			notify-new-file "$target" "Downloaded to $target"
-			exit 0
-		elif [ "$(md5 "$target")" = "$md5new" ] && [ "$(sha256 "$target")" = "$(sha256 "$tmp")" ]; then
+	basename="${fn%.$ext}"
+
+	tmp="${files["$fn"]}"
+	md5new="$(md5 "$tmp")"
+
+	echo
+	echo "Processing '$tmp'."
+
+	try_name() {
+		echo "Trying to move to '$1'."
+		if [ ! -f "$1" ]; then
+			mv -n "$tmp" "$1"
+			notify-new-file "$1" "Downloaded to $1" &
+			echo "Move successful."
+			return 0
+		elif [ "$(md5 "$1")" = "$md5new" ] && [ "$(sha256 "$1")" = "$(sha256 "$tmp")" ]; then
 			rm "$tmp"
-			notify-new-file "$target" "File already exists at $target"
-			exit 0
+			notify-new-file "$1" "File already exists at $1" &
+			echo "Files are identical, removing downloaded file."
+			return 0
+		fi
+		return 1
+	}
+
+	# Try the original filename, unless it's on the blacklist.
+	try_fn=1
+	for always_rename in "${ALWAYS_RENAME[@]}"; do
+		if [[ "$basename" =~ $always_rename ]]; then
+			try_fn=0
+			break
 		fi
 	done
+	if [ "$try_fn" -eq 1 ]; then
+		try_name "$dir/$fn" && continue
+	fi
+
+	# Try the md5sum as filename.
+	try_name "$dir/$md5new.$ext" && continue
 
 	# This realy only happens if we already have a file with the same md5 sum, but a different sha256 sum. This is very unlikely, but it's also easy enough to handle, so might as well.
-	while [ -f "$target" ]; do
-		target="$dir/$RANDOM.$ext"
-	done
-	mv -n "$tmp" "$target"
-	notify-new-file "$target" "Downloaded to $target" &
+	if [ -f "$tmp" ]; then
+		while true; do
+			target="$dir/$RANDOM.$ext"
+			[ -f "$target" ] && continue
+		done
+		try_name="$target"
+	fi
 done
