@@ -1,19 +1,24 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 set -e
+shopt -s extglob
 
+LOCATIONS_DIR="$HOME/.config/xdotool-utils/locations"
 command="$1"
 shift
 
 case "$command" in
-	save-location)
-		path="$HOME/.config/xdotool-utils/locations/$1"
+	list-location?(s))
+		ls -1 "$LOCATIONS_DIR"
+	;;
+
+	save-location) path="$LOCATIONS_DIR/$1"
 		mkdir -p "$(dirname "$path")"
 		xdotool getmouselocation | sed 's/[^0-9 ]//g' | cut -d' ' -f1-2 > "$path"
 	;;
 
 	load-location)
-		path="$HOME/.config/xdotool-utils/locations/$1"
+		path="$LOCATIONS_DIR/$1"
 		if [ ! -f "$path" ]; then
 			echo >&2 "No stored location with name '$1'"
 			exit 1
@@ -29,5 +34,75 @@ case "$command" in
 		xdotool-utils load-location "$name"
 		xdotool click "$button"
 		xdotool-utils load-location _prev
+	;;
+
+	sequence)
+		commands=()
+		repeatsequence=1
+		delaysequence=0
+		for step in "$@"; do
+			case "$step" in
+				--repeat=+([0-9]))
+					repeatsequence=${step#--repeat=}
+				;;
+
+				--delay=+([0-9]))
+					delaysequence=${step#--delay=}
+				;;
+
+				+([0-9])?(.+([0-9])))
+					# Number by itself will be parsed as a sleep.
+					commands=("${commands[@]}" "echo sleep $step")
+				;;
+
+				*)
+					# Anything else will be a position name followed by options, each separated by a colon.
+					# Option b[0-9] sets the button to click.
+					# Option r[0-9] sets the number of repetitions.
+					# Option d[0-9] sets the delay between repetitions.
+					# Option +ctrl, +alt, +shift will hold the respective modifier during the click.
+					# Example: thing:b2:d10:r2:+shift would right-click position 'thing' while holding shift twice, 10ms apart.
+
+					parts=(${step//:/ })
+
+					name="${parts[0]}"
+					button=1
+					repeat=1
+					delay=0
+
+					for part in "${parts[@]:1}"; do
+						case "$part" in
+							b+([0-9])) button="${part:1}" ;;
+							r+([0-9])) repeat="${part:1}" ;;
+							d+([0-9])) delay="${part:1}" ;;
+							+ctrl) commands=("${commands[@]}" 'xdotool keydown Control') ;;
+							+alt) commands=("${commands[@]}" 'xdotool keydown Meta') ;;
+							+shift) commands=("${commands[@]}" 'xdotool keydown Shift') ;;
+							*) echo >&2 "Unknown click option $part, ignoring." ;;
+						esac
+					done
+
+					commands=(
+						"${commands[@]}"
+						"$(printf 'xdotool-utils load-location %q' "$name")"
+						"$(printf 'xdotool click --repeat=%q --delay=%q %q' "$repeat" "$delay" "$button")"
+						'xdotool keyup Control Meta Shift'
+					)
+				;;
+			esac
+		done
+
+		xdotool-utils save-location _start
+		iteration=1
+		while [ "$iteration" -le "$repeatsequence" ]; do
+			[ "$iteration" -eq 1 ] || sleep "$delaysequence"
+			: $((iteration++))
+			xdotool-utils save-location _startiteration
+			for command in "${commands[@]}"; do
+				$command
+			done
+			xdotool-utils load-location _startiteration
+		done
+		xdotool-utils load-location _start
 	;;
 esac
