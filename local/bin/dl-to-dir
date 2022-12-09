@@ -22,13 +22,10 @@ download_generic() {
 	# Try alternative urls.
 	urls=(
 		# Strip query parameters in case they lower the resolution.
-		"$(echo "$orig_url" | sed 's/width=[[:digit:]]\+[?&]\?//g; s/height=[[:digit:]]\+[?&]\?//g; s/?$//')"
-		"${orig_url%%\?*}"
+		"$(echo "$1" | sed 's/width=[[:digit:]]\+[?&]\?//g; s/height=[[:digit:]]\+[?&]\?//g; s/?$//')"
+		"${1%%\?*}"
 		# The original url.
-		"$orig_url"
-		# The original url with a suffix, for cases like a non-hotlinked imgur url.
-		"$orig_url.png"
-		"$orig_url.jpg"
+		"$1"
 	)
 	best=('' -1)
 	while [ -z "$tmp" ] && read -r url; do
@@ -85,26 +82,24 @@ download_generic() {
 	files=(["$fn"]="$tmp")
 }
 
-download_twitter() {
-	tweet="${orig_url#*/status/}"
-	tweet="${tweet%\?*}"
-	echo "tweet=$tweet"
+download_gallery_dl() {
+	# Download using gallery-dl.
+	mapfile -t paths < <(gallery-dl "$url" -D /tmp 2> /dev/null) || return 1
 
-	output="$(twmd --no-banner --tweet="$tweet" --output=/tmp)"
-	while read -r -d $'\n' fn; do
-		files["$fn"]="/tmp/$fn"
-	done < <(echo "$output" | grep -E '^Downloaded' | sed 's/^Downloaded //')
+	for path in "${paths[@]}"; do
+		files["$(basename "$path")"]="${path#\# }"
+	done
 }
 
 
-orig_url="$1"
+url="$1"
 dir="${2%%/}"
 
-printf 'url=%q\n' "$orig_url"
+printf 'url=%q\n' "$url"
 printf 'dir=%q\n' "$dir"
 echo
 
-if [ -z "$orig_url" ] || [ -z "$dir" ]; then
+if [ -z "$url" ] || [ -z "$dir" ]; then
 	echo >&2 "Usage: $0 url dir"
 	exit 1
 fi
@@ -115,11 +110,10 @@ fi
 
 # Download the files.
 declare -A files
-case "$orig_url" in
-	https://vxtwitter.com/*/status/*) download_twitter ;;
-	https://twitter.com/*/status/*) download_twitter ;;
-	*) download_generic ;;
-esac
+for downloader in gallery_dl generic; do
+	echo "Trying $downloader downloader" 
+	"download_$downloader" "$url" && break
+done
 if [ "${#files[@]}" -eq 0 ]; then
 	echo >&2 "No files downloaded."
 	exit 1
