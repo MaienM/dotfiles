@@ -1,4 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env nix-shell
+#!nix-shell -i bash
+#!nix-shell -p bc
+#!nix-shell -p feh
+#!nix-shell -p xorg.xrandr
 
 # Randomly assigns backgrounds to all monitors.
 #

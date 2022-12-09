@@ -1,4 +1,7 @@
-#!/usr/bin/env -S run-in-asdf python utils python
+#!/usr/bin/env nix-shell
+#!nix-shell -i python
+#!nix-shell -p python310
+#!nix-shell -p python310Packages.requests
 
 import argparse
 import contextlib

@@ -1,5 +1,7 @@
 #!/usr/bin/env -S NIXPKGS_ALLOW_UNFREE=1 nix-shell
-#!nix-shell -i sh -p google-chrome nodejs
+#!nix-shell -i sh
+#!nix-shell -p google-chrome
+#!nix-shell -p nodejs
 
 set -e
 

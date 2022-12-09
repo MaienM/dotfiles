@@ -1,4 +1,8 @@
-#!/usr/bin/env sh
+#!/usr/bin/env nix-shell
+#!nix-shell -i sh
+#!nix-shell -p pinentry-curses
+#!nix-shell -p pinentry-qt
+
 # shellcheck disable=2093
 
 use_tty=
@@ -15,13 +19,7 @@ fi
 echo "$(date) $PINENTRY_USER_DATA -> $use_tty" > /tmp/pinentry.log
 
 if [ -n "$use_tty" ]; then
-	for pinentry in /usr/bin/pinentry-tty /usr/bin/pinentry-curses; do
-		[ -f "$pinentry" ] || continue
-		exec "$pinentry" "$@"
-	done
+	exec pinentry-curses "$@"
 fi
 
-for pinentry in /usr/bin/pinentry-gtk-2 /usr/bin/pinentry-gnome3 /usr/bin/pinentry-qt; do
-	[ -f "$pinentry" ] || continue
-	exec "$pinentry" "$@"
-done
+exec pinentry-qt "$@"

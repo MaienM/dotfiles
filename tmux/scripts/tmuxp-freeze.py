@@ -1,4 +1,9 @@
-#!/usr/bin/env -S run-in-asdf python utils python
+#!/usr/bin/env nix-shell
+#!nix-shell -i python
+#!nix-shell -p python310
+#!nix-shell -p python310Packages.kaptan
+#!nix-shell -p python310Packages.libtmux
+#!nix-shell -p tmuxp
 
 import kaptan
 from tmuxp import config

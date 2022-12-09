@@ -1,4 +1,6 @@
-#!/usr/bin/env -S RUN_IN_ASDF_SETUP_SCRIPT="${HOME}/.dotfiles/scripts/install/misc/ruby-utils.sh" run-in-asdf ruby utils ruby
+#!/usr/bin/env nix-shell
+#!nix-shell -i ruby
+#!nix-shell -p ruby
 
 ################################################################################
 # Dependency management
