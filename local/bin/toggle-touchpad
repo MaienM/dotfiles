@@ -5,8 +5,8 @@ state="$(xinput list-props "$id" | grep 'Device Enabled' | awk '{print $4}')"
 if [ "$state" -eq 1 ]
 then
 	xinput disable "$id"
-	notify-send -a 'Touchpad' 'Disabled'
+	notify-send.py -a 'Touchpad' 'Disabled'
 else
 	xinput enable "$id"
-	notify-send -a 'Touchpad' 'Enabled'
+	notify-send.py -a 'Touchpad' 'Enabled'
 fi

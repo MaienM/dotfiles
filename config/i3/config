@@ -173,7 +173,7 @@ bindsym $GUI+Control$workspaceKey12 $exec ~/.config/i3/move-workspace-to-current
 # bindsym $GUI+Control+$workspaceKey12 $exec ~/.config/i3/move-workspace-to-current-output.sh "$workspace12"
 
 # reload the configuration file
-bindsym $GUI+Shift+n reload; $exec notify-send 'i3' 'Reloaded config'
+bindsym $GUI+Shift+n reload; $exec notify-send.py 'i3' 'Reloaded config'
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $GUI+Shift+m restart
 # exit i3 (logs you out of your X session)

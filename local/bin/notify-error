@@ -4,7 +4,7 @@
 	error="$("$@" 2>&1 2>&4 >&3)"
 	retval="$?"
 	if [ "$retval" -ne 0 ]; then
-		notify-send "Command error" "$error" --urgency=critical
+		notify-send.py "Command error" "$error" --urgency=critical
 		exit "$retval"
 	fi
 } 3>&1 4>&2
