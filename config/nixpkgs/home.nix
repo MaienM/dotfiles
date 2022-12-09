@@ -8,7 +8,10 @@
   home.stateVersion = "22.11";
   nixpkgs.config.allowUnfree = true;
 
-  xsession.windowManager.command = pkgs.i3;
+  xsession = {
+    enable = true;
+    windowManager.command = "${pkgs.i3-gaps}/bin/i3";
+  };
 
   services.gnome-keyring = {
     enable = true;
@@ -19,7 +22,7 @@
 
     # WM.
     dunst
-    i3
+    i3-gaps # gaps has been merged into i3, but no release has happened since
     maim
     picom
     polybarFull
