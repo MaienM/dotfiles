@@ -48,4 +48,14 @@
 	skip_display = true
 	history_ignore = true
 
+[onedrive-upgrade-nag]
+	summary = OneDrive
+	body = WARNING: Your onedrive client version is obsolete and unsupported. Please upgrade your client version.
+	skip_display = true
+	history_ignore = true
+
+[screenshot]
+	appname = screenshot
+	icon_position = top
+
 # vim: ft=cfg
