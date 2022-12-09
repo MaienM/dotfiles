@@ -14,3 +14,8 @@ resolve_alias() {
 		echo "$@"
 	fi
 }
+
+# Run a function with sudo
+sudof() {
+	sudo zsh -c "$(declare -f "$1"); exec $(printf '%q ' "$@")"
+}
