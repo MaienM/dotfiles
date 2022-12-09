@@ -1,0 +1,60 @@
+#!/usr/bin/env -S NIXPKGS_ALLOW_UNFREE=1 nix-shell
+#!nix-shell -i sh -p google-chrome nodejs
+
+set -e
+
+home="$1"
+shift 1
+
+getid() {
+	for file in "$home"/.local/share/applications/chrome-*-Default.desktop; do
+		id="${file#*/chrome-}"
+		id="${id%-Default.desktop}"
+		if [ -n "$id" ] && [ -z "$(echo "$id" | tr -d '[a-z]')" ]; then
+			break
+		else
+			id=
+		fi
+	done
+}
+
+getid
+if [ -z "$id" ]; then
+	echo "> First-time setup"
+
+	run-with-home "$home" google-chrome-stable \
+		--no-first-run \
+		--no-default-browser-check \
+		--no-initial-navigation \
+		'https://teams.microsoft.com/' \
+		'https://chrome.google.com/webstore/detail/open-in-firefox/lmeddoobegbaiopohmpmmobpnpjifpii' \
+		'chrome-extension://lmeddoobegbaiopohmpmmobpnpjifpii/data/options/index.html'
+
+	# Domains: teams.microsoft.com
+	# Open with: enabled
+	# Combination: no modifiers
+	# Top-level navigation: enabled
+	# Reverse mode: enabled
+	# Path to the executable: xdg-open
+fi
+
+echo "> Installing native client..."
+nativeclientdir="/tmp/chrome-teams-open-with-native-client"
+if [ ! -d "$nativeclientdir" ]; then
+	wget -O "$nativeclientdir.zip" 'https://github.com/andy-portmen/native-client/releases/download/0.9.5/linux.zip'
+	unzip "$nativeclientdir.zip" -d "$nativeclientdir"
+fi
+run-with-home "$home" "$nativeclientdir/install.sh"
+
+getid
+if [ -n "$id" ]; then
+	echo "> Running..."
+	exec run-with-home "$home" google-chrome-stable \
+		--no-first-run \
+		--no-default-browser-check \
+		--no-initial-navigation \
+		--app-id="$id" \
+		--start-fullscreen \
+		--install-chrome-app=
+		"$@"
+fi

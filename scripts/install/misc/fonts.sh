@@ -12,16 +12,16 @@ mkdir /tmp/font-setup
 	cd /tmp/font-setup
 
 	echo '>>> Downloading FiraCode'
-	wget 'https://github.com/tonsky/FiraCode/releases/latest' -O - \
-		| grep -oE '/tonsky/FiraCode/releases/download/[0-9.]*/Fira_?Code.*\.zip' \
-		| wget --base=http://github.com/ -i - -O FiraCode.zip
+	wget 'https://api.github.com/repos/tonsky/FiraCode/releases/latest' -O - \
+		| jq -r '.assets | map(select(.content_type == "application/zip" and .state == "uploaded")) | .[0].browser_download_url' \
+		| wget -i - -O FiraCode.zip
 	unzip -q -j -o FiraCode.zip
 	rm FiraCode.zip
 
 	echo '>>> Downloading Nerd-Fonts'
 	svn export -q 'https://github.com/ryanoasis/nerd-fonts/trunk/bin/scripts/lib/'
 	svn export -q 'https://github.com/ryanoasis/nerd-fonts/trunk/patched-fonts/FiraCode/'
-	svn export -q 'https://github.com/ryanoasis/nerd-fonts/trunk/src/glyphs/Symbols-2048-em Nerd Font Complete.ttf'
+	svn export -q 'https://github.com/ryanoasis/nerd-fonts/trunk/src/glyphs'
 	svn export -q 'https://github.com/ryanoasis/nerd-fonts/trunk/10-nerd-font-symbols.conf'
 
 	echo '>>> Installing fonts'
