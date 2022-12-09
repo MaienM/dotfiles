@@ -1,8 +1,5 @@
 execute pathogen#infect('bundle-coc/{}')
 
-" Use the neovim node environment.
-let g:coc_node_path = g:nodejs_host_prog
-
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 

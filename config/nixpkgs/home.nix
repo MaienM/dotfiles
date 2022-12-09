@@ -79,5 +79,9 @@
     mpv
     workrave
 
+    # Neovim
+    python310Packages.pynvim
+    nodePackages.neovim
+
   ];
 }
