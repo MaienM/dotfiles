@@ -7,9 +7,9 @@
 	font = InconsolataGo Nerd Font Complete
 
 	icon_position = left
-	min_icon_size = 32
-	max_icon_size = 128
-	icon_path = /usr/share/icons/hicolor/32x32/apps/:/usr/share/icons/hicolor/32x32/status/:/usr/share/icons/hicolor/32x32/devices/:/usr/share/icons/hicolor/scalable/apps/:/usr/share/icons/hicolor/scalable/status/:/usr/share/icons/hicolor/scalable/devices/:/usr/share/icons/hicolor/16x16/apps/:/usr/share/icons/hicolor/16x16/status/:/usr/share/icons/hicolor/16x16/devices/
+	min_icon_size = 16
+	max_icon_size = 16
+	icon_path = /usr/share/icons/hicolor/scalable/apps/:/usr/share/icons/hicolor/scalable/status/:/usr/share/icons/hicolor/scalable/devices/:/usr/share/icons/hicolor/16x16/apps/:/usr/share/icons/hicolor/16x16/status/:/usr/share/icons/hicolor/16x16/devices/
 
 	dmenu = rofi -dmenu
 	browser = xdg-open
