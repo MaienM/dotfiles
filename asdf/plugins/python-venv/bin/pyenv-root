@@ -1,8 +1,0 @@
-#!/usr/bin/env sh
-
-if [ -z "$PYENV_ROOT" ]; then
-	echo >&2 "Unable to determine pyenv root."
-	exit 1
-fi
-
-echo "$PYENV_ROOT"

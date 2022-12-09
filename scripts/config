@@ -19,14 +19,6 @@ action = skip
 action = link
 target = .dotfiles
 
-[asdf]
-action = skip
-[asdf/asdf]
-target = .asdf
-[asdf/plugins]
-action = recurse
-target = .asdf/plugins
-
 [config]
 action = recurse
 [config/direnv]
@@ -75,14 +67,6 @@ action = recurse
 target =
 	.local/bin/clean-path,
 	.local/bin/xdg-open,
-[local/bin/run-in-python-utils]
-target =
-	.local/bin/dotsecrets,
-	.local/bin/qmk,
-	.local/bin/tmuxp,
-	.local/bin/tomlq,
-	.local/bin/xq,
-	.local/bin/yq,
 [local/bin/run-with-sudo]
 target =
 	.local/bin/docker,

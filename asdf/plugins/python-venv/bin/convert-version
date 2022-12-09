@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-# If the version is a subdirectory in envs, it should be rewritten to instead be a virtualenv directory.
-version="$1"
-if [[ "$version" = */envs/* ]]; then
-	version="${version#*/envs/}"
-fi
-echo "$version"
-

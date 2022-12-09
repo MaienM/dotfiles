@@ -46,7 +46,6 @@
     )
 
     # CLI.
-    asdf
     bat
     bc
     delta

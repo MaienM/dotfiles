@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-
-RUN_IN_ASDF_SETUP_SCRIPT="$HOME/.dotfiles/scripts/install/misc/python-utils.sh" \
-	exec run-in-asdf python utils "$(basename "$0")" "$@"

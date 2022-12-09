@@ -30,7 +30,6 @@ done
 fpath=(
 	$HOME/.zsh/rc/completions
 	$HOME/.zsh/rc/completions/generated
-	$HOME/.asdf/completions
 	$HOME/.zsh/bundle/completion-gradle
 	$HOME/.zsh/bundle/completions/src
 	$fpath

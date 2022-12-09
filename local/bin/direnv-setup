@@ -7,9 +7,6 @@ if [ -f "$envpath" ]; then
 	exit 1
 fi
 
-if [ -f ".tool-versions" ]; then
-	echo "use asdf" >> "$envpath"
-fi
 if [ -f "Pipfile" ]; then
 	echo "layout pipenv" >> "$envpath"
 fi
@@ -23,5 +20,5 @@ if [ ! -s "$envpath" ]; then
 fi
 echo "Created direnv config file at '$envpath'."
 
-asdf exec direnv allow "$envpath"
-asdf exec direnv reload
+direnv allow "$envpath"
+direnv reload
