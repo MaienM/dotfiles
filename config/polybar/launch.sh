@@ -3,7 +3,7 @@
 . commands_require; commands_require polybar 2> /dev/null || exit 0
 
 # Terminate already running bar instances
-killall -q polybar
+pkill -f bin/polybar
 
 # Wait until the processes have been shut down
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done

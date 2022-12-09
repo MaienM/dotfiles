@@ -1,3 +1,5 @@
+; thin space ' '
+
 [colors]
 black = ${env:base16_color0}
 red = ${env:base16_color1}
@@ -39,13 +41,13 @@ foreground = ${colors.foreground}
 line-size = 1
 line-color = #f00
 
-module-margin-left = 1.5
-module-margin-right = 2
+padding-right = 2
 
-font-0 = Symbols Nerd Font:size=12;0
-font-1 = fixed:pixelsize=10;1
+module-margin = 2
+
+font-0 = Symbols Nerd Font:size=12;2
+font-1 = Noto Sans:size=10;2
 font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
-font-3 = siji:pixelsize=10;1
 
 cursor-click = pointer
 cursor-scroll = ns-resize
@@ -67,8 +69,6 @@ inherit = bar/base
 
 modules-right = xbacklight utilization/cpu memory/ram temperature/cpu utilization/gpu memory/gpu temperature/gpu gamemode battery date
 
-padding-right = 1.5
-
 ;===============================================================================
 ; Modules
 ;===============================================================================
@@ -86,7 +86,7 @@ wrapping-scroll = false
 ; Only show workspaces on the same output as the bar
 ;pin-workspaces = true
 
-label-mode-padding = 1
+label-mode-padding = 2
 label-mode-foreground = #000
 label-mode-background = ${colors.primary}
 
@@ -94,11 +94,11 @@ label-mode-background = ${colors.primary}
 label-focused = %icon%
 label-focused-background = ${colors.background-alt}
 label-focused-underline= ${colors.primary}
-label-focused-padding = 1
+label-focused-padding = 2
 
 ; unfocused = Inactive workspace on any monitor
 label-unfocused = %icon%
-label-unfocused-padding = 1
+label-unfocused-padding = 2
 
 ; visible = Active workspace on unfocused monitor
 label-visible = %icon%
@@ -108,7 +108,7 @@ label-visible-padding = ${self.label-focused-padding}
 ; urgent = Workspace with urgency hint set
 label-urgent = %icon%!
 label-urgent-background = ${colors.alert}
-label-urgent-padding = 1
+label-urgent-padding = 2
 
 ; Name workspaces
 ws-icon-0 = 1: cli;
@@ -127,7 +127,7 @@ ws-icon-11 = 12: scratch;ﯼ
 [module/xbacklight]
 type = internal/xbacklight
 
-format = <label> <bar>
+format = <label> <bar>
 label = ${env:i_mdi_brightness_5}
 
 bar-width = 10
@@ -163,10 +163,10 @@ battery = BAT0
 adapter = ADP1
 full-at = 98
 
-format-charging = <animation-charging> <label-charging>
+format-charging = <animation-charging> <label-charging>
 format-charging-underline = #ffb52a
 
-format-discharging = <animation-discharging> <label-discharging>
+format-discharging = <animation-discharging> <label-discharging>
 format-discharging-underline = ${self.format-charging-underline}
 
 format-full-prefix = ${env:i_mdi_battery}
@@ -214,7 +214,7 @@ interval = 3.0
 format-connected-underline = #55aa55
 format-connected-prefix = ${env:i_mdi_lan_connect}
 format-connected-prefix-foreground = ${colors.foreground-alt}
-label-connected = %local_ip%
+label-connected = " %local_ip%"
 
 format-disconnected =
 ;format-disconnected = <label-disconnected>
@@ -238,7 +238,7 @@ interface = ${env:eth2}
 type = internal/network
 interval = 3.0
 
-format-connected = <ramp-signal> <label-connected>
+format-connected = <ramp-signal> <label-connected>
 format-connected-underline = #9f78e1
 label-connected = %essid%/%local_ip%
 
@@ -270,20 +270,21 @@ click-middle = ~/.config/polybar/scripts/nordvpn-menu.sh
 click-right = nordvpn d
 tail = true
 format-prefix = ${env:i_mdi_vpn}
+label = " %output%"
 
 ; System utilization
 
 [module/utilization/cpu]
 type = internal/cpu
 interval = 2
-format-prefix = ${env:i_mdi_speedometer} 
+format-prefix = ${env:i_mdi_speedometer}
 format-prefix-foreground = ${colors.foreground-alt}
 format-underline = #f90000
-label = %percentage:2%%
+label = " %percentage:2%%"
 
 [module/memory/ram]
 type = custom/script
-exec = ~/.config/polybar/scripts/memory-usage-real.sh
+exec = echo -n ' '; ~/.config/polybar/scripts/memory-usage-real.sh
 interval = 10
 format-prefix = ${env:i_mdi_memory}
 format-prefix-foreground = ${colors.foreground-alt}
@@ -294,9 +295,9 @@ type = internal/temperature
 thermal-zone = 3
 warn-temperature = 60
 
-format = <ramp> <label>
+format = <ramp> <label>
 format-underline = #f50a4d
-format-warn = <ramp> <label-warn>
+format-warn = <ramp> <label-warn>
 format-warn-underline = ${self.format-underline}
 
 label = %temperature-c%
@@ -311,15 +312,15 @@ ramp-foreground = ${colors.foreground-alt}
 [module/utilization/gpu]
 type = custom/script
 exec-if = command -v nvidia-smi
-exec = echo "$(modinfo nvidia > /dev/null 2>&1 && nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits || echo '??')%"
+exec = echo " $(modinfo nvidia > /dev/null 2>&1 && nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits || echo '??')%"
 interval = 10
-format-prefix = ${env:i_mdi_speedometer} 
+format-prefix = ${env:i_mdi_speedometer}
 format-prefix-foreground = ${colors.cyan}
 
 [module/memory/gpu]
 type = custom/script
 exec-if = command -v nvidia-smi
-exec = echo "$(modinfo nvidia > /dev/null 2>&1 && nvidia-smi --query-gpu=utilization.memory --format=csv,noheader,nounits || echo '??')%"
+exec = echo " $(modinfo nvidia > /dev/null 2>&1 && nvidia-smi --query-gpu=utilization.memory --format=csv,noheader,nounits || echo '??')%"
 interval = 10
 format-prefix = ${env:i_mdi_memory}
 format-prefix-foreground = ${colors.cyan}
@@ -327,7 +328,7 @@ format-prefix-foreground = ${colors.cyan}
 [module/temperature/gpu]
 type = custom/script
 exec-if = command -v nvidia-smi
-exec = echo "$(modinfo nvidia > /dev/null 2>&1 && nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits || echo '??')°C"
+exec = echo " $(modinfo nvidia > /dev/null 2>&1 && nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits || echo '??')°C"
 interval = 10
 format-prefix = ${env:i_mdi_thermometer}
 format-prefix-foreground = ${colors.cyan}
@@ -335,7 +336,7 @@ format-prefix-foreground = ${colors.cyan}
 [module/gamemode]
 type = custom/script
 exec-if = command -v gamemoded
-exec = gamemoded -s | grep -qE '\bactive\b' && echo "$i_mdi_xbox_controller"
+exec = gamemoded -s | grep -qE '\\bactive\\b' && echo "$i_mdi_xbox_controller"
 interval = 10
 label-foreground = ${colors.cyan}
 
@@ -350,7 +351,7 @@ format-prefix = ${env:i_linux_archlinux}
 
 [module/yubikey]
 type = custom/script
-exec-if = command -v yubikey-touch-detector
+exec-if = command -v yubikey-touch-detector socat
 exec = ~/.config/polybar/scripts/yubikey.sh
 tail = true
 
