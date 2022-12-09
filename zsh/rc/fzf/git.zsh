@@ -30,21 +30,21 @@ _fzf_pipeline_git_files_modified_source() {
 	| grep --invert-match --fixed-strings --line-regexp "$(_fzf_pipeline_git_files_deleted_source)"
 }
 _fzf_pipeline_git_files_modified_preview() {
-	gitd --color -- "${(Q)1}" | diff-so-fancy
+	gitd --color -- "${(Q)1}" | delta
 }
 alias _fzf_pipeline_git_files_modified_target='_fzf_pipeline_git_files_target'
 
 # Deleted files
 alias _fzf_pipeline_git_files_deleted_source='_fzf_pipeline_git_files_source --deleted --exclude-standard'
 _fzf_pipeline_git_files_deleted_preview() {
-	gitd --color -- "${(Q)1}" | diff-so-fancy
+	gitd --color -- "${(Q)1}" | delta
 }
 alias _fzf_pipeline_git_files_deleted_target='_fzf_pipeline_git_files_target'
 
 # Other files (this includes files not yet known to git)
 alias _fzf_pipeline_git_files_others_source='_fzf_pipeline_git_files_source --others --exclude-standard'
 _fzf_pipeline_git_files_others_preview() {
-	gitd --color -- "${(Q)1}" | diff-so-fancy
+	gitd --color -- "${(Q)1}" | delta
 }
 alias _fzf_pipeline_git_files_others_target='_fzf_pipeline_git_files_target'
 
@@ -57,7 +57,7 @@ _fzf_pipeline_git_files_staged_source() {
 	| uniq
 }
 _fzf_pipeline_git_files_staged_preview() {
-	gitd --staged --color -- "${(Q)1}" | diff-so-fancy
+	gitd --staged --color -- "${(Q)1}" | delta
 }
 alias _fzf_pipeline_git_files_staged_target='_fzf_pipeline_git_files_target'
 

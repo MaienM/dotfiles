@@ -53,7 +53,7 @@ gitd() {
 				echo "${color_fg_cyan}@@ -0,0 +1 @@$color_reset"
 				echo "${color_fg_green}$(readlink "$file")$color_reset"
 				echo "\ No newline at end of file$color_reset"
-			) | diff-so-fancy
+			) | delta
 		else
 			git diff "${opts[@]}" --no-index -- /dev/null "$file"
 		fi
