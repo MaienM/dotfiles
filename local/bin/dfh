@@ -23,7 +23,7 @@ c() {
 	for prop in "${!properties[@]}"; do
 		expression="${expression//$prop/${properties[$prop]}}"
 	done
-	calc "$expression"
+	echo "scale=10; $expression" | bc
 }
 
 # Shorthands for the above + format_size.
@@ -34,15 +34,15 @@ cs() {
 	format_size "$(c "$1")"
 }
 
-get_column() {
+get_mount_column() {
 	df --output="$1" --block-size=1 -x zfs -x tmpfs -x devtmpfs -x squashfs -x overlay | tail -n+2
 }
 
-mapfile -t list_volume < <(get_column source)
-mapfile -t list_mountpoint < <(get_column target)
-mapfile -t list_used < <(get_column used)
-mapfile -t list_available < <(get_column avail)
 (
+mapfile -t list_volume < <(get_mount_column source)
+mapfile -t list_mountpoint < <(get_mount_column target)
+mapfile -t list_used < <(get_mount_column used)
+mapfile -t list_available < <(get_mount_column avail)
 for i in {0..999}; do
 	[ "$i" -lt "${#list_volume[@]}" ] || break
 
@@ -77,9 +77,14 @@ if command -v zfs > /dev/null 2>&1; then
 		done < <(zfs get -Hp -o property,value used,available,compressratio,usedbydataset,mountpoint "$volume")
 		properties[total]="$(c "used + available")"
 
+		case "$(p mountpoint)" in
+			legacy) properties[mountpoint]="$(mount | awk -v name="$volume" '{ if ($1 == name && $5 == "zfs") { print $3; exit } }')" ;;
+			none) properties[mountpoint]= ;;
+		esac
+
 		printf '%s | %s | %s/%s (%.1f%%) | (%s self) | compression %.2fx, effective %s/%s\n' \
 			"$volume" \
-			"$(p mountpoint | sed 's/^none$//')" \
+			"$(p mountpoint)" \
 			"$(ps used)" \
 			"$(ps total)" \
 			"$(c "100 * used / total")" \
