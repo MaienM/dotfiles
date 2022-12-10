@@ -690,7 +690,7 @@ class Processor(object):
 				return False
 			elif c == 'd':
 				print()
-				subprocess.run(['diff', source, target])
+				subprocess.run(['delta', source, target])
 				print()
 			elif c == 'u':
 				self.fs.delete(source)
