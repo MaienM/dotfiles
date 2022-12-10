@@ -38,6 +38,19 @@ get_mount_column() {
 	df --output="$1" --block-size=1 -x zfs -x tmpfs -x devtmpfs -x squashfs -x overlay | tail -n+2
 }
 
+get_usage_color() {
+	used="$(echo "scale=0; ($(p pctused) + 0.5) / 1" | bc)"
+	if [ "$used" -gt 90 ]; then
+		echo "${color_fg_red}${color_reverse}"
+	elif [ "$used" -gt 70 ]; then
+		echo "${color_fg_red}"
+	elif [ "$used" -gt 40 ]; then
+		echo "${color_fg_yellow}"
+	else
+		echo "${color_fg_green}"
+	fi
+}
+
 (
 mapfile -t list_volume < <(get_mount_column source)
 mapfile -t list_mountpoint < <(get_mount_column target)
@@ -57,13 +70,16 @@ for i in {0..999}; do
 	properties[used]="$used"
 	properties[total]="$total"
 	properties[mountpoint]="$mountpoint"
+	properties[pctused]="$(c "100 * used / total")"
 
-	printf '%s | %s | %s/%s (%.1f%%)\n' \
+	printf '%s | %s | %s%s/%s (%.1f%%)%s\n' \
 		"$volume" \
 		"$mountpoint" \
+		"$(get_usage_color)" \
 		"$(ps used)" \
 		"$(ps total)" \
-		"$(c "100 * used / total")"
+		"$(p pctused)" \
+		"${color_reset}"
 done
 
 if command -v zfs > /dev/null 2>&1; then
@@ -76,18 +92,21 @@ if command -v zfs > /dev/null 2>&1; then
 			properties+=(["$prop"]="$value")
 		done < <(zfs get -Hp -o property,value used,available,compressratio,usedbydataset,mountpoint "$volume")
 		properties[total]="$(c "used + available")"
+		properties[pctused]="$(c "100 * used / total")"
 
 		case "$(p mountpoint)" in
 			legacy) properties[mountpoint]="$(mount | awk -v name="$volume" '{ if ($1 == name && $5 == "zfs") { print $3; exit } }')" ;;
 			none) properties[mountpoint]= ;;
 		esac
 
-		printf '%s | %s | %s/%s (%.1f%%) | (%s self) | compression %.2fx, effective %s/%s\n' \
+		printf '%s | %s | %s%s/%s (%.1f%%)%s | (%s self) | compression %.2fx, effective %s/%s\n' \
 			"$volume" \
 			"$(p mountpoint)" \
+			"$(get_usage_color)" \
 			"$(ps used)" \
 			"$(ps total)" \
-			"$(c "100 * used / total")" \
+			"$(p pctused)" \
+			"${color_reset}" \
 			"$(ps usedbydataset)" \
 			"$(p compressratio)" \
 			"$(cs "used * compressratio")" \
