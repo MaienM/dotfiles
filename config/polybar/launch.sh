@@ -14,10 +14,6 @@ set -a
 source nerdfonts_icons_all
 set +a
 
-# Make the colors available as environment variables
-# shellcheck disable=SC1090
-source ~/.profile.d/base16
-
 # Get the names of the available physical network interfaces.
 mapfile -t eths < <(find /sys/class/net -type l -not -lname '*virtual*' -not -name 'w*' -printf '%f\n')
 mapfile -t wlans < <(find /sys/class/net -type l -not -lname '*virtual*' -name 'w*' -printf '%f\n')
@@ -28,7 +24,7 @@ done
 
 # Launch bars for all screens
 mapfile -t monitors < <(xrandr --listmonitors | cut -d' ' -f6 | grep -E '^.+$')
-MONITOR="${monitors[0]}" polybar primary &
+MONITOR="${monitors[0]}" polybar --log=info --reload primary > ~/.log/polybar 2>&1 &
 for monitor in "${monitors[@]:1}"; do
-	MONITOR="$monitor" polybar secondary &
+	MONITOR="$monitor" polybar -q --reload secondary &
 done

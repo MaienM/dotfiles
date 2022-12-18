@@ -1,0 +1,14 @@
+#
+# Set preferred programs.
+#
+if command_exists nvim; then
+	export EDITOR="nvim"
+elif command_exists vim; then
+	export EDITOR="vim"
+elif command_exists vi; then
+	export EDITOR="vi"
+fi
+
+if command_exists kitty; then
+	export TERMINAL="kitty"
+fi

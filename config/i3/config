@@ -24,20 +24,10 @@ set $right l
 # Command execution
 set $exec exec --no-startup-id notify-error
 
-# Font for window titles. Will also be used by the bar unless a different font
-# is used in the bar {} block below.
-font pango:monospace 16
-
-# This font is widely installed, provides lots of unicode glyphs, right-to-left
-# text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:Fira Code 12
-
-# Before i3 v4.8, we used to recommend this one as the default:
-# font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
-# The font above is very space-efficient, that is, it looks good, sharp and
-# clear in small sizes. However, its unicode glyph coverage is limited, the old
-# X core fonts rendering does not support right-to-left and this being a bitmap
-# font, it doesn’t scale on retina/hidpi displays.
+# Use same fonts as in polybar.
+font pango:unifont 8
+font pango:Symbols Nerd Font 12
+font pango:Noto Sans 10
 
 # Use Mouse+$GUI to drag floating windows to their wanted position
 floating_modifier $GUI
@@ -221,6 +211,15 @@ mode "resize" {
 
 bindsym $GUI+s mode "resize"
 
+# Colors
+# class                  border     backgr.    text       indicator  child_border
+client.focused           $base06    $base06    $base00    $base0B    $base06
+client.focused_inactive  $base04    $base04    $base01    $base0B    $base04
+client.unfocused         $base02    $base01    $base06    $base0B    $base02
+client.urgent            $base0A    $base0A    $base00    $base0B    $base0A
+client.placeholder       $base00    $base00    $base03    $base00    $base00
+client.background        #ffffff    
+
 # Look & feel of windows
 new_window 1pixel
 gaps inner 04
@@ -229,6 +228,7 @@ smart_borders on
 smart_gaps on
 floating_minimum_size 75 x 50
 focus_on_window_activation urgent
+for_window [class=".*"] title_format " %title" # Half space before title
 
 # Keybinds to run programs
 # bindsym $GUI+Escape $exec xscreensaver-command -lock

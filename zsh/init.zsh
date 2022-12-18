@@ -1,4 +1,4 @@
-source ~/.profile.d/autoload
+source ~/.profile.d/10_autoload
 
 # Load version checking function, for version guards in the plugins.
 autoload -Uz is-at-least
@@ -8,7 +8,6 @@ autoload -Uz compinit
 compinit
 
 source ~/.zsh/bundle/autosuggestions.zsh
-source ~/.zsh/bundle/base16.zsh
 source ~/.zsh/bundle/fzf-tab.zsh
 source ~/.zsh/bundle/fzf.zsh
 source ~/.zsh/bundle/histdb/sqlite-history.zsh

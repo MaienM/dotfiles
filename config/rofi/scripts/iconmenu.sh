@@ -21,7 +21,7 @@ for option in "$@"; do
 	fi
 	id="${BASH_REMATCH[1]}"
 	icon="${BASH_REMATCH[2]}"
-	icon_color="${BASH_REMATCH[3]+$base16_foreground}"
+	icon_color="${BASH_REMATCH[3]+$base16_05}"
 	description="${BASH_REMATCH[5]}"
 	printf '%s|%s\0icon\x1f%s\n' "$id" "$description" "$(nerdfonts-icon-as-svg "$icon" "$icon_color")"
 done \

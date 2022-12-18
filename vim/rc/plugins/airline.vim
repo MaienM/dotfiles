@@ -1,3 +1,6 @@
+let g:airline_base16_monotone = 1
+let g:airline_theme = 'base16_vim'
+
 let g:airline_highlighting_cache = 1
 let g:airline_powerline_fonts = 1
 let g:airline_skip_empty_sections = 1

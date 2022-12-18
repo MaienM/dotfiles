@@ -1,16 +1,11 @@
 " Apply the base16 theme.
-function! Base16()
-	if filereadable(expand('~/.vimrc_background'))
-		source ~/.vimrc_background
-	endif
-endfunction
 if &t_Co > 2 || has('gui_running')
 	set t_Co=256
 	set guioptions=0
-	set background=dark
 	let base16colorspace=256
-	call Base16()
 endif
+colorscheme base16
+let g:colors_name = 'base16'
 
 " Don't set a background using the theme, falling back on the color set by the terminal. This allows for transparency.
 au ColorScheme * hi Normal ctermbg=none

@@ -1,0 +1,53 @@
+aliases:
+  light: atelier-sulphurpool-light
+  dark: solarflare
+applications:
+  dircolors:
+    hook: python ~/.config/base16/templates/dircolors/templates/build.py | dircolors > ~/.profile.d/50_dircolors.local
+    templates:
+      - input: ./templates/dircolors/templates/default.mustache
+        output: ~/.config/base16/templates/dircolors/templates/build.py
+  envvars:
+    templates:
+      - input: ./templates/custom/envvars.mustache
+        output: ~/.profile.d/50_base16.local
+  fzf:
+    templates:
+      - input: ./templates/fzf/templates/default.mustache
+        output: ~/.base16_theme_fzf
+  i3:
+    hook: i3-msg reload
+    templates:
+      - input: ./templates/custom/i3.mustache
+        output: ~/.config/i3/config
+  k9s:
+    templates:
+      - input: ./templates/k9s/templates/default.mustache
+        output: ~/.config/k9s/skin.yml
+  polybar:
+    hook: polybar-msg cmd restart
+    templates:
+      - input: ./templates/polybar/templates/default.mustache
+        output: ~/.config/polybar/base16.ini
+  rofi:
+    templates:
+      - input: ./templates/rofi/templates/default.mustache
+        output: ~/.config/rofi/theme.rasi
+  shell:
+    templates:
+      - input: ./templates/shell/templates/default.mustache
+        output: ~/.zsh/rc/base16.local.zsh
+  tmux:
+    dependsOn: 
+      - vim
+    hook: nvim --headless +TmuxlineUpdate +quit
+    hookRunAlways: true # output of hook is also affected by airline theme
+  vim:
+    templates:
+      - input: ./templates/vim/templates/default.mustache
+        output: ~/.vim/colors/base16.vim
+  xresources:
+    hook: xrdb -merge ~/.Xresources
+    templates:
+      - input: ./templates/xresources/templates/default.mustache
+        output: ~/.Xresources.d/base16.local

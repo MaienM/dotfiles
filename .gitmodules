@@ -106,12 +106,6 @@
 [submodule "zsh/bundle/fast-syntax-highlighting"]
 	path = zsh/bundle/fast-syntax-highlighting
 	url= https://github.com/zdharma-continuum/fast-syntax-highlighting
-[submodule "zsh/bundle/base16"]
-	path = zsh/bundle/base16
-	url = https://github.com/chriskempson/base16-shell
-[submodule "vim/bundle/base16"]
-	path = vim/bundle/base16
-	url = https://github.com/chriskempson/base16-vim
 [submodule "vim/bundle/syntax-renpy"]
 	path = vim/bundle/syntax-renpy
 	url = https://github.com/chaimleib/vim-renpy
@@ -148,9 +142,6 @@
 [submodule "vim/bundle/goyo"]
 	path = vim/bundle/goyo
 	url = https://github.com/junegunn/goyo.vim
-[submodule "zsh/bundle/base16-hooks/base16-xresources"]
-	path = zsh/bundle/base16-hooks/base16-xresources
-	url = https://github.com/tinted-theming/base16-xresources
 [submodule "vim/bundle/eunuch"]
 	path = vim/bundle/eunuch
 	url = https://github.com/tpope/vim-eunuch
@@ -181,12 +172,6 @@
 [submodule "vim/bundle/tcomment"]
 	path = vim/bundle/tcomment
 	url = https://github.com/tomtom/tcomment_vim
-[submodule "config/rofi/base16"]
-	path = config/rofi/base16
-	url = https://github.com/0xdec/base16-rofi
-[submodule "fzf/base16"]
-	path = fzf/base16
-	url = https://github.com/nicodebo/base16-fzf
 [submodule "opt/extract_url"]
 	path = opt/extract_url
 	url = https://github.com/m3m0ryh0l3/extracturl
@@ -257,9 +242,6 @@
 [submodule "zsh/bundle/completions"]
 	path = zsh/bundle/completions
 	url = https://github.com/zsh-users/zsh-completions
-[submodule "config/k9s/base16"]
-	path = config/k9s/base16
-	url = https://github.com/Sacro/base16-k9s
 [submodule "vim/bundle-nvim/treesitter"]
 	path = vim/bundle-nvim/treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
@@ -269,3 +251,27 @@
 [submodule "vim/bundle-coc/rust-analyser"]
 	path = vim/bundle-coc/rust-analyser
 	url = https://github.com/fannheyward/coc-rust-analyzer
+[submodule "config/base16/templates/fzf"]
+	path = config/base16/templates/fzf
+	url = https://github.com/fnune/base16-fzf
+[submodule "config/base16/templates/k9s"]
+	path = config/base16/templates/k9s
+	url = https://github.com/krgn/base16-k9s
+[submodule "config/base16/templates/polybar"]
+	path = config/base16/templates/polybar
+	url = https://github.com/Misterio77/base16-polybar
+[submodule "config/base16/templates/rofi"]
+	path = config/base16/templates/rofi
+	url = https://gitlab.com/0xdec/base16-rofi
+[submodule "config/base16/templates/shell"]
+	path = config/base16/templates/shell
+	url = https://github.com/tinted-theming/base16-shell
+[submodule "config/base16/templates/vim"]
+	path = config/base16/templates/vim
+	url = https://github.com/tinted-theming/base16-vim
+[submodule "config/base16/templates/xresources"]
+	path = config/base16/templates/xresources
+	url = https://github.com/base16-project/base16-xresources
+[submodule "config/base16/templates/dircolors"]
+	path = config/base16/templates/dircolors
+	url = https://github.com/embayer/base16-gnu-dircolors
