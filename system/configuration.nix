@@ -32,6 +32,9 @@
   services.xserver.windowManager.i3.enable = true;
   hardware.opengl.enable = true;
 
+  # Needed for a number of applications to manage settings.
+  programs.dconf.enable = true;
+
   # Enable sound.
   security.rtkit.enable = true;
   services.pipewire = {
