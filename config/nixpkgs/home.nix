@@ -18,72 +18,72 @@
     components = [ "secrets" ];
   };
 
-  home.packages = with pkgs; [
+  home.packages = with pkgs;
+    let
+      pythonPackages = python310.pkgs;
+    in
+    [
 
-    # WM.
-    dunst
-    i3-gaps # gaps has been merged into i3, but no release has happened since
-    maim
-    picom
-    polybarFull
-    redshift
-    rofi
-    scrot
-    xorg.xkill
-    yubikey-touch-detector
+      # WM.
+      dunst
+      i3-gaps # gaps has been merged into i3, but no release has happened since
+      maim
+      picom
+      polybarFull
+      redshift
+      rofi
+      scrot
+      xorg.xkill
+      yubikey-touch-detector
 
-    (
-      let
-        pythonPackages = python310.pkgs;
-      in
+      (
         pythonPackages.buildPythonApplication rec {
           pname = "notify-send.py";
           version = "1.2.7";
-
           src = pythonPackages.fetchPypi {
             inherit pname version;
             sha256 = "9olZRJ9q1mx1hGqUal6XdlZX6v5u/H1P/UqVYiw9lmM=";
           };
           propagatedBuildInputs = with pythonPackages; [ pygobject3 dbus-python ];
         }
-    )
+      )
 
-    # CLI.
-    bat
-    bc
-    delta
-    exa
-    fontforge
-    git
-    gnupg
-    jq
-    mimeo
-    nixpkgs-fmt
-    nodejs
-    python3
-    ripgrep
-    socat
-    sqlite
-    subversion
-    tmux
-    unzip
-    xclip
-    zsh
+      # CLI.
+      bat
+      bc
+      delta
+      exa
+      fontforge
+      git
+      gnupg
+      jq
+      mimeo
+      nixpkgs-fmt
+      nodejs
+      python3
+      ripgrep
+      socat
+      sqlite
+      subversion
+      tmux
+      unzip
+      xclip
+      zsh
 
-    # Applications.
-    discord
-    evolution
-    evolution-ews
-    feh
-    firefox
-    google-chrome
-    kitty
-    mpv
-    workrave
+      # Applications.
+      discord
+      evolution
+      evolution-ews
+      feh
+      firefox
+      google-chrome
+      kitty
+      mpv
+      workrave
 
-    # Neovim
-    python310Packages.pynvim
-    nodePackages.neovim
+      # Neovim
+      pythonPackages.pynvim
+      nodePackages.neovim
 
   ];
 }
