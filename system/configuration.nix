@@ -35,6 +35,9 @@
   # Needed for a number of applications to manage settings.
   programs.dconf.enable = true;
 
+  # Installed here instead of via home-manager as it needs system-level workarounds.
+  programs.steam.enable = true;
+
   # Enable sound.
   security.rtkit.enable = true;
   services.pipewire = {
