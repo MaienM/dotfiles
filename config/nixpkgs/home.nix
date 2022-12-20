@@ -72,8 +72,6 @@
 
       # Applications.
       discord
-      evolution
-      evolution-ews
       feh
       firefox
       google-chrome

@@ -37,6 +37,10 @@
 
   # Installed here instead of via home-manager as it needs system-level workarounds.
   programs.steam.enable = true;
+  programs.evolution = {
+    enable = true;
+    plugins = with pkgs; [ evolution-ews ];
+  };
 
   # Enable sound.
   security.rtkit.enable = true;
