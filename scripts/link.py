@@ -89,7 +89,7 @@ def make_absolute(path: Any) -> Any:
 
 def err(*args: Any) -> None:
 	""" Print to stderr. """
-	print(*args, file = stderr)
+	print(*args, file=stderr)
 
 
 def hash_file(path: AbsoluteRealPath) -> str:
@@ -295,7 +295,7 @@ class VirtualFS(object):
 		self.cache: Dict[AbsoluteVirtualPath, VirtualFileInfo] = {}
 		self.log = logging.getLogger(self.__class__.__name__)
 
-	def get(self, path: AbsoluteVirtualPath, *, parent_none_is_none: bool = False) -> VirtualFileInfo:
+	def get(self, path: AbsoluteVirtualPath, *, parent_none_is_none: bool=False) -> VirtualFileInfo:
 		""" Get a VirtualFileInfo describing the given path. """
 		if path in self.cache:
 			return self.cache[path]
@@ -303,7 +303,7 @@ class VirtualFS(object):
 		if path.parent == path:
 			return self._cache(path, self._from_fs(path))
 
-		parent = self.get(path.parent, parent_none_is_none = parent_none_is_none)
+		parent = self.get(path.parent, parent_none_is_none=parent_none_is_none)
 		rparent = parent.real
 
 		if rparent.type == VirtualFileType.DIRECTORY:
@@ -369,7 +369,7 @@ class VirtualFS(object):
 		self._log(logging.DEBUG, f'symlink {source} to {target}')
 		self._assert_not_exists(target)
 		self._assert_exists(source) # Not required, but helps prevent problems.
-		self._cache(target, VirtualFileInfo(self, target, VirtualFileType.SYMLINK, False, links_to = source))
+		self._cache(target, VirtualFileInfo(self, target, VirtualFileType.SYMLINK, False, links_to=source))
 
 	def hardlink(self, source: AbsoluteVirtualPath, target: AbsoluteVirtualPath) -> None:
 		""" Mark the given target path as being a hardlink to the given source. """
@@ -434,7 +434,7 @@ class VirtualFS(object):
 		if stat.S_ISDIR(info.st_mode):
 			return VirtualFileInfo(self, path, VirtualFileType.DIRECTORY, True)
 		elif stat.S_ISREG(info.st_mode):
-			return VirtualFileInfo(self, path, VirtualFileType.FILE, True, inode = linfo.st_ino)
+			return VirtualFileInfo(self, path, VirtualFileType.FILE, True, inode=linfo.st_ino)
 		else:
 			return VirtualFileInfo(self, path, VirtualFileType.OTHER, True)
 
@@ -520,11 +520,11 @@ class Processor(object):
 		self.fs = VirtualFS()
 		self.commands: List[Command] = []
 
-	def process_dir(self, path: AbsoluteVirtualPath, only_explicit: bool = False) -> None:
+	def process_dir(self, path: AbsoluteVirtualPath, only_explicit: bool=False) -> None:
 		for entry in self.fs.scandir(path):
 			self.process_entry(entry, only_explicit)
 
-	def process_entry(self, entry: VirtualFileInfo, only_explicit: bool = False) -> None:
+	def process_entry(self, entry: VirtualFileInfo, only_explicit: bool=False) -> None:
 		fc = self.config.get_info(entry.path)
 
 		if fc.processed:
@@ -568,7 +568,7 @@ class Processor(object):
 		# Validate that all targets are actually something we can nest files under
 		for targetname in fc.targets[:]:
 			target = join(AbsoluteRealPath(Path.home()), targetname)
-			tentry = self.fs.get(target, parent_none_is_none = True)
+			tentry = self.fs.get(target, parent_none_is_none=True)
 			needs_mkdir = False
 			if tentry.type == VirtualFileType.FILE:
 				# The target is a file, but we need it to be a directory
@@ -600,9 +600,9 @@ class Processor(object):
 		for targetname in fc.targets:
 			target = join(AbsoluteRealPath(Path.home()), targetname)
 			if self.should_link_be_created(entry, fc, target):
-				tentry = self.fs.get(target, parent_none_is_none = True)
+				tentry = self.fs.get(target, parent_none_is_none=True)
 				# If the parent path is missing, create it now.
-				if self.fs.get(target.parent, parent_none_is_none = True).type == VirtualFileType.NONE:
+				if self.fs.get(target.parent, parent_none_is_none=True).type == VirtualFileType.NONE:
 					self.mkdirs(target.parent)
 				# If the target exists, it has to be force replaced.
 				force = (tentry.type != VirtualFileType.NONE)
@@ -621,7 +621,7 @@ class Processor(object):
 				))
 
 	def should_link_be_created(self, entry: VirtualFileInfo, fc: FileConfig, target_path: AbsoluteVirtualPath) -> bool:
-		target = self.fs.get(target_path, parent_none_is_none = True)
+		target = self.fs.get(target_path, parent_none_is_none=True)
 
 		if self.args.assume_empty:
 			return True
@@ -700,7 +700,7 @@ class Processor(object):
 				return True
 
 	def mkdirs(self, path: AbsoluteVirtualPath) -> None:
-		pinfo = self.fs.get(path.parent, parent_none_is_none = True)
+		pinfo = self.fs.get(path.parent, parent_none_is_none=True)
 		if pinfo.type == VirtualFileType.NONE:
 			self.mkdirs(path.parent)
 		self.fs.mkdir(path)
@@ -718,7 +718,7 @@ class Args(Namespace):
 
 
 def parse_args() -> Args:
-	parser = ArgumentParser(description = (
+	parser = ArgumentParser(description=(
 		'Generate a list of commands that setup the home directory to use the files in this repository.'
 	))
 	parser.add_argument(
@@ -736,15 +736,15 @@ def parse_args() -> Args:
 		help = 'Assume yes to all overwrite prompts.',
 	)
 	root = Path(__file__).parent.parent.resolve()
-	parser.add_argument('-r', '--root', default = root, help = f'Path to the root folder.')
+	parser.add_argument('-r', '--root', default=root, help=f'Path to the root folder.')
 	parser.add_argument(
 		'-c',
 		'--config',
 		default = Path(root, 'scripts', 'config'),
 		help = 'Path to the config.',
 	)
-	parser.add_argument('--debug', action = 'store_true', help = 'Output more logging information.')
-	return parser.parse_args(namespace = Args())
+	parser.add_argument('--debug', action='store_true', help='Output more logging information.')
+	return parser.parse_args(namespace=Args())
 
 
 def main(args: Args) -> None:
@@ -760,7 +760,7 @@ def main(args: Args) -> None:
 	processor = Processor(args, config)
 	processor.process_dir(root)
 	processor.process_explicit()
-	processor.process_entry(processor.fs.get(root), only_explicit = True)
+	processor.process_entry(processor.fs.get(root), only_explicit=True)
 
 	# Make sure no items marked in the config have been missed (unless they are to be skipped anyway)
 	for path in config.sections():
