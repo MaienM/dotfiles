@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 
-import argparse
-import configparser
+from argparse import ArgumentParser, Namespace
+from configparser import ConfigParser
 from collections.abc import Iterable
 from enum import Enum, auto
-import hashlib
+from hashlib import sha256
 import inspect
 import logging
 from pathlib import Path, PurePath
-import shlex
+from shlex import quote
 import stat
-import subprocess
-import sys
+from subprocess import run
+from sys import stdin, stdout, stderr
 import termios
-import textwrap
+from textwrap import dedent
 import tty
 from typing import (
 	Any,
@@ -89,22 +89,22 @@ def make_absolute(path: Any) -> Any:
 
 def err(*args: Any) -> None:
 	""" Print to stderr. """
-	print(*args, file = sys.stderr)
+	print(*args, file = stderr)
 
 
 def hash_file(path: AbsoluteRealPath) -> str:
 	""" Get a hash of the given path. """
 	with path.open('rb') as f:
-		return hashlib.sha256(f.read()).hexdigest()
+		return sha256(f.read()).hexdigest()
 
 
 def _read_char() -> str:
 	""" Read a single character from stdin. """
-	fd = sys.stdin.fileno()
+	fd = stdin.fileno()
 	old_settings = termios.tcgetattr(fd)
 	try:
 		tty.setraw(fd)
-		return sys.stdin.read(1)
+		return stdin.read(1)
 	finally:
 		termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
@@ -173,7 +173,7 @@ class FileConfig(object):
 			raise ValueError(f'Unexpected properties for {self.path}: {", ".join(data.keys())}')
 
 
-class Config(configparser.ConfigParser):
+class Config(ConfigParser):
 	"""
 	A wrapper around ConfigParser that allows getting a configuration for any path, regardless of whether it appears in
 	the config file.
@@ -455,7 +455,7 @@ class Command(object):
 		self.target = target
 
 	def __str__(self) -> str:
-		return f'# {shlex.quote(str(self.target))}'
+		return f'# {quote(str(self.target))}'
 
 
 class MoveCommand(Command):
@@ -465,7 +465,7 @@ class MoveCommand(Command):
 		self.source = source
 
 	def __str__(self) -> str:
-		return f'mv -- {shlex.quote(str(self.source))} {shlex.quote(str(self.target))}'
+		return f'mv -- {quote(str(self.source))} {quote(str(self.target))}'
 
 
 class LinkCommand(MoveCommand):
@@ -493,19 +493,19 @@ class LinkCommand(MoveCommand):
 			flags += 'f'
 		if self.no_target_directory:
 			flags += 'T'
-		return f'ln {f"-{flags} " if flags else ""}-- {shlex.quote(str(self.source))} {shlex.quote(str(self.target))}'
+		return f'ln {f"-{flags} " if flags else ""}-- {quote(str(self.source))} {quote(str(self.target))}'
 
 
 class DeleteCommand(Command):
 	""" An rm command that has to be executed to get to the desired state. """
 	def __str__(self) -> str:
-		return f'rm -- {shlex.quote(str(self.target))}'
+		return f'rm -- {quote(str(self.target))}'
 
 
 class MkdirCommand(Command):
 	""" An mkdir command that has to be executed to get to the desired state. """
 	def __str__(self) -> str:
-		return f'mkdir {shlex.quote(str(self.target))}'
+		return f'mkdir {quote(str(self.target))}'
 
 # }}}
 
@@ -690,7 +690,7 @@ class Processor(object):
 				return False
 			elif c == 'd':
 				print()
-				subprocess.run(['delta', source, target])
+				run(['delta', source, target])
 				print()
 			elif c == 'u':
 				self.fs.delete(source)
@@ -709,7 +709,7 @@ class Processor(object):
 # }}}
 
 
-class Args(argparse.Namespace):
+class Args(Namespace):
 	assume_empty: bool
 	overwrite: bool
 	root: AbsoluteRealPath
@@ -718,7 +718,7 @@ class Args(argparse.Namespace):
 
 
 def parse_args() -> Args:
-	parser = argparse.ArgumentParser(description = (
+	parser = ArgumentParser(description = (
 		'Generate a list of commands that setup the home directory to use the files in this repository.'
 	))
 	parser.add_argument(
@@ -780,14 +780,14 @@ def main(args: Args) -> None:
 	commands = [str(cmd) for cmd in processor.commands]
 	indented_commands = '\n\t\t\t\t'.join(commands)
 	with cmdpath.open('w') as f:
-		f.write(textwrap.dedent(f'''
+		f.write(dedent(f'''
 			#!/usr/bin/env sh
 			(
 				set -e
 
 				{indented_commands}
 
-				rm {shlex.quote(str(cmdpath))}
+				rm {quote(str(cmdpath))}
 			)
 		''').strip())
 	print('Please confirm the following commands are correct (directories will be created as needed):')
@@ -800,7 +800,7 @@ def main(args: Args) -> None:
 def setup_logging() -> None:
 	formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-	handler = logging.StreamHandler(sys.stdout)
+	handler = logging.StreamHandler(stdout)
 	handler.setLevel(logging.DEBUG)
 	handler.setFormatter(formatter)
 
