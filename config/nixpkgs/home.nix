@@ -52,9 +52,12 @@
       bat
       bc
       delta
+      direnv
       exa
       fontforge
+      fzf
       git
+      git-lfs
       gnupg
       jq
       mimeo
