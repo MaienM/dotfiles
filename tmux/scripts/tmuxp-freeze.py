@@ -7,7 +7,7 @@
 
 import kaptan
 from tmuxp import config
-from tmuxp.cli import freeze
+from tmuxp.cli.freeze import freeze
 from libtmux import Server
 
 
