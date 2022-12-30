@@ -4,6 +4,7 @@ source ~/.zsh/bundle/powerlevel10k/config/p10k-lean.zsh
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
 	dir
 	vcs
+	nix_shell
 	newline
 
 	prompt_char
