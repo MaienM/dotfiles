@@ -59,10 +59,12 @@
       git
       git-lfs
       gnupg
+      htop
       jq
       mimeo
       nixpkgs-fmt
       nodejs
+      p7zip
       python3
       ripgrep
       socat
