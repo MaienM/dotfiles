@@ -85,6 +85,25 @@ download_generic() {
 	files=(["$fn"]="$tmp")
 }
 
+download_nitter() {
+	if ! [[ "$url" = 'https://twitter.com/'* ]]; then
+		return 1
+	fi
+
+	echo "Detected twitter URL, rewriting to nitter."
+	orig_url="$url"
+	for host in 'nitter.net' 'nitter.inpt.fr' 'twitter.censors.us/'; do
+		url="nitter:${orig_url/twitter.com/$host}"
+		download_gallery_dl
+		url="$orig_url"
+		if [ "${#files[@]}" -gt 0 ]; then
+			return 0
+		fi
+	done
+	echo "Failed to download using gallery_dl + nitter."
+	return 1
+}
+
 download_gallery_dl() {
 	# Download using gallery-dl.
 	mapfile -t paths < <(gallery-dl "$url" -D /tmp 2> /dev/null) || return 1
@@ -113,7 +132,7 @@ fi
 
 # Download the files.
 declare -A files
-for downloader in gallery_dl generic; do
+for downloader in nitter gallery_dl generic; do
 	echo "Trying $downloader downloader" 
 	"download_$downloader" "$url" && break
 done
