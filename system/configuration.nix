@@ -16,7 +16,13 @@
 
   # Setup ZFS.
   boot.zfs.forceImportRoot = false;
-  services.zfs.autoScrub.enable = true;
+  services.zfs = {
+    autoScrub.enable = true;
+    autoSnapshot = {
+      enable = true;
+      flags = "-k -p --utc";
+    };
+  };
   networking.hostId = "361b10a9";
 
   # Set host.
