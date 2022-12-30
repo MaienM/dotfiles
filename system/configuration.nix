@@ -64,6 +64,7 @@
     file
     home-manager
     neovim
+    nerdctl
     wget
   ];
 
@@ -84,6 +85,9 @@
     enableSSHSupport = true;
   };
   services.pcscd.enable = true; # Needed for hardware-backed GPG keys.
+
+  # Enable containerd. TODO: Setup rootless?
+  virtualisation.containerd.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
