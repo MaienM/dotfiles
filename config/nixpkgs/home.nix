@@ -82,11 +82,18 @@
       google-chrome
       kitty
       mpv
+      retroarchFull
+      steam-rom-manager
       workrave
 
       # Neovim
       pythonPackages.pynvim
       nodePackages.neovim
 
-  ];
+    ];
+
+  home.file = {
+    # Path needed for steam-rom-manager.
+    ".local/links/retroarch".source = pkgs.retroarchFull;
+  };
 }
