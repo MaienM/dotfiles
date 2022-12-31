@@ -1,4 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env cached-nix-shell
+#!nix-shell -i bash
+#!nix-shell -p jq
+#!nix-shell -p tmuxp
 
 set -e
 

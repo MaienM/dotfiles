@@ -29,6 +29,8 @@ action = recurse
 target = .config/i3/baseconfig
 [config/k9s]
 action = recurse
+[config/mpv/scripts]
+action = recurse
 [config/mpv/bundle/occivink/scripts/crop.lua]
 target = .config/mpv/scripts/crop.lua
 [config/mpv/bundle/occivink/scripts/encode.lua]

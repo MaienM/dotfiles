@@ -1,4 +1,4 @@
-#!/usr/bin/env nix-shell
+#!/usr/bin/env cached-nix-shell
 #!nix-shell -i bash
 #!nix-shell -p bc
 #!nix-shell -p feh

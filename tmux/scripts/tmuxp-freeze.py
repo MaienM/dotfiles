@@ -1,4 +1,4 @@
-#!/usr/bin/env nix-shell
+#!/usr/bin/env cached-nix-shell
 #!nix-shell -i python
 #!nix-shell -p python310
 #!nix-shell -p python310Packages.kaptan

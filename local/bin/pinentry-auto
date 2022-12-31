@@ -1,4 +1,4 @@
-#!/usr/bin/env nix-shell
+#!/usr/bin/env cached-nix-shell
 #!nix-shell -i sh
 #!nix-shell -p pinentry-curses
 #!nix-shell -p pinentry-qt
