@@ -69,7 +69,7 @@ docksh() {
 	if [ "$name" = "-" ]; then
 	   name="$(docker ps -lq)"
 	fi
-	docker exec -it "$name" "${@:-/bin/bash}"
+	docker exec -it "$name" "${@:-/bin/sh}"
 }
 
 ### Attaching ###
