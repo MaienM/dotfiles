@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
 from argparse import ArgumentParser, Namespace
-from configparser import ConfigParser
 from collections.abc import Iterable
+from configparser import ConfigParser
 from enum import Enum, auto
 from hashlib import sha256
 import inspect
 import logging
+from os import environ
 from pathlib import Path, PurePath
 from shlex import quote
+from shutil import which
 import stat
 from subprocess import run
 from sys import stdin, stdout, stderr
@@ -118,6 +120,17 @@ def read_char() -> str:
 		raise EOFError
 	return c
 
+
+def which_nonlocal(command: str) -> str | None:
+	path = environ['PATH'].split(':')
+
+	localbin = str(Path.home() / '.local' / 'bin')
+	if localbin in path:
+		path.remove(localbin)
+
+	return which(command, path=':'.join(path))
+
+
 # }}}
 
 
@@ -128,6 +141,7 @@ class FileAction(Enum):
 	LINK = 'link'
 	SKIP = 'skip'
 	RECURSE = 'recurse'
+	WRAP_COMMAND = 'wrap-command'
 
 
 class FileConfig(object):
@@ -540,7 +554,7 @@ class Processor(object):
 		elif fc.action == FileAction.SKIP:
 			fc.processed = True
 
-		elif fc.action == FileAction.LINK:
+		elif fc.action in [FileAction.LINK, FileAction.WRAP_COMMAND]:
 			self.apply_link(entry, fc)
 			fc.processed = True
 
@@ -622,6 +636,10 @@ class Processor(object):
 
 	def should_link_be_created(self, entry: VirtualFileInfo, fc: FileConfig, target_path: AbsoluteVirtualPath) -> bool:
 		target = self.fs.get(target_path, parent_none_is_none=True)
+
+		if fc.action == FileAction.WRAP_COMMAND and which_nonlocal(target_path.name) is None:
+			# Skip wrapper scripts if the executable being wrapped is not present.
+			return False
 
 		if self.args.assume_empty:
 			return True

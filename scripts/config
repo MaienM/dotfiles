@@ -61,13 +61,13 @@ action = recurse
 action = recurse
 [local/bin]
 action = recurse
-[local/bin/clean-path]
+[local/bin/run-with-polybar-interrupt.sh]
+action = wrap-command
 target =
-	.local/bin/clean-path,
-	.local/bin/xdg-open,
-[local/bin/run-with-sudo]
-target =
-	.local/bin/docker,
+	.local/bin/nordvpn,
+	.local/bin/pacman,
+	.local/bin/pikaur,
+	.local/bin/file,
 [local/share]
 action = recurse
 [local/share/applications]

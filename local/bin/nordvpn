@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-set -e
-
-trap '$HOME/.config/polybar/scripts/send-interrupt.sh nordvpn' ERR EXIT
-
-clean-path nordvpn "$@"

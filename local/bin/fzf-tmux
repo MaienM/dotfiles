@@ -1,7 +1,10 @@
 #!/usr/bin/env sh
 
+# shellcheck source=./wrapper.sh
+. ~/.local/bin/wrapper.sh
+
 if [ "$TMUX_SUPPORT_POPUP" = 1 ]; then
-	exec ~/.fzf/bin/fzf-tmux -p "85%,85%" "$@"
+	exec "$ORIG_BIN" -p "85%,85%" "$@"
 else
-	exec ~/.fzf/bin/fzf-tmux "$@"
+	exec "$ORIG_BIN" "$@"
 fi

@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
+# shellcheck source=./wrapper.sh
+. ~/.local/bin/wrapper.sh
+
 # Find an available IPC socket.
 sockets=(/tmp/mpvsocket /tmp/mpvsocket-{2..9} /tmp/mpvsocket-$$)
 for socket in "${sockets[@]}"; do
 	([ -S "$socket" ] && echo '{ "command": ["get_version"] }' | socat - "$socket" > /dev/null 2>&1) || break
-	# echo "$socket is already in use"
 done
 echo "Using IPC socket $socket"
 
-/usr/bin/mpv --input-ipc-server="$socket" "$@"
+exec "$ORIG_BIN" --input-ipc-server="$socket" "$@"
