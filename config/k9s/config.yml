@@ -1,6 +1,0 @@
-k9s:
-	logger:
-		tail: 500
-		buffer: 5000
-		fullscreenLogs: true
-		textWrap: true
