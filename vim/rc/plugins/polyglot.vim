@@ -1,3 +1,7 @@
+if has('nvim')
+	finish
+endif
+
 let g:polyglot_disabled=[]
 
 "=== LaTeX ===

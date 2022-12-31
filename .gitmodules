@@ -35,7 +35,7 @@
 	path = vim/bundle/vimproc
 	url = https://github.com/Shougo/vimproc.vim
 [submodule "vim/bundle/polyglot"]
-	path = vim/bundle/polyglot
+	path = vim/bundle-vim/polyglot
 	url = https://github.com/sheerun/vim-polyglot
 [submodule "vim/bundle/sleuth"]
 	path = vim/bundle/sleuth
