@@ -1,4 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/env cached-nix-shell
+#!nix-shell -i bash
+#!nix-shell -p imagemagick
+#!nix-shell -p maim
+#!nix-shell -p scrot
+#!nix-shell -p xdotool
 # shellcheck disable=SC2154
 
 set -e
