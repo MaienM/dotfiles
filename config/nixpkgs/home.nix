@@ -88,8 +88,9 @@
       workrave
 
       # Neovim
-      pythonPackages.pynvim
       nodePackages.neovim
+      pythonPackages.pynvim
+      tree-sitter
 
     ];
 
