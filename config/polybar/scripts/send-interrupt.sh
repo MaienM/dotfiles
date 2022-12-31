@@ -12,7 +12,6 @@ fi
 
 path_pid="/tmp/polybar-watch-with-interrupt-$name.pid"
 if [ ! -f "$path_pid" ]; then
-	echo >&2 "Cannot find a running watch-with-interrupt instance with that name."
 	exit 1
 fi
 
