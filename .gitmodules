@@ -179,33 +179,12 @@
 	path = vim/bundle/coc
 	url = https://github.com/neoclide/coc.nvim
 	branch = release
-[submodule "vim/bundle-coc/json"]
-	path = vim/bundle-coc/json
-	url = https://github.com/neoclide/coc-json
-[submodule "vim/bundle-coc/eslint"]
-	path = vim/bundle-coc/eslint
-	url = https://github.com/neoclide/coc-eslint
-[submodule "vim/bundle-coc/html"]
-	path = vim/bundle-coc/html
-	url = https://github.com/neoclide/coc-html
-[submodule "vim/bundle-coc/css"]
-	path = vim/bundle-coc/css
-	url = https://github.com/neoclide/coc-css
-[submodule "vim/bundle-coc/yaml"]
-	path = vim/bundle-coc/yaml
-	url = https://github.com/neoclide/coc-yaml
-[submodule "vim/bundle-coc/tsserver"]
-	path = vim/bundle-coc/tsserver
-	url = https://github.com/neoclide/coc-tsserver
 [submodule "vim/bundle/coc-fzf"]
 	path = vim/bundle/coc-fzf
 	url = https://github.com/antoinemadec/coc-fzf
 [submodule "vim/bundle/syntax-nearly"]
 	path = vim/bundle/syntax-nearly
 	url = https://github.com/tjvr/vim-nearley
-[submodule "vim/bundle-coc/diagnostic"]
-	path = vim/bundle-coc/diagnostic
-	url = https://github.com/iamcco/coc-diagnostic
 [submodule "zsh/bundle/fzf-tab"]
 	path = zsh/bundle/fzf-tab
 	url = https://github.com/Aloxaf/fzf-tab
@@ -227,15 +206,9 @@
 [submodule "config/mpv/bundle/sponsorblock"]
 	path = config/mpv/bundle/sponsorblock
 	url = https://github.com/po5/mpv_sponsorblock
-[submodule "vim/bundle-coc/jedi"]
-	path = vim/bundle-coc/jedi
-	url = https://github.com/pappasam/coc-jedi
 [submodule "opt/gpgedit"]
 	path = opt/gpgedit
 	url = https://gist.github.com/641d5e3ca0bb9c1d8bd1.git
-[submodule "vim/bundle-coc/stylelintplus"]
-	path = vim/bundle-coc/stylelintplus
-	url = https://github.com/bmatcuk/coc-stylelintplus
 [submodule "vim/bundle/qf"]
 	path = vim/bundle/qf
 	url = https://github.com/romainl/vim-qf
@@ -248,9 +221,6 @@
 [submodule "vim/bundle-nvim/indent-blankline"]
 	path = vim/bundle-nvim/indent-blankline
 	url = https://github.com/lukas-reineke/indent-blankline.nvim
-[submodule "vim/bundle-coc/rust-analyser"]
-	path = vim/bundle-coc/rust-analyser
-	url = https://github.com/fannheyward/coc-rust-analyzer
 [submodule "config/base16/templates/fzf"]
 	path = config/base16/templates/fzf
 	url = https://github.com/fnune/base16-fzf
