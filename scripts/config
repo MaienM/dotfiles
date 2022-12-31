@@ -43,10 +43,6 @@ target = .config/mpv/scripts/sponsorblock.lua
 target = .config/mpv/scripts/sponsorblock_shared
 [config/mpv/bundle/youtube-quality/youtube-quality.lua]
 target = .config/mpv/scripts/youtube-quality.lua
-[config/youtube-dlc]
-target =
-	.config/youtube-dlc,
-	.config/youtube-dl,
 
 [fzf]
 action = skip
