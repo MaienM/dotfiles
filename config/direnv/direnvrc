@@ -1,6 +1,8 @@
 # vi:ft=bash
 # shellcheck shell=bash
 
+source "$HOME/.config/direnv/bundle/nix/direnvrc"
+
 export DIRENV_LOG_FORMAT=
 
 # From https://github.com/direnv/direnv/issues/592#issuecomment-856227234

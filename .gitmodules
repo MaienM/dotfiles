@@ -245,3 +245,6 @@
 [submodule "config/base16/templates/dircolors"]
 	path = config/base16/templates/dircolors
 	url = https://github.com/embayer/base16-gnu-dircolors
+[submodule "config/direnv/bundle/nix"]
+	path = config/direnv/bundle/nix
+	url = https://github.com/nix-community/nix-direnv
