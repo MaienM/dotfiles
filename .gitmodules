@@ -245,6 +245,9 @@
 [submodule "config/base16/templates/dircolors"]
 	path = config/base16/templates/dircolors
 	url = https://github.com/embayer/base16-gnu-dircolors
+[submodule "vim/bundle-nvim/lsp-config"]
+	path = vim/bundle-nvim/lsp-config
+	url = https://github.com/neovim/nvim-lspconfig
 [submodule "config/direnv/bundle/nix"]
 	path = config/direnv/bundle/nix
 	url = https://github.com/nix-community/nix-direnv
