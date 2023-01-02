@@ -251,3 +251,6 @@
 [submodule "config/direnv/bundle/nix"]
 	path = config/direnv/bundle/nix
 	url = https://github.com/nix-community/nix-direnv
+[submodule "vim/bundle-nvim/notify"]
+	path = vim/bundle-nvim/notify
+	url = https://github.com/rcarriga/nvim-notify

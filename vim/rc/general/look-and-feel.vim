@@ -3,6 +3,9 @@ if &t_Co > 2 || has('gui_running')
 	set t_Co=256
 	set guioptions=0
 	let base16colorspace=256
+	if has('termguicolors')
+		set termguicolors
+	endif
 endif
 colorscheme base16
 let g:colors_name = 'base16'
@@ -16,6 +19,10 @@ au FileType fzf setlocal nonumber norelativenumber
 au ColorScheme * hi NormalFloat ctermbg=18
 
 " Set the font for gvim.
-if has('gui_running')
-	set guifont=InconsolataGo Nerd Font:h11
-endif
+set guifont="Fira Code:h11"
+
+" Prepare a list of functions to execute when the theme has been (re)loaded.
+let g:theme_hooks = []
+function! RegisterThemeHook(func)
+	call add(g:theme_hooks, a:func)
+endfunction
