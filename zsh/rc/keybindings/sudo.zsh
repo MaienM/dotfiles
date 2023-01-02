@@ -7,11 +7,17 @@ function toggle-sudo {
 	# If nothing has been typed, use the last command
 	[[ -z $BUFFER ]] && zle up-history
 
-	# Toggle between sudoedit and $EDITOR
+	# Toggle between editing with $EDITOR and with sudoedit.
 	if [[ "$BUFFER" == $EDITOR\ * ]]; then
 		LBUFFER="sudoedit ${LBUFFER#$EDITOR }"
 	elif [[ "$BUFFER" == sudoedit\ * ]]; then
 		LBUFFER="$EDITOR ${LBUFFER#sudoedit }"
+
+	# Toggle between running a shell function regularly and running with sudof.
+	elif [[ "$BUFFER" == sudof\ * ]]; then
+		LBUFFER="${LBUFFER#sudof }"
+	elif typeset -f "${BUFFER%* }" &> /dev/null; then
+		LBUFFER="sudof $LBUFFER"
 
 	# Toggle between running regularly and running with sudo
 	elif [[ "$BUFFER" == sudo\ * ]]; then
