@@ -254,3 +254,9 @@
 [submodule "vim/bundle-nvim/notify"]
 	path = vim/bundle-nvim/notify
 	url = https://github.com/rcarriga/nvim-notify
+[submodule "vim/bundle-nvim/noice"]
+	path = vim/bundle-nvim/noice
+	url = https://github.com/folke/noice.nvim
+[submodule "vim/bundle-nvim/nui"]
+	path = vim/bundle-nvim/nui
+	url = https://github.com/MunifTanjim/nui.nvim
