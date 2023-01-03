@@ -1,0 +1,3 @@
+indent_width = 3
+quote_style = 'AutoPreferSingle'
+call_parentheses = 'NoSingleTable'

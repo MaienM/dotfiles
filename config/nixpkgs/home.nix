@@ -96,6 +96,7 @@
       neovim-nightly
       nodePackages.neovim
       pythonPackages.pynvim
+      stylua
       tree-sitter
 
     ];
