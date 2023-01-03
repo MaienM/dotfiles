@@ -18,6 +18,11 @@
     components = [ "secrets" ];
   };
 
+  nixpkgs.overlays = [
+    (import (builtins.fetchTarball {
+      url = https://github.com/nix-community/neovim-nightly-overlay/archive/ce4158d859d54c8c4f948c2e01158e132c9bb908.tar.gz;
+    }))
+  ];
   home.packages = with pkgs;
     let
       pythonPackages = python310.pkgs;
@@ -88,6 +93,7 @@
       workrave
 
       # Neovim
+      neovim-nightly
       nodePackages.neovim
       pythonPackages.pynvim
       tree-sitter
