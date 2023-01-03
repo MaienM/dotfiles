@@ -260,3 +260,24 @@
 [submodule "vim/bundle-nvim/nui"]
 	path = vim/bundle-nvim/nui
 	url = https://github.com/MunifTanjim/nui.nvim
+[submodule "vim/bundle-nvim/cmp"]
+	path = vim/bundle-nvim/cmp
+	url = https://github.com/hrsh7th/nvim-cmp
+[submodule "vim/bundle-nvim/cmp-lsp"]
+	path = vim/bundle-nvim/cmp-lsp
+	url = https://github.com/hrsh7th/cmp-nvim-lsp.git
+[submodule "vim/bundle-nvim/cmp-buffer"]
+	path = vim/bundle-nvim/cmp-buffer
+	url = https://github.com/hrsh7th/cmp-buffer.git
+[submodule "vim/bundle-nvim/cmp-path"]
+	path = vim/bundle-nvim/cmp-path
+	url = https://github.com/hrsh7th/cmp-path.git
+[submodule "vim/bundle-nvim/cmp-cmdline"]
+	path = vim/bundle-nvim/cmp-cmdline
+	url = https://github.com/hrsh7th/cmp-cmdline.git
+[submodule "vim/bundle-nvim/luasnip"]
+	path = vim/bundle-nvim/luasnip
+	url = https://github.com/L3MON4D3/LuaSnip.git
+[submodule "vim/bundle-nvim/cmp-luasnip"]
+	path = vim/bundle-nvim/cmp-luasnip
+	url = https://github.com/saadparwaiz1/cmp_luasnip.git
