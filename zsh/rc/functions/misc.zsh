@@ -15,6 +15,13 @@ resolve_alias() {
 	fi
 }
 
+# Run an alias with sudo
+sudoa() {
+	local alias="$1"
+	shift 1
+	sudo zsh -c "exec ${aliases[$alias]} $(printf '%q ' "$@")"
+}
+
 # Run a function with sudo
 sudof() {
 	sudo zsh -c "$(declare -f "$1"); exec $(printf '%q ' "$@")"

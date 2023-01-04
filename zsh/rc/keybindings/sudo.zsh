@@ -13,13 +13,19 @@ function toggle-sudo {
 	elif [[ "$BUFFER" == sudoedit\ * ]]; then
 		LBUFFER="$EDITOR ${LBUFFER#sudoedit }"
 
-	# Toggle between running a shell function regularly and running with sudof.
+	# Toggle between running a shell alias regularly and with sudoa.
+	elif [[ "$BUFFER" == sudoa\ * ]]; then
+		LBUFFER="${LBUFFER#sudoa }"
+	elif [[ "${+aliases["${BUFFER%* }"]}" -eq 1 ]]; then
+		LBUFFER="sudoa $LBUFFER"
+
+	# Toggle between running a shell function regularly and with sudof.
 	elif [[ "$BUFFER" == sudof\ * ]]; then
 		LBUFFER="${LBUFFER#sudof }"
-	elif typeset -f "${BUFFER%* }" &> /dev/null; then
+	elif [[ "${+functions["${BUFFER%* }"]}" -eq 1 ]]; then
 		LBUFFER="sudof $LBUFFER"
 
-	# Toggle between running regularly and running with sudo
+	# Toggle between running regularly and with sudo.
 	elif [[ "$BUFFER" == sudo\ * ]]; then
 		LBUFFER="${LBUFFER#sudo }"
 	else
