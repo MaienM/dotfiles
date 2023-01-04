@@ -15,7 +15,6 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set('n', '<Leader>gr', vim.lsp.buf.references, bufopts)
 
 	-- [A]ction mappings.
-	vim.keymap.set('n', '<Leader>an', vim.lsp.buf.rename, bufopts)
 	vim.keymap.set('n', '<Leader>af', function()
 		vim.lsp.buf.format { async = true }
 	end, bufopts)
@@ -55,6 +54,9 @@ do
 				},
 				diagnostics = {
 					globals = { 'vim' },
+				},
+				format = {
+					enable = true,
 				},
 				workspace = {
 					library = vim.api.nvim_get_runtime_file('', true),
