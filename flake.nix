@@ -24,7 +24,11 @@
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         extraSpecialArgs = {
           inherit inputs;
-          inputs-pkgs = nixpkgs.lib.mapAttrs (_: value: value.packages.x86_64-linux) inputs;
+          pkgs-unfree = import "${nixpkgs}" {
+            system = "x86_64-linux";
+            config.allowUnfree = true;
+          };
+          pkgs-inputs = nixpkgs.lib.mapAttrs (_: value: value.packages.x86_64-linux) inputs;
         };
         modules = [ ./nix/home-manager/home.nix ];
       };

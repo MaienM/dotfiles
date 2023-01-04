@@ -1,14 +1,11 @@
 # vim: et:ts=2:sw=2:sts=2
 
-{ config, inputs-pkgs, pkgs, ... }:
+{ config, pkgs, pkgs-unfree, pkgs-inputs, ... }:
 {
   home.username = "maienm";
   home.homeDirectory = "/home/maienm";
 
   home.stateVersion = "22.11";
-  nixpkgs.config.allowUnfree = true;
-  # Workaround for https://github.com/nix-community/home-manager/issues/2942
-  nixpkgs.config.allowUnfreePredicate = (_: true);
 
   xsession = {
     enable = true;
@@ -79,19 +76,19 @@
       zsh
 
       # Applications.
-      discord
       feh
       firefox
-      google-chrome
       kitty
       mpv
+      pkgs-unfree.discord
+      pkgs-unfree.google-chrome
       retroarchFull
       steam-rom-manager
       workrave
 
       # Neovim
-      inputs-pkgs.neovim.neovim
       nodePackages.neovim
+      pkgs-inputs.neovim.neovim
       pythonPackages.pynvim
       stylua
       sumneko-lua-language-server

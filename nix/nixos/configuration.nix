@@ -79,7 +79,13 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "nvidia-x11"
+    "nvidia-settings"
+    "steam"
+    "steam-original"
+    "steam-run"
+  ];
   environment.systemPackages = with pkgs; [
     file
     home-manager
