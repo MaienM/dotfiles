@@ -281,3 +281,6 @@
 [submodule "vim/bundle-nvim/cmp-luasnip"]
 	path = vim/bundle-nvim/cmp-luasnip
 	url = https://github.com/saadparwaiz1/cmp_luasnip.git
+[submodule "vim/bundle-nvim/lspkind"]
+	path = vim/bundle-nvim/lspkind
+	url = https://github.com/onsails/lspkind.nvim
