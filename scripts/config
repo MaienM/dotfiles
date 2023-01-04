@@ -19,6 +19,13 @@ action = skip
 action = link
 target = .dotfiles
 
+[nix]
+action = skip
+[flake.nix.nix]
+action = skip
+[flake.lock]
+action = skip
+
 [config]
 action = recurse
 [config/direnv]
@@ -99,9 +106,6 @@ action = skip
 action = recurse
 [ssh/config.d]
 action = recurse
-
-[system]
-action = skip
 
 [tmux/init.conf]
 target = .tmux.conf

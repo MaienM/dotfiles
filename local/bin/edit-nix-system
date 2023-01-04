@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-
-set -e
-
-sudoedit /etc/nixos/configuration.nix
-cp /etc/nixos/configuration.nix ~/dotfiles/system/
-sudo nixos-rebuild switch 

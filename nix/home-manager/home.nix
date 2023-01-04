@@ -7,6 +7,8 @@
 
   home.stateVersion = "22.11";
   nixpkgs.config.allowUnfree = true;
+  # Workaround for https://github.com/nix-community/home-manager/issues/2942
+  nixpkgs.config.allowUnfreePredicate = (_: true);
 
   xsession = {
     enable = true;
@@ -21,6 +23,7 @@
   nixpkgs.overlays = [
     (import (builtins.fetchTarball {
       url = https://github.com/nix-community/neovim-nightly-overlay/archive/ce4158d859d54c8c4f948c2e01158e132c9bb908.tar.gz;
+      sha256 = "1w1rjcqhvrb32gysffwm5dqi8w46w3x3zsa93npph11iz5bji78k";
     }))
   ];
   home.packages = with pkgs;
