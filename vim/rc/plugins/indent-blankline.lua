@@ -6,7 +6,10 @@ end
 vim.fn.RegisterThemeHook(theme_hook)
 
 require('indent_blankline').setup {
-	buftype_exclude = { 'terminal' },
+	buftype_exclude = {
+		'nofile',
+		'terminal',
+	},
 
 	char = '🭱',
 	show_current_context = true,
