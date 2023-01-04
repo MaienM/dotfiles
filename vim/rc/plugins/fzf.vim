@@ -6,14 +6,16 @@ let g:fzf_layout = {
 		\'border': 'sharp',
 	\},
 \}
+let s:fzf_preview_layout = 'up:50%:hidden'
 if $TMUX_SUPPORT_POPUP == 1
 	let g:fzf_layout['tmux'] = '-p 85%,85%'
+	let s:fzf_preview_layout = 'right:50%:hidden'
 endif
 
 command! -bang -nargs=* Rg call fzf#vim#grep(
 	\'rg --column --line-number --no-heading --color=always --smart-case ' . shellescape(<q-args>),
 	\1,
-	\fzf#vim#with_preview({ 'options': ['--prompt', 'rg ' . <q-args> . ' >> '] }, 'up:50%:hidden', '?'),
+	\fzf#vim#with_preview({ 'options': ['--prompt', 'rg ' . <q-args> . ' >> '] }, s:fzf_preview_layout, '?'),
 	\<bang>0,
 \)
 
