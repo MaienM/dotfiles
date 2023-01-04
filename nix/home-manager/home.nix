@@ -1,6 +1,6 @@
 # vim: et:ts=2:sw=2:sts=2
 
-{ config, pkgs, ... }:
+{ config, inputs-pkgs, pkgs, ... }:
 {
   home.username = "maienm";
   home.homeDirectory = "/home/maienm";
@@ -20,12 +20,6 @@
     components = [ "secrets" ];
   };
 
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url = https://github.com/nix-community/neovim-nightly-overlay/archive/ce4158d859d54c8c4f948c2e01158e132c9bb908.tar.gz;
-      sha256 = "1w1rjcqhvrb32gysffwm5dqi8w46w3x3zsa93npph11iz5bji78k";
-    }))
-  ];
   home.packages = with pkgs;
     let
       pythonPackages = python310.pkgs;
@@ -96,7 +90,7 @@
       workrave
 
       # Neovim
-      neovim-nightly
+      inputs-pkgs.neovim.neovim
       nodePackages.neovim
       pythonPackages.pynvim
       stylua

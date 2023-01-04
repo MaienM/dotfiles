@@ -4,6 +4,9 @@
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    neovim.url = "github:neovim/neovim?dir=contrib";
+    neovim.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { nixpkgs, home-manager, ... }@inputs: {
@@ -19,7 +22,10 @@
     homeConfigurations = {
       "maienm@MICHON-PC" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        extraSpecialArgs = { inherit inputs; };
+        extraSpecialArgs = {
+          inherit inputs;
+          inputs-pkgs = nixpkgs.lib.mapAttrs (_: value: value.packages.x86_64-linux) inputs;
+        };
         modules = [ ./nix/home-manager/home.nix ];
       };
     };
