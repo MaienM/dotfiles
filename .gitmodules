@@ -287,3 +287,6 @@
 [submodule "vim/bundle-nvim/inc-rename"]
 	path = vim/bundle-nvim/inc-rename
 	url = https://github.com/smjonas/inc-rename.nvim
+[submodule "vim/bundle-nvim/dressing"]
+	path = vim/bundle-nvim/dressing
+	url = https://github.com/stevearc/dressing.nvim
