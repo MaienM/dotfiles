@@ -37,6 +37,11 @@
   };
   networking.hostId = "361b10a9";
 
+  # Start with a clean root drive on every boot.
+  boot.initrd.postDeviceCommands = lib.mkAfter ''
+    zfs rollback -r ssd/root@blank
+  '';
+
   # Set host.
   networking.hostName = "MICHON-PC";
 
