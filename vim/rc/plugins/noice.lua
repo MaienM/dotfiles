@@ -18,6 +18,31 @@ require('noice').setup {
 
 	cmdline = {
 		format = {
+			perl = {
+				pattern = '^:perl%s+',
+				icon = '',
+				lang = 'perl',
+				opts = { border = { text = { top = ' Perl ' } } },
+			},
+			python = {
+				pattern = '^:pyt?h?o?n?[3x]?%s+',
+				icon = '',
+				lang = 'python',
+				opts = { border = { text = { top = ' Python ' } } },
+			},
+			ruby = {
+				pattern = '^:ruby%s+',
+				icon = '',
+				lang = 'ruby',
+				opts = { border = { text = { top = ' Ruby ' } } },
+			},
+
+			ripgrep = {
+				pattern = '^:Rg%s+',
+				icon = ' ',
+				lang = 'regex',
+				opts = { border = { text = { top = ' rg ' } } },
+			},
 			increname = {
 				pattern = '^:IncRename%s+',
 				icon = '',
