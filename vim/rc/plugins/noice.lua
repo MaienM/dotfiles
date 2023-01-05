@@ -73,6 +73,7 @@ require('noice').setup {
 				opts = { skip = true },
 			}
 		end
+
 		local function view(view, filter)
 			return {
 				filter = filter,
@@ -88,6 +89,7 @@ require('noice').setup {
 				find = pattern,
 			}
 		end
+
 		local function filter_error(code)
 			return filter_msg('^E' .. code .. ':', 'emsg')
 		end
@@ -104,6 +106,7 @@ require('noice').setup {
 
 			-- File written messages.
 			view('mini', filter_msg('%d+B written$')),
+			view('mini', filter_msg('^<$')),
 
 			-- Undo/redo messages.
 			view('mini', filter_msg('^%d% changes?')),
@@ -117,8 +120,8 @@ require('noice').setup {
 			-- Pattern not found.
 			view('mini', filter_error(486)),
 			-- Search wrapping around.
-			skip(filter_msg('search hit BOTTOM')),
-			skip(filter_msg('search hit TOP')),
+			skip(filter_msg('search hit BOTTOM', 'wmsg')),
+			skip(filter_msg('search hit TOP', 'wmsg')),
 
 			-- No information available (happens when no LSP hover information is available).
 			view('mini', { event = 'notify', kind = 'info', find = '^No information available$' }),
@@ -133,6 +136,7 @@ local function map_hover_scroll(key, delta)
 		end
 	end, { silent = true, expr = true })
 end
+
 map_hover_scroll('<M-j>', 1)
 map_hover_scroll('<M-k>', -1)
 map_hover_scroll('<M-h>', -10)
