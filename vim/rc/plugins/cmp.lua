@@ -2,7 +2,7 @@ vim.opt.completeopt:append('menu')
 vim.opt.completeopt:append('menuone')
 vim.opt.completeopt:append('noselect')
 
-local has_words_before = function()
+local function has_words_before()
 	unpack = unpack or table.unpack
 	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
 	return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
@@ -59,11 +59,16 @@ cmp.setup {
 		{ name = 'buffer' },
 	}),
 	formatting = {
-		format = lspkind.cmp_format({
-			mode = 'symbol',
-			maxwidth = 50,
-			ellipsis_char = '...',
-		})
+		fields = { 'kind', 'abbr' },
+		format = function(...)
+			local result = lspkind.cmp_format {
+				mode = 'symbol',
+				maxwidth = 50,
+				ellipsis_char = '...',
+			} (...)
+			result.menu = nil -- Even though this field is not used it still affects the width if set.
+			return result
+		end,
 	},
 }
 
