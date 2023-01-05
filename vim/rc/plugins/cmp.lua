@@ -8,8 +8,9 @@ local has_words_before = function()
 	return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
 end
 
-local luasnip = require('luasnip')
 local cmp = require('cmp')
+local lspkind = require('lspkind')
+local luasnip = require('luasnip')
 
 cmp.setup {
 	snippet = {
@@ -55,6 +56,13 @@ cmp.setup {
 	}, {
 		{ name = 'buffer' },
 	}),
+	formatting = {
+		format = lspkind.cmp_format({
+			mode = 'symbol',
+			maxwidth = 50,
+			ellipsis_char = '...',
+		})
+	},
 }
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
