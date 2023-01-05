@@ -3,14 +3,16 @@ require('noice').setup {
 		override = {
 			['vim.lsp.util.convert_input_to_markdown_lines'] = true,
 			['vim.lsp.util.stylize_markdown'] = true,
-			['cmp.entry.get_documentation'] = true,
 		},
+	},
+	presets = {
+		lsp_doc_border = true,
 	},
 
 	views = {
 		cmdline_popup = {
 			position = {
-				row = "33%",
+				row = '33%',
 				col = '50%',
 			},
 		},
@@ -117,6 +119,21 @@ require('noice').setup {
 			-- Search wrapping around.
 			skip(filter_msg('search hit BOTTOM')),
 			skip(filter_msg('search hit TOP')),
+
+			-- No information available (happens when no LSP hover information is available).
+			view('mini', { event = 'notify', kind = 'info', find = '^No information available$' }),
 		}
 	end)(),
 }
+
+local function map_hover_scroll(key, delta)
+	vim.keymap.set('n', key, function()
+		if not require('noice.lsp').scroll(delta) then
+			return key
+		end
+	end, { silent = true, expr = true })
+end
+map_hover_scroll('<M-j>', 1)
+map_hover_scroll('<M-k>', -1)
+map_hover_scroll('<M-h>', -10)
+map_hover_scroll('<M-l>', 10)
