@@ -290,3 +290,6 @@
 [submodule "vim/bundle-nvim/lspkind"]
 	path = vim/bundle-nvim/lspkind
 	url = https://github.com/onsails/lspkind.nvim
+[submodule "vim/bundle-nvim/lsp-format"]
+	path = vim/bundle-nvim/lsp-format
+	url = https://github.com/lukas-reineke/lsp-format.nvim

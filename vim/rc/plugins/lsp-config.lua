@@ -1,4 +1,5 @@
 local lspconfig = require('lspconfig')
+local lspformat = require('lsp-format')
 
 -- [D]iagnostics mappings.
 local opts = { noremap = true, silent = true }
@@ -24,11 +25,7 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set('n', '<Leader>aa', vim.lsp.buf.code_action, bufopts)
 
 	-- Autoformatting.
-	vim.api.nvim_create_autocmd('BufWritePre', {
-		callback = function()
-			vim.lsp.buf.format { async = false }
-		end,
-	})
+	lspformat.on_attach(client, bufnr)
 end
 
 -- General server setup.
