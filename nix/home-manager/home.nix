@@ -90,7 +90,6 @@
       nodePackages.neovim
       pkgs-inputs.neovim.neovim
       pythonPackages.pynvim
-      stylua
       sumneko-lua-language-server
       tree-sitter
 
