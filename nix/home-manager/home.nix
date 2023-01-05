@@ -1,5 +1,3 @@
-# vim: et:ts=2:sw=2:sts=2
-
 { config, pkgs, pkgs-unfree, pkgs-inputs, ... }:
 {
   home.username = "maienm";

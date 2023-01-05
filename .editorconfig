@@ -8,3 +8,8 @@ quote_style = single
 call_arg_parentheses = remove_table_only
 table_separator_style = comma
 trailing_table_separator = smart
+
+[*.nix]
+indent_style = space
+tab_width = 2
+indent_size = 2
