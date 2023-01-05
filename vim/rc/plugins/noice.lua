@@ -37,11 +37,17 @@ require('noice').setup {
 				opts = { border = { text = { top = ' Ruby ' } } },
 			},
 
-			ripgrep = {
-				pattern = '^:Rg%s+',
+			ripgrepraw = {
+				pattern = '^:RgRaw!?%s+',
 				icon = ' ',
 				lang = 'regex',
-				opts = { border = { text = { top = ' rg ' } } },
+				opts = { border = { text = { top = ' ripgrep (raw) ' } } },
+			},
+			ripgrep = {
+				pattern = '^:Rg!?%s+',
+				icon = ' ',
+				lang = 'regex',
+				opts = { border = { text = { top = ' ripgrep ' } } },
 			},
 			increname = {
 				pattern = '^:IncRename%s+',

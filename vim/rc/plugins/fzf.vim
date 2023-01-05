@@ -12,12 +12,17 @@ endif
 
 let g:fzf_preview_window = ['hidden,right,50%,<100(up,40%)', '?']
 
-command! -bang -nargs=* Rg call fzf#vim#grep(
-	\'rg --column --line-number --no-heading --color=always --smart-case ' . shellescape(<q-args>),
-	\1,
-	\fzf#vim#with_preview({ 'options': ['--prompt', 'rg ' . <q-args> . ' >> '] }, g:fzf_preview_window[0], g:fzf_preview_window[1]),
-	\<bang>0,
-\)
+function! s:Rg(args, bang)
+	call fzf#vim#grep(
+		\'rg --column --line-number --no-heading --color=always --smart-case ' . a:args,
+		\1,
+		\fzf#vim#with_preview({ 'options': ['--prompt', 'rg ' . a:args . ' >> '] }, g:fzf_preview_window[0], g:fzf_preview_window[1]),
+		\a:bang,
+	\)
+endfunction
+
+command! -bang -nargs=* RgRaw call <SID>Rg(<q-args>, <bang>0)
+command! -bang -nargs=* Rg call <SID>Rg('-- ' . shellescape(<q-args>), <bang>0)
 
 nnoremap <Leader>f :<C-u>GFiles<CR>
 nnoremap <Leader>F :<C-u>Files<CR>
