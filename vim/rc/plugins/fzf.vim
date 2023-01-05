@@ -10,7 +10,8 @@ if $TMUX_SUPPORT_POPUP == 1
 	let g:fzf_layout['tmux'] = '-p 85%,85%'
 endif
 
-let g:fzf_preview_window = ['hidden,right,50%,<100(up,40%)', '?']
+" TODO: Add hidden to the down,50% layout once this is resolved: https://github.com/junegunn/fzf/issues/3113
+let g:fzf_preview_window = ['right,50%,<100(down,50%)', '?']
 
 function! s:Rg(args, bang)
 	call fzf#vim#grep(
