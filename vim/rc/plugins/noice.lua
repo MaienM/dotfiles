@@ -62,4 +62,61 @@ require('noice').setup {
 			},
 		},
 	},
+
+	routes = (function()
+		-- Convenience functions for rules.
+		local function skip(filter)
+			return {
+				filter = filter,
+				opts = { skip = true },
+			}
+		end
+		local function view(view, filter)
+			return {
+				filter = filter,
+				view = view,
+			}
+		end
+
+		-- Convenience functions for filters.
+		local function filter_msg(pattern, kind)
+			return {
+				event = 'msg_show',
+				kind = kind or '',
+				find = pattern,
+			}
+		end
+		local function filter_error(code)
+			return filter_msg('^E' .. code .. ':', 'emsg')
+		end
+
+		return {
+			-- No write since last change for buffer "{name}"
+			view('mini', filter_error(162)),
+			-- No write since last change (add ! to override)
+			view('mini', filter_error(37)),
+			-- No write since last change for buffer {N} (add ! to override)
+			view('mini', filter_error(89)),
+			-- Mark not set.
+			skip(filter_error(20)),
+
+			-- File written messages.
+			view('mini', filter_msg('%d+B written$')),
+
+			-- Undo/redo messages.
+			view('mini', filter_msg('^%d% changes?')),
+			view('mini', filter_msg('^%d% more lines?')),
+			view('mini', filter_msg('^%d% fewer lines?')),
+			view('mini', filter_msg('^1 line more;')),
+			view('mini', filter_msg('^1 line less;')),
+			view('mini', filter_msg('^Already at newest change$')),
+			view('mini', filter_msg('^Already at oldest change$')),
+
+			-- Pattern not found.
+			view('mini', filter_error(486)),
+			-- Search wrapping around.
+			skip(filter_msg('search hit BOTTOM')),
+			skip(filter_msg('search hit TOP')),
+		}
+	end)(),
 }
