@@ -31,36 +31,41 @@ local on_attach = function(client, bufnr)
 	})
 end
 
+-- General server setup.
+local common_settings = {
+	on_attach = on_attach,
+	capabilities = require('cmp_nvim_lsp').default_capabilities(),
+}
+
 -- Calling setup for a server may trigger a restart/reload even if nothing actually changed. This means that whenever we
 -- change anything in our vimrc the sumneko server is restarted, which is... obnoxious. To prevent this lets be smart
 -- about it and only re-run setup if something actually changed.
 vim.g.vimrc_lsp_config_setup_last_configs = vim.g.vimrc_lsp_config_setup_last_configs or {}
-local function setup(name, settings)
+local function setup(name, extra_settings)
+	local settings = vim.tbl_deep_extend('force', common_settings, extra_settings or {})
+
 	-- Every load will result in a new instance of the function, regardless of whether anything actually changed, so
 	-- ignore it. It would be nice to be smarter about this somehow, as this will result in changes to the on_attach
 	-- function not being picked up on reloads.
-	local on_attach = settings.on_attach
+	local local_on_attach = settings.on_attach
 	settings.on_attach = nil
 
 	local last_configs = vim.g.vimrc_lsp_config_setup_last_configs
 	if vim.deep_equal(settings, last_configs[name]) then
 		return
 	end
-
-	settings.on_attach = on_attach
 	last_configs[name] = settings
 	vim.g.vimrc_lsp_config_setup_last_configs = last_configs
 
-	lspconfig[name].setup(settings)
+	lspconfig[name].setup(vim.tbl_extend(
+		'error',
+		settings,
+		{ on_attach = local_on_attach }
+	))
 end
 
--- General server setup.
-local common_setup_data = {
-	on_attach = on_attach,
-	capabilities = require('cmp_nvim_lsp').default_capabilities(),
-}
 for _, name in ipairs { 'pyright', 'rust_analyzer', 'tsserver' } do
-	setup(name, common_setup_data)
+	setup(name)
 end
 
 -- Setup sumneko server for Neovim lua.
@@ -70,7 +75,6 @@ do
 	table.insert(runtime_path, 'lua/?/init.lua')
 
 	setup('sumneko_lua', {
-		unpack(common_setup_data),
 		settings = {
 			Lua = {
 				runtime = {
