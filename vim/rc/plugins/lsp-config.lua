@@ -61,9 +61,23 @@ local function setup(name, extra_settings)
 	))
 end
 
-for _, name in ipairs { 'pyright', 'rust_analyzer', 'tsserver' } do
+for _, name in ipairs {
+	'pyright',
+	'rust_analyzer',
+	'tsserver',
+} do
 	setup(name)
 end
+
+setup('nil_ls', {
+	settings = {
+		['nil'] = {
+			formatting = {
+				command = { 'nixpkgs-fmt' },
+			},
+		},
+	},
+})
 
 -- Setup sumneko server for Neovim lua.
 do

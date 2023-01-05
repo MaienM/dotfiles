@@ -85,6 +85,7 @@
       workrave
 
       # Neovim
+      nil
       nodePackages.neovim
       pkgs-inputs.neovim.neovim
       pythonPackages.pynvim
