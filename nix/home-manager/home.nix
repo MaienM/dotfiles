@@ -85,12 +85,15 @@
       workrave
 
       # Neovim
-      nil
       nodePackages.neovim
       pkgs-inputs.neovim.neovim
       pythonPackages.pynvim
-      sumneko-lua-language-server
       tree-sitter
+
+      # Language servers
+      nil
+      sumneko-lua-language-server
+      nodePackages.pyright
 
     ];
 
