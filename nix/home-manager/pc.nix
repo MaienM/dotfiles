@@ -1,9 +1,11 @@
-{ config, pkgs, pkgs-unfree, pkgs-inputs, ... }:
+{ pkgs, pkgs-unfree, ... }:
 {
+  imports = [
+    ./common.nix
+  ];
+
   home.username = "maienm";
   home.homeDirectory = "/home/maienm";
-
-  home.stateVersion = "22.11";
 
   xsession = {
     enable = true;
@@ -46,63 +48,19 @@
       )
 
       # CLI.
-      bat
-      bc
-      cached-nix-shell
-      delta
-      direnv
-      exa
       fontforge
-      fzf
-      git
-      git-lfs
-      gnupg
-      htop
-      jq
-      mimeo
-      nixpkgs-fmt
-      nodejs
-      p7zip
-      python3
-      ripgrep
-      socat
-      sqlite
-      subversion
-      tmux
-      unzip
-      xclip
-      zsh
 
       # Applications.
       feh
-      firefox
-      kitty
       mpv
       pkgs-unfree.discord
       pkgs-unfree.google-chrome
       retroarchFull
       steam-rom-manager
-      workrave
-
-      # Neovim
-      nodePackages.neovim
-      pkgs-inputs.neovim.neovim
-      pythonPackages.pynvim
-      tree-sitter
-
-      # Language servers
-      nil
-      sumneko-lua-language-server
-      nodePackages.pyright
 
     ];
 
   home.file = {
-    # Link FZF paths in a way that is compatible with the structure set up by the manual install script.
-    ".vim/bundle/fzf-base".source = "${pkgs.fzf}/share/vim-plugins/fzf/";
-    ".zsh/bundle/fzf/bin".source = "${pkgs.fzf}/bin/";
-    ".zsh/bundle/fzf/shell".source = "${pkgs.fzf}/share/fzf/";
-
     # Path needed for steam-rom-manager.
     ".local/links/retroarch".source = pkgs.retroarchFull;
   };

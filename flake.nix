@@ -42,7 +42,7 @@
           };
           pkgs-inputs = nixpkgs.lib.mapAttrs (_: value: value.packages.x86_64-linux) inputs;
         };
-        modules = [ ./nix/home-manager/home.nix ];
+        modules = [ ./nix/home-manager/pc.nix ];
       };
       "maienm@MICHON-MACBOOK" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.aarch64-darwin;
@@ -54,7 +54,7 @@
           };
           pkgs-inputs = nixpkgs.lib.mapAttrs (_: value: value.packages.aarch64-darwin) inputs;
         };
-        modules = [ ./nix/home-manager/home.nix ];
+        modules = [ ./nix/home-manager/macbook.nix ];
       };
     };
   };
