@@ -11,7 +11,6 @@
       # CLI.
       bat
       bc
-      cached-nix-shell
       delta
       direnv
       exa

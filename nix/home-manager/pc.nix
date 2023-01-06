@@ -48,6 +48,7 @@
       )
 
       # CLI.
+      cached-nix-shell
       fontforge
 
       # Applications.
