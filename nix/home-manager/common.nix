@@ -35,9 +35,7 @@
       zsh
 
       # Applications.
-      firefox
       kitty
-      workrave
 
       # Neovim.
       nodePackages.neovim

@@ -53,11 +53,13 @@
 
       # Applications.
       feh
+      firefox
       mpv
       pkgs-unfree.discord
       pkgs-unfree.google-chrome
       retroarchFull
       steam-rom-manager
+      workrave
 
     ];
 
