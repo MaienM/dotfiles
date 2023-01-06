@@ -88,18 +88,6 @@ target =
 	.bash_profile,
 	.zprofile,
 
-[proxyman]
-action = skip
-[proxyman/proxyman.sh]
-target = .local/bin/proxyman
-[proxyman/bash-zsh.sh]
-target = .proxyman/bash-zsh.sh
-[proxyman/proxyman]
-action = recurse
-target = .proxyman
-[proxyman/proxyman/bash-zsh.sh]
-action = skip
-
 [ssh]
 action = recurse
 [ssh/config.d]
