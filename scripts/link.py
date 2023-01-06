@@ -807,7 +807,7 @@ def main(args: Args) -> None:
 				rm {quote(str(cmdpath))}
 			)
 		''').strip())
-	print('Please confirm the following commands are correct (directories will be created as needed):')
+	print('Please confirm the following commands are correct:')
 	print()
 	print('\n'.join(commands))
 	print()
