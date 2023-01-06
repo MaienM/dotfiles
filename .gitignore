@@ -15,5 +15,6 @@ vim/colors/
 vim/doc/tags
 vim/init.vim
 vim/spell/
+zsh/bundle/fzf
 zsh/rc/*.local.zsh
 zsh/rc/completions/generated/

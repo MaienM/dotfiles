@@ -98,6 +98,11 @@
     ];
 
   home.file = {
+    # Link FZF paths in a way that is compatible with the structure set up by the manual install script.
+    ".vim/bundle/fzf-base".source = "${pkgs.fzf}/share/vim-plugins/fzf/";
+    ".zsh/bundle/fzf/bin".source = "${pkgs.fzf}/bin/";
+    ".zsh/bundle/fzf/shell".source = "${pkgs.fzf}/share/fzf/";
+
     # Path needed for steam-rom-manager.
     ".local/links/retroarch".source = pkgs.retroarchFull;
   };

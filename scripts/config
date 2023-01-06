@@ -49,14 +49,6 @@ target = .config/mpv/scripts/sponsorblock_shared
 [config/mpv/bundle/youtube-quality/youtube-quality.lua]
 target = .config/mpv/scripts/youtube-quality.lua
 
-[fzf]
-action = skip
-[fzf/fzf]
-action = recurse
-target =
-	.fzf,
-	.vim/bundle/fzf-base,
-
 [gnupg]
 action = recurse
 
