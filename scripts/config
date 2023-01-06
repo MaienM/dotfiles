@@ -68,13 +68,6 @@ action = recurse
 [local/share/applications]
 action = recurse
 
-[opt]
-action = skip
-[opt/extract_url/extract_url.pl]
-target = .local/bin/extract-url
-[opt/gpgedit/gpgedit]
-target = .local/bin/gpgedit
-
 [profile]
 target =
 	.bash_profile,

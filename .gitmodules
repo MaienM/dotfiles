@@ -166,9 +166,6 @@
 [submodule "vim/bundle/tcomment"]
 	path = vim/bundle/tcomment
 	url = https://github.com/tomtom/tcomment_vim
-[submodule "opt/extract_url"]
-	path = opt/extract_url
-	url = https://github.com/m3m0ryh0l3/extracturl
 [submodule "vim/bundle/syntax-nearly"]
 	path = vim/bundle/syntax-nearly
 	url = https://github.com/tjvr/vim-nearley
@@ -190,9 +187,6 @@
 [submodule "config/mpv/bundle/sponsorblock"]
 	path = config/mpv/bundle/sponsorblock
 	url = https://github.com/po5/mpv_sponsorblock
-[submodule "opt/gpgedit"]
-	path = opt/gpgedit
-	url = https://gist.github.com/641d5e3ca0bb9c1d8bd1.git
 [submodule "vim/bundle/qf"]
 	path = vim/bundle/qf
 	url = https://github.com/romainl/vim-qf
