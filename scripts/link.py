@@ -121,7 +121,7 @@ def read_char() -> str:
 	return c
 
 
-def which_nonlocal(command: str) -> str | None:
+def which_nonlocal(command: str) -> Optional[str]:
 	path = environ['PATH'].split(':')
 
 	localbin = str(Path.home() / '.local' / 'bin')
@@ -173,7 +173,7 @@ class FileConfig(object):
 		if 'action' in data:
 			try:
 				self.action = FileAction(data.pop('action'))
-			except ValueError as e:
+			except ValueError:
 				raise ValueError(f'Invalid action set for {self.path}')
 
 		if 'target' in data:
@@ -339,7 +339,7 @@ class VirtualFS(object):
 		entry = self.get(path)
 		real = entry.real
 		if real.type == VirtualFileType.DIRECTORY:
-			for p, e in list(self.cache.items()):
+			for p, _ in list(self.cache.items()):
 				if real.path in p.parents:
 					del self.cache[p]
 		self._cache(path, VirtualFileInfo(self, path, VirtualFileType.NONE, False))
@@ -488,7 +488,6 @@ class LinkCommand(MoveCommand):
 		self,
 		source: AbsoluteRealPath,
 		target: AbsoluteVirtualPath,
-		flags: str = '',
 		/,
 		symbolic: bool = False,
 		force: bool = False,
