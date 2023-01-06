@@ -34,8 +34,6 @@ action = recurse
 action = recurse
 [config/i3/config]
 target = .config/i3/baseconfig
-[config/k9s]
-action = recurse
 [config/mpv/scripts]
 action = recurse
 [config/mpv/bundle/occivink/scripts/crop.lua]
