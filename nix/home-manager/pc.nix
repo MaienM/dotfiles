@@ -62,9 +62,4 @@
       workrave
 
     ];
-
-  home.file = {
-    # Path needed for steam-rom-manager.
-    ".local/links/retroarch".source = pkgs.retroarchFull;
-  };
 }
