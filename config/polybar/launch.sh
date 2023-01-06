@@ -8,12 +8,6 @@ pkill -f bin/polybar
 # Wait until the processes have been shut down
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
-# Load the icons
-set -a
-# shellcheck disable=SC1091
-source nerdfonts_icons_all
-set +a
-
 # Get the names of the available physical network interfaces.
 mapfile -t eths < <(find /sys/class/net -type l -not -lname '*virtual*' -not -name 'w*' -printf '%f\n')
 mapfile -t wlans < <(find /sys/class/net -type l -not -lname '*virtual*' -name 'w*' -printf '%f\n')

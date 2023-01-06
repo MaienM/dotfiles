@@ -28,7 +28,6 @@
       ripgrep
       socat
       sqlite
-      subversion
       tmux
       unzip
       xclip
@@ -36,6 +35,12 @@
 
       # Applications.
       kitty
+      (nerdfonts.override {
+        fonts = [
+          "FiraCode"
+          "NerdFontsSymbolsOnly"
+        ];
+      })
 
       # Neovim.
       nodePackages.neovim

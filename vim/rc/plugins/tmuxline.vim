@@ -1,8 +1,12 @@
+let s:i_mdi_message_text=''
+let s:i_mdi_bell=''
+let s:i_mdi_bell_sleep=''
+let s:i_mdi_magnify=''
 let s:win_flags = [
-	\'#{?window_activity_flag, #(echo $i_mdi_message_text),}',
-	\'#{?window_bell_flag, #(echo $i_mdi_bell),}',
-	\'#{?window_silence_flag, #(echo $i_mdi_sleep),}',
-	\'#{?window_zoomed_flag, #(echo $i_mdi_magnify),}',
+	\'#{?window_activity_flag, ' . s:i_mdi_message_text . ',}',
+	\'#{?window_bell_flag, ' . s:i_mdi_bell . ',}',
+	\'#{?window_silence_flag, ' . s:i_mdi_bell_sleep . ',}',
+	\'#{?window_zoomed_flag, ' . s:i_mdi_magnify . ',}',
 \]
 
 let s:win = [

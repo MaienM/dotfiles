@@ -12,12 +12,10 @@ set -e
 
 # shellcheck source=../../../local/bin/commands_require
 . commands_require; commands_require rofi
-# shellcheck disable=SC1091
-. nerdfonts_icons_all
 
 args=()
 for script in ~/.config/screenlayouts/*.sh; do
-	icon="$(grep '^#\s*icon:.*$' "$script" | head -n1 | sed 's/^#\s*icon:\s*//')"
+	icon="$(grep '^#\s*icon:.*$' "$script" | head -n1 | sed 's/^#\s*icon:\s*//; s/\s*(.*)$//')"
 	description="$(grep '^#\s*description:.*$' "$script" | head -n1 | sed 's/^#\s*description:\s*//')"
 	if [ -z "$icon" ] || [ -z "$description" ]; then
 		echo >&2 "$script is missing the required comments, ignoring."
@@ -28,6 +26,7 @@ done
 
 choice="$(~/.config/rofi/scripts/iconmenu.sh "${args[@]}")" || exit 0
 sh "$choice"
+sleep 2
 ~/.config/polybar/launch.sh
 set-background
 

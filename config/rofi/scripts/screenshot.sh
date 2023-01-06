@@ -14,16 +14,15 @@ if [ ! -d "$screenshotdir" ]; then
 	mkdir -p "$screenshotdir"
 fi
 
-# shellcheck source=../../../local/bin/commands_require
-. commands_require; commands_require rofi scrot maim
-# shellcheck disable=SC1091
-. nerdfonts_icons_material
-
+i_mdi_crop=f69d
+i_mdi_window_maximize=f2d0
+i_mdi_monitor=f878
+i_mdi_monitor_multiple=f879
 choice="$(~/.config/rofi/scripts/iconmenu.sh \
-	"area mdi_crop Crop" \
-	"window mdi_window_maximize Window" \
-	"monitor mdi_monitor Monitor" \
-	"all mdi_monitor_multiple All monitors" \
+	"area $i_mdi_crop Crop" \
+	"window $i_mdi_window_maximize Window" \
+	"monitor $i_mdi_monitor Monitor" \
+	"all $i_mdi_monitor_multiple All monitors" \
 )" || exit 0
 
 declare -a cmd
