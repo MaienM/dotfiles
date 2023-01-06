@@ -21,7 +21,7 @@ target = .dotfiles
 
 [nix]
 action = skip
-[flake.nix.nix]
+[flake.nix]
 action = skip
 [flake.lock]
 action = skip
