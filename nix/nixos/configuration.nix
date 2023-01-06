@@ -112,6 +112,16 @@
   };
   services.pcscd.enable = true; # Needed for hardware-backed GPG keys.
 
+  # Setup SSH.
+  services.openssh = {
+    enable = true;
+    permitRootLogin = "no";
+    passwordAuthentication = false;
+  };
+  users.users.maienm.openssh.authorizedKeys.keyFiles = [
+    ../../ssh/id_rsa_gpg_28094744BA81C6A9.pub
+  ];
+
   # Enable containerd. TODO: Setup rootless?
   virtualisation.containerd.enable = true;
 
