@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, options, inputs, lib, pkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -117,6 +117,11 @@
     enable = true;
     permitRootLogin = "no";
     passwordAuthentication = false;
+    hostKeys = builtins.map
+      (value: value // {
+        path = builtins.replaceStrings [ "/etc/ssh/" ] [ "/persist/ssh/" ] value.path;
+      })
+      options.services.openssh.hostKeys.default;
   };
   users.users.maienm.openssh.authorizedKeys.keyFiles = [
     ../../ssh/id_rsa_gpg_28094744BA81C6A9.pub
