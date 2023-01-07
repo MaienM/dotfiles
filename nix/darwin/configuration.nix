@@ -34,12 +34,13 @@
     neovim
   ];
 
+  # Enable ZSH. This needs to happen globally since otherwise /etc/static/zshrc will not exist, and zsh will not
+  # automatically source the nix environment.
+  programs.zsh.enable = true;
+
   # Define user. This only the defines the bare minimum, as most of the user's environment is managed through home-manager.
   users.users.maienm = {
     shell = pkgs.zsh;
-    packages = with pkgs; [
-      zsh
-    ];
   };
 
   # Setup GPG.
