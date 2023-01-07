@@ -760,6 +760,7 @@ def parse_args() -> Args:
 		default = Path(root, 'scripts', 'config'),
 		help = 'Path to the config.',
 	)
+	parser.add_argument('-o', '--output', default=(root / 'cmds'), help='Path to write the list of commands to.')
 	parser.add_argument('--debug', action='store_true', help='Output more logging information.')
 	return parser.parse_args(namespace=Args())
 
@@ -786,7 +787,7 @@ def main(args: Args) -> None:
 			print(f'{path} is in the config, but has not been processed')
 
 	# If there is nothing to be done, remove old command files and exit
-	cmdpath = join(args.root, make_relative_real_path('cmds'))
+	cmdpath = join(args.root, args.output)
 	if not processor.commands:
 		print('Everything seems to be in order')
 		if cmdpath.exists():
