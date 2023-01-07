@@ -51,6 +51,8 @@ target = .config/mpv/scripts/youtube-quality.lua
 
 [gnupg]
 action = recurse
+[gnupg/gpg-agent.conf]
+action = skip
 
 [local]
 action = recurse

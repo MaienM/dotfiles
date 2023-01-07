@@ -110,7 +110,8 @@
     enableExtraSocket = true;
     enableSSHSupport = true;
   };
-  services.pcscd.enable = true; # Needed for hardware-backed GPG keys.
+  # Enable smartcard support, which is needed for hardware-backed GPG keys.
+  services.pcscd.enable = true;
 
   # Setup SSH.
   services.openssh = {
