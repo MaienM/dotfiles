@@ -79,6 +79,8 @@ target =
 action = recurse
 [ssh/config.d]
 action = recurse
+[ssh/controlmasters]
+action = recurse
 
 [tmux/init.conf]
 target = .tmux.conf

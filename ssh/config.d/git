@@ -1,0 +1,11 @@
+Host github.com
+	ControlMaster auto
+	ControlPersist 30s
+
+Host gitlab.com
+	ControlMaster auto
+	ControlPersist 30s
+
+Host bitbucket.com
+	ControlMaster auto
+	ControlPersist 30s
