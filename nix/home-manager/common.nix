@@ -49,9 +49,11 @@
       tree-sitter
 
       # Language servers.
+      black
+      efm-langserver
       nil
-      sumneko-lua-language-server
       nodePackages.pyright
+      sumneko-lua-language-server
 
     ];
 

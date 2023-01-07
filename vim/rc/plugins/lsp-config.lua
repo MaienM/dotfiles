@@ -108,3 +108,23 @@ do
 		},
 	})
 end
+
+-- Setup general purpose server for tools that aren't actually a language server.
+setup('efm', {
+	init_options = {
+		documentFormatting = true,
+	},
+	filetypes = {
+		'python',
+	},
+	settings = {
+		languages = {
+			python = {
+				{
+					formatCommand = 'expand -t4 | black --quiet - | unexpand -t4',
+					formatStdin = true,
+				},
+			},
+		},
+	},
+})
