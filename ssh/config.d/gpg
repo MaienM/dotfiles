@@ -1,2 +1,6 @@
 Match host * exec "gpg-connect-agent updatestartuptty /bye"
 Match host * exec "export PINENTRY_USER_DATA"
+
+# Use GPG-based key for all local machines.
+Host *.local
+	IdentityFile ~/.ssh/id_rsa_gpg_28094744BA81C6A9.pub
