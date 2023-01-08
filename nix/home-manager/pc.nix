@@ -57,8 +57,10 @@
       feh
       firefox
       mpv
+      pavucontrol
       pkgs-unfree.discord
       pkgs-unfree.google-chrome
+      qpwgraph
       retroarchFull
       steam-rom-manager
       workrave
