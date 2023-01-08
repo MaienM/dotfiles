@@ -3,6 +3,7 @@
 from argparse import ArgumentParser, Namespace
 from collections.abc import Iterable
 from configparser import ConfigParser
+from dataclasses import dataclass
 from enum import Enum, auto
 from hashlib import sha256
 import inspect
@@ -163,13 +164,19 @@ class FileAction(Enum):
 	WRAP_COMMAND = "wrap-command"
 
 
-class FileConfig(object):
+@dataclass
+class FileConfig:
 	"""The configuration for a given source file."""
+
+	path: RelativeVirtualPath
+	targets: List[RelativeVirtualPath]
+	action: FileAction
+	parent: Optional["FileConfig"]
+	from_config: bool = False
+	processed: bool = False
 
 	def __init__(self, path: RelativeVirtualPath, parent: Optional["FileConfig"]):
 		self.path = path
-		self.from_config = False
-		self.processed = False
 		self.targets: List[RelativeVirtualPath]
 		if parent:
 			self.targets = [
@@ -303,25 +310,20 @@ class VirtualFileType(Enum):
 	OTHER = auto()
 
 
-class VirtualFileInfo(object):
+@dataclass(frozen=True)
+class VirtualFileInfo:
 	"""Information about a virtual filesystem object."""
 
-	def __init__(
-		self,
-		fs: "VirtualFS",
-		path: AbsoluteVirtualPath,
-		type_: VirtualFileType,
-		is_from_fs: bool,
-		*,
-		inode: Optional[int] = None,
-		links_to: Optional[AbsoluteVirtualPath] = None,
-	):
-		self.fs = fs
-		self.path = path
-		self.type = type_
-		self.is_from_fs = is_from_fs
-		self.inode = inode
-		self.links_to = join(path.parent, links_to) if links_to else None
+	fs: "VirtualFS"
+	path: AbsoluteVirtualPath
+	type: VirtualFileType
+	is_from_fs: bool
+	inode: Optional[int] = None
+	links_to: Optional[AbsoluteVirtualPath] = None
+
+	def __post_init__(self):
+		links_to = join(self.path.parent, self.links_to) if self.links_to else None
+		object.__setattr__(self, "links_to", links_to)
 
 	@property
 	def real(self) -> "VirtualFileInfo":
@@ -362,12 +364,11 @@ class VirtualFileInfo(object):
 		return f"<File info for '{self.path}', {', '.join(parts)}>"
 
 
-class VirtualFS(object):
+class VirtualFS:
 	"""A layer that provides information about the filesystem that knows about changes made by previous steps."""
 
-	def __init__(self) -> None:
-		self.cache: Dict[AbsoluteVirtualPath, VirtualFileInfo] = {}
-		self.log = logging.getLogger(self.__class__.__name__)
+	cache: Dict[AbsoluteVirtualPath, VirtualFileInfo] = {}
+	log = logging.getLogger("VirtualFS")
 
 	def get(
 		self, path: AbsoluteVirtualPath, *, parent_none_is_none: bool = False
@@ -559,7 +560,7 @@ class VirtualFS(object):
 # {{{ Commands
 
 
-class Command(object):
+class Command:
 	"""A command that has to be executed to get to the desired state."""
 
 	def __init__(self, target: AbsoluteVirtualPath):
@@ -628,7 +629,7 @@ class MkdirCommand(Command):
 # {{{ Processor
 
 
-class Processor(object):
+class Processor:
 	"""A class to process all source files into a series of command to get into the desired state."""
 
 	def __init__(self, args: "Args", config: Config):
