@@ -344,6 +344,15 @@ class VirtualFileInfo(object):
 		assert self.is_from_fs, "This entry is virtual and cannot return a real path."
 		return self.path  # type: ignore
 
+	def samefile(self, other: "VirtualFileInfo") -> bool:
+		"""Check whether the other entry refers to the same file as this one (hardlink)."""
+		return (
+			self.type == VirtualFileType.FILE
+			and other.type == VirtualFileType.FILE
+			and self.inode is not None
+			and self.inode == other.inode
+		)
+
 	def __repr__(self) -> str:
 		parts = []
 		parts.append(f"type {self.type}")
@@ -760,7 +769,7 @@ class Processor(object):
 			# The target either doesn't exist, or is a broken symlink
 			return True
 
-		if entry.real == target.real or entry.real.inode == target.real.inode:
+		if entry.real == target.real or entry.real.samefile(target.real):
 			# The link is already present, so do nothing
 			return False
 
@@ -915,7 +924,7 @@ def main(args: Args) -> None:
 	# If there is nothing to be done, remove old command files and exit
 	cmdpath = join(args.root, args.output)
 	if not processor.commands:
-		print("Everything seems to be in order")
+		print("Nothing to be done.")
 		if cmdpath.exists():
 			cmdpath.unlink()
 		return
