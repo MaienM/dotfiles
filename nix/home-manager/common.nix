@@ -62,14 +62,5 @@
     ".vim/bundle/fzf-base".source = "${pkgs.fzf}/share/vim-plugins/fzf/";
     ".zsh/bundle/fzf/bin".source = "${pkgs.fzf}/bin/";
     ".zsh/bundle/fzf/shell".source = "${pkgs.fzf}/share/fzf/";
-
-    # Setup gpg-agent config.
-    # TODO: Once I figure out how I want to handle secrets check if that can also solve this problem.
-    ".gnupg/gpg-agent.conf" = {
-      text = builtins.replaceStrings
-        [ "./.local/bin/pinentry-auto" ]
-        [ "${../../local/bin/pinentry-auto}" ]
-        (builtins.readFile ../../gnupg/gpg-agent.conf);
-    };
   };
 }

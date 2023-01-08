@@ -1,7 +1,10 @@
-{ pkgs, pkgs-unfree, ... }:
+{ pkgs, pkgs-unfree, pkgs-local, ... }:
 {
   imports = [
     ./common.nix
+    (import ./gpg-agent.nix {
+      pinentry = pkgs-local.pinentry-auto;
+    })
   ];
 
   home.username = "maienm";

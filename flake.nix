@@ -41,6 +41,12 @@
           (_: nixpkgs.lib.attrByPath [ "packages" system ] { })
           inputs
       );
+      # { system = ./nix/pkgs for that system }
+      pkgs-local = eachDefaultSystemBySystem (system:
+        import ./nix/pkgs {
+          inherit inputs system;
+          pkgs = nixpkgs.legacyPackages.${system};
+        }
       );
     in
     {
@@ -69,6 +75,7 @@
             inherit inputs;
             pkgs-unfree = pkgs-unfree.x86_64-linux;
             pkgs-inputs = pkgs-inputs.x86_64-linux;
+            pkgs-local = pkgs-local.x86_64-linux;
           };
           modules = [ ./nix/home-manager/pc.nix ];
         };
@@ -78,6 +85,7 @@
             inherit inputs;
             pkgs-unfree = pkgs-unfree.aarch64-darwin;
             pkgs-inputs = pkgs-inputs.aarch64-darwin;
+            pkgs-local = pkgs-local.aarch64-darwin;
           };
           modules = [ ./nix/home-manager/macbook.nix ];
         };
