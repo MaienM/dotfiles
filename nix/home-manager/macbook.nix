@@ -21,5 +21,8 @@
         exec "${pkgs.nix}/bin/nix-shell" "$@"
       '';
     };
+
+    # needed for my YubiKey to work on macos, but breaks things on linux.
+    ".gnupg/scdaemon.conf".text = "disable-ccid";
   };
 }
