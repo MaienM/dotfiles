@@ -271,3 +271,9 @@
 [submodule "vim/bundle-nvim/lsp-format"]
 	path = vim/bundle-nvim/lsp-format
 	url = https://github.com/lukas-reineke/lsp-format.nvim
+[submodule "vim/bundle-nvim/fzf-lsp"]
+	path = vim/bundle-nvim/fzf-lsp
+	url = https://github.com/gfanto/fzf-lsp.nvim
+[submodule "vim/bundle-nvim/plenary"]
+	path = vim/bundle-nvim/plenary
+	url = https://github.com/nvim-lua/plenary.nvim
