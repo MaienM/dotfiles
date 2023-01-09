@@ -10,19 +10,21 @@ local on_attach = function(client, bufnr)
 	-- Enable completion triggered by <c-x><c-o>
 	vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-	-- [G]o-to mappings.
 	local bufopts = { noremap = true, silent = true, buffer = bufnr }
+	-- Misc mappings.
+	vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+
+	-- [G]o-to mappings.
 	vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
 	vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-	vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
 	vim.keymap.set('n', '<Leader>gi', vim.lsp.buf.implementation, bufopts)
 	vim.keymap.set('n', '<Leader>gr', vim.lsp.buf.references, bufopts)
+	vim.keymap.set('n', '<Leader>go', vim.lsp.buf.document_symbol, bufopts)
+	vim.keymap.set('n', '<Leader>gO', vim.lsp.buf.workspace_symbol, bufopts)
 
 	-- [A]ction mappings.
-	vim.keymap.set('n', '<Leader>af', function()
-		vim.lsp.buf.format { async = true }
-	end, bufopts)
 	vim.keymap.set('n', '<Leader>aa', vim.lsp.buf.code_action, bufopts)
+	vim.keymap.set('v', '<Leader>aa', vim.lsp.buf.code_action, bufopts)
 
 	-- Autoformatting.
 	lspformat.on_attach(client, bufnr)
