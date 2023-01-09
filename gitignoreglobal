@@ -17,6 +17,7 @@ Session.vim
 .python-version
 .ruby-version
 .tool-versions
+.direnv/
 
 # External packages.
 node_modules/
