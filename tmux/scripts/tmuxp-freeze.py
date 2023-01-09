@@ -1,8 +1,8 @@
 #!/usr/bin/env cached-nix-shell
 #!nix-shell -i python
-#!nix-shell -p python310
-#!nix-shell -p python310Packages.kaptan
-#!nix-shell -p python310Packages.libtmux
+#!nix-shell -p python3
+#!nix-shell -p python3.pkgs.kaptan
+#!nix-shell -p python3.pkgs.libtmux
 #!nix-shell -p tmuxp
 
 import kaptan
@@ -13,20 +13,21 @@ from libtmux import Server
 
 def freeze_as_json(session_name, path):
 	t = Server()
-	session = t.find_where({ 'session_name': session_name })
+	session = t.find_where({"session_name": session_name})
 	if not session:
-		print('Cannot find session', session_name)
+		print("Cannot find session", session_name)
 		return
 
 	configparser = kaptan.Kaptan()
 	configparser.import_config(config.inline(freeze(session)))
-	sconfig = configparser.export('json', indent = 2)
+	sconfig = configparser.export("json", indent=2)
 
-	with open(path, 'w') as f:
+	with open(path, "w") as f:
 		f.write(sconfig)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 	import sys
+
 	freeze_as_json(*sys.argv[1:])
 

@@ -3,9 +3,6 @@
   home.stateVersion = "22.11";
 
   home.packages = with pkgs;
-    let
-      pythonPackages = python310.pkgs;
-    in
     [
 
       # CLI.
@@ -35,6 +32,7 @@
 
       # Applications.
       kitty
+
       (nerdfonts.override {
         fonts = [
           "FiraCode"
@@ -45,7 +43,7 @@
       # Neovim.
       nodePackages.neovim
       pkgs-inputs.neovim.neovim
-      pythonPackages.pynvim
+      python3.pkgs.pynvim
       tree-sitter
 
       # Language servers.

@@ -21,9 +21,6 @@
   };
 
   home.packages = with pkgs;
-    let
-      pythonPackages = python310.pkgs;
-    in
     [
 
       # WM.
@@ -39,14 +36,14 @@
       yubikey-touch-detector
 
       (
-        pythonPackages.buildPythonApplication rec {
+        python3.pkgs.buildPythonApplication rec {
           pname = "notify-send.py";
           version = "1.2.7";
-          src = pythonPackages.fetchPypi {
+          src = python3.pkgs.fetchPypi {
             inherit pname version;
             sha256 = "9olZRJ9q1mx1hGqUal6XdlZX6v5u/H1P/UqVYiw9lmM=";
           };
-          propagatedBuildInputs = with pythonPackages; [ pygobject3 dbus-python ];
+          propagatedBuildInputs = with python3.pkgs; [ pygobject3 dbus-python ];
         }
       )
 

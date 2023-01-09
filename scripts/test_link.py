@@ -1,6 +1,7 @@
 #!/usr/bin/env cached-nix-shell
 #!nix-shell -i python
-#!nix-shell -p python310Packages.pytest
+#!nix-shell -p python3
+#!nix-shell -p python3.pkgs.pytest
 
 from typing import (
 	Generator,

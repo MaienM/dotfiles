@@ -1,8 +1,8 @@
 #!/usr/bin/env cached-nix-shell
 #!nix-shell -i python
-#!nix-shell -p python310
-#!nix-shell -p python310Packages.requests
-#!nix-shell -p "(let pypkg = python310.pkgs; in pypkg.buildPythonPackage rec { pname = \"CurrencyConverter\"; version = \"0.17.3\"; src = pythonPackages.fetchPypi { inherit pname version; sha256 = \"+sjmTeFJh8ig3TPcllp+olVjXOE6ht3a8FWFpl+i9+s=\"; }; propagatedBuildInputs = with pypkg; [ setuptools-scm ]; doCheck = false; })"
+#!nix-shell -p python3
+#!nix-shell -p python3.pkgs.requests
+#!nix-shell -p "(python3.pkgs.buildPythonPackage rec { pname = \"CurrencyConverter\"; version = \"0.17.3\"; src = pythonPackages.fetchPypi { inherit pname version; sha256 = \"+sjmTeFJh8ig3TPcllp+olVjXOE6ht3a8FWFpl+i9+s=\"; }; propagatedBuildInputs = with python3.pkgs; [ setuptools-scm ]; doCheck = false; })"
 # vi:ft=python
 
 import sys
