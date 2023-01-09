@@ -277,3 +277,6 @@
 [submodule "vim/bundle-nvim/plenary"]
 	path = vim/bundle-nvim/plenary
 	url = https://github.com/nvim-lua/plenary.nvim
+[submodule "vim/bundle-nvim/treesitter-context"]
+	path = vim/bundle-nvim/treesitter-context
+	url = https://github.com/nvim-treesitter/nvim-treesitter-context
