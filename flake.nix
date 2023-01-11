@@ -55,7 +55,7 @@
             extraSpecialArgs = {
               inherit inputs pkgs-unfree pkgs-inputs pkgs-local;
             };
-            modules = [ ./nix/home-manager/pc.nix ];
+            modules = [ ./nix/home-manager/desktop.nix ];
           };
           "maienm@MICHON-MACBOOK" = home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
