@@ -25,10 +25,10 @@ download_generic() {
 	# Try alternative urls.
 	urls=(
 		# Strip query parameters in case they lower the resolution.
-		"$(echo "$1" | sed 's/width=[[:digit:]]\+[?&]\?//g; s/height=[[:digit:]]\+[?&]\?//g; s/?$//')"
-		"${1%%\?*}"
+		"$(echo "$url" | sed 's/width=[[:digit:]]\+[?&]\?//g; s/height=[[:digit:]]\+[?&]\?//g; s/?$//')"
+		"${url%%\?*}"
 		# The original url.
-		"$1"
+		"$url"
 	)
 	best=('' -1)
 	while [ -z "$tmp" ] && read -r url; do
@@ -86,16 +86,16 @@ download_generic() {
 }
 
 download_nitter() {
-	if ! [[ "$url" = 'https://twitter.com/'* ]]; then
-		return 1
-	fi
+	case "$url" in
+		'https://twitter.com/'*) url_path="${url#https://twitter.com/}" ;;
+		'https://vxtwitter.com/'*) url_path="${url#https://vxtwitter.com/}" ;;
+		*) return 1 ;;
+	esac
 
 	echo "Detected twitter URL, rewriting to nitter."
-	orig_url="$url"
 	for host in 'nitter.net' 'nitter.inpt.fr' 'twitter.censors.us/'; do
-		url="nitter:${orig_url/twitter.com/$host}"
+		url="nitter:https://$host/$url_path"
 		download_gallery_dl
-		url="$orig_url"
 		if [ "${#files[@]}" -gt 0 ]; then
 			return 0
 		fi
@@ -132,9 +132,11 @@ fi
 
 # Download the files.
 declare -A files
+orig_url="$url"
 for downloader in nitter gallery_dl generic; do
 	echo "Trying $downloader downloader" 
-	"download_$downloader" "$url" && break
+	url="$orig_url"
+	"download_$downloader" && break
 done
 if [ "${#files[@]}" -eq 0 ]; then
 	echo >&2 "No files downloaded."
