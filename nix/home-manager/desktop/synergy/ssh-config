@@ -1,0 +1,2 @@
+Host macbook
+	RemoteForward 24800 localhost:24800

@@ -5,6 +5,7 @@
     (import ./gpg-agent.nix {
       pinentry = pkgs-local.pinentry-auto;
     })
+    ./desktop/synergy
   ];
 
   home.username = "maienm";
@@ -66,64 +67,4 @@
 
   # Autostart new user systemd services.
   systemd.user.startServices = "sd-switch";
-
-  # Setup synergy connection with macbook.
-  systemd.user.services.synergy = {
-    Unit.Description = "Run synergy to share mouse & keyboard with macbook.";
-    Unit.PartOf = "graphical-session.target";
-    Service.Type = "simple";
-    Service.ExecStart = builtins.toString [
-      "${pkgs.synergyWithoutGUI}/bin/synergys"
-      "--name DESKTOP"
-      "--config ${builtins.toFile "synergy.conf" ''
-        section: screens
-          DESKTOP:
-            halfDuplexCapsLock = false
-            halfDuplexNumLock = false
-            halfDuplexScrollLock = false
-            xtestIsXineramaUnaware = false
-            switchCorners = none 
-            switchCornerSize = 0
-          MACBOOK:
-            halfDuplexCapsLock = false
-            halfDuplexNumLock = false
-            halfDuplexScrollLock = false
-            xtestIsXineramaUnaware = false
-            switchCorners = none 
-            switchCornerSize = 0
-            ctrl = meta
-            meta = ctrl
-        end
-
-        section: aliases
-        end
-
-        section: links
-          DESKTOP:
-            down(0,100) = MACBOOK(0,100)
-          MACBOOK:
-            up = DESKTOP
-        end
-
-        section: options
-          relativeMouseMoves = false
-          win32KeepForeground = false
-          disableLockToScreen = false
-          clipboardSharing = true
-          clipboardSharingSize = 3072
-          switchCorners = none
-          switchCornerSize = 0
-        end
-      ''}"
-      "--no-daemon"
-      "--address localhost:24800"
-    ];
-    Install.WantedBy = [ "graphical-session.target" ];
-    Service.Restart = "always";
-    Service.RestartSec = 0;
-  };
-  home.file.".ssh/config.d/macbook-synergy".text = ''
-    Host macbook
-      RemoteForward 24800 localhost:24800
-  '';
 }

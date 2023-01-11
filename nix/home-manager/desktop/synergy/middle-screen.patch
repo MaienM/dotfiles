@@ -1,0 +1,19 @@
+diff --git a/src/lib/server/Server.cpp b/src/lib/server/Server.cpp
+index 437e1769..c3b46220 100644
+--- a/src/lib/server/Server.cpp
++++ b/src/lib/server/Server.cpp
+@@ -1788,6 +1788,14 @@ Server::onMouseMovePrimary(SInt32 x, SInt32 y)
+ 	m_xDelta2 = m_xDelta;
+ 	m_yDelta2 = m_yDelta;
+ 
++	// The center monitor on my desktop (which the macbook is below) is not the lowest one. This change makes it so
++	// that hitting its bottom edge will trigger the transition anyway. It is crucial that this is used in
++	// conjunction with a range on the edge in the config that limits it to this monitor, as otherwise there will be
++	// a line on the the other (lower) monitors above the bottom edge that will still trigger screen transitions.
++	if (y == 2519) {
++		y = 2787;
++	}
++
+ 	// save current delta
+ 	m_xDelta  = x - m_x;
+ 	m_yDelta  = y - m_y;
