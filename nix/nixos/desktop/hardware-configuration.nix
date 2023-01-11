@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
@@ -14,32 +15,38 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "ssd/root";
+    {
+      device = "ssd/root";
       fsType = "zfs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/398B-1C9F";
+    {
+      device = "/dev/disk/by-uuid/398B-1C9F";
       fsType = "vfat";
     };
 
   fileSystems."/nix" =
-    { device = "ssd/nix";
+    {
+      device = "ssd/nix";
       fsType = "zfs";
     };
 
   fileSystems."/persist" =
-    { device = "ssd/persist";
+    {
+      device = "ssd/persist";
       fsType = "zfs";
     };
 
   fileSystems."/home" =
-    { device = "ssd/home";
+    {
+      device = "ssd/home";
       fsType = "zfs";
     };
 
   fileSystems."/mnt/bulk" =
-    { device = "bulk/root";
+    {
+      device = "bulk/root";
       fsType = "zfs";
     };
 

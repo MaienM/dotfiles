@@ -1,11 +1,11 @@
 { pkgs, pkgs-unfree, pkgs-local, ... }:
 {
   imports = [
-    ./common.nix
-    (import ./gpg-agent.nix {
+    ../common.nix
+    (import ../gpg-agent.nix {
       pinentry = pkgs-local.pinentry-auto;
     })
-    ./desktop/synergy
+    ./synergy
   ];
 
   home.username = "maienm";
@@ -29,24 +29,13 @@
       i3-gaps # gaps has been merged into i3, but no release has happened since
       maim
       picom
+      pkgs-local.notify-send.py
       polybarFull
       redshift
       rofi
       scrot
       xorg.xkill
       yubikey-touch-detector
-
-      (
-        python3.pkgs.buildPythonApplication rec {
-          pname = "notify-send.py";
-          version = "1.2.7";
-          src = python3.pkgs.fetchPypi {
-            inherit pname version;
-            sha256 = "9olZRJ9q1mx1hGqUal6XdlZX6v5u/H1P/UqVYiw9lmM=";
-          };
-          propagatedBuildInputs = with python3.pkgs; [ pygobject3 dbus-python ];
-        }
-      )
 
       # CLI.
       cached-nix-shell

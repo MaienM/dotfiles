@@ -1,8 +1,8 @@
 { pkgs, pkgs-local, ... }:
 {
   imports = [
-    ./common.nix
-    (import ./gpg-agent.nix {
+    ../common.nix
+    (import ../gpg-agent.nix {
       pinentry = pkgs-local.pinentry-auto.override {
         pinentry-gui = "${pkgs.pinentry_mac}/${pkgs.pinentry_mac.binaryPath}";
       };

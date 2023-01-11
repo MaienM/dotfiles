@@ -35,7 +35,7 @@
         nixosConfigurations = {
           MICHON-PC = nixpkgs.lib.nixosSystem {
             specialArgs = { inherit inputs; };
-            modules = [ ./nix/nixos/configuration.nix ];
+            modules = [ ./nix/nixos/desktop ];
           };
         };
 
@@ -44,7 +44,7 @@
           MICHON-MACBOOK = darwin.lib.darwinSystem {
             inherit inputs;
             system = "aarch64-darwin";
-            modules = [ ./nix/darwin/configuration.nix ];
+            modules = [ ./nix/darwin/macbook ];
           };
         };
 
@@ -55,14 +55,14 @@
             extraSpecialArgs = {
               inherit inputs pkgs-unfree pkgs-inputs pkgs-local;
             };
-            modules = [ ./nix/home-manager/desktop.nix ];
+            modules = [ ./nix/home-manager/desktop ];
           };
           "maienm@MICHON-MACBOOK" = home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             extraSpecialArgs = {
               inherit inputs pkgs-unfree pkgs-inputs pkgs-local;
             };
-            modules = [ ./nix/home-manager/macbook.nix ];
+            modules = [ ./nix/home-manager/macbook ];
           };
         };
       };
