@@ -57,4 +57,11 @@
       RunAtLoad = true;
     };
   };
+
+  # Setup VPNStatus for auto-reconnect.
+  services.VPNStatus = {
+    enable = true;
+    retryDelay = 15;
+    ignoredSSIDs = [ "KOEN_Wlan" ];
+  };
 }
