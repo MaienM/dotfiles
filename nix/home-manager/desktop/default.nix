@@ -1,8 +1,8 @@
-{ pkgs, pkgs-unfree, pkgs-local, ... }:
+{ dotfiles, pkgs, pkgs-unfree, pkgs-local, ... }:
 {
   imports = [
-    ../common.nix
-    (import ../gpg-agent.nix {
+    (import /${dotfiles}/nix/home-manager/gpg-agent.nix {
+      inherit dotfiles;
       pinentry = pkgs-local.pinentry-auto;
     })
     ./synergy

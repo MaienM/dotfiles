@@ -1,4 +1,4 @@
-{ pinentry }:
+{ dotfiles, pinentry }:
 {
   home.file = {
     # Setup gpg-agent config.
@@ -7,7 +7,7 @@
       text = builtins.replaceStrings
         [ "pinentry-auto" ]
         [ "${pinentry}/bin/pinentry" ]
-        (builtins.readFile ../../gnupg/gpg-agent.conf);
+        (builtins.readFile /${dotfiles}/gnupg/gpg-agent.conf);
     };
   };
 }

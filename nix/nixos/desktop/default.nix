@@ -1,4 +1,4 @@
-{ config, options, inputs, lib, pkgs, ... }:
+{ config, options, inputs, lib, dotfiles, pkgs, pkgs-unfree, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -125,7 +125,7 @@
       options.services.openssh.hostKeys.default;
   };
   users.users.maienm.openssh.authorizedKeys.keyFiles = [
-    ../../ssh/id_rsa_gpg_28094744BA81C6A9.pub
+    /${dotfiles}/ssh/id_rsa_gpg_28094744BA81C6A9.pub
   ];
 
   # Enable containerd. TODO: Setup rootless?

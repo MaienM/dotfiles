@@ -1,8 +1,8 @@
-{ pkgs, pkgs-local, ... }:
+{ dotfiles, pkgs, pkgs-local, ... }:
 {
   imports = [
-    ../common.nix
-    (import ../gpg-agent.nix {
+    (import /${dotfiles}/nix/home-manager/gpg-agent.nix {
+      inherit dotfiles;
       pinentry = pkgs-local.pinentry-auto.override {
         pinentry-gui = "${pkgs.pinentry_mac}/${pkgs.pinentry_mac.binaryPath}";
       };
