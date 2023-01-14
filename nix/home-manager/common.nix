@@ -13,6 +13,7 @@
       exa
       fzf
       git
+      git-crypt
       git-lfs
       gnupg
       htop
