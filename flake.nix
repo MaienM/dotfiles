@@ -12,6 +12,7 @@
 
     neovim.url = "github:neovim/neovim?dir=contrib";
     neovim.inputs.nixpkgs.follows = "nixpkgs";
+    neovim.inputs.flake-utils.follows = "flake-utils";
   };
 
   outputs = { nixpkgs, flake-utils, darwin, home-manager, ... }@inputs: flake-utils.lib.eachDefaultSystem (system:
