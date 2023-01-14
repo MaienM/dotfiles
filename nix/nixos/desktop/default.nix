@@ -1,4 +1,7 @@
 { config, options, inputs, lib, dotfiles, pkgs, pkgs-unfree, ... }:
+let
+  secrets = builtins.fromJSON (builtins.readFile ./secret.json);
+in
 {
   imports = [
     ./hardware-configuration.nix
@@ -97,6 +100,7 @@
   # Define user. This only the defines the bare minimum, as most of the user's environment is managed through home-manager.
   users.users.maienm = {
     isNormalUser = true;
+    hashedPassword = secrets.userPassword;
     shell = pkgs.zsh;
     extraGroups = [ "wheel" ];
     packages = with pkgs; [
