@@ -124,7 +124,7 @@ in
     passwordAuthentication = false;
     hostKeys = builtins.map
       (value: value // {
-        path = builtins.replaceStrings [ "/etc/ssh/" ] [ "/persist/ssh/" ] value.path;
+        path = builtins.replaceStrings [ "/etc/ssh/" ] [ "/persist/etc/ssh/" ] value.path;
       })
       options.services.openssh.hostKeys.default;
   };
