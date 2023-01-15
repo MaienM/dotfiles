@@ -1,6 +1,10 @@
 { config, options, inputs, lib, dotfiles, pkgs, pkgs-unfree, ... }:
 let
   secrets = builtins.fromJSON (builtins.readFile ./secret.json);
+  bind = (path: {
+    device = path;
+    options = [ "bind" ];
+  });
 in
 {
   imports = [
@@ -134,6 +138,9 @@ in
 
   # Enable containerd. TODO: Setup rootless?
   virtualisation.containerd.enable = true;
+  fileSystems."/run/containerd" = bind "/persist/run/containerd";
+  fileSystems."/var/lib/containerd" = bind "/persist/var/lib/containerd";
+  fileSystems."/var/lib/nerdctl" = bind "/persist/var/lib/nerdctl";
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
