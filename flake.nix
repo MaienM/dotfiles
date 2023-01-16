@@ -49,7 +49,9 @@
         # dot-darwin-rebuild (which is an alias for darwin-rebuild --flake .#your-hostname).
         darwinConfigurations = {
           MICHON-MACBOOK = darwin.lib.darwinSystem {
-            inherit inputs dotfiles pkgs-unfree pkgs-inputs pkgs-local;
+            specialArgs = {
+              inherit inputs dotfiles pkgs-unfree pkgs-inputs pkgs-local;
+            };
             system = "aarch64-darwin";
             modules = [
               ./nix/modules/darwin
