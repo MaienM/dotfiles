@@ -1,4 +1,4 @@
-{ pkgs, pkgs-inputs, ... }:
+{ pkgs, pkgs-inputs, pkgs-local, ... }:
 {
   home.stateVersion = "22.11";
 
@@ -33,6 +33,7 @@
 
       # Applications.
       kitty
+      pkgs-local.nerdfonts-scripts
 
       (nerdfonts.override {
         fonts = [
