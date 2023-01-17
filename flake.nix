@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     flake-utils.url = "github:numtide/flake-utils";
 
@@ -11,7 +11,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     neovim.url = "github:neovim/neovim?dir=contrib";
-    neovim.inputs.nixpkgs.follows = "nixpkgs";
+    # neovim.inputs.nixpkgs.follows = "nixpkgs"; # Doesn't work with unstable.
     neovim.inputs.flake-utils.follows = "flake-utils";
   };
 
