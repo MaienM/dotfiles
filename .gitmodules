@@ -222,7 +222,7 @@
 	url = https://github.com/base16-project/base16-xresources
 [submodule "config/base16/templates/dircolors"]
 	path = config/base16/templates/dircolors
-	url = https://github.com/embayer/base16-gnu-dircolors
+	url = https://github.com/MaienM/base16-gnu-dircolors.git
 [submodule "vim/bundle-nvim/lsp-config"]
 	path = vim/bundle-nvim/lsp-config
 	url = https://github.com/neovim/nvim-lspconfig
