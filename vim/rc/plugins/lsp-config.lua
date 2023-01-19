@@ -66,6 +66,7 @@ end
 for _, name in ipairs {
 	'pyright',
 	'rust_analyzer',
+	'terraformls',
 	'tsserver',
 } do
 	setup(name)
