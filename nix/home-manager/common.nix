@@ -54,6 +54,7 @@
       efm-langserver
       nil
       nodePackages.pyright
+      rust-analyzer
       sumneko-lua-language-server
 
     ];
