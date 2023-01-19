@@ -43,6 +43,7 @@
       })
 
       # Neovim.
+      gcc # Needed for treesitter to compile parsers.
       nodePackages.neovim
       pkgs-inputs.neovim.neovim
       python3.pkgs.pynvim
