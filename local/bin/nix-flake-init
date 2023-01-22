@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+
+generate_flake() {
+	sed 's/^\t\t//; s/  /\t/g' > flake.nix <<-END
+		{
+			inputs = {
+				nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+				flake-utils.url = "github:numtide/flake-utils";
+			};
+
+			outputs = { nixpkgs, flake-utils, ... }: flake-utils.lib.eachDefaultSystem (system:
+				let
+					pkgs = nixpkgs.legacyPackages.\${system};
+				in
+				{
+					devShell = pkgs.mkShell {
+						buildInputs = with pkgs; [
+						];
+					};
+				}
+			);
+		}
+	END
+}
+
+if [ -f flake.nix ]; then
+	>&2 echo "flake.nix already exists."
+	exit 1
+else
+	generate_flake
+	nixpkgs-fmt flake.nix
+fi
