@@ -8,6 +8,18 @@ in
   options.services.VPNStatus = {
     enable = mkEnableOption "VPNStatus, a replacement for macOS builtin VPN Status";
 
+    autoStart = mkOption {
+      type = types.bool;
+      default = false;
+      example = true;
+      description = ''
+        Automatically (re)start VPNStatus.
+        
+        Disabled by default for now as it appears to cause the active window to lose focus every ThrottleInterval (30)
+        seconds.
+      '';
+    };
+
     retryDelay = mkOption {
       type = types.int;
       default = 120;
@@ -36,7 +48,7 @@ in
     home.packages = [ pkg ];
 
     launchd.agents.VPNStatus = {
-      enable = true;
+      enable = cfg.autoStart;
       config = {
         ProgramArguments = [
           "open"
