@@ -48,6 +48,8 @@ target = .config/mpv/scripts/sponsorblock.lua
 target = .config/mpv/scripts/sponsorblock_shared
 [config/mpv/bundle/youtube-quality/youtube-quality.lua]
 target = .config/mpv/scripts/youtube-quality.lua
+[config/vifm]
+action = recurse
 
 [gnupg]
 action = recurse

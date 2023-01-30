@@ -28,6 +28,7 @@
       sqlite
       tmux
       unzip
+      vifm-full
       xclip
       zsh
 
