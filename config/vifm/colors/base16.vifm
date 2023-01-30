@@ -1,0 +1,13 @@
+highlight clear
+
+highlight TopLine    cterm=none  ctermfg=01  ctermbg=none
+highlight TopLineSel cterm=bold  ctermfg=01  ctermbg=none
+highlight StatusLine cterm=none  ctermfg=00  ctermbg=08
+highlight Border     cterm=none  ctermfg=18  ctermbg=none
+highlight Selected   cterm=none  ctermfg=default  ctermbg=18
+highlight CurrLine   cterm=none  ctermfg=00  ctermbg=03
+highlight WildMenu   cterm=none  ctermfg=00  ctermbg=20
+highlight CmdLine    cterm=none  ctermfg=20  ctermbg=none
+highlight ErrorMsg   cterm=none  ctermfg=01  ctermbg=none
+
+source ~/.config/vifm/base16.vifm

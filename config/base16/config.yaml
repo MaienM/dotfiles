@@ -46,6 +46,10 @@ applications:
     templates:
       - input: ./templates/vim/templates/default.mustache
         output: ~/.vim/colors/base16.vim
+  vifm:
+    dependsOn:
+      - dircolors
+    hook: source ~/.profile.d/50_dircolors.local; vifm-convert-dircolors -e > ~/.config/vifm/base16.vifm
   xresources:
     hook: xrdb -merge ~/.Xresources
     templates:
