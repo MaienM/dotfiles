@@ -4,7 +4,7 @@ source ~/.zsh/bundle/powerlevel10k/config/p10k-lean.zsh
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
 	dir
 	vcs
-	nix_shell
+	nix_shell_packages
 	newline
 
 	prompt_char
@@ -57,4 +57,8 @@ prompt_context_custom() {
 	else
 		prompt_context "$@"
 	fi
+}
+
+prompt_nix_shell_packages() {
+	p10k segment -i '' -f cyan -e -t '${nix_shell_packages[*]}' -c '${nix_shell_packages:+1}'
 }
