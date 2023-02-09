@@ -13,3 +13,13 @@ trailing_table_separator = smart
 indent_style = space
 tab_width = 2
 indent_size = 2
+
+[*.yml]
+indent_style = space
+tab_width = 2
+indent_size = 2
+
+[*.yaml]
+indent_style = space
+tab_width = 2
+indent_size = 2
