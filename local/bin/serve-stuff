@@ -1,36 +1,22 @@
 #!/usr/bin/env cached-nix-shell
 #!nix-shell -i ruby
 #!nix-shell -p ruby
+#!nix-shell -p asciidoctor
+#!nix-shell -p ruby.gems.commonmarker
+#!nix-shell -p ruby.gems.listen
+#!nix-shell -p ruby.gems.webrick
+#!nix-shell -p "(buildRubyGem { gemName = ''facets''; version = ''3.1.0''; source.sha256 = ''eDSmiCTvuzU4Dtf29ZDgH7mjGpRm4xchDogD9ygTw0U=''; })"
+#!nix-shell -p "(buildRubyGem { gemName = ''pusher''; version = ''2.0.3''; source.sha256 = ''zv9k+Vxa/87Z5+sFep2+T9oW2mk9kSlOuG6Apehb0iM=''; propagatedBuildInputs = with ruby.gems; [ httpclient multi_json (buildRubyGem { gemName = ''pusher-signature''; version = ''0.1.8''; source.sha256 = ''0rGxnCiaIdCdjcMoQQeT1efh/iv4rIkHEIcbGxrMGYY=''; }) ]; })
+#!nix-shell -p "(buildRubyGem { gemName = ''xdg''; version = ''4.5.0''; source.sha256 = ''lT/Ts8TPo9pp4xHJqtiO/hvXGbpRBX5h7rSoXrRpGzI=''; })"
 
-################################################################################
-# Dependency management
-################################################################################
-
-# Try to require a gem. If this fails, install it and try again
-def require_or_install(file, options = {})
-	require file
-rescue LoadError
-	gem_name = options[:gem] || file
-
-	# Install missing gem
-	puts '----------------------------------------'
-	puts "Missing gem: #{gem_name}"
-	system("gem install #{gem_name}") or exit(1)
-
-	# Retry
-	Gem.clear_paths
-	puts 'Trying again...'
-	require file
-end
-
-require_or_install 'facets'
+require 'facets'
 
 ################################################################################
 # Config
 ################################################################################
 
 require 'yaml'
-require_or_install 'xdg'
+require 'xdg'
 
 CONFIG = File.join(XDG::Config.new.home, 'serve-stuff.yml')
 DEFAULT_CONFIG = <<~END
@@ -45,7 +31,7 @@ DEFAULT_CONFIG = <<~END
 		key: ''
 		secret: ''
 		cluster: ''
-		encrypted: true
+		use_tls: true
 		# The channel to send messages on
 		channel: 'serve-stuff'
 END
@@ -67,14 +53,14 @@ end
 # Hot reloading
 ################################################################################
 
-require_or_install 'pusher'
+require 'pusher'
 
 pusher = Pusher::Client.new(
 	app_id: config['pusher']['app_id'],
 	key: config['pusher']['key'],
 	secret: config['pusher']['secret'],
 	cluster: config['pusher']['cluster'],
-	encrypted: config['pusher']['encrypted'],
+	use_tls: config['pusher']['use_tls'],
 )
 
 # A script that can be injected into a HTML page to make it support auto reloading
@@ -85,7 +71,7 @@ RELOAD_SCRIPT = <<~END
 
 		var pusher = new Pusher('#{config['pusher']['key']}', {
 			cluster: '#{config['pusher']['cluster']}',
-			encrypted: #{config['pusher']['encrypted']},
+			use_tls: #{config['pusher']['use_tls']},
 		});
 
 		var channel = pusher.subscribe('#{config['pusher']['channel']}');
@@ -101,7 +87,7 @@ END
 # Listen to file changes
 ################################################################################
 
-require_or_install 'listen'
+require 'listen'
 require 'listen/record/symlink_detector'
 
 # Listen >= 2.8 patch to silence duplicate directory errors, which occur when a symlink points to a folder that is also
@@ -173,7 +159,7 @@ end
 # File type renderers
 ################################################################################
 
-require_or_install 'webrick'
+require 'webrick'
 
 # The extensions allowed for various filetypes
 HTML_EXTENSIONS = %w(html htm)
@@ -204,7 +190,7 @@ end
 
 class AsciidoctorFileHandler < BaseFileHandler
 	def transform(body)
-		require_or_install 'asciidoctor'
+		require 'asciidoctor'
 		return Asciidoctor.convert(
 			body,
 			attributes: { 'source-highlighter' => 'prettify' },
@@ -217,7 +203,7 @@ end
 
 class MarkdownFileHandler < BaseFileHandler
 	def transform(body)
-		require_or_install 'commonmarker'
+		require 'commonmarker'
 		body = CommonMarker.render_doc(
 			body,
 			%i(FOOTNOTES VALIDATE_UTF8 UNSAFE),
@@ -279,7 +265,7 @@ end
 listener.start
 
 # Setup a http server
-server = WEBrick::HTTPServer.new(Host: config['server']['host'], Port: config['server']['port'])
+server = WEBrick::HTTPServer.new(BindAddress: config['server']['host'], Port: config['server']['port'])
 
 # Set the path rewrite handler as root
 server.mount('/', RewriteHandler)
