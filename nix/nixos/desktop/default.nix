@@ -124,8 +124,10 @@ in
   # Setup SSH.
   services.openssh = {
     enable = true;
-    permitRootLogin = "no";
-    passwordAuthentication = false;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
+    };
     hostKeys = builtins.map
       (value: value // {
         path = builtins.replaceStrings [ "/etc/ssh/" ] [ "/persist/etc/ssh/" ] value.path;
