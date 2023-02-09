@@ -1,4 +1,4 @@
-{ config, options, inputs, lib, dotfiles, pkgs, pkgs-unfree, ... }:
+{ config, options, inputs, lib, dotfiles, pkgs, ... }:
 let
   secrets = builtins.fromJSON (builtins.readFile ./secret.json);
   bind = (path: {
@@ -86,7 +86,7 @@ in
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+  custom.allowUnfreeList = [
     "nvidia-x11"
     "nvidia-settings"
     "steam"

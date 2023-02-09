@@ -1,4 +1,4 @@
-{ dotfiles, pkgs, pkgs-unfree, pkgs-local, ... }:
+{ dotfiles, pkgs, pkgs-local, ... }:
 {
   imports = [
     (import /${dotfiles}/nix/home-manager/gpg-agent.nix {
@@ -21,6 +21,10 @@
     components = [ "secrets" ];
   };
 
+  custom.allowUnfreeList = [
+    "discord"
+    "google-chrome"
+  ];
   home.packages = with pkgs;
     [
 
@@ -41,12 +45,12 @@
       cached-nix-shell
 
       # Applications.
+      discord
       feh
       firefox
+      google-chrome
       mpv
       pavucontrol
-      pkgs-unfree.discord
-      pkgs-unfree.google-chrome
       qpwgraph
       workrave
 

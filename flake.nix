@@ -19,10 +19,6 @@
     let
       dotfiles = ./.;
       pkgs = nixpkgs.legacyPackages.${system};
-      pkgs-unfree = import "${nixpkgs}" {
-        inherit system;
-        config.allowUnfree = true;
-      };
       pkgs-inputs = # { name = inputs.${name}.packages.${system} }
         builtins.mapAttrs
           (_: nixpkgs.lib.attrByPath [ "packages" system ] { })
@@ -37,7 +33,7 @@
         nixosConfigurations = {
           MICHON-PC = nixpkgs.lib.nixosSystem {
             specialArgs = {
-              inherit inputs dotfiles pkgs-unfree pkgs-inputs pkgs-local;
+              inherit inputs dotfiles pkgs-inputs pkgs-local;
             };
             modules = [
               ./nix/modules/nixos
@@ -50,7 +46,7 @@
         darwinConfigurations = {
           MICHON-MACBOOK = darwin.lib.darwinSystem {
             specialArgs = {
-              inherit inputs dotfiles pkgs-unfree pkgs-inputs pkgs-local;
+              inherit inputs dotfiles pkgs-inputs pkgs-local;
             };
             system = "aarch64-darwin";
             modules = [
@@ -65,7 +61,7 @@
           "maienm@MICHON-PC" = home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             extraSpecialArgs = {
-              inherit inputs dotfiles pkgs-unfree pkgs-inputs pkgs-local;
+              inherit inputs dotfiles pkgs-inputs pkgs-local;
             };
             modules = [
               ./nix/modules/home-manager
@@ -76,7 +72,7 @@
           "maienm@MICHON-MACBOOK" = home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             extraSpecialArgs = {
-              inherit inputs dotfiles pkgs-unfree pkgs-inputs pkgs-local;
+              inherit inputs dotfiles pkgs-inputs pkgs-local;
             };
             modules = [
               ./nix/modules/home-manager
