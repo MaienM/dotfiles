@@ -57,6 +57,7 @@ cmp.setup {
 		{ name = 'luasnip' },
 	}, {
 		{ name = 'buffer' },
+		{ name = 'path' },
 	}),
 	formatting = {
 		fields = { 'kind', 'abbr' },
