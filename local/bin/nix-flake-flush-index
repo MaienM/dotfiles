@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+if [ -f flake.nix ]; then
+	git update-index --no-assume-unchanged flake.nix
+	git rm --cached flake.nix
+fi
+
+if [ -f flake.lock ]; then
+	git update-index --no-assume-unchanged flake.lock
+	git rm --cached flake.lock
+fi
