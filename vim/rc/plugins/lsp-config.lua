@@ -64,6 +64,7 @@ local function setup(name, extra_settings)
 end
 
 for _, name in ipairs {
+	'gopls',
 	'pyright',
 	'rust_analyzer',
 	'terraformls',
@@ -103,6 +104,7 @@ do
 				},
 				workspace = {
 					library = vim.api.nvim_get_runtime_file('', true),
+					checkThirdParty = false,
 				},
 				telemetry = {
 					enable = false,
