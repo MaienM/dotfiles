@@ -51,8 +51,10 @@
       tree-sitter
 
       # Language servers.
+      autoflake
       black
       efm-langserver
+      isort
       nil
       nodePackages.pyright
       rust-analyzer

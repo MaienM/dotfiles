@@ -126,7 +126,15 @@ setup('efm', {
 		languages = {
 			python = {
 				{
+					formatCommand = 'isort -',
+					formatStdin = true,
+				},
+				{
 					formatCommand = 'expand -t4 | black --quiet - | unexpand -t4',
+					formatStdin = true,
+				},
+				{
+					formatCommand = 'autoflake --remove-all-unused-imports -',
 					formatStdin = true,
 				},
 			},
