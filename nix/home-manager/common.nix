@@ -31,6 +31,7 @@
       vifm-full
       xclip
       zsh
+      pkgs-inputs.yamlfmt.yamlfmt
 
       # Applications.
       kitty
