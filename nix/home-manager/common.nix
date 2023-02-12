@@ -28,7 +28,7 @@
       sqlite
       tmux
       unzip
-      vifm-full
+      vifm
       xclip
       zsh
       pkgs-inputs.yamlfmt.yamlfmt
