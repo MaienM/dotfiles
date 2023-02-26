@@ -10,117 +10,115 @@
 #!nix-shell -p python3.pkgs.toposort
 # vi:ft=python
 
+import logging
 from argparse import ArgumentParser
-from collections import namedtuple
 from dataclasses import field
-from functools import cache
 from glob import glob
 from io import BytesIO, StringIO
-import logging
-from os import environ
 from pathlib import Path
 from shutil import rmtree
-from subprocess import run, PIPE, STDOUT
+from subprocess import PIPE, STDOUT, run
 from sys import exit, stderr
 from textwrap import dedent
-from traceback import format_exc
 from zipfile import ZipFile
 
 import chevron
+import pygments.token as pygtok
+import requests
+import ruamel.yaml
 from colour import Color
 from pydantic import validator
 from pydantic.dataclasses import dataclass
-import pygments.token as pygtok
-import requests
-from rich.console import Console, Group
-from rich.containers import Renderables, Lines
-from rich.layout import Layout
+from rich.containers import Lines
 from rich.live import Live
 from rich.panel import Panel
 from rich.spinner import Spinner
 from rich.style import Style
 from rich.styled import Styled
-from rich.syntax import Syntax, ANSISyntaxTheme
+from rich.syntax import ANSISyntaxTheme, Syntax
 from rich.table import Table
 from rich.text import Text
 from rich.traceback import Traceback
-import ruamel.yaml
 from toposort import toposort_flatten as toposort
-
 
 log = logging.getLogger()
 
 
-ICON_OK = '✔'
-ICON_NOTOK = '✖'
-ICON_SKIP = ''
-ICON_SAVE = ''
-ICON_RUN = ''
+ICON_OK = "✔"
+ICON_NOTOK = "✖"
+ICON_SKIP = ""
+ICON_SAVE = ""
+ICON_RUN = ""
 
 
-CONFIG_DIR = Path.home() / '.config' / 'base16'
-CACHE_DIR = Path.home() / '.cache' / 'base16'
+CONFIG_DIR = Path.home() / ".config" / "base16"
+CACHE_DIR = Path.home() / ".cache" / "base16"
 
 
 def make_syntax_theme(colors) -> ANSISyntaxTheme:
-	theme = ANSISyntaxTheme({
-		pygtok.Token: Style(),
-		pygtok.Whitespace: Style(),
-		pygtok.Comment: Style(color=colors['base03']),
-		pygtok.Comment.Preproc: Style(color=colors['base03'], bold=True),
-		pygtok.Keyword: Style(color=colors['base0E']),
-		pygtok.Operator: Style(color=colors['base05']),
-		pygtok.Name.Builtin: Style(color=colors['base0E']),
-		pygtok.Name.Function: Style(color=colors['base0D']),
-		pygtok.Name.Namespace: Style(color=colors['base0C']),
-		pygtok.Name.Class: Style(color=colors['base0A']),
-		pygtok.Name.Exception: Style(color=colors['base08']),
-		pygtok.Name.Decorator: Style(color=colors['base0E']),
-		pygtok.Name.Variable: Style(color=colors['base08']),
-		pygtok.Name.Constant: Style(color=colors['base09']),
-		pygtok.Name.Attribute: Style(color=colors['base0D']),
-		pygtok.Name.Tag: Style(color=colors['base08']),
-		pygtok.String: Style(color=colors['base0B']),
-		pygtok.Number: Style(color=colors['base09']),
-		pygtok.Generic.Deleted: Style(color=colors['base08']),
-		pygtok.Generic.Inserted: Style(color=colors['base0B']),
-		pygtok.Generic.Changed: Style(color=colors['base0E']),
-		pygtok.Generic.Heading: Style(bold=True),
-		pygtok.Generic.Subheading: Style(bold=True, dim=True),
-		pygtok.Generic.Prompt: Style(bold=True),
-		pygtok.Generic.Error: Style(color=colors['base08'], bold=True),
-		pygtok.Error: Style(color=colors['base08'], bold=True),
-	})
-	theme._background_style = Style(bgcolor=colors['base00'])
-	theme._border_style = Style(color=colors['base05'], bgcolor=colors['base00'])
+	theme = ANSISyntaxTheme(
+		{
+			pygtok.Token: Style(),
+			pygtok.Whitespace: Style(),
+			pygtok.Comment: Style(color=colors["base03"]),
+			pygtok.Comment.Preproc: Style(color=colors["base03"], bold=True),
+			pygtok.Keyword: Style(color=colors["base0E"]),
+			pygtok.Operator: Style(color=colors["base05"]),
+			pygtok.Name.Builtin: Style(color=colors["base0E"]),
+			pygtok.Name.Function: Style(color=colors["base0D"]),
+			pygtok.Name.Namespace: Style(color=colors["base0C"]),
+			pygtok.Name.Class: Style(color=colors["base0A"]),
+			pygtok.Name.Exception: Style(color=colors["base08"]),
+			pygtok.Name.Decorator: Style(color=colors["base0E"]),
+			pygtok.Name.Variable: Style(color=colors["base08"]),
+			pygtok.Name.Constant: Style(color=colors["base09"]),
+			pygtok.Name.Attribute: Style(color=colors["base0D"]),
+			pygtok.Name.Tag: Style(color=colors["base08"]),
+			pygtok.String: Style(color=colors["base0B"]),
+			pygtok.Number: Style(color=colors["base09"]),
+			pygtok.Generic.Deleted: Style(color=colors["base08"]),
+			pygtok.Generic.Inserted: Style(color=colors["base0B"]),
+			pygtok.Generic.Changed: Style(color=colors["base0E"]),
+			pygtok.Generic.Heading: Style(bold=True),
+			pygtok.Generic.Subheading: Style(bold=True, dim=True),
+			pygtok.Generic.Prompt: Style(bold=True),
+			pygtok.Generic.Error: Style(color=colors["base08"], bold=True),
+			pygtok.Error: Style(color=colors["base08"], bold=True),
+		}
+	)
+	theme._background_style = Style(bgcolor=colors["base00"])
+	theme._border_style = Style(color=colors["base05"], bgcolor=colors["base00"])
 	return theme
 
 
 # Syntax theme that uses the current color palette of the terminal. This assumes the terminal is base16, the colors might not make sense if this isn't true.
-CURRENT_SYNTAX_THEME = make_syntax_theme({
-	'base00': 'color(0)',
-	'base01': 'color(18)',
-	'base02': 'color(19)',
-	'base03': 'color(8)',
-	'base04': 'color(20)',
-	'base05': 'color(7)',
-	'base06': 'color(21)',
-	'base07': 'color(15)',
-	'base08': 'color(1)',
-	'base09': 'color(16)',
-	'base0A': 'color(3)',
-	'base0B': 'color(2)',
-	'base0C': 'color(6)',
-	'base0D': 'color(4)',
-	'base0E': 'color(5)',
-	'base0F': 'color(17)',
-})
+CURRENT_SYNTAX_THEME = make_syntax_theme(
+	{
+		"base00": "color(0)",
+		"base01": "color(18)",
+		"base02": "color(19)",
+		"base03": "color(8)",
+		"base04": "color(20)",
+		"base05": "color(7)",
+		"base06": "color(21)",
+		"base07": "color(15)",
+		"base08": "color(1)",
+		"base09": "color(16)",
+		"base0A": "color(3)",
+		"base0B": "color(2)",
+		"base0C": "color(6)",
+		"base0D": "color(4)",
+		"base0E": "color(5)",
+		"base0F": "color(17)",
+	}
+)
 
 
 # Sample code to preview the theme. Should ideally be exactly 16 lines as it will be shown next to a list of the 16 colors in the theme.
 SAMPLE_CODE = (
-	'rust',
-	dedent("""
+	"rust",
+	dedent(
+		"""
 		#[derive(Debug)]
 		pub enum State {
 			Start,
@@ -137,23 +135,24 @@ SAMPLE_CODE = (
 				}
 			}
 		}
-	""").strip(),
+	"""
+	).strip(),
 )
 
 
 def yaml_load(file: StringIO) -> dict:
-	yaml = ruamel.yaml.YAML(typ='safe')
+	yaml = ruamel.yaml.YAML(typ="safe")
 	return yaml.load(file)
 
 
 def yaml_load_file(path: Path) -> dict:
-	with open(path, 'r') as f:
+	with open(path, "r") as f:
 		return yaml_load(f)
 
 
 def yaml_save_file(path: Path, data: dict):
-	yaml = ruamel.yaml.YAML(typ='safe')
-	with open(path, 'w') as f:
+	yaml = ruamel.yaml.YAML(typ="safe")
+	with open(path, "w") as f:
 		return yaml.dump(data, f)
 
 
@@ -165,12 +164,12 @@ class SchemeColor(Color):
 	@classmethod
 	def validate(cls, value):
 		if not isinstance(value, str):
-			raise TypeError('string required')
+			raise TypeError("string required")
 		elif len(value) != 6:
-			raise ValueError('must be exactly 6 characters')
-		elif set(value) - set('0123456789abcdefABCDEF'):
-			raise ValueError('must only contain hexadecimal characters')
-		return cls(f'#{value}')
+			raise ValueError("must be exactly 6 characters")
+		elif set(value) - set("0123456789abcdefABCDEF"):
+			raise ValueError("must only contain hexadecimal characters")
+		return cls(f"#{value}")
 
 
 @dataclass
@@ -197,45 +196,47 @@ class Scheme:
 	@property
 	def vars(self) -> dict:
 		vars = {
-			'scheme-name': self.scheme,
-			'scheme-slug': self.scheme.lower().replace(' ', '-'),
-			'scheme-author': self.author,
+			"scheme-name": self.scheme,
+			"scheme-slug": self.scheme.lower().replace(" ", "-"),
+			"scheme-author": self.author,
 		}
 		for i in range(0, 16):
-			name = f'base{i:02X}'
+			name = f"base{i:02X}"
 			color = getattr(self, name)
 			(r, g, b) = (color.hex_l[1:3], color.hex_l[3:5], color.hex_l[5:7])
-			vars.update({
-				f'{name}-hex': f'{r}{g}{b}',
-				f'{name}-hex-bgr': f'{b}{g}{r}',
-				f'{name}-hex-r': r,
-				f'{name}-hex-g': g,
-				f'{name}-hex-b': b,
-				f'{name}-rgb-r': int(r, 16),
-				f'{name}-rgb-g': int(g, 16),
-				f'{name}-rgb-b': int(b, 16),
-				f'{name}-dec-r': color.red,
-				f'{name}-dec-g': color.green,
-				f'{name}-dec-b': color.blue,
-				f'{name}-hsl-h': color.hue,
-				f'{name}-hsl-s': color.saturation,
-				f'{name}-hsl-l': color.luminance,
-			})
+			vars.update(
+				{
+					f"{name}-hex": f"{r}{g}{b}",
+					f"{name}-hex-bgr": f"{b}{g}{r}",
+					f"{name}-hex-r": r,
+					f"{name}-hex-g": g,
+					f"{name}-hex-b": b,
+					f"{name}-rgb-r": int(r, 16),
+					f"{name}-rgb-g": int(g, 16),
+					f"{name}-rgb-b": int(b, 16),
+					f"{name}-dec-r": color.red,
+					f"{name}-dec-g": color.green,
+					f"{name}-dec-b": color.blue,
+					f"{name}-hsl-h": color.hue,
+					f"{name}-hsl-s": color.saturation,
+					f"{name}-hsl-l": color.luminance,
+				}
+			)
 		return vars
 
 	@property
 	def syntax_theme(self) -> ANSISyntaxTheme:
 		colors = {}
 		for i in range(0, 16):
-			name = f'base{i:02X}'
+			name = f"base{i:02X}"
 			color = getattr(self, name)
 			colors[name] = color.hex_l
 		return make_syntax_theme(colors)
 
 
 class Schemes:
-	LIST_URL = 'https://raw.githubusercontent.com/chriskempson/base16-schemes-source/master/list.yaml'
-	INDEX = CACHE_DIR / 'index.yaml'
+	LIST_URL = "https://raw.githubusercontent.com/chriskempson/base16-schemes-source/master/list.yaml"
+	INDEX = CACHE_DIR / "index.yaml"
 
 	_index: dict[str, str]
 
@@ -246,18 +247,18 @@ class Schemes:
 	@classmethod
 	def init(cls):
 		if cls.INDEX.exists():
-			log.info('Loading cached schemes...')
+			log.info("Loading cached schemes...")
 			return cls(yaml_load_file(cls.INDEX), is_from_init=True)
 		else:
-			log.info('Schemes not yet cached, updating now...')
+			log.info("Schemes not yet cached, updating now...")
 			cls._update_schemes()
 			return cls(cls._calculate_index(), is_from_init=True)
 
 	def get(self, name: str) -> Scheme:
 		if name not in self._index:
-			log.info(f'Unknown scheme {name}. Valid options:', file=stderr)
+			log.info(f"Unknown scheme {name}. Valid options:", file=stderr)
 			for name in self._index:
-				log.info(f'- {name}', file=stderr)
+				log.info(f"- {name}", file=stderr)
 			exit(1)
 
 		data = yaml_load_file(CACHE_DIR / self._index[name])
@@ -276,16 +277,19 @@ class Schemes:
 	def _download_scheme(cls, name: str, repo: str) -> None:
 		cache_path = CACHE_DIR / name
 		if cache_path.exists():
-			log.info(f'Using cached {repo!r}.')
+			log.info(f"Using cached {repo!r}.")
 			return
 
-		log.info(f'Downloading {repo!r}.')
-		for branch in ('master', 'main'):
-			response = requests.get(f'{repo}/archive/refs/heads/{branch}.zip')
-			if response.status_code == 200 and response.headers.get('content-type', 'unknown') == 'application/zip':
+		log.info(f"Downloading {repo!r}.")
+		for branch in ("master", "main"):
+			response = requests.get(f"{repo}/archive/refs/heads/{branch}.zip")
+			if (
+				response.status_code == 200
+				and response.headers.get("content-type", "unknown") == "application/zip"
+			):
 				break
 		else:
-			raise Exception('Unable to download repo.')
+			raise Exception("Unable to download repo.")
 
 		with BytesIO(response.content) as data, ZipFile(data) as zipfile:
 			zipfile.extractall(cache_path)
@@ -293,10 +297,12 @@ class Schemes:
 	@classmethod
 	def _calculate_index(cls) -> dict:
 		index = {}
-		for schemepath in glob('*/**/*.yaml', root_dir=CACHE_DIR, recursive=True):
+		for schemepath in glob("*/**/*.yaml", root_dir=CACHE_DIR, recursive=True):
 			name = Path(schemepath).stem
 			if name in index:
-				raise Exception(f'Found multiple schemes with the same name: {index[name]} {schemepath}')
+				raise Exception(
+					f"Found multiple schemes with the same name: {index[name]} {schemepath}"
+				)
 			index[name] = schemepath
 
 		yaml_save_file(cls.INDEX, index)
@@ -308,32 +314,32 @@ class Template:
 	input: Path
 	output: Path
 
-	@validator('input')
+	@validator("input")
 	def _resolve_input(cls, value):
 		if not isinstance(value, Path):
-			raise TypeError('must be a path')
+			raise TypeError("must be a path")
 		return CONFIG_DIR / value
 
-	@validator('output')
+	@validator("output")
 	def _resolve_output(cls, value):
 		if not isinstance(value, Path):
-			raise TypeError('must be a path')
+			raise TypeError("must be a path")
 		value = value.expanduser()
 		if not value.is_absolute():
-			raise ValueError('cannot be a relative path')
+			raise ValueError("cannot be a relative path")
 		return value
 
 	def render(self, scheme: Scheme, dry_run: bool = False) -> bool:
-		with open(self.input, 'r') as f:
+		with open(self.input, "r") as f:
 			rendered = chevron.render(f, scheme.vars)
 		try:
-			with open(self.output, 'r') as f:
+			with open(self.output, "r") as f:
 				if f.read() == rendered:
 					return False
 		except FileNotFoundError:
 			pass
 		if not dry_run:
-			with open(self.output, 'w') as f:
+			with open(self.output, "w") as f:
 				f.write(rendered)
 		return True
 
@@ -348,7 +354,7 @@ class Application:
 
 @dataclass
 class Config:
-	FILE = CONFIG_DIR / 'config.yaml'
+	FILE = CONFIG_DIR / "config.yaml"
 
 	applications: dict[str, Application]
 	aliases: dict[str, str] = field(default_factory=dict)
@@ -356,10 +362,10 @@ class Config:
 	@classmethod
 	def load(cls):
 		try:
-			log.info(f'Loading config [cyan]{Config.FILE}[/].')
+			log.info(f"Loading config [cyan]{Config.FILE}[/].")
 			return cls(**yaml_load_file(cls.FILE))
 		except FileNotFoundError:
-			log.error('[red]Config file does not exist.[/]')
+			log.error("[red]Config file does not exist.[/]")
 
 
 class Grid(Table):
@@ -386,7 +392,7 @@ class VBox(Grid):
 class Status(Grid):
 	def __init__(self, text, **kwargs):
 		super().__init__(padding=1, **kwargs)
-		self.add_row(Spinner('dots'), Text.from_markup(text))
+		self.add_row(Spinner("dots"), Text.from_markup(text))
 
 	def update(self, /, icon=None, text=None):
 		if icon is not None:
@@ -414,28 +420,37 @@ class PreviewScript(Panel):
 			line_numbers=True,
 			indent_guides=True,
 		)
-		theme_border_style = Style(color=scheme.base05.hex_l, bgcolor=scheme.base00.hex_l)
+		theme_border_style = Style(
+			color=scheme.base05.hex_l, bgcolor=scheme.base00.hex_l
+		)
 		super().__init__(
 			script,
-			title='Preview',
+			title="Preview",
 			border_style=theme._border_style,
 			padding=0,
 		)
+
 
 class PreviewColors(Panel):
 	def __init__(self, scheme: Scheme):
 		grid = Table.grid()
 		for i in range(0, 16):
-			name = f'base{i:02X}'
+			name = f"base{i:02X}"
 			color = getattr(scheme, name)
 			grid.add_row(
-				Text(f' {name} ', style=Style(color=color.hex_l, bgcolor=scheme.base00.hex_l)),
-				Text(f' {name} ', style=Style(color=scheme.base05.hex_l, bgcolor=color.hex_l)),
-				Text(f' ', style=Style(bgcolor=scheme.base00.hex_l)),
+				Text(
+					f" {name} ",
+					style=Style(color=color.hex_l, bgcolor=scheme.base00.hex_l),
+				),
+				Text(
+					f" {name} ",
+					style=Style(color=scheme.base05.hex_l, bgcolor=color.hex_l),
+				),
+				Text(f" ", style=Style(bgcolor=scheme.base00.hex_l)),
 			)
 		super().__init__(
 			grid,
-			title='Colors',
+			title="Colors",
 			border_style=scheme.syntax_theme._border_style,
 			padding=0,
 		)
@@ -448,7 +463,7 @@ class Preview(Styled):
 			PreviewColors(scheme),
 			PreviewScript(scheme),
 		)
-		super().__init__(grid, f'on {scheme.base00.hex_l}')
+		super().__init__(grid, f"on {scheme.base00.hex_l}")
 
 
 @dataclass
@@ -459,17 +474,31 @@ class AppResult:
 
 def main():
 	parser = ArgumentParser()
-	parser.add_argument('name')
-	parser.add_argument('-d', '--dry-run', action='store_true', help="Don't actually change any files or run any hooks.")
-	parser.add_argument('-f', '--force-hooks', action='store_true', help='Run hooks even if none of the rendered files changed.')
-	parser.add_argument('-s', '--skip-hooks', action='store_true', help="Don't run hooks.")
-	parser.add_argument('-u', '--update', action='store_true', help='Update cached schemes.')
+	parser.add_argument("name")
+	parser.add_argument(
+		"-d",
+		"--dry-run",
+		action="store_true",
+		help="Don't actually change any files or run any hooks.",
+	)
+	parser.add_argument(
+		"-f",
+		"--force-hooks",
+		action="store_true",
+		help="Run hooks even if none of the rendered files changed.",
+	)
+	parser.add_argument(
+		"-s", "--skip-hooks", action="store_true", help="Don't run hooks."
+	)
+	parser.add_argument(
+		"-u", "--update", action="store_true", help="Update cached schemes."
+	)
 
 	args = parser.parse_args()
 	if args.force_hooks and args.skip_hooks:
-		parser.error('Cannot use --force-hooks and --skip-hooks at the same time.')
+		parser.error("Cannot use --force-hooks and --skip-hooks at the same time.")
 	if args.force_hooks and args.dry_run:
-		parser.error('Cannot use --force-hooks and --dry-run at the same time.')
+		parser.error("Cannot use --force-hooks and --dry-run at the same time.")
 
 	layout = Table.grid(padding=1)
 	with Live(layout):
@@ -481,7 +510,7 @@ def main():
 
 		# Load config & schemes.
 		if args.update:
-			log.info('Clearing scheme cache.')
+			log.info("Clearing scheme cache.")
 			if CACHE_DIR.exists():
 				rmtree(CACHE_DIR)
 
@@ -490,13 +519,13 @@ def main():
 
 		name = config.aliases.get(args.name, args.name)
 		scheme = schemes.get(name)
-		log.info(f'Using scheme [cyan]{name}[/].')
+		log.info(f"Using scheme [cyan]{name}[/].")
 
 		# Show preview of the chosen scheme.
 		layout.add_row(Preview(scheme))
 
 		# Sort the applications from the config so that ones with dependencies go after their dependencies.
-		app_order = toposort({ k: v.dependsOn for k, v in config.applications.items() })
+		app_order = toposort({k: v.dependsOn for k, v in config.applications.items()})
 
 		# Update all applications from the config.
 		results_box = Table.grid(padding=1)
@@ -518,64 +547,105 @@ def main():
 			results[aname] = app_result
 
 			for template in app.templates:
-				status = Status(f'Rendering [cyan]{template.output}[/].')
+				status = Status(f"Rendering [cyan]{template.output}[/].")
 				app_box.add(status)
 
 				try:
 					template_has_changes = template.render(scheme, dry_run=args.dry_run)
 				except Exception:
 					app_result.has_errors = True
-					status.update(icon=f'[red]{ICON_NOTOK}[/]', text=f'[red]Failed to render [cyan]{template.output}[/].[/]')
+					status.update(
+						icon=f"[red]{ICON_NOTOK}[/]",
+						text=f"[red]Failed to render [cyan]{template.output}[/].[/]",
+					)
 					app_box.add(Traceback(theme=CURRENT_SYNTAX_THEME))
 					continue
 
 				if template_has_changes:
-					status.update(icon=ICON_SAVE, text=f'Rendered [cyan]{template.output}[/].')
+					status.update(
+						icon=ICON_SAVE, text=f"Rendered [cyan]{template.output}[/]."
+					)
 				else:
-					status.update(icon=ICON_SKIP, text=f'No change to [cyan]{template.output}[/].')
+					status.update(
+						icon=ICON_SKIP, text=f"No change to [cyan]{template.output}[/]."
+					)
 
 				app_result.has_changes |= template_has_changes
 
 			if app.hook:
 				hook = Grid(padding=1)
-				hook.add_row(ICON_RUN, 'Hook:', Syntax(app.hook, 'bash', theme=CURRENT_SYNTAX_THEME, code_width=len(app.hook)))
+				hook.add_row(
+					ICON_RUN,
+					"Hook:",
+					Syntax(
+						app.hook,
+						"bash",
+						theme=CURRENT_SYNTAX_THEME,
+						code_width=len(app.hook),
+					),
+				)
 				app_box.add(hook)
 
-				status = Status('')
+				status = Status("")
 				app_box.add(status)
 				if app_result.has_errors:
-					status.update(icon=ICON_SKIP, text='[yellow]Skipping hook because not all renders were successful.[/]')
+					status.update(
+						icon=ICON_SKIP,
+						text="[yellow]Skipping hook because not all renders were successful.[/]",
+					)
 					continue
 				elif dependencies_result.has_errors:
-					status.update(icon=ICON_SKIP, text='[yellow]Skipping hook because not all dependencies were successful.[/]')
+					status.update(
+						icon=ICON_SKIP,
+						text="[yellow]Skipping hook because not all dependencies were successful.[/]",
+					)
 					continue
 				elif app_result.has_changes:
-					reason = 'changes in rendered files'
+					reason = "changes in rendered files"
 				elif dependencies_result.has_changes:
-					reason = 'changes in dependencies'
+					reason = "changes in dependencies"
 				elif app.hookRunAlways:
-					reason = '[cyan]hookRunAlways[/]'
+					reason = "[cyan]hookRunAlways[/]"
 				elif args.force_hooks:
-					reason = '[cyan]--force[/]'
+					reason = "[cyan]--force[/]"
 				else:
-					status.update(icon=ICON_SKIP, text='Skipping hook because all rendered files were unchanged.')
+					status.update(
+						icon=ICON_SKIP,
+						text="Skipping hook because all rendered files were unchanged.",
+					)
 					continue
 
 				if args.dry_run:
-					status.update(icon=ICON_SKIP, text=f'Skipping despite {reason} because of [cyan]--dry-run[/].')
+					status.update(
+						icon=ICON_SKIP,
+						text=f"Skipping despite {reason} because of [cyan]--dry-run[/].",
+					)
 					continue
 
-				status.update(text=f'Running hook because of {reason}')
+				status.update(text=f"Running hook because of {reason}")
 
-				proc = run(f'set -o errexit -o pipefail; {app.hook}', shell=True, stdout=PIPE, stderr=STDOUT)
+				proc = run(
+					f"set -o errexit -o pipefail; {app.hook}",
+					shell=True,
+					stdout=PIPE,
+					stderr=STDOUT,
+				)
 				if proc.returncode == 0:
-					status.update(icon=ICON_OK, text=f'Hook was successful, ran because of {reason}.')
+					status.update(
+						icon=ICON_OK,
+						text=f"Hook was successful, ran because of {reason}.",
+					)
 				else:
 					app_result.has_errors = False
-					status.update(icon=ICON_NOTOK, text=f'[red]Hook failed ({proc.returncode}).[/]')
+					status.update(
+						icon=ICON_NOTOK,
+						text=f"[red]Hook failed ({proc.returncode}).[/]",
+					)
 
-				output = proc.stdout.decode('utf-8')
-				if output.endswith('\n'): # Drop only a single ending newline, not multiple.
+				output = proc.stdout.decode("utf-8")
+				if output.endswith(
+					"\n"
+				):	# Drop only a single ending newline, not multiple.
 					output = output[:-1]
 				if output:
 					app_box.add(Panel(output))
@@ -584,5 +654,5 @@ def main():
 			exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 	main()
