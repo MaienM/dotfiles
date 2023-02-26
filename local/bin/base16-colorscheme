@@ -235,7 +235,9 @@ class Scheme:
 
 
 class Schemes:
-	LIST_URL = "https://raw.githubusercontent.com/chriskempson/base16-schemes-source/master/list.yaml"
+	ZIP_URL = (
+		"https://github.com/tinted-theming/base16-schemes/archive/refs/heads/main.zip"
+	)
 	INDEX = CACHE_DIR / "index.yaml"
 
 	_index: dict[str, str]
@@ -256,9 +258,9 @@ class Schemes:
 
 	def get(self, name: str) -> Scheme:
 		if name not in self._index:
-			log.info(f"Unknown scheme {name}. Valid options:", file=stderr)
+			log.info(f"Unknown scheme {name}. Valid options:")
 			for name in self._index:
-				log.info(f"- {name}", file=stderr)
+				log.info(f"- {name}")
 			exit(1)
 
 		data = yaml_load_file(CACHE_DIR / self._index[name])
@@ -266,38 +268,17 @@ class Schemes:
 
 	@classmethod
 	def _update_schemes(cls) -> None:
-		response = requests.get(cls.LIST_URL)
+		response = requests.get(cls.ZIP_URL)
 		response.raise_for_status()
-		listing = ruamel.yaml.safe_load(response.content)
-
-		for name, repo in listing.items():
-			cls._download_scheme(name, repo)
-
-	@classmethod
-	def _download_scheme(cls, name: str, repo: str) -> None:
-		cache_path = CACHE_DIR / name
-		if cache_path.exists():
-			log.info(f"Using cached {repo!r}.")
-			return
-
-		log.info(f"Downloading {repo!r}.")
-		for branch in ("master", "main"):
-			response = requests.get(f"{repo}/archive/refs/heads/{branch}.zip")
-			if (
-				response.status_code == 200
-				and response.headers.get("content-type", "unknown") == "application/zip"
-			):
-				break
-		else:
-			raise Exception("Unable to download repo.")
-
 		with BytesIO(response.content) as data, ZipFile(data) as zipfile:
-			zipfile.extractall(cache_path)
+			zipfile.extractall(CACHE_DIR)
 
 	@classmethod
 	def _calculate_index(cls) -> dict:
 		index = {}
-		for schemepath in glob("*/**/*.yaml", root_dir=CACHE_DIR, recursive=True):
+		for schemepath in glob(
+			"base16-schemes-main/*.yaml", root_dir=CACHE_DIR, recursive=True
+		):
 			name = Path(schemepath).stem
 			if name in index:
 				raise Exception(
