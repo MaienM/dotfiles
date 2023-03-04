@@ -87,8 +87,9 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   custom.allowUnfreeList = [
-    "nvidia-x11"
+    "cups-brother-hll2350dw"
     "nvidia-settings"
+    "nvidia-x11"
     "steam"
     "steam-original"
     "steam-run"
@@ -143,6 +144,9 @@ in
   fileSystems."/run/containerd" = bind "/persist/run/containerd";
   fileSystems."/var/lib/containerd" = bind "/persist/var/lib/containerd";
   fileSystems."/var/lib/nerdctl" = bind "/persist/var/lib/nerdctl";
+
+  # Enable binfmt emulation for aarch64-linux, to cross-compile for RPI.
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

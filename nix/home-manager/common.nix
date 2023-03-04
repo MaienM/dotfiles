@@ -22,6 +22,7 @@
       nixpkgs-fmt
       nodejs
       p7zip
+      pkgs-inputs.yamlfmt.yamlfmt
       python3
       ripgrep
       socat
@@ -31,7 +32,6 @@
       vifm
       xclip
       zsh
-      pkgs-inputs.yamlfmt.yamlfmt
 
       # Applications.
       kitty
