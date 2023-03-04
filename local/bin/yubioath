@@ -1,0 +1,14 @@
+#!/usr/bin/env cached-nix-shell
+#!nix-shell -i bash
+#!nix-shell -p yubioath-flutter
+
+if [ -z "$SUDO_USER" ]; then
+	exec sudo "$(realpath "$0")" "$@"
+fi
+
+for prog in gpg-agent scdaemon pcscd; do
+	trap "pkill -f $prog" EXIT
+	pkill -f "$prog"
+done
+
+sudo -u "$SUDO_USER" yubioath-flutter
