@@ -59,6 +59,7 @@
       nil
       nodePackages.pyright
       rust-analyzer
+      zk
 
     ];
 

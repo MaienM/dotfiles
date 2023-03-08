@@ -283,3 +283,6 @@
 [submodule "vim/bundle-nvim/null-ls"]
 	path = vim/bundle-nvim/null-ls
 	url = https://github.com/jose-elias-alvarez/null-ls.nvim
+[submodule "vim/bundle-nvim/zk"]
+	path = vim/bundle-nvim/zk
+	url = https://github.com/mickael-menu/zk-nvim
