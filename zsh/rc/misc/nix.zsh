@@ -34,9 +34,11 @@ fi
 if [[ ${commands[nixos-rebuild]} ]]; then
 	alias dot-nixos-rebuild='sudo nixos-rebuild --flake "$HOME/dotfiles#$(hostname)"'
 fi
+
 if [[ ${commands[darwin-rebuild]} ]]; then
 	alias dot-darwin-rebuild='darwin-rebuild --flake "$HOME/dotfiles#$(hostname)"'
 fi
+
 if [[ ${commands[home-manager]} ]]; then
 	alias dot-home-manager='home-manager --flake "$HOME/dotfiles#${USER}@$(hostname)"'
 fi
@@ -45,5 +47,8 @@ ns() {
 	nix_shell_packages="${nix_shell_packages[*]}" nix-shell --command zsh -p "$@"
 }
 nx() {
-	nix-shell --command "$(printf '%q ' "$@")" -p "$1"
+	local prog="$1"
+	shift 1
+	nix-shell --command "$(printf '%q ' "${prog##*.}" "$@")" -p "$prog"
 }
+
