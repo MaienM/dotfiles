@@ -1,7 +1,12 @@
-#!/usr/bin/env bash
+#!/usr/bin/env cached-nix-shell
+#!nix-shell -i bash
+#!nix-shell -p feh
+#!nix-shell -p imagemagick
+#!nix-shell -p xdotool
+#!nix-shell -p xorg.xwininfo
 
 set -o errexit -o pipefail -o monitor
-trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+trap "kill -- -$$ > /dev/null 2>&1" SIGINT SIGTERM EXIT
 
 fn="$1"
 if [ -z "$fn" ]; then
