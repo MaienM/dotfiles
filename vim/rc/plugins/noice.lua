@@ -107,6 +107,7 @@ require('noice').setup {
 			-- File written messages.
 			view('mini', filter_msg('%d+B written$')),
 			view('mini', filter_msg('^<$')),
+			view('mini', filter_msg('^:!scp')),
 
 			-- Undo/redo messages.
 			view('mini', filter_msg('^%d% changes?')),
