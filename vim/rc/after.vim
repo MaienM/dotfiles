@@ -1,4 +1,4 @@
-runtime! rc/after/**/*.vim
+runtime! rc/after/*.vim
 if has('nvim')
-	runtime! rc/after/**/*.lua
+	runtime! rc/after/*.lua
 endif

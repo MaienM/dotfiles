@@ -280,3 +280,6 @@
 [submodule "vim/bundle-nvim/treesitter-context"]
 	path = vim/bundle-nvim/treesitter-context
 	url = https://github.com/nvim-treesitter/nvim-treesitter-context
+[submodule "vim/bundle-nvim/null-ls"]
+	path = vim/bundle-nvim/null-ls
+	url = https://github.com/jose-elias-alvarez/null-ls.nvim

@@ -1,12 +1,13 @@
 local lspconfig = require('lspconfig')
 local lspformat = require('lsp-format')
+local null_ls = require('null-ls')
 
 -- [D]iagnostics mappings.
 local opts = { noremap = true, silent = true }
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 
-local on_attach = function(client, bufnr)
+local function on_attach(client, bufnr)
 	-- Enable completion triggered by <c-x><c-o>
 	vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -63,88 +64,15 @@ local function setup(name, extra_settings)
 	))
 end
 
-for _, name in ipairs {
-	'gopls',
-	'pyright',
-	'rust_analyzer',
-	'terraformls',
-	'tsserver',
-} do
-	setup(name)
-end
+-- Setup null-ls.
+null_ls.setup()
 
-setup('nil_ls', {
-	settings = {
-		['nil'] = {
-			formatting = {
-				command = { 'nixpkgs-fmt' },
-			},
-		},
-	},
-})
+-- Store in global var for use in other rc files.
+vim.g.mylsp = {
+	on_attach = on_attach,
+	common_settings = common_settings,
+	setup = setup,
+}
 
--- Setup lua server for Neovim lua.
-do
-	local runtime_path = vim.split(package.path, ';')
-	table.insert(runtime_path, 'lua/?.lua')
-	table.insert(runtime_path, 'lua/?/init.lua')
-
-	setup('lua_ls', {
-		settings = {
-			Lua = {
-				runtime = {
-					version = 'LuaJIT',
-					path = runtime_path,
-				},
-				diagnostics = {
-					globals = { 'vim' },
-				},
-				format = {
-					enable = true,
-				},
-				workspace = {
-					library = vim.api.nvim_get_runtime_file('', true),
-					checkThirdParty = false,
-				},
-				telemetry = {
-					enable = false,
-				},
-			},
-		},
-	})
-end
-
--- Setup general purpose server for tools that aren't actually a language server.
-setup('efm', {
-	init_options = {
-		documentFormatting = true,
-	},
-	filetypes = {
-		'python',
-		'yaml',
-	},
-	settings = {
-		languages = {
-			python = {
-				{
-					formatCommand = 'isort -',
-					formatStdin = true,
-				},
-				{
-					formatCommand = 'expand -t4 | black --quiet - | unexpand -t4',
-					formatStdin = true,
-				},
-				{
-					formatCommand = 'autoflake --remove-all-unused-imports -',
-					formatStdin = true,
-				},
-			},
-			yaml = {
-				{
-					formatCommand = 'yamlfmt -',
-					formatStdin = true,
-				},
-			},
-		},
-	},
-})
+-- Load submodules.
+vim.cmd('runtime! rc/plugins/lsp/*.lua')

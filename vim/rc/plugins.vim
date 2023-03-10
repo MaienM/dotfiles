@@ -1,4 +1,4 @@
-runtime! rc/plugins/**/*.vim
+runtime! rc/plugins/*.vim
 if has('nvim')
-	runtime! rc/plugins/**/*.lua
+	runtime! rc/plugins/*.lua
 endif

@@ -54,7 +54,6 @@
       # Language servers.
       autoflake
       black
-      efm-langserver
       isort
       lua-language-server
       nil
