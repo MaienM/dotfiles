@@ -56,10 +56,10 @@
       black
       efm-langserver
       isort
+      lua-language-server
       nil
       nodePackages.pyright
       rust-analyzer
-      sumneko-lua-language-server
 
     ];
 

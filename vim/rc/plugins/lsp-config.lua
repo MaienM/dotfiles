@@ -37,8 +37,8 @@ local common_settings = {
 }
 
 -- Calling setup for a server may trigger a restart/reload even if nothing actually changed. This means that whenever we
--- change anything in our vimrc the sumneko server is restarted, which is... obnoxious. To prevent this lets be smart
--- about it and only re-run setup if something actually changed.
+-- change anything in our vimrc the lua server is restarted, which is... obnoxious. To prevent this lets be smart about
+-- it and only re-run setup if something actually changed.
 vim.g.vimrc_lsp_config_setup_last_configs = vim.g.vimrc_lsp_config_setup_last_configs or {}
 local function setup(name, extra_settings)
 	local settings = vim.tbl_deep_extend('force', common_settings, extra_settings or {})
@@ -83,13 +83,13 @@ setup('nil_ls', {
 	},
 })
 
--- Setup sumneko server for Neovim lua.
+-- Setup lua server for Neovim lua.
 do
 	local runtime_path = vim.split(package.path, ';')
 	table.insert(runtime_path, 'lua/?.lua')
 	table.insert(runtime_path, 'lua/?/init.lua')
 
-	setup('sumneko_lua', {
+	setup('lua_ls', {
 		settings = {
 			Lua = {
 				runtime = {
@@ -121,6 +121,7 @@ setup('efm', {
 	},
 	filetypes = {
 		'python',
+		'yaml',
 	},
 	settings = {
 		languages = {
@@ -135,6 +136,12 @@ setup('efm', {
 				},
 				{
 					formatCommand = 'autoflake --remove-all-unused-imports -',
+					formatStdin = true,
+				},
+			},
+			yaml = {
+				{
+					formatCommand = 'yamlfmt -',
 					formatStdin = true,
 				},
 			},
