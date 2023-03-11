@@ -65,7 +65,9 @@ local function setup(name, extra_settings)
 end
 
 -- Setup null-ls.
-null_ls.setup()
+null_ls.setup {
+	on_attach = on_attach,
+}
 
 -- Store in global var for use in other rc files.
 vim.g.mylsp = {
