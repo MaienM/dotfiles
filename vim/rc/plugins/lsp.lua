@@ -57,11 +57,7 @@ local function setup(name, extra_settings)
 	last_configs[name] = settings
 	vim.g.vimrc_lsp_config_setup_last_configs = last_configs
 
-	lspconfig[name].setup(vim.tbl_extend(
-		'error',
-		settings,
-		{ on_attach = local_on_attach }
-	))
+	lspconfig[name].setup(vim.tbl_extend('error', settings, { on_attach = local_on_attach }))
 end
 
 -- Setup null-ls.

@@ -1,7 +1,7 @@
 local notebook_root = vim.env.HOME .. '/coding/projects/zettelkasten'
-local media_root = notebook_root .. '/content/media';
+local media_root = notebook_root .. '/content/media'
 
-vim.env.ZK_NOTEBOOK_DIR = notebook_root;
+vim.env.ZK_NOTEBOOK_DIR = notebook_root
 
 local function in_zettelkasten()
 	return require('zk.util').notebook_root(vim.fn.expand('%:p')) ~= nil
@@ -13,15 +13,23 @@ local function on_attach(client, bufnr)
 	local opts = { noremap = true, silent = false }
 	local bufopts = vim.tbl_extend('error', opts, { buffer = bufnr })
 
-	vim.api.nvim_set_keymap('n', '<leader>zz',
-		"<Cmd>ZkNotes { sort = { 'modified' }, excludeHrefs = { '" .. media_root .. "' } }<CR>", opts)
+	vim.api.nvim_set_keymap(
+		'n',
+		'<leader>zz',
+		"<Cmd>ZkNotes { sort = { 'modified' }, excludeHrefs = { '" .. media_root .. "' } }<CR>",
+		opts
+	)
 	vim.api.nvim_set_keymap('n', '<leader>zt', '<Cmd>ZkTags<CR>', opts)
 
 	vim.api.nvim_set_keymap('n', '<leader>zc', '<Cmd>ZkNew<CR>', opts)
 	vim.api.nvim_set_keymap('v', '<leader>zc', "<Cmd>'<,'>ZkNewFromContentSelection<CR>", opts)
 
-	vim.api.nvim_set_keymap('n', '<leader>z/',
-		"<Cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') } }<CR>", opts)
+	vim.api.nvim_set_keymap(
+		'n',
+		'<leader>z/',
+		"<Cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') } }<CR>",
+		opts
+	)
 	vim.api.nvim_set_keymap('v', '<leader>z/', ":'<,'>ZkMatch<CR>", opts)
 
 	if not in_zettelkasten() then

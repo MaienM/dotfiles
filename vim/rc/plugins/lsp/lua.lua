@@ -13,7 +13,7 @@ vim.g.mylsp.setup('lua_ls', {
 				globals = { 'vim' },
 			},
 			format = {
-				enable = true,
+				enable = false,
 			},
 			workspace = {
 				library = vim.api.nvim_get_runtime_file('', true),
@@ -25,3 +25,6 @@ vim.g.mylsp.setup('lua_ls', {
 		},
 	},
 })
+
+local null_ls = require('null-ls')
+null_ls.register(null_ls.builtins.formatting.stylua)

@@ -51,7 +51,7 @@
       python3.pkgs.pynvim
       tree-sitter
 
-      # Language servers.
+      # Language servers/tools.
       autoflake
       black
       isort
@@ -59,6 +59,7 @@
       nil
       nodePackages.pyright
       rust-analyzer
+      stylua
       zk
 
     ];

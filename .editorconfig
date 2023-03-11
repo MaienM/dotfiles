@@ -5,9 +5,7 @@ max_line_length = 120
 
 [*.lua]
 quote_style = single
-call_arg_parentheses = remove_table_only
-table_separator_style = comma
-trailing_table_separator = smart
+call_parentheses = NoSingleTable
 
 [*.nix]
 indent_style = space

@@ -1,1 +1,1 @@
-require("lsp-format").setup {}
+require('lsp-format').setup {}

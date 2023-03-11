@@ -66,7 +66,7 @@ cmp.setup {
 				mode = 'symbol',
 				maxwidth = 50,
 				ellipsis_char = '...',
-			} (...)
+			}(...)
 			result.menu = nil -- Even though this field is not used it still affects the width if set.
 			return result
 		end,
