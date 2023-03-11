@@ -54,6 +54,7 @@
       # Language servers/tools.
       autoflake
       black
+      editorconfig-checker
       isort
       lua-language-server
       nil
