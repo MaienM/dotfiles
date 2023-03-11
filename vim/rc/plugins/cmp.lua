@@ -50,7 +50,7 @@ cmp.setup {
 		['<M-l>'] = cmp.mapping.scroll_docs(10),
 
 		['<C-e>'] = cmp.mapping.abort(),
-		['<CR>'] = cmp.mapping.confirm { select = true },
+		['<CR>'] = cmp.mapping.confirm(),
 	},
 	sources = cmp.config.sources({
 		{ name = 'nvim_lsp' },
