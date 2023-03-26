@@ -82,7 +82,16 @@ download_generic() {
 	fn="${fn%%.*([0-9])}"
 	fn="${fn%%\?*}"
 
-	files=(["$fn"]="$tmp")
+	files["$fn"]="$tmp"
+}
+
+download_vxtwitter_rendercombined() {
+	[[ "$url" =~ https://(convert\.)?vxtwitter\.com/rendercombined\.jpg\?imgs=(.*) ]] || return 1
+	mapfile -t suburls < <(printf '%s\n' "${BASH_REMATCH[2]}" | sed 's/,/\n/g')
+
+	for suburl in "${suburls[@]}"; do
+		download "$suburl"
+	done
 }
 
 download_nitter() {
@@ -110,8 +119,23 @@ download_gallery_dl() {
 	mapfile -t paths < <(gallery-dl "$url" -D /tmp 2> /dev/null) || return 1
 
 	for path in "${paths[@]}"; do
-		files["$(basename "$path")"]="${path#\# }"
+		echo "path='$path'"
+		path="${path#\# }"
+		files["$(basename "$path")"]="$path"
 	done
+}
+
+download() {
+	fc="${#files[@]}"
+	for downloader in vxtwitter_rendercombined nitter gallery_dl generic; do
+		echo "Trying $downloader downloader" 
+		url="$1"
+		"download_$downloader" && [ "${#files[@]}" -gt "$fc" ] && break
+	done
+	if ! [ "${#files[@]}" -gt "$fc" ]; then
+		echo >&2 "No files downloaded."
+		return 1 1
+	fi
 }
 
 
@@ -133,16 +157,7 @@ fi
 
 # Download the files.
 declare -A files
-orig_url="$url"
-for downloader in nitter gallery_dl generic; do
-	echo "Trying $downloader downloader" 
-	url="$orig_url"
-	"download_$downloader" && [ "${#files[@]}" -gt 0 ] && break
-done
-if [ "${#files[@]}" -eq 0 ]; then
-	echo >&2 "No files downloaded."
-	exit 1
-fi
+download "$url"
 
 for fn in "${!files[@]}"; do
 	ext="${fn##*.}"
