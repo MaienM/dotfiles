@@ -50,4 +50,4 @@ au User GoyoLeave nested call <SID>goyo_leave()
 au VimResized * call <SID>resized()
 
 " Mapping to toggle.
-nmap <Leader>z :Goyo<CR>
+nmap <Leader>Z :Goyo<CR>
