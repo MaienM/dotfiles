@@ -12,6 +12,11 @@ indent_style = space
 tab_width = 2
 indent_size = 2
 
+[flake.lock]
+indent_style = space
+tab_width = 2
+indent_size = 2
+
 [*.yml]
 indent_style = space
 tab_width = 2
