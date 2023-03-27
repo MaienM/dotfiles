@@ -1,3 +1,5 @@
+local zk = require('zk')
+
 local notebook_root = vim.env.HOME .. '/coding/projects/zettelkasten'
 local media_root = notebook_root .. '/content/media'
 
@@ -19,7 +21,7 @@ local function on_attach(client, bufnr)
 		"<Cmd>ZkNotes { sort = { 'modified' }, excludeHrefs = { '" .. media_root .. "' } }<CR>",
 		opts
 	)
-	vim.api.nvim_set_keymap('n', '<leader>zt', '<Cmd>ZkTags<CR>', opts)
+	vim.api.nvim_set_keymap('n', '<leader>zt', '<Cmd>ZkMultiTags<CR>', opts)
 
 	vim.api.nvim_set_keymap('n', '<leader>zc', '<Cmd>ZkNew<CR>', opts)
 	vim.api.nvim_set_keymap('v', '<leader>zc', "<Cmd>'<,'>ZkNewFromContentSelection<CR>", opts)
@@ -46,6 +48,8 @@ require('zk').setup {
 	lsp = {
 		config = vim.tbl_deep_extend('force', vim.g.mylsp.common_settings, {
 			on_attach = on_attach,
+
+			cmd = { '/home/maienm/coding/external/zk/zk', 'lsp' },
 		}),
 		auto_attach = {
 			enabled = true,
@@ -53,3 +57,22 @@ require('zk').setup {
 		},
 	},
 }
+
+vim.api.nvim_create_user_command('ZkMultiTags', function(options)
+	zk.pick_tags(options, { title = 'Zk Tags' }, function(tags)
+		tags = vim.tbl_map(function(v)
+			return v.name
+		end, tags)
+		zk.pick_notes(
+			{ tags = tags },
+			{ title = 'Zk Notes for tag(s) ' .. vim.inspect(tags), multi_select = true },
+			function(notes)
+				local cmd = 'args'
+				for _, note in ipairs(notes) do
+					cmd = cmd .. ' ' .. note.absPath
+				end
+				vim.cmd(cmd)
+			end
+		)
+	end)
+end, { nargs = '?', force = true, complete = 'lua' })
