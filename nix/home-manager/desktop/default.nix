@@ -16,11 +16,6 @@
     windowManager.command = "${pkgs.i3-gaps}/bin/i3";
   };
 
-  services.gnome-keyring = {
-    enable = true;
-    components = [ "secrets" ];
-  };
-
   custom.allowUnfreeList = [
     "discord"
     "google-chrome"

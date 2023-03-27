@@ -74,6 +74,8 @@ in
     enable = true;
     plugins = with pkgs; [ evolution-ews ];
   };
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.maienm.enableGnomeKeyring = true;
 
   # Enable sound.
   security.rtkit.enable = true;
