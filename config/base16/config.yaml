@@ -38,7 +38,7 @@ applications:
       - input: ./templates/shell/templates/default.mustache
         output: ~/.zsh/rc/base16.local.zsh
   tmux:
-    dependsOn: 
+    dependsOn:
       - vim
     hook: nvim --headless +TmuxlineUpdate +quit
     hookRunAlways: true # output of hook is also affected by airline theme

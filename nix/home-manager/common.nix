@@ -22,7 +22,6 @@
       nixpkgs-fmt
       nodejs
       p7zip
-      pkgs-inputs.yamlfmt.yamlfmt
       python3
       ripgrep
       socat
@@ -31,6 +30,7 @@
       unzip
       vifm
       xclip
+      yamlfmt
       zsh
 
       # Applications.

@@ -112,39 +112,13 @@
         "type": "github"
       }
     },
-    "poetry2nix": {
-      "inputs": {
-        "flake-utils": [
-          "yamlfmt",
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "yamlfmt",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1674917871,
-        "narHash": "sha256-0dLfkWyWWeKDZhupteyBNlastcEzrCmCTdFGtcj7F10=",
-        "owner": "nix-community",
-        "repo": "poetry2nix",
-        "rev": "860530598f2ab9a9a0e89dc79851d14b0aed3bf7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "poetry2nix",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "darwin": "darwin",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "neovim": "neovim",
-        "nixpkgs": "nixpkgs_2",
-        "yamlfmt": "yamlfmt"
+        "nixpkgs": "nixpkgs_2"
       }
     },
     "utils": {
@@ -159,31 +133,6 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "yamlfmt": {
-      "inputs": {
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "poetry2nix": "poetry2nix"
-      },
-      "locked": {
-        "lastModified": 1676633664,
-        "narHash": "sha256-S9QYPHBzxaSY9GdJeUfAnauvXPf2KuwOBJxlFgwhJ98=",
-        "owner": "MaienM",
-        "repo": "yamlfmt",
-        "rev": "a7bc3085e53ebf5b4661b14474a4a9b0cf2fc4ff",
-        "type": "github"
-      },
-      "original": {
-        "owner": "MaienM",
-        "ref": "main",
-        "repo": "yamlfmt",
         "type": "github"
       }
     }
