@@ -41,8 +41,10 @@ get_ratio() {
 
 update_cache() {
 	echo ">>> Updating background cache."
-	feh --recursive "$bgpath" --customlist '%f\n%w\n%h' 2> /dev/null > "$cachepath"
+	feh --recursive "$bgpath" --customlist '%f\n%w\n%h' 2> /dev/null > "$cachepath.tmp"
+	mv "$cachepath.tmp" "$cachepath"
 }
+
 
 # Update the cache.
 if [ -f "$cachepath" ]; then
