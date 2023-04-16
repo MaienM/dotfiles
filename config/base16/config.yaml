@@ -3,10 +3,10 @@ aliases:
   dark: solarflare
 applications:
   dircolors:
-    hook: python ~/.config/base16/templates/dircolors/templates/build.py | dircolors > ~/.profile.d/50_dircolors.local
     templates:
       - input: ./templates/dircolors/templates/default.mustache
         output: ~/.config/base16/templates/dircolors/templates/build.py
+    hook: python ~/.config/base16/templates/dircolors/templates/build.py | dircolors > ~/.profile.d/50_dircolors.local
   envvars:
     templates:
       - input: ./templates/custom/envvars.mustache
@@ -16,19 +16,19 @@ applications:
       - input: ./templates/fzf/templates/default.mustache
         output: ~/.base16_theme_fzf
   i3:
-    hook: i3-msg reload
     templates:
       - input: ./templates/custom/i3.mustache
         output: ~/.config/i3/config
+    hook: i3-msg reload
   k9s:
     templates:
       - input: ./templates/k9s/templates/default.mustache
         output: ~/.config/k9s/skin.yml
   polybar:
-    hook: polybar-msg cmd restart
     templates:
       - input: ./templates/polybar/templates/default.mustache
         output: ~/.config/polybar/base16.ini
+    hook: polybar-msg cmd restart
   rofi:
     templates:
       - input: ./templates/rofi/templates/default.mustache
@@ -38,10 +38,10 @@ applications:
       - input: ./templates/shell/templates/default.mustache
         output: ~/.zsh/rc/base16.local.zsh
   tmux:
-    dependsOn:
-      - vim
-    hook: nvim --headless +TmuxlineUpdate +quit
-    hookRunAlways: true # output of hook is also affected by airline theme
+    templates:
+      - input: ./templates/custom/tmux.mustache
+        output: ~/.tmux/tmuxline.conf
+    hook: tmux source ~/.tmux/tmuxline.conf
   vim:
     templates:
       - input: ./templates/custom/vim.mustache
@@ -51,7 +51,7 @@ applications:
       - dircolors
     hook: source ~/.profile.d/50_dircolors.local; vifm-convert-dircolors -e > ~/.config/vifm/base16.vifm
   xresources:
-    hook: xrdb -merge ~/.Xresources
     templates:
       - input: ./templates/xresources/templates/default.mustache
         output: ~/.Xresources.d/base16.local
+    hook: xrdb -merge ~/.Xresources
