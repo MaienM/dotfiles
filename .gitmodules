@@ -286,3 +286,6 @@
 [submodule "vim/bundle-nvim/base16"]
 	path = vim/bundle-nvim/base16
 	url = https://github.com/RRethy/nvim-base16
+[submodule "vim/bundle-nvim/devicons"]
+	path = vim/bundle-nvim/devicons
+	url = https://github.com/kyazdani42/nvim-web-devicons
