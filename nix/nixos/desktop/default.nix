@@ -105,14 +105,12 @@ in
   ];
 
   # Define user. This only the defines the bare minimum, as most of the user's environment is managed through home-manager.
+  programs.zsh.enable = true;
   users.users.maienm = {
     isNormalUser = true;
     hashedPassword = secrets.userPassword;
     shell = pkgs.zsh;
     extraGroups = [ "wheel" ];
-    packages = with pkgs; [
-      zsh
-    ];
   };
 
   # Setup GPG.
