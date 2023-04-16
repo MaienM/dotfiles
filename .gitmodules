@@ -289,3 +289,6 @@
 [submodule "vim/bundle-nvim/devicons"]
 	path = vim/bundle-nvim/devicons
 	url = https://github.com/kyazdani42/nvim-web-devicons
+[submodule "vim/bundle-nvim/lualine"]
+	path = vim/bundle-nvim/lualine
+	url = https://github.com/nvim-lualine/lualine.nvim
