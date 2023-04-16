@@ -44,8 +44,8 @@ applications:
     hookRunAlways: true # output of hook is also affected by airline theme
   vim:
     templates:
-      - input: ./templates/vim/templates/default.mustache
-        output: ~/.vim/colors/base16.vim
+      - input: ./templates/custom/vim.mustache
+        output: ~/.vim/colors/base16.lua
   vifm:
     dependsOn:
       - dircolors

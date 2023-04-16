@@ -214,9 +214,6 @@
 [submodule "config/base16/templates/shell"]
 	path = config/base16/templates/shell
 	url = https://github.com/tinted-theming/base16-shell
-[submodule "config/base16/templates/vim"]
-	path = config/base16/templates/vim
-	url = https://github.com/tinted-theming/base16-vim
 [submodule "config/base16/templates/xresources"]
 	path = config/base16/templates/xresources
 	url = https://github.com/base16-project/base16-xresources
@@ -286,3 +283,6 @@
 [submodule "vim/bundle-nvim/zk"]
 	path = vim/bundle-nvim/zk
 	url = https://github.com/mickael-menu/zk-nvim
+[submodule "vim/bundle-nvim/base16"]
+	path = vim/bundle-nvim/base16
+	url = https://github.com/RRethy/nvim-base16

@@ -1,6 +1,7 @@
 local function theme_hook()
-	vim.cmd('highlight IndentBlanklineCharNormal guifg=#' .. vim.g.base16_gui01 .. ' gui=nocombine')
-	vim.cmd('highlight IndentBlanklineCharCurrent guifg=#' .. vim.g.base16_gui0D .. ' gui=nocombine')
+	local colors = require('base16-colorscheme').colors
+	vim.cmd('highlight IndentBlanklineCharNormal guifg=' .. colors.base01 .. ' gui=nocombine')
+	vim.cmd('highlight IndentBlanklineCharCurrent guifg=' .. colors.base0D .. ' gui=nocombine')
 end
 
 vim.fn.RegisterThemeHook(theme_hook)
