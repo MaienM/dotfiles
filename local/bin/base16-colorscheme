@@ -3,6 +3,7 @@
 #!nix-shell -p python3
 #!nix-shell -p python3.pkgs.chevron
 #!nix-shell -p python3.pkgs.colour
+#!nix-shell -p python3.pkgs.jinja2
 #!nix-shell -p python3.pkgs.pydantic
 #!nix-shell -p python3.pkgs.requests
 #!nix-shell -p python3.pkgs.rich
@@ -22,6 +23,7 @@ from textwrap import dedent
 from zipfile import ZipFile
 
 import chevron
+import jinja2
 import pygments.token as pygtok
 import requests
 import ruamel.yaml
@@ -310,8 +312,17 @@ class Template:
 		return value
 
 	def render(self, scheme: Scheme, dry_run: bool = False) -> bool:
-		with open(self.input, "r") as f:
-			rendered = chevron.render(f, scheme.vars)
+		if self.input.suffix == ".mustache":
+			with open(self.input, "r") as f:
+				rendered = chevron.render(f, scheme.vars)
+		elif self.input.suffix == ".jinja":
+			with open(self.input, "r") as f:
+				rendered = jinja2.Template(f.read()).render(
+					{k.replace("-", "_"): v for k, v in scheme.vars.items()}
+				)
+		else:
+			raise AttributeError(f"Unsupported template format {self.input.suffix}.")
+
 		try:
 			with open(self.output, "r") as f:
 				if f.read() == rendered:
