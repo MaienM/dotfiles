@@ -8,17 +8,16 @@
 #!nix-shell -p python3.pkgs.rich
 #!nix-shell -p python3.pkgs.ruamel-yaml
 #!nix-shell -p python3.pkgs.toposort
-# vi:ft=python
 
 import logging
 from argparse import ArgumentParser
-from dataclasses import field
+from dataclasses import dataclass, field
 from glob import glob
-from io import BytesIO, StringIO
+from io import BytesIO, TextIOBase
 from pathlib import Path
 from shutil import rmtree
 from subprocess import PIPE, STDOUT, run
-from sys import exit, stderr
+from sys import exit
 from textwrap import dedent
 from zipfile import ZipFile
 
@@ -28,7 +27,7 @@ import requests
 import ruamel.yaml
 from colour import Color
 from pydantic import validator
-from pydantic.dataclasses import dataclass
+from pydantic.dataclasses import dataclass as pydanticdataclass
 from rich.containers import Lines
 from rich.live import Live
 from rich.panel import Panel
@@ -140,7 +139,7 @@ SAMPLE_CODE = (
 )
 
 
-def yaml_load(file: StringIO) -> dict:
+def yaml_load(file: TextIOBase) -> dict:
 	yaml = ruamel.yaml.YAML(typ="safe")
 	return yaml.load(file)
 
@@ -172,7 +171,7 @@ class SchemeColor(Color):
 		return cls(f"#{value}")
 
 
-@dataclass
+@pydanticdataclass
 class Scheme:
 	scheme: str
 	author: str
@@ -195,7 +194,7 @@ class Scheme:
 
 	@property
 	def vars(self) -> dict:
-		vars = {
+		vars: dict[str, str | int] = {
 			"scheme-name": self.scheme,
 			"scheme-slug": self.scheme.lower().replace(" ", "-"),
 			"scheme-author": self.author,
@@ -290,7 +289,7 @@ class Schemes:
 		return index
 
 
-@dataclass
+@pydanticdataclass
 class Template:
 	input: Path
 	output: Path
@@ -325,7 +324,7 @@ class Template:
 		return True
 
 
-@dataclass
+@pydanticdataclass
 class Application:
 	templates: list[Template] = field(default_factory=list)
 	hook: str | None = field(default=None)
@@ -333,7 +332,7 @@ class Application:
 	dependsOn: list[str] = field(default_factory=list)
 
 
-@dataclass
+@pydanticdataclass
 class Config:
 	FILE = CONFIG_DIR / "config.yaml"
 
@@ -341,12 +340,13 @@ class Config:
 	aliases: dict[str, str] = field(default_factory=dict)
 
 	@classmethod
-	def load(cls):
+	def load(cls) -> "Config":
 		try:
 			log.info(f"Loading config [cyan]{Config.FILE}[/].")
 			return cls(**yaml_load_file(cls.FILE))
 		except FileNotFoundError:
 			log.error("[red]Config file does not exist.[/]")
+			raise
 
 
 class Grid(Table):
@@ -400,9 +400,6 @@ class PreviewScript(Panel):
 			theme=theme,
 			line_numbers=True,
 			indent_guides=True,
-		)
-		theme_border_style = Style(
-			color=scheme.base05.hex_l, bgcolor=scheme.base00.hex_l
 		)
 		super().__init__(
 			script,
@@ -626,7 +623,7 @@ def main():
 				output = proc.stdout.decode("utf-8")
 				if output.endswith(
 					"\n"
-				):	# Drop only a single ending newline, not multiple.
+				):  # Drop only a single ending newline, not multiple.
 					output = output[:-1]
 				if output:
 					app_box.add(Panel(output))
@@ -637,3 +634,5 @@ def main():
 
 if __name__ == "__main__":
 	main()
+
+# vi:ft=python
