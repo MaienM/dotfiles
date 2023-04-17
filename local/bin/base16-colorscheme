@@ -456,7 +456,9 @@ def main():
 	parser.add_argument(
 		"-d",
 		"--dry-run",
-		action="store_true",
+		nargs="?",
+		const="dry-run",
+		choices=("dry-run", "assert-unchanged"),
 		help="Don't actually change any files or run any hooks.",
 	)
 	parser.add_argument(
@@ -529,7 +531,9 @@ def main():
 				app_box.add(status)
 
 				try:
-					template_has_changes = template.render(scheme, dry_run=args.dry_run)
+					template_has_changes = template.render(
+						scheme, dry_run=bool(args.dry_run)
+					)
 				except Exception:
 					app_result.has_errors = True
 					status.update(
@@ -630,6 +634,10 @@ def main():
 
 		if any(result.has_errors for result in results.values()):
 			exit(1)
+		if args.dry_run == "assert-unchanged" and any(
+			result.has_changes for result in results.values()
+		):
+			exit(2)
 
 
 if __name__ == "__main__":
