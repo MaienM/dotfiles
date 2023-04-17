@@ -39,7 +39,7 @@ applications:
         output: ~/.zsh/rc/base16.local.zsh
   tmux:
     templates:
-      - input: ./templates/custom/tmux.mustache
+      - input: ./templates/custom/tmux.jinja
         output: ~/.tmux/tmuxline.conf
     hook: tmux source ~/.tmux/tmuxline.conf
   vim:

@@ -1,0 +1,90 @@
+{# Shorthands for the colors in the format tmux wants them. #}
+{%- set base00 = '#' + base00_hex -%}
+{%- set base01 = '#' + base01_hex -%}
+{%- set base02 = '#' + base02_hex -%}
+{%- set base03 = '#' + base03_hex -%}
+{%- set base04 = '#' + base04_hex -%}
+{%- set base05 = '#' + base05_hex -%}
+{%- set base06 = '#' + base06_hex -%}
+{%- set base07 = '#' + base07_hex -%}
+{%- set base08 = '#' + base08_hex -%}
+{%- set base09 = '#' + base09_hex -%}
+{%- set base0A = '#' + base0A_hex -%}
+{%- set base0B = '#' + base0B_hex -%}
+{%- set base0C = '#' + base0C_hex -%}
+{%- set base0D = '#' + base0D_hex -%}
+{%- set base0E = '#' + base0E_hex -%}
+{%- set base0F = '#' + base0F_hex -%}
+
+{# Join all arguments into single line with no spaces between. #}
+{%- macro concat() -%}
+	{{''.join(varargs)}}
+{%- endmacro -%}
+
+{# Generate a tmux ternary statement. #}
+{%- macro ternary(cond, iftrue, iffalse) -%}
+	#{?{{cond}},{{iftrue.replace(',', '#,')}},{{iffalse.replace(',', '#,')}}}
+{%- endmacro -%}
+
+{# The base background used between elements. #}
+{%- set base_background = base01 -%}
+{# The default foreground colors. #}
+{%- set foreground_for_light = base04 -%}
+{%- set foreground_for_dark = base00 -%}
+
+set -g status "on"
+set -g status-justify "left"
+set -g status-style "bg={{base_background}}"
+
+set -g status-left-style "none"
+set -g status-left-length "100"
+{%- macro segment(contents, background, foreground=foreground_for_dark, outside=base_background) -%}
+	#[fg={{foreground}},bg={{background}}]{{contents}}#[fg={{background}},bg={{outside}}]
+{%- endmacro %}
+set -g status-left "{{concat(
+	ternary(
+		'client_prefix',
+		segment(' #S ', base0B),
+		segment(' #S ', base04),
+	),
+)}}"
+
+set -g status-right-style "none"
+set -g status-right-length "100"
+{%- macro segment(contents, background, foreground=foreground_for_dark, outside=base_background) -%}
+	#[fg={{background}},bg={{outside}}]#[fg={{foreground}},bg={{background}}]{{contents}}
+{%- endmacro %}
+set -g status-right "{{concat(
+	segment(' %Y-%m-%d %H:%M ', base02),
+	ternary(
+		'client_prefix',
+		segment(' #H ', base0B, outside=base02),
+		segment(' #H ', base04, outside=base02),
+	),
+)}}"
+
+{% set window_status_flags = concat(
+	"#{?window_activity_flag, ,}",
+	"#{?window_bell_flag, ,}",
+	"#{?window_silence_flag, ,}",
+	"#{?window_zoomed_flag, ,}",
+) -%}
+set -g window-status-format "{{concat(
+	"#[default,fg=", base01, "]",
+	"#[default] #I", window_status_flags, "  #W ",
+	"#[default,fg=", base01, ",reverse]",
+	"#[noreverse]",
+)}}"
+set -gF window-status-current-format "#{window-status-format}"
+set -g window-status-separator ""
+set -g window-status-style "fg={{foreground_for_dark}},bg={{base02}}"
+set -g window-status-current-style "fg={{foreground_for_dark}},bg={{base0E}}"
+set -g window-status-last-style "fg={{foreground_for_dark}},bg={{base0C}}"
+set -g window-status-bell-style "fg={{foreground_for_dark}},bg={{base0A}}"
+set -gF window-status-activity-style "#{window-status-bell-style}"
+
+set -g message-style "fg={{foreground_for_dark}},bg={{base05}}"
+set -g message-command-style "fg={{foreground_for_dark}},bg={{base05}}"
+
+set -g pane-border-style "fg={{base02}}"
+set -g pane-active-border-style "fg={{base05}}"
