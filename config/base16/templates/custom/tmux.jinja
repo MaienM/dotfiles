@@ -1,3 +1,4 @@
+{# vi:ft=tmux -#}
 {# Shorthands for the colors in the format tmux wants them. #}
 {%- set base00 = '#' + base00_hex -%}
 {%- set base01 = '#' + base01_hex -%}
@@ -22,8 +23,14 @@
 {%- endmacro -%}
 
 {# Generate a tmux ternary statement. #}
+{%- macro ternary_escape(expression) -%}
+	{{expression.replace(',', '#,')}}
+{%- endmacro -%}
+{%- macro ternary_raw(cond, iftrue, iffalse) -%}
+	#{?{{cond}},{{iftrue}},{{iffalse}}}
+{%- endmacro -%}
 {%- macro ternary(cond, iftrue, iffalse) -%}
-	#{?{{cond}},{{iftrue.replace(',', '#,')}},{{iffalse.replace(',', '#,')}}}
+	{{ternary_raw(cond, ternary_escape(iftrue), ternary_escape(iffalse))}}
 {%- endmacro -%}
 
 {# The base background used between elements. #}
@@ -33,7 +40,7 @@
 {%- set foreground_for_dark = base00 -%}
 
 set -g status "on"
-set -g status-justify "left"
+set -g status-justify "absolute-centre"
 set -g status-style "bg={{base_background}}"
 
 set -g status-left-style "none"
@@ -63,25 +70,50 @@ set -g status-right "{{concat(
 	),
 )}}"
 
-{% set window_status_flags = concat(
-	"#{?window_activity_flag, ,}",
-	"#{?window_bell_flag, ,}",
-	"#{?window_silence_flag, ,}",
-	"#{?window_zoomed_flag, ,}",
-) -%}
-set -g window-status-format "{{concat(
-	"#[default,fg=", base01, "]",
-	"#[default] #I", window_status_flags, "  #W ",
-	"#[default,fg=", base01, ",reverse]",
-	"#[noreverse]",
-)}}"
-set -gF window-status-current-format "#{window-status-format}"
 set -g window-status-separator ""
 set -g window-status-style "fg={{foreground_for_dark}},bg={{base02}}"
-set -g window-status-current-style "fg={{foreground_for_dark}},bg={{base0E}}"
-set -g window-status-last-style "fg={{foreground_for_dark}},bg={{base0C}}"
+set -g window-status-current-style "fg={{foreground_for_dark}},bg={{base07}}"
+set -g window-status-last-style "fg={{foreground_for_dark}},bg={{base05}}"
 set -g window-status-bell-style "fg={{foreground_for_dark}},bg={{base0A}}"
 set -gF window-status-activity-style "#{window-status-bell-style}"
+
+{% macro relative_to_current(ifcurrent, ifleftof, ifrightof) -%}
+	{{
+		ternary_raw(
+			'window_active', 
+			ternary_escape(ifcurrent),
+			ternary_raw(
+				'#{e|<=:#{window_index},#{active_window_index}}',
+				ternary_escape(ifleftof),
+				ternary_escape(ifrightof),
+			),
+		)
+	}}
+{%- endmacro -%}
+set -g window-status-format "{{concat(
+	relative_to_current(
+		concat('#[default,fg=', base_background, ',noreverse]'),
+		concat('#[default,fg=', base_background, ',noreverse]'),
+		concat('#[default,fg=', base_background, ',reverse]'),
+	),
+	concat (
+		'#[default,noreverse] #I',
+		ternary('window_activity_flag', ' ', ''),
+		ternary('window_bell_flag', ' ', ''),
+		ternary('window_silence_flag', ' ', ''),
+		ternary('window_zoomed_flag', ' ', ''),
+		' ',
+		relative_to_current('◆', '', ''),
+		' #W ',
+	),
+	relative_to_current(
+		concat('#[default,fg=', base_background, ',noreverse]'),
+		concat('#[default,fg=', base_background, ',reverse]'),
+		concat('#[default,fg=', base_background, ',noreverse]'),
+	),
+	'#[default,noreverse]',
+)}}"
+set -gF window-status-current-format "#{window-status-format}"
 
 set -g message-style "fg={{foreground_for_dark}},bg={{base05}}"
 set -g message-command-style "fg={{foreground_for_dark}},bg={{base05}}"
