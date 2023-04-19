@@ -37,7 +37,7 @@ case "$item" in
 esac
 
 if command -v fzf > /dev/null 2>&1; then
-	tmux new-window -n "$switcher_window_name" -t :999 -k "\
+	cmd="\
 		tmux $list_command \
 		| grep -v '$switcher_window_name' \
 		| fzf \
@@ -53,6 +53,11 @@ if command -v fzf > /dev/null 2>&1; then
 		| cut -d' ' -f1 \
 		| xargs -r -I '%%' $command \
 	"
+	if [ "$TMUX_SUPPORT_POPUP" -eq 1 ]; then
+		tmux popup -w '100%' -h '100%' -BE "$cmd"
+	else
+		tmux new-window -n "$switcher_window_name" -t :999 -k "$cmd"
+	fi
 else
 	tmux choose-tree -Z "$choose_tree_flag" -F "$visible_format" "$command"
 fi
