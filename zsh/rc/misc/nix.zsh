@@ -53,18 +53,17 @@ nx() {
 }
 
 dot-nix-push() {
-(
-	set -e
+	setopt localoptions errreturn
 	ssh "$1" '
 		set -e
 
 		cd dotfiles
 
- 		if ! [ "$(git rev-parse --abbrev-ref HEAD)" = master ]; then
+		if ! [ "$(git rev-parse --abbrev-ref HEAD)" = master ]; then
 			>&2 echo "Not on master branch, aborting."
 			exit 1
 		fi
- 		if [ -n "$(git status --porcelain=v1 2>/dev/null)" ]; then
+		if [ -n "$(git status --porcelain=v1 --ignore-submodules 2>/dev/null)" ]; then
 			>&2 echo "There are uncomitted changes, aborting."
 			exit 1
 		fi
@@ -87,5 +86,4 @@ dot-nix-push() {
 		git checkout desktop/master -B master
 	'
 	echo 'Remote dotfiles have been updated.'
-)
 }
