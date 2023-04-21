@@ -8,7 +8,7 @@ private/
 profile.d/*.local
 tmux/frozen/
 tmux/resurrect/
-tmux/tmuxline.conf
+tmux/base16.conf
 vim/.netrwhist
 vim/bundle/fzf-base
 vim/colors/

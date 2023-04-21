@@ -91,9 +91,6 @@
 [submodule "vim/bundle-vim/airline-themes"]
 	path = vim/bundle-vim/airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes
-[submodule "vim/bundle-vim/tmuxline"]
-	path = vim/bundle-vim/tmuxline
-	url = https://github.com/edkolev/tmuxline.vim
 [submodule "tmux/bundle/battery"]
 	path = tmux/bundle/battery
 	url = https://github.com/tmux-plugins/tmux-battery

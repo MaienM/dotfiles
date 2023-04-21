@@ -40,8 +40,8 @@ applications:
   tmux:
     templates:
       - input: ./templates/custom/tmux.jinja
-        output: ~/.tmux/tmuxline.conf
-    hook: tmux source ~/.tmux/tmuxline.conf
+        output: ~/.tmux/base16.conf
+    hook: tmux source ~/.tmux/base16.conf
   vim:
     templates:
       - input: ./templates/custom/vim.mustache
