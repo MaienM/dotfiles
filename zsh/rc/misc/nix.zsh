@@ -84,6 +84,7 @@ dot-nix-push() {
 
 		cd dotfiles
 		git checkout desktop/master -B master
+		./local/bin/git-submodule-init
 	'
 	echo 'Remote dotfiles have been updated.'
 }
