@@ -94,6 +94,12 @@ download_vxtwitter_rendercombined() {
 	done
 }
 
+download_reddit_preview() {
+	[[ "$url" =~ https://preview\.redd\.it/.* ]] || return 1
+	echo download "${url/preview.redd.it/i.redd.it}"
+	download "${url/preview.redd.it/i.redd.it}"
+}
+
 download_nitter() {
 	case "$url" in
 		'https://twitter.com/'*) url_path="${url#https://twitter.com/}" ;;
@@ -127,7 +133,7 @@ download_gallery_dl() {
 
 download() {
 	fc="${#files[@]}"
-	for downloader in vxtwitter_rendercombined nitter gallery_dl generic; do
+	for downloader in vxtwitter_rendercombined reddit_preview nitter gallery_dl generic; do
 		echo "Trying $downloader downloader" 
 		url="$1"
 		"download_$downloader" && [ "${#files[@]}" -gt "$fc" ] && break
