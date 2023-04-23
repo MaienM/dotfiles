@@ -61,6 +61,7 @@ local function setup(name, extra_settings)
 end
 
 -- Setup null-ls.
+null_ls.reset_sources()
 null_ls.setup {
 	on_attach = on_attach,
 }
