@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+
+set -e
+
+log="/tmp/mimeo-dl-from-discord.log"
+rm -f "$log"
+printf '%s\n' "$@" >> "$log"
+echo === >> "$log"
+env >> "$log"
+echo === >> "$log"
+
+# When actually triggered from Discord try dl-to-dir. Exit if this succeeds, and fallback to the normal non-Discord behaviour if it doesn't (like when the link is not an image/video).
+if [ "$CHROME_DESKTOP" == 'discord.desktop' ]; then
+	dl-to-dir "$1" /mnt/bulk/Private/Misc/ >> "$log" 2>&1 && exit 0
+fi
+
+# Avoid recursing in case another script does something similar to this one.
+if [ "$SHLVL" -gt 10 ]; then
+	exit 1
+fi
+
+cmd="$(mimeo --command --show-all "$1" | grep -vF "${0##*/}" | head -n1)"
+printf '%s\n' "$cmd"
+eval $cmd
+exit 0
+
