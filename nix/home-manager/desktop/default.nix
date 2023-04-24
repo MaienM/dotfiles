@@ -13,7 +13,7 @@
 
   xsession = {
     enable = true;
-    windowManager.command = "${pkgs.i3-gaps}/bin/i3";
+    windowManager.command = "${pkgs.i3}/bin/i3";
   };
 
   custom.allowUnfreeList = [
@@ -27,7 +27,7 @@
 
       # WM.
       dunst
-      i3-gaps # gaps has been merged into i3, but no release has happened since
+      i3
       maim
       picom
       pkgs-local.notify-send.py
