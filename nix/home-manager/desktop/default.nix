@@ -19,6 +19,8 @@
   custom.allowUnfreeList = [
     "discord"
     "google-chrome"
+    "steam-original"
+    "steam-run"
   ];
   home.packages = with pkgs;
     [
@@ -44,6 +46,7 @@
       feh
       firefox
       google-chrome
+      minigalaxy
       mpv
       pavucontrol
       qpwgraph
