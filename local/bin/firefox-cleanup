@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+# Firefox attempts to put all windows back where they used to be, but it fails miserably at this. The result is that the
+# windows are spread out over all workspaces (even ones that didn't even have firefox instances in the first place),
+# making putting them all where they belong a hassle. This script moves them all to one workspace (14), which makes
+# sorting them manually less painful.
+
+i3-msg '[class="firefox"] move workspace 14; [workspace=14] layout tabbed; workspace 14'
