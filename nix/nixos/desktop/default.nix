@@ -100,7 +100,6 @@ in
     file
     home-manager
     neovim
-    nerdctl
     wget
   ];
 
@@ -139,11 +138,11 @@ in
     /${dotfiles}/ssh/id_rsa_gpg_28094744BA81C6A9.pub
   ];
 
-  # Enable containerd. TODO: Setup rootless?
-  virtualisation.containerd.enable = true;
-  fileSystems."/run/containerd" = bind "/persist/run/containerd";
-  fileSystems."/var/lib/containerd" = bind "/persist/var/lib/containerd";
-  fileSystems."/var/lib/nerdctl" = bind "/persist/var/lib/nerdctl";
+  # Rootless containers with podman.
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+  };
 
   # Enable binfmt emulation for aarch64-linux, to cross-compile for RPI.
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
