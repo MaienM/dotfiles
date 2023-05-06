@@ -42,10 +42,4 @@
   users.users.maienm = {
     shell = pkgs.zsh;
   };
-
-  # Setup GPG.
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
 }
