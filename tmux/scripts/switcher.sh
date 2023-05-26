@@ -4,8 +4,8 @@ switcher_window_name='__switcher_window__'
 
 item="$1"
 command="${2:-tmux switch-client -t %%}"
-prompt="$prompt"
-prefix="$prefix"
+prompt="${prompt:-}"
+prefix="${prefix:-}"
 
 case "$item" in
 	sessions)
@@ -54,11 +54,10 @@ if command -v fzf > /dev/null 2>&1; then
 		| xargs -r -I '%%' $command \
 	"
 	if [ "$TMUX_SUPPORT_POPUP" -eq 1 ]; then
-		tmux popup -w '100%' -h '100%' -BE "$cmd"
+		tmux popup -w '100%' -h '100%' -BEE "$cmd"
 	else
 		tmux new-window -n "$switcher_window_name" -t :999 -k "$cmd"
 	fi
 else
 	tmux choose-tree -Z "$choose_tree_flag" -F "$visible_format" "$command"
 fi
-
