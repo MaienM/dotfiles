@@ -1,5 +1,28 @@
 #!/usr/bin/env bash
 
+set -o errexit -o pipefail
+
+if [ -n "$1" ]; then
+	controlpath="$HOME/.ssh-control-$RANDOM"
+	sshargs=("$@")
+	ssh "${sshargs[@]}" -o ControlMaster=yes -o ControlPersist=30s -o ControlPath="$controlpath" 'true'
+	trap 'ssh "${sshargs[@]}" -o ControlPath="$controlpath" -O exit > /dev/null' EXIT
+	ontarget() {
+		ssh "${sshargs[@]}" -o ControlPath="$controlpath" "$@"
+	}
+else
+	ontarget() {
+		"$@"
+	}
+fi
+
+color_fg_black=$(tput setaf 0)
+color_fg_red=$(tput setaf 1)
+color_fg_green=$(tput setaf 2)
+color_fg_yellow=$(tput setaf 3)
+color_reverse=$(tput rev)
+color_reset=$(tput sgr0)
+
 names=(B KiB MiB GiB TiB PiB EiB ZiB YiB)
 # Format size in bytes into a more readable unit.
 format_size() {
@@ -35,7 +58,7 @@ cs() {
 }
 
 get_mount_column() {
-	df --output="$1" --block-size=1 -x zfs -x tmpfs -x devtmpfs -x squashfs -x overlay | tail -n+2
+	ontarget df --output="$1" --block-size=1 -x zfs -x tmpfs -x devtmpfs -x squashfs -x overlay | tail -n+2
 }
 
 get_usage_color() {
@@ -62,7 +85,7 @@ for i in {0..999}; do
 	volume="${list_volume[$i]}"
 	mountpoint="${list_mountpoint[$i]}"
 	used="${list_used[$i]}"
-	total="$((list_used[$i] + list_available[$i]))"
+	total="$((list_used[i] + list_available[i]))"
 
 	unset properties
 	declare -A properties
@@ -82,20 +105,23 @@ for i in {0..999}; do
 		"${color_reset}"
 done
 
-if command -v zfs > /dev/null 2>&1; then
-	mapfile -t volumes < <(zfs list -H -o name)
+if ontarget command -v zfs > /dev/null 2>&1; then
+	mapfile -t volumes < <(ontarget zfs list -H -o name)
 	for volume in "${volumes[@]}"; do
 		unset properties
 		declare -A properties
 
 		while read -r prop value; do
 			properties+=(["$prop"]="$value")
-		done < <(zfs get -Hp -o property,value used,available,compressratio,usedbydataset,mountpoint "$volume")
+		done < <(ontarget zfs get -Hp -o property,value used,available,compressratio,usedbydataset,mountpoint "$volume")
 		properties[total]="$(c "used + available")"
 		properties[pctused]="$(c "100 * used / total")"
 
 		case "$(p mountpoint)" in
-			legacy) properties[mountpoint]="$(mount | awk -v name="$volume" '{ if ($1 == name && $5 == "zfs") { print $3; exit } }')" ;;
+			legacy) properties[mountpoint]="$(
+				ontarget mount \
+				| awk -v name="$volume" '{ if ($1 == name && $5 == "zfs") { print $3; exit } }'
+			)" ;;
 			none) properties[mountpoint]= ;;
 		esac
 
