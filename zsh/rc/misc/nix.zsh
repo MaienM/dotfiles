@@ -23,11 +23,11 @@ local _detect_nix_shell_packages() {
 }
 typeset -ag precmd_functions;
 if [[ -z "${precmd_functions[(r)_detect_nix_shell_packages]+1}" ]]; then
-  precmd_functions=( ${precmd_functions[@]} _detect_nix_shell_packages )
+	precmd_functions=( ${precmd_functions[@]} _detect_nix_shell_packages )
 fi
 typeset -ag chpwd_functions;
 if [[ -z "${chpwd_functions[(r)_detect_nix_shell_packages]+1}" ]]; then
-  chpwd_functions=( ${chpwd_functions[@]} _detect_nix_shell_packages )
+	chpwd_functions=( ${chpwd_functions[@]} _detect_nix_shell_packages )
 fi
 
 
@@ -87,4 +87,11 @@ dot-nix-push() {
 		./local/bin/git-submodule-init
 	'
 	echo 'Remote dotfiles have been updated.'
+}
+
+yaml-to-nix-selection() {
+	xclip -out | yaml-to-nix | xclip -in
+}
+yaml-to-nix-clipboard() {
+	xclip -out -selection clipboard | yaml-to-nix | xclip -in -selection clipboard
 }

@@ -1,0 +1,62 @@
+#!/usr/bin/env cached-nix-shell
+#!nix-shell -i bash
+#!nix-shell -p yq
+#!nix-shell -p gnused
+#!nix-shell -p gawk
+#shell=bash
+
+state_object=0
+state_array=1
+
+yq \
+| sed '
+	s/,\?$/;/;
+	s/\([[{]\);/\1/;
+	s/^\(\s*\)"\(\w*\)":/\1\2 =/;
+	s/^\(\s*"[^"]*"\):/\1 =/
+' \
+| awk "
+	function assert(condition) {
+		if (!condition) {
+			print \"assertion failed\"
+			_assert_exit = 1
+			exit 1
+		}
+	}
+	BEGIN {
+		stateidx = 0
+	}
+	{
+		if (/^\s*\];/) {
+			assert(state[stateidx] == $state_array)
+			delete state[stateidx]
+			stateidx -= 1
+		}
+		if (/\[\$/) {
+			stateidx += 1
+			state[stateidx] = $state_array
+		}
+
+		if (/^\s*\};/) {
+			assert(state[stateidx] == $state_object)
+			delete state[stateidx]
+			stateidx -= 1
+		}
+		if (/\{\$/) {
+			stateidx += 1
+			state[stateidx] = $state_object
+		}
+
+		if (state[stateidx] == $state_array) {
+			sub(/;\$/, \"\")
+		}
+
+		print
+	}
+	END {
+		assert(stateidx == 0)
+		if (_assert_exit) {
+			exit 1
+		}
+	}
+"
