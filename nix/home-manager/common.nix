@@ -33,6 +33,12 @@
       yamlfmt
       zsh
 
+      (writeShellApplication {
+        name = "xdg-open";
+        runtimeInputs = [ mimeo ];
+        text = ''exec mimeo "$@"'';
+      })
+
       # Applications.
       kitty
       pkgs-local.nerdfonts-scripts
