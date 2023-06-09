@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+prog="$1"
+shift 1
+nix-shell --command "$(printf '%q ' "${prog##*.}" "$@")" -p "$prog"

@@ -43,15 +43,6 @@ if [[ ${commands[home-manager]} ]]; then
 	alias dot-home-manager='home-manager --flake "$HOME/dotfiles#${USER}@$(hostname)"'
 fi
 
-ns() {
-	nix_shell_packages="${nix_shell_packages[*]}" nix-shell --command zsh -p "$@"
-}
-nx() {
-	local prog="$1"
-	shift 1
-	nix-shell --command "$(printf '%q ' "${prog##*.}" "$@")" -p "$prog"
-}
-
 dot-nix-push() {
 	setopt localoptions errreturn
 	ssh "$1" '

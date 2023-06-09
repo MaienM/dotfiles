@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+nix_shell_packages="${nix_shell_packages[*]:-}" nix-shell --command zsh -p "$@"
