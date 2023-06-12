@@ -8,6 +8,7 @@ generated[pnpm]="
 	echo '#compdef pnpm'
 	cat ~/.config/tabtab/zsh/pnpm.zsh
 "
+generated[pulumi]="pulumi completion zsh"
 
 fn="/tmp/$USER-zsh-completion-last-regen"
 regen=false
