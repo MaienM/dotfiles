@@ -1,5 +1,6 @@
 declare -A generated
 generated[ferium]="ferium complete zsh"
+generated[helm]="helm completion zsh"
 generated[kubectl]="kubectl completion zsh"
 generated[poetry]="poetry completions zsh"
 generated[pnpm]="
