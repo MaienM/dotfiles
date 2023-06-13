@@ -1,4 +1,5 @@
 declare -A generated
+generated[cilium]="cilium completion zsh"
 generated[ferium]="ferium complete zsh"
 generated[helm]="helm completion zsh"
 generated[kubectl]="kubectl completion zsh"
