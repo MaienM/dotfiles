@@ -9,6 +9,7 @@ in
 {
   imports = [
     ./hardware-configuration.nix
+    ./persist.nix
   ];
 
   # Use flakes.
@@ -128,11 +129,6 @@ in
       PermitRootLogin = "no";
       PasswordAuthentication = false;
     };
-    hostKeys = builtins.map
-      (value: value // {
-        path = builtins.replaceStrings [ "/etc/ssh/" ] [ "/persist/etc/ssh/" ] value.path;
-      })
-      options.services.openssh.hostKeys.default;
   };
   users.users.maienm.openssh.authorizedKeys.keyFiles = [
     /${dotfiles}/ssh/id_rsa_gpg_28094744BA81C6A9.pub
