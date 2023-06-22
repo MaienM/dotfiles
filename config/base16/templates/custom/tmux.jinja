@@ -51,9 +51,10 @@ set -g status-left-length "100"
 set -g status-left "{{concat(
 	ternary(
 		'client_prefix',
-		segment(' #S ', base0B),
-		segment(' #S ', base04),
+		segment(' #S ', base0B, outside=base02),
+		segment(' #S ', base04, outside=base02),
 	),
+	segment('', base02),
 )}}"
 
 set -g status-right-style "none"
@@ -98,10 +99,10 @@ set -g window-status-format "{{concat(
 	),
 	concat (
 		'#[default,noreverse] #I',
-		ternary('window_activity_flag', ' ', ''),
-		ternary('window_bell_flag', ' ', ''),
-		ternary('window_silence_flag', ' ', ''),
-		ternary('window_zoomed_flag', ' ', ''),
+		ternary('window_activity_flag', ' 󰦨', ''),
+		ternary('window_bell_flag', ' 󰂜', ''),
+		ternary('window_silence_flag', ' 󰪓', ''),
+		ternary('window_zoomed_flag', ' 󰍉', ''),
 		' ',
 		relative_to_current('◆', '', ''),
 		' #W ',
