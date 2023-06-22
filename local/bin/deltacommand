@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+before="$(mktemp)"
+
+"$@" > "$before"
+while true; do
+	echo "Press enter to re-run command and show diff."
+	read
+	delta "$before" <("$@")
+done
