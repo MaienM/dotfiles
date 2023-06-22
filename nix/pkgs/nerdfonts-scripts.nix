@@ -8,20 +8,20 @@ let
 in
 stdenv.mkDerivation rec {
   name = "nerdfonts-script";
-  version = "2.3.3";
+  version = "3.0.2";
   src = fetchFromGitHub {
     owner = "ryanoasis";
     repo = "nerd-fonts";
     rev = "v${version}";
     sparseCheckout = [ script_path ];
-    sha256 = "ei61TDUA11omroDl0CyjBOKVH6aQJm4Wxmj9jOI3f8s=";
+    hash = "sha256-+2QqogNEkOjdkmx9ZRwNlFK8Kay7TgkKM/terROy5Uw=";
   };
 
   buildInputs = [ pkgs.gnused ];
   buildPhase = ''
     ${if version != pkgs.nerdfonts.version
       then ''
-        >&2 echo "${name} is out of date with base nerdfonts package, please update it.";
+        >&2 echo "${name} is out of date with base nerdfonts package (is ${version}, should be ${pkgs.nerdfonts.version}), please update it.";
         exit 1
       ''
       else ""
