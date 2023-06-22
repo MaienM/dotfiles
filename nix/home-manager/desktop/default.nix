@@ -18,7 +18,6 @@
 
   custom.allowUnfreeList = [
     "discord"
-    "google-chrome"
     "steam-original"
     "steam-run"
   ];
@@ -42,10 +41,10 @@
       cached-nix-shell
 
       # Applications.
+      chromium
       discord
       feh
       firefox
-      google-chrome
       minigalaxy
       mpv
       pavucontrol
