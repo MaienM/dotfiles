@@ -105,11 +105,12 @@ download_nitter() {
 		'https://twitter.com/'*) url_path="${url#https://twitter.com/}" ;;
 		'https://mobile.twitter.com/'*) url_path="${url#https://mobile.twitter.com/}" ;;
 		'https://vxtwitter.com/'*) url_path="${url#https://vxtwitter.com/}" ;;
+		'https://fxtwitter.com/'*) url_path="${url#https://fxtwitter.com/}" ;;
 		*) return 1 ;;
 	esac
 
 	echo "Detected twitter URL, rewriting to nitter."
-	for host in 'nitter.net' 'nitter.inpt.fr' 'twitter.censors.us/'; do
+	for host in 'nitter.net' 'nitter.inpt.fr' 'nitter.sethforprivacy.com' 'nitter.privacydev.net'; do
 		url="nitter:https://$host/$url_path"
 		download_gallery_dl
 		if [ "${#files[@]}" -gt 0 ]; then
