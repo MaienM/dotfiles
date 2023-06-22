@@ -86,3 +86,10 @@ yaml-to-nix-selection() {
 yaml-to-nix-clipboard() {
 	xclip -out -selection clipboard | yaml-to-nix | xclip -in -selection clipboard
 }
+
+nix-to-json-selection() {
+	xclip -out | nix-to-json | xclip -in
+}
+nix-to-json-clipboard() {
+	xclip -out -selection clipboard | nix-to-json | xclip -in -selection clipboard
+}

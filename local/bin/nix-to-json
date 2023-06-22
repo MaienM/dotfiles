@@ -1,0 +1,10 @@
+#!/usr/bin/env cached-nix-shell
+#!nix-shell -p yq
+#shell=bash
+
+set -o errexit -o pipefail
+
+IFS= read -r -d '' expression || true
+[ -n "$expression" ]
+
+nix eval --json --expr "$expression"
