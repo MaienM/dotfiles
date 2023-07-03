@@ -5,23 +5,24 @@ source "$HOME/.config/direnv/bundle/nix/direnvrc"
 
 export DIRENV_LOG_FORMAT=
 
-# From https://github.com/direnv/direnv/issues/592#issuecomment-1277617137
+# Based on https://github.com/direnv/direnv/issues/592#issuecomment-1277617137
 layout_poetry() {
-    PYPROJECT_TOML="${PYPROJECT_TOML:-pyproject.toml}"
-    if [[ ! -f "$PYPROJECT_TOML" ]]; then
-        log_status "No pyproject.toml found. Executing \`poetry init\` to create a \`$PYPROJECT_TOML\` first."
-        poetry init
-    fi
+	dir="${1:-.}"
+	PYPROJECT_TOML="${PYPROJECT_TOML:-$dir/pyproject.toml}"
+	if [[ ! -f "$PYPROJECT_TOML" ]]; then
+		log_status "No pyproject.toml found. Executing \`poetry init\` to create a \`$PYPROJECT_TOML\` first."
+		poetry init --directory="$dir"
+	fi
 
-    VIRTUAL_ENV=$(poetry env info --path 2>/dev/null ; true)
+	VIRTUAL_ENV=$(poetry env info --directory="$dir" --path 2>/dev/null ; true)
 
-    if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
-        log_status "No virtual environment exists. Executing \`poetry install\` to create one."    
-        poetry install
-        VIRTUAL_ENV=$(poetry env info --path)
-    fi
+	if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
+		log_status "No virtual environment exists. Executing \`poetry install\` to create one."	
+		poetry install --directory="$dir"
+		VIRTUAL_ENV=$(poetry env info --directory="$dir" --path)
+	fi
 
-    PATH_add "$VIRTUAL_ENV/bin"
-    export POETRY_ACTIVE=1
-    export VIRTUAL_ENV
+	PATH_add "$VIRTUAL_ENV/bin"
+	export POETRY_ACTIVE=1
+	export VIRTUAL_ENV
 }
