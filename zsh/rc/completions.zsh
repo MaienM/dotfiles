@@ -11,6 +11,7 @@ generated[pnpm]="
 	cat ~/.config/tabtab/zsh/pnpm.zsh
 "
 generated[pulumi]="pulumi completion zsh"
+generated[stern]="stern --completion zsh"
 
 fn="/tmp/$USER-zsh-completion-last-regen"
 regen=false
