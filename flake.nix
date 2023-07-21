@@ -80,6 +80,17 @@
               ./nix/home-manager/macbook
             ];
           };
+          "maienm@neptune" = home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
+            extraSpecialArgs = {
+              inherit inputs dotfiles pkgs-inputs pkgs-local;
+            };
+            modules = [
+              ./nix/modules/home-manager
+              ./nix/home-manager/common.nix
+              ./nix/home-manager/neptune.nix
+            ];
+          };
         };
       };
 
