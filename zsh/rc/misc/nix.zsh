@@ -43,43 +43,6 @@ if [[ ${commands[home-manager]} ]]; then
 	alias dot-home-manager='home-manager --flake "$HOME/dotfiles#${USER}@$(hostname)"'
 fi
 
-dot-nix-push() {
-	setopt localoptions errreturn
-	ssh "$1" '
-		set -e
-
-		cd dotfiles
-
-		if ! [ "$(git rev-parse --abbrev-ref HEAD)" = master ]; then
-			>&2 echo "Not on master branch, aborting."
-			exit 1
-		fi
-		if [ -n "$(git status --porcelain=v1 --ignore-submodules 2>/dev/null)" ]; then
-			>&2 echo "There are uncomitted changes, aborting."
-			exit 1
-		fi
-		if ! [ "$(git rev-parse HEAD)" = "$(git rev-parse desktop/master)" ]; then
-			>&2 echo "There are local commits, aborting."
-			exit 1
-		fi
-
-		if ! git show-ref --verify --quiet refs/heads/desktop/master > /dev/null 2>&1; then
-			echo "There is no desktop/master branch, creating it now."
-			git checkout -b desktop/master
-			git checkout master
-		fi
-	'
-	git push -f "$1" master:desktop/master
-	ssh "$1" '
-		set -e
-
-		cd dotfiles
-		git checkout desktop/master -B master
-		./local/bin/git-submodule-init
-	'
-	echo 'Remote dotfiles have been updated.'
-}
-
 yaml-to-nix-selection() {
 	xclip -out | yaml-to-nix | xclip -in
 }
