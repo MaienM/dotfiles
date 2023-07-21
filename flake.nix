@@ -24,7 +24,7 @@
           (_: nixpkgs.lib.attrByPath [ "packages" system ] { })
           inputs;
       pkgs-local = import ./nix/pkgs {
-        inherit inputs system pkgs;
+        inherit inputs system pkgs pkgs-inputs pkgs-local;
       };
     in
     {

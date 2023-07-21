@@ -37,9 +37,6 @@
       xorg.xkill
       yubikey-touch-detector
 
-      # CLI.
-      cached-nix-shell
-
       # Applications.
       chromium
       discord

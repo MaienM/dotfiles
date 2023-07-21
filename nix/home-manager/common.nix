@@ -22,6 +22,7 @@
       nixpkgs-fmt
       nodejs
       p7zip
+      pkgs-local.cached-nix-shell
       python3
       ripgrep
       socat
