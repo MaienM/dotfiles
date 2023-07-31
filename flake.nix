@@ -26,10 +26,41 @@
       pkgs-local = import ./nix/pkgs {
         inherit inputs system pkgs pkgs-inputs pkgs-local;
       };
+
+      dot-nixos-rebuild = pkgs.writeShellApplication {
+        name = "dot-nixos-rebuild";
+        runtimeInputs = [ pkgs.nixos-rebuild ];
+        text = ''
+          sudo nixos-rebuild --flake "$HOME/dotfiles#''${HOSTNAME:-$(hostname)}" "$@"
+        '';
+      };
+      dot-darwin-rebuild =
+        if pkgs-inputs.darwin ? "darwin-rebuild" && pkgs-inputs.darwin.darwin-rebuild.meta.available
+        then
+          pkgs.writeShellApplication
+            {
+              name = "dot-darwin-rebuild";
+              runtimeInputs = [ pkgs-inputs.darwin.darwin-rebuild ];
+              text = ''
+                darwin-rebuild --flake "$HOME/dotfiles#''${HOSTNAME:-$(hostname)}" "$@"
+              '';
+            }
+        else pkgs.empty;
+      dot-home-manager = pkgs.writeShellApplication {
+        name = "dot-home-manager";
+        runtimeInputs = [ pkgs-inputs.home-manager.home-manager ];
+        text = ''
+          home-manager --flake "$HOME/dotfiles#$USER@''${HOSTNAME:-$(hostname)}" "$@"
+        '';
+      };
     in
     {
       packages = {
-        # dot-nixos-rebuild (which is an alias for nixos-rebuild --flake .#your-hostname).
+        inherit (pkgs) nixos-rebuild;
+        inherit (pkgs-inputs.darwin) darwin-rebuild;
+        inherit (pkgs-inputs.home-manager) home-manager;
+        inherit dot-nixos-rebuild dot-darwin-rebuild dot-home-manager;
+
         nixosConfigurations = {
           MICHON-PC = nixpkgs.lib.nixosSystem {
             specialArgs = {
@@ -42,7 +73,6 @@
           };
         };
 
-        # dot-darwin-rebuild (which is an alias for darwin-rebuild --flake .#your-hostname).
         darwinConfigurations = {
           MICHON-MACBOOK = darwin.lib.darwinSystem {
             specialArgs = {
@@ -56,7 +86,6 @@
           };
         };
 
-        # dot-home-manager (which is an alias for home-manager --flake .#your-username@your-hostname).
         homeConfigurations = {
           "maienm@MICHON-PC" = home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
@@ -96,6 +125,10 @@
 
       devShell = pkgs.mkShell {
         buildInputs = with pkgs; [
+          dot-nixos-rebuild
+          dot-darwin-rebuild
+          dot-home-manager
+
           python3
           python3.pkgs.pytest
         ];

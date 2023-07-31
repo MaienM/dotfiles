@@ -31,18 +31,6 @@ if [[ -z "${chpwd_functions[(r)_detect_nix_shell_packages]+1}" ]]; then
 fi
 
 
-if [[ ${commands[nixos-rebuild]} ]]; then
-	alias dot-nixos-rebuild='sudo nixos-rebuild --flake "$HOME/dotfiles#$(hostname)"'
-fi
-
-if [[ ${commands[darwin-rebuild]} ]]; then
-	alias dot-darwin-rebuild='darwin-rebuild --flake "$HOME/dotfiles#$(hostname)"'
-fi
-
-if [[ ${commands[home-manager]} ]]; then
-	alias dot-home-manager='home-manager --flake "$HOME/dotfiles#${USER}@$(hostname)"'
-fi
-
 yaml-to-nix-selection() {
 	xclip -out | yaml-to-nix | xclip -in
 }
