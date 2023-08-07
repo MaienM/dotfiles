@@ -54,7 +54,7 @@
       # Neovim.
       gcc # Needed for treesitter to compile parsers.
       nodePackages.neovim
-      pkgs-inputs.neovim.neovim
+      (if pkgs.system == "aarch64-darwin" then pkgs-inputs.neovim-darwin else pkgs-inputs.neovim).neovim
       python3.pkgs.pynvim
       tree-sitter
 

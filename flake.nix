@@ -13,6 +13,9 @@
     neovim.url = "github:neovim/neovim?dir=contrib";
     # neovim.inputs.nixpkgs.follows = "nixpkgs"; # Doesn't work with unstable.
     neovim.inputs.flake-utils.follows = "flake-utils";
+
+    neovim-darwin.url = "github:neovim/neovim/c54592bfdacf08823a03d5aa251f49b906f3157d?dir=contrib";
+    neovim-darwin.inputs.flake-utils.follows = "flake-utils";
   };
 
   outputs = { nixpkgs, flake-utils, darwin, home-manager, ... }@inputs: flake-utils.lib.eachDefaultSystem (system:

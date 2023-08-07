@@ -68,17 +68,41 @@
       },
       "locked": {
         "dir": "contrib",
-        "lastModified": 1689928205,
-        "narHash": "sha256-4kjwdOEcaf7fK4XbKCefBeW6CglKkr/jIUx8Jt4fR04=",
+        "lastModified": 1691660736,
+        "narHash": "sha256-lPChjBhCHdj9hUZHs1Sd2aaQ2T74hZgIjXvsM+TxcSg=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "ca9f4a7cb1fea1ef1f22c011679fd8afa0a5d161",
+        "rev": "3d948a4dc4b2cd3c8d3ac497caf3dfe25adfb90d",
         "type": "github"
       },
       "original": {
         "dir": "contrib",
         "owner": "neovim",
         "repo": "neovim",
+        "type": "github"
+      }
+    },
+    "neovim-darwin": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "dir": "contrib",
+        "lastModified": 1681636007,
+        "narHash": "sha256-PZQUOypFVtChUEHBkh0xPEKkCOoPZkk2mhl3lEYZa/g=",
+        "owner": "neovim",
+        "repo": "neovim",
+        "rev": "c54592bfdacf08823a03d5aa251f49b906f3157d",
+        "type": "github"
+      },
+      "original": {
+        "dir": "contrib",
+        "owner": "neovim",
+        "repo": "neovim",
+        "rev": "c54592bfdacf08823a03d5aa251f49b906f3157d",
         "type": "github"
       }
     },
@@ -100,6 +124,22 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1681465517,
+        "narHash": "sha256-EasJh15/jcJNAHtq2SGbiADRXteURAnQbj1NqBoKkzU=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "abe7316dd51a313ce528972b104f4f04f56eefc4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
         "lastModified": 1689850295,
         "narHash": "sha256-fUYf6WdQlhd2H+3aR8jST5dhFH1d0eE22aes8fNIfyk=",
         "owner": "nixos",
@@ -120,7 +160,8 @@
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "neovim": "neovim",
-        "nixpkgs": "nixpkgs_2"
+        "neovim-darwin": "neovim-darwin",
+        "nixpkgs": "nixpkgs_3"
       }
     },
     "systems": {
