@@ -1,6 +1,8 @@
+{ dotfiles, ... }:
 {
   imports = [
-    ../common
+    "${dotfiles}/nix/modules/common"
     ./VPNStatus.nix
+    ./pinentry-auto.nix
   ];
 }

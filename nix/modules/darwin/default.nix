@@ -1,5 +1,6 @@
+{ dotfiles, ... }:
 {
   imports = [
-    ../common
+    "${dotfiles}/nix/modules/common"
   ];
 }

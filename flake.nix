@@ -10,6 +10,8 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    apple-silicon.url = "github:tpwrules/nixos-apple-silicon";
+
     neovim.url = "github:neovim/neovim?dir=contrib";
     # neovim.inputs.nixpkgs.follows = "nixpkgs"; # Doesn't work with unstable.
     neovim.inputs.flake-utils.follows = "flake-utils";
@@ -22,6 +24,10 @@
     let
       dotfiles = ./.;
       pkgs = nixpkgs.legacyPackages.${system};
+      pkgs-force = import pkgs (pkgs.config // {
+        allowBroken = true;
+        allowUnsupportedSystem = true;
+      });
       pkgs-inputs = # { name = inputs.${name}.packages.${system} }
         builtins.mapAttrs
           (_: nixpkgs.lib.attrByPath [ "packages" system ] { })
@@ -56,9 +62,14 @@
           home-manager --flake "$HOME/dotfiles#$USER@''${HOSTNAME:-$(hostname)}" "$@"
         '';
       };
+
+      specialArgs = {
+        inherit inputs dotfiles system pkgs-force pkgs-inputs pkgs-local;
+        stdenv = pkgs.stdenv;
+      };
     in
     {
-      packages = {
+      packages = pkgs-local // {
         inherit (pkgs) nixos-rebuild;
         inherit (pkgs-inputs.darwin) darwin-rebuild;
         inherit (pkgs-inputs.home-manager) home-manager;
@@ -66,24 +77,26 @@
 
         nixosConfigurations = {
           MICHON-PC = nixpkgs.lib.nixosSystem {
-            specialArgs = {
-              inherit inputs dotfiles pkgs-inputs pkgs-local;
-            };
+            inherit specialArgs;
             modules = [
-              ./nix/modules/nixos
+              ./nix/nixos/common
               ./nix/nixos/desktop
+            ];
+          };
+          MICHON-MACBOOK = nixpkgs.lib.nixosSystem {
+            inherit specialArgs;
+            modules = [
+              ./nix/nixos/common
+              ./nix/nixos/macbook
             ];
           };
         };
 
         darwinConfigurations = {
           MICHON-MACBOOK = darwin.lib.darwinSystem {
-            specialArgs = {
-              inherit inputs dotfiles pkgs-inputs pkgs-local;
-            };
-            system = "aarch64-darwin";
+            inherit specialArgs system;
             modules = [
-              ./nix/modules/darwin
+              ./nix/darwin/common
               ./nix/darwin/macbook
             ];
           };
@@ -92,34 +105,25 @@
         homeConfigurations = {
           "maienm@MICHON-PC" = home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
-            extraSpecialArgs = {
-              inherit inputs dotfiles pkgs-inputs pkgs-local;
-            };
+            extraSpecialArgs = specialArgs;
             modules = [
-              ./nix/modules/home-manager
-              ./nix/home-manager/common.nix
+              ./nix/home-manager/common
               ./nix/home-manager/desktop
             ];
           };
           "maienm@MICHON-MACBOOK" = home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
-            extraSpecialArgs = {
-              inherit inputs dotfiles pkgs-inputs pkgs-local;
-            };
+            extraSpecialArgs = specialArgs;
             modules = [
-              ./nix/modules/home-manager
-              ./nix/home-manager/common.nix
+              ./nix/home-manager/common
               ./nix/home-manager/macbook
             ];
           };
           "maienm@neptune" = home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
-            extraSpecialArgs = {
-              inherit inputs dotfiles pkgs-inputs pkgs-local;
-            };
+            extraSpecialArgs = specialArgs;
             modules = [
-              ./nix/modules/home-manager
-              ./nix/home-manager/common.nix
+              ./nix/home-manager/common
               ./nix/home-manager/neptune.nix
             ];
           };
