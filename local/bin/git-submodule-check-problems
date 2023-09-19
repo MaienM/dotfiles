@@ -7,7 +7,7 @@ in_array() {
 	needle="$1"
 	shift
 	for stray in "$@"; do
-		[[ "$needle" == "$stray" ]] && return 0
+		[[ $needle == "$stray" ]] && return 0
 	done
 	return 1
 }
@@ -68,7 +68,7 @@ color_reset=$(tput sgr0)
 # Loop over all modules and looks for problems.
 for module in "${modules[@]}"; do
 	# If the previous module is a prefix of this module it is a submodule of a submodule, which we won't touch.
-	if [[ "$module" == "$lastmodule"/* ]]; then
+	if [[ $module == "$lastmodule"/* ]]; then
 		continue
 	fi
 	lastmodule="$module"
@@ -94,4 +94,3 @@ for module in "${modules[@]}"; do
 		"$color_place$(join_array "$color_reset and in $color_place" "${positive[@]}")$color_reset" \
 		"$color_place_missing$(join_array "$color_reset or in $color_place_missing" "${negative[@]}")$color_reset"
 done
-

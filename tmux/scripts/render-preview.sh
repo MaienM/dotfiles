@@ -37,4 +37,3 @@ fi
 
 # shellcheck source=render-preview-inner.sh
 source ~/.tmux/scripts/render-preview-inner.sh "$@"
-

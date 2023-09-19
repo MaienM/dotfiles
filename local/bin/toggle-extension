@@ -3,7 +3,7 @@
 # Toggle an extension of a file.
 #
 # Usage: toggle-extension extension file [file...]
-# 
+#
 # Eg toggle-extension .disabled SomeMCMod.jar
 # If the file SomeMCMod.jar exists it will be moved to SomeMCMod.jar.disabled.
 # If the file SomeMCMod.jar.disabled exists it will be moved to SomeMCMod.jar.
@@ -15,7 +15,7 @@ fi
 
 extension="$1"
 shift 1
-if [[ "$extension" != "."* ]]; then
+if [[ $extension != "."* ]]; then
 	echo >&2 "Extension must start with a period."
 	exit 1
 fi

@@ -9,13 +9,13 @@ state_object=0
 state_array=1
 
 yq \
-| sed '
+	| sed '
 	s/,\?$/;/;
 	s/\([[{]\);/\1/;
 	s/^\(\s*\)"\(\w*\)":/\1\2 =/;
 	s/^\(\s*"[^"]*"\):/\1 =/
 ' \
-| awk "
+	| awk "
 	function assert(condition) {
 		if (!condition) {
 			print \"assertion failed\"

@@ -18,4 +18,3 @@ done
 tmux \
 	move-window -s "$SOURCE_WINDOW" -t "$target_window" \; \
 	switch-client -t "$target_window"
-

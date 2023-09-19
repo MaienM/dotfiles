@@ -8,7 +8,7 @@ if [ $# -lt 1 ]; then
 fi
 
 image="$1"
-optionhash="$(md5sum <<<"$@" | cut -c1-32)"
+optionhash="$(md5sum <<< "$@" | cut -c1-32)"
 shift
 
 opts=()
@@ -18,12 +18,12 @@ while [ $# -gt 0 ]; do
 			name="$2"
 			shift 2
 			continue
-		;;
+			;;
 		--name=*)
 			name="${1#--name=}"
 			shift
 			continue
-		;;
+			;;
 	esac
 	opts=("${opts[@]}" "$1")
 	shift

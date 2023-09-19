@@ -23,4 +23,3 @@ cmd="$(mimeo --command --show-all "$1" | grep -vF "${0##*/}" | head -n1)"
 printf '%s\n' "$cmd"
 eval $cmd
 exit 0
-

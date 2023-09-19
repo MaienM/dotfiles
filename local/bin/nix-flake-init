@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 generate_flake() {
-	sed 's/^\t\t//; s/  /\t/g' > flake.nix <<-END
+	sed 's/^\t\t//; s/  /\t/g' > flake.nix <<- END
 		{
 			inputs = {
 				nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";

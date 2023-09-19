@@ -2,8 +2,7 @@
 
 id="$(xinput list | grep -Eio '(touchpad|glidepoint)\s*id\=[0-9]{1,2}' | grep -Eo '[0-9]{1,2}' | head -n1)"
 state="$(xinput list-props "$id" | grep 'Device Enabled' | awk '{print $4}')"
-if [ "$state" -eq 1 ]
-then
+if [ "$state" -eq 1 ]; then
 	xinput disable "$id"
 	notify-send.py -a 'Touchpad' 'Disabled'
 else

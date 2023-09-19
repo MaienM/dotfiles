@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 set -e
 
@@ -22,7 +22,7 @@ mapfile -t picks < <(
 			] | join(" ")
 		) | .[]' \
 		"$input" \
-	| fzf --multi --with-nth='3..' --preview='echo {2} | yj -jy'
+		| fzf --multi --with-nth='3..' --preview='echo {2} | yj -jy'
 )
 
 if [ "${#picks[@]}" -le 1 ]; then
@@ -33,7 +33,7 @@ fi
 mapfile -t idxs < <(printf '%s\n' "${picks[@]}" | awk '{ print $1 }')
 mapfile -t filters < <(printf '%s\n' "${picks[@]}" | awk '{ print $3 }')
 
-case "$(printf '%s\n' "${picks[@]}" | awk '{ print $2 }' | jq -s -r 'map(.name) | join("/")')" in 
+case "$(printf '%s\n' "${picks[@]}" | awk '{ print $2 }' | jq -s -r 'map(.name) | join("/")')" in
 	'crop/crop')
 		# Two crops, assume side-by-side in order left, right.
 		result="
@@ -42,7 +42,7 @@ case "$(printf '%s\n' "${picks[@]}" | awk '{ print $2 }' | jq -s -r 'map(.name) 
 			[vr] ${filters[1]} [vr];
 			[vl][vr] hstack
 		"
-	;;
+		;;
 	'crop/crop/crop')
 		# Three crops, assume vertically stacked in order top, middle, bottom.
 		result="
@@ -54,7 +54,7 @@ case "$(printf '%s\n' "${picks[@]}" | awk '{ print $2 }' | jq -s -r 'map(.name) 
 			[vt][vm] vstack [vm];
 			[vm][vb] vstack
 		"
-	;;
+		;;
 	'crop/crop/crop/crop')
 		# Four crops, assume 2x2 grid in order top left, top right, bottom left, bottom right.
 		result="
@@ -69,11 +69,11 @@ case "$(printf '%s\n' "${picks[@]}" | awk '{ print $2 }' | jq -s -r 'map(.name) 
 			[vbl][vbr] hstack [vb];
 			[vt][vb] vstack
 		"
-	;;
+		;;
 	*)
 		# Other, don't make any assumptions.
 		result="$(printf '%s\n' "${filters[@]}")"
-	;;
+		;;
 esac
 result="$(echo "$result" | sed '/^\s*$/d; s/^\s*//')"
 jq \

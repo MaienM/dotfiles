@@ -8,7 +8,7 @@ elif [ -d "$fn" ]; then
 	eza --color=always --long --group-directories-first --header --icons --git "$fn"
 elif [ -f "$fn" ]; then
 	case "$(file --brief "$fn")" in
-		*archive*|*compressed\ data*|'PE32 executable'*)
+		*archive* | *compressed\ data* | 'PE32 executable'*)
 			# shellcheck disable=SC2154,SC2086
 			7z l "$fn" | awk \
 				-v 'color_red'=$color_fg_red \
@@ -18,15 +18,15 @@ elif [ -f "$fn" ]; then
 				-v 'color_magenta'=$color_fg_magenta \
 				-v "color_reset=$color_reset" \
 				-f "$HOME/.local/bin/preview-7z.awk"
-		;;
+			;;
 		*'ASCII text'*)
 			bat --color=always "$fn"
-		;;
+			;;
 		*)
 			echo "No preview available."
 			echo
 			stat "$fn"
-		;;
+			;;
 	esac
 else
 	stat "$fn"

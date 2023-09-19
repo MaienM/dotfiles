@@ -31,8 +31,8 @@ ratios=(
 get_ratio() {
 	local ratio i
 	ratio="$(m "$1/$2")"
-	for ((i=0; i<${#ratios[@]}; i+=3)); do
-		[ "$(m "(${ratios[i+1]} >= $ratio) + ($ratio >= ${ratios[i+2]})")" -eq 2 ] || continue
+	for ((i = 0; i < ${#ratios[@]}; i += 3)); do
+		[ "$(m "(${ratios[i + 1]} >= $ratio) + ($ratio >= ${ratios[i + 2]})")" -eq 2 ] || continue
 		echo "${ratios[i]}"
 		return
 	done
@@ -45,11 +45,10 @@ update_cache() {
 	mv "$cachepath.tmp" "$cachepath"
 }
 
-
 # Update the cache.
 if [ -f "$cachepath" ]; then
 	trap 'update_cache' 0 1
-else 
+else
 	update_cache
 fi
 
@@ -57,9 +56,9 @@ fi
 echo ">>> Reading background info from cache."
 # shellcheck disable=SC2207
 mapfile -t fehoutput < "$cachepath"
-for ((i=0; i<${#fehoutput[@]}; i+=3)); do
+for ((i = 0; i < ${#fehoutput[@]}; i += 3)); do
 	[ -f "${fehoutput[i]}" ] || continue # File was deleted since the cache was last updated.
-	ratio="$(get_ratio "${fehoutput[i+1]}" "${fehoutput[i+2]}")"
+	ratio="$(get_ratio "${fehoutput[i + 1]}" "${fehoutput[i + 2]}")"
 	declare -n "paths=bg_$ratio"
 	paths=("${paths[@]}" "${fehoutput[i]}")
 	bg_all=("${bg_all[@]}" "${fehoutput[i]}")
@@ -70,7 +69,7 @@ if [ "${#bg_all[@]}" -eq 0 ]; then
 	echo >&2 "No backgrounds found."
 	exit 1
 fi
-for ((i=0; i<${#ratios[@]}; i+=3)); do
+for ((i = 0; i < ${#ratios[@]}; i += 3)); do
 	ratio="${ratios[i]}"
 	declare -n "paths=bg_$ratio"
 	printf 'Found %i %s background(s).' "${#paths[@]}" "$ratio"
@@ -92,4 +91,3 @@ while read -ra moninfo; do
 	cmd="$(printf '%s --bg-fill %s' "$cmd" "$path")"
 done < <(xrandr --listactivemonitors | tr '/x' ' ' | tail -n+2)
 $cmd
-

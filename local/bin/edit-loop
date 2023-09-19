@@ -68,4 +68,3 @@ edit-loop() {
 if [ "$0" == */edit-loop ]; then
 	edit-loop "$@"
 fi
-

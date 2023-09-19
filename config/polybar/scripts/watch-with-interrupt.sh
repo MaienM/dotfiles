@@ -13,7 +13,7 @@ usage() {
 
 names=()
 while [ -n "$1" ] && ! [ "$1" -gt 0 ]; do
-	if [[ ! "$1" =~ [a-zA-Z0-9_-]* ]]; then
+	if [[ ! $1 =~ [a-zA-Z0-9_-]* ]]; then
 		usage
 		>&2 echo "ERROR: name '$1' contains invalid characters."
 		exit 1

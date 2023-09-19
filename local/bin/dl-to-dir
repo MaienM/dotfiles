@@ -52,7 +52,7 @@ download_generic() {
 			*)
 				echo " This is not an image or video, skipping."
 				continue
-			;;
+				;;
 		esac
 
 		# Check whether the size is larger than any other attempted urls.
@@ -86,7 +86,7 @@ download_generic() {
 }
 
 download_vxtwitter_rendercombined() {
-	[[ "$url" =~ https://(convert\.)?vxtwitter\.com/rendercombined\.jpg\?imgs=(.*) ]] || return 1
+	[[ $url =~ https://(convert\.)?vxtwitter\.com/rendercombined\.jpg\?imgs=(.*) ]] || return 1
 	mapfile -t suburls < <(printf '%s\n' "${BASH_REMATCH[2]}" | sed 's/,/\n/g')
 
 	for suburl in "${suburls[@]}"; do
@@ -95,7 +95,7 @@ download_vxtwitter_rendercombined() {
 }
 
 download_reddit_preview() {
-	[[ "$url" =~ https://preview\.redd\.it/.* ]] || return 1
+	[[ $url =~ https://preview\.redd\.it/.* ]] || return 1
 	echo download "${url/preview.redd.it/i.redd.it}"
 	download "${url/preview.redd.it/i.redd.it}"
 }
@@ -135,7 +135,7 @@ download_gallery_dl() {
 download() {
 	fc="${#files[@]}"
 	for downloader in vxtwitter_rendercombined reddit_preview nitter gallery_dl generic; do
-		echo "Trying $downloader downloader" 
+		echo "Trying $downloader downloader"
 		url="$1"
 		"download_$downloader" && [ "${#files[@]}" -gt "$fc" ] && break
 	done
@@ -144,7 +144,6 @@ download() {
 		return 1 1
 	fi
 }
-
 
 url="$1"
 dir="${2%%/}"
@@ -195,7 +194,7 @@ for fn in "${!files[@]}"; do
 	# Try the original filename, unless it's on the blacklist.
 	try_fn=1
 	for always_rename in "${ALWAYS_RENAME[@]}"; do
-		if [[ "$basename" =~ $always_rename ]]; then
+		if [[ $basename =~ $always_rename ]]; then
 			try_fn=0
 			break
 		fi

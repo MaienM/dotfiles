@@ -2,20 +2,20 @@
 
 # Prompt for confirmation.
 # $1: The message/question.
-# $2: The default answer ('Y' or 'N'). If not given, the default is 
+# $2: The default answer ('Y' or 'N'). If not given, the default is
 prompt_confirm() {
 	message=$1
 	case $2 in
-		[yY]) 
+		[yY])
 			opts='Yn'
-		;;
-		[nN]|'')
+			;;
+		[nN] | '')
 			opts='yN'
-		;;
-		*)    
+			;;
+		*)
 			echo >&2 "Invalid default ($2), expected 'y' or 'n'"
 			return 1
-		;;
+			;;
 	esac
 
 	prompt reply "$opts" "$message"

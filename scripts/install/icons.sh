@@ -13,8 +13,7 @@ mkdir -p ~/.local/share/icons/nerdfonts/
 	# shellcheck disable=SC2016
 	fontforge 2>&1 -quiet -lang=ff -c 'Open($1); SelectWorthOutputting(); foreach Export("%u.svg"); endloop;' \
 		"$HOME/.nix-profile/share/fonts/truetype/NerdFonts/Symbols-2048-em Nerd Font Complete.ttf" \
-	| (grep -v 'mapped to' || true)
-	
+		| (grep -v 'mapped to' || true)
+
 	echo "Exported SVGs for $(ls -1 | wc -l) icons"
 )
-

@@ -24,13 +24,13 @@ mapfile -t messages < <(
 )
 
 socat - "UNIX-CONNECT:$XDG_RUNTIME_DIR/yubikey-touch-detector.socket" \
-| while read -r -n5 message; do
-	case "$message" in
-		*_1)
-			echo "${messages[$RANDOM % ${#messages[@]}]}"
-		;;
-		*)
-			echo
-		;;
-	esac
-done
+	| while read -r -n5 message; do
+		case "$message" in
+			*_1)
+				echo "${messages[RANDOM % ${#messages[@]}]}"
+				;;
+			*)
+				echo
+				;;
+		esac
+	done

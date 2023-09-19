@@ -10,4 +10,3 @@ git clone https://github.com/phiresky/ts-histdbimport "$installdir"
 	npm install
 	npm run insert-all
 )
-

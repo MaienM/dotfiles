@@ -3,11 +3,11 @@
 in_path() {
 	case ":$PATH:" in
 		*":$1:"*)
-			return 0  # zero return code -> success
-		;;
+			return 0 # zero return code -> success
+			;;
 		*)
-			return 1  # non-zero return code -> failure
-		;;
+			return 1 # non-zero return code -> failure
+			;;
 	esac
 }
 

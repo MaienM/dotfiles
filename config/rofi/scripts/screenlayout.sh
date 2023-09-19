@@ -11,7 +11,8 @@
 set -e
 
 # shellcheck source=../../../local/bin/commands_require
-. commands_require; commands_require rofi
+. commands_require
+commands_require rofi
 
 args=()
 for script in ~/.config/screenlayouts/*.sh; do
@@ -29,4 +30,3 @@ sh "$choice"
 sleep 2
 ~/.config/polybar/launch.sh
 set-background
-

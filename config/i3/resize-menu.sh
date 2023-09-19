@@ -4,7 +4,8 @@ set -e
 shopt -s extglob
 
 # shellcheck source=../../local/bin/commands_require
-. commands_require; commands_require rofi
+. commands_require
+commands_require rofi
 
 choice="$(
 	(
@@ -16,8 +17,8 @@ choice="$(
 		echo '16:9'
 		echo '21:9'
 		echo '32:9'
-	) | \
-		rofi -dmenu -p 'Pick an aspect ratio' -i
+	) \
+		| rofi -dmenu -p 'Pick an aspect ratio' -i
 )"
 choice="${choice%% *}"
 
@@ -27,5 +28,5 @@ case "$choice" in
 	*)
 		echo >&2 "Invalid input"
 		exit 1
-	;;
+		;;
 esac

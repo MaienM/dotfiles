@@ -9,12 +9,12 @@ fi
 case "$1" in
 	wireframe)
 		xdotool key -window "$id" --delay 0.1 alt+v Down Down Down Down Down Down Down Down Return
-	;;
+		;;
 	shaded)
 		xdotool key -window "$id" --delay 0.1 alt+v Down Down Down Down Down Down Down Down Down Return
-	;;
+		;;
 	*)
 		echo >&2 "Invalid action."
 		exit 2
-	;;
+		;;
 esac

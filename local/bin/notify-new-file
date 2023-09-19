@@ -16,13 +16,13 @@ fi
 	case "$action" in
 		default)
 			xdg-open "$1"
-		;;
-		delete) 
+			;;
+		delete)
 			rm "$1"
 			notify-send.py \
 				--replaces-id "$id" \
 				--urgency low \
 				"Deleted $1"
-		;;
+			;;
 	esac
 )

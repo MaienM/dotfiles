@@ -19,7 +19,7 @@ substring_escape() {
 	start="$1"
 	length="$2"
 
-	if [[ "$length" -eq 0 ]]; then
+	if [[ $length -eq 0 ]]; then
 		echo >&2 "Length cannot be 0."
 		return 1
 	fi
@@ -34,7 +34,7 @@ substring_escape() {
 	# sequences that are later cancelled out by a reset sequence.
 
 	# Store the leading characters in $l, and the slice in $s.
-	replacement="(\$l=\$1),(\$s=\$2)"
+	replacement='($l=$1),($s=$2)'
 	# Strip all visible characters from the leading capture, only keeping the escape sequences.
 	replacement="$replacement,(\$l=~s!(?:($escape*).)!\1!g)"
 	# Combine the leading escape sequences with the captured slice in $c.
@@ -65,4 +65,3 @@ substring_escape() {
 		perl -CS -pe "s/^(.*?)($char{$reallength}$reset?)$char{$((-length))}$/$replacement/e"
 	fi
 }
-

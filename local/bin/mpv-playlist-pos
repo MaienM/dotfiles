@@ -2,11 +2,12 @@
 
 set -o errexit -o pipefail
 
-pos=$(mpv-control '{"command":["get_property", "playlist"]}' \
-	| jq -r '.data | to_entries | map([.key, .value.title, if .value.current then "('$color_fg_cyan'current'$color_reset')" else null end] | map(select(.)) | join(" ")) | .[]' \
-	| fzf-tmux --ansi \
-	| cut -d' ' -f1
+pos=$(
+	mpv-control '{"command":["get_property", "playlist"]}' \
+		| jq -r '.data | to_entries | map([.key, .value.title, if .value.current then "('$color_fg_cyan'current'$color_reset')" else null end] | map(select(.)) | join(" ")) | .[]' \
+		| fzf-tmux --ansi \
+		| cut -d' ' -f1
 )
 if [ -n "$pos" ]; then
-	mpv-control set playlist-pos "$pos" 
+	mpv-control set playlist-pos "$pos"
 fi

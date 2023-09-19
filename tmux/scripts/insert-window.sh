@@ -7,4 +7,3 @@ while tmux list-panes -t "$target"; do
 	target="$((target + 1))"
 done
 tmux select-window -t "$1"
-

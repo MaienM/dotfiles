@@ -10,12 +10,13 @@ shift
 case "$command" in
 	list-location?(s))
 		ls -1 "$LOCATIONS_DIR"
-	;;
+		;;
 
-	save-location) path="$LOCATIONS_DIR/$1"
+	save-location)
+		path="$LOCATIONS_DIR/$1"
 		mkdir -p "$(dirname "$path")"
 		xdotool getmouselocation | sed 's/[^0-9 ]//g' | cut -d' ' -f1-2 > "$path"
-	;;
+		;;
 
 	load-location)
 		path="$LOCATIONS_DIR/$1"
@@ -25,7 +26,7 @@ case "$command" in
 		fi
 		# shellcheck disable=SC2046
 		xdotool mousemove $(cat "$path")
-	;;
+		;;
 
 	click-location)
 		name="$1"
@@ -34,7 +35,7 @@ case "$command" in
 		xdotool-utils load-location "$name"
 		xdotool click "$button"
 		xdotool-utils load-location _prev
-	;;
+		;;
 
 	sequence)
 		commands=()
@@ -44,16 +45,16 @@ case "$command" in
 			case "$step" in
 				--repeat=+([0-9]))
 					repeatsequence=${step#--repeat=}
-				;;
+					;;
 
 				--delay=+([0-9]))
 					delaysequence=${step#--delay=}
-				;;
+					;;
 
 				+([0-9])?(.+([0-9])))
 					# Number by itself will be parsed as a sleep.
 					commands=("${commands[@]}" "echo sleep $step")
-				;;
+					;;
 
 				*)
 					# Anything else will be a position name followed by options, each separated by a colon.
@@ -88,7 +89,7 @@ case "$command" in
 						"$(printf 'xdotool click --repeat=%q --delay=%q %q' "$repeat" "$delay" "$button")"
 						'xdotool keyup Control Meta Shift'
 					)
-				;;
+					;;
 			esac
 		done
 
@@ -104,5 +105,5 @@ case "$command" in
 			xdotool-utils load-location _startiteration
 		done
 		xdotool-utils load-location _start
-	;;
+		;;
 esac

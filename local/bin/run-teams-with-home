@@ -58,5 +58,5 @@ if [ -n "$id" ]; then
 		--app-id="$id" \
 		--start-fullscreen \
 		--install-chrome-app=
-		"$@"
+	"$@"
 fi

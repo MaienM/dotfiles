@@ -35,4 +35,3 @@ fi
 if [ -n "$corrected_width" ] || [ -n "$corrected_height" ]; then
 	i3-msg "resize set width $((corrected_width)) height $((corrected_height))"
 fi
-

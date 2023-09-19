@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # shellcheck disable=SC2154
 
-# termcap  
+# termcap
 # ks  make the keypad send commands
 # ke  make the keypad send digits
 # vb  emit visual bell
@@ -25,4 +25,3 @@ man() {
 		LESS_TERMCAP_ue="$color_reset" \
 		man "$@"
 }
-

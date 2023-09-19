@@ -23,4 +23,3 @@ printf "$format" $(
 		done
 	done
 )
-

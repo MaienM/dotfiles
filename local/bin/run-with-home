@@ -17,4 +17,3 @@
 
 	exec env HOME="$home" "$@"
 )
-

@@ -12,7 +12,11 @@ dockps() {
 	result=$(docker ps --format='table {{.Names}}\t{{"-" | or (.Label "com.docker.compose.project")}}\t{{.Image}}\t{{.Status}}' "$@")
 
 	# Sort by name and color the header row
-	result=$(echo "$result" | (read h; echo "$COLOR_BLUE$h$COLOR_RESET"; sort))
+	result=$(echo "$result" | (
+		read h
+		echo "$COLOR_BLUE$h$COLOR_RESET"
+		sort
+	))
 
 	# Color the name group part bold yellow
 	# result=$(echo "$result" | sed "s/^\(\S\+-\)/$COLOR_BOLD_GREEN\1$COLOR_RESET/")
@@ -49,7 +53,7 @@ dockrunsh() {
 	latest=$(docker ps -lq)
 	_dockrun -d "$@"
 	name=$(docker ps -lq)
-	[[ -n "$name" || "$latest" == "$name" ]] || return 1
+	[[ -n $name || $latest == "$name" ]] || return 1
 	docksh "$name"
 	docker rm -f "$name"
 }
@@ -65,9 +69,10 @@ _dockrun() {
 
 # Start a shell in a docker container
 docksh() {
-	name=${1:--}; shift &> /dev/null
+	name=${1:--}
+	shift &> /dev/null
 	if [ "$name" = "-" ]; then
-	   name="$(docker ps -lq)"
+		name="$(docker ps -lq)"
 	fi
 	docker exec -it "$name" "${@:-/bin/sh}"
 }
@@ -75,7 +80,8 @@ docksh() {
 ### Attaching ###
 
 docka() {
-	name=${1:-$(docker ps -lq)}; shift &> /dev/null
+	name=${1:-$(docker ps -lq)}
+	shift &> /dev/null
 	docker attach --sig-proxy=false "$name"
 }
 
@@ -109,7 +115,7 @@ dockportashost() {
 	domain="$2"
 	name="portashost-$domain-$port"
 
-	if [[ -z "$1" || -z "$2" ]]; then
+	if [[ -z $1 || -z $2 ]]; then
 		echo "Usage: $0 port domain"
 		return 1
 	fi

@@ -24,7 +24,7 @@ if [ -n "$2" ]; then
 	icon_path_original="$icon_path"
 	icon_path="${icon_path_original%.svg}_$color_hash.svg"
 	if [ ! -f "$icon_path" ]; then
-		awk -v color="$2" '{ gsub("currentColor", color, $0); print $0 }'\
+		awk -v color="$2" '{ gsub("currentColor", color, $0); print $0 }' \
 			< "$icon_path_original" \
 			> "$icon_path"
 	fi

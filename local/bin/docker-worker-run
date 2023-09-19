@@ -35,13 +35,13 @@ mkfifo -m 600 "$outputstatussocket"
 mkfifo -m 600 "$outputstdoutsocket"
 mkfifo -m 600 "$outputstderrsocket"
 
-exec 4>"$inputsocket"
+exec 4> "$inputsocket"
 (
 	printf '%q ' "$pid" "$@"
 	printf '\n'
 ) >&4
 
-exec 5<"$outputstatussocket"
+exec 5< "$outputstatussocket"
 cat "$outputstdoutsocket" &
 cat "$outputstderrsocket" >&2 &
 

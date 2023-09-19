@@ -11,7 +11,7 @@ if [ -z "$1" ]; then
 	exit 1
 fi
 
-font="FiraCode Nerd Font Mono";
+font="FiraCode Nerd Font Mono"
 items="$1"
 
 m() {
@@ -44,15 +44,16 @@ generate_resolution_block() {
 	fontheight=$(m "$fontsize * 2") # TODO: Find a way to get a proper value for this
 	textpadding=$(m "$fontsize / 2")
 
-	sed 's/^\t\t//g' <<END
+	sed 's/^\t\t//g' << END
 		* {
 			font: "$font $fontsize";
 		}
 		window {
-			padding: $(aspect \
-				"$(m "($height - $blocksize) / 2")px 9.999%" \
-				"9.999% $(m "($width - $blocksize) / 2")px" \
-			);
+			padding: $(
+		aspect \
+			"$(m "($height - $blocksize) / 2")px 9.999%" \
+			"9.999% $(m "($width - $blocksize) / 2")px"
+	);
 		}
 		listview {
 			lines: $items;
@@ -72,10 +73,9 @@ END
 }
 
 # The order of the monitors in rofi seems reversed from xrandr.
-echo "@import \"themes/iconmenu.rasi\""
+echo '@import "themes/iconmenu.rasi"'
 index=0
 while read -ra moninfo; do
 	generate_media_block "$index" "${moninfo[2]}" "${moninfo[4]}"
 	((index += 1))
 done < <(xrandr --listactivemonitors | tr '/x' ' ' | tail -n+2 | tac)
-

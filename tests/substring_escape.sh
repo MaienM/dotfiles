@@ -21,7 +21,7 @@ test_substr() {
 		printf '%s "%s"\n' "${color_fg_green}✓${color_reset}" "$actual$color_reset"
 	else
 		printf '%s substring_escape %d %d\n' "${color_fg_red}×${color_reset}" "$1" "$2"
-		printf '  "%s" != "%s"\n' "$actual$color_reset" "$expected$color_reset" 
+		printf '  "%s" != "%s"\n' "$actual$color_reset" "$expected$color_reset"
 		printf '  %q != %q\n' "$actual" "$expected"
 	fi
 }
@@ -43,4 +43,3 @@ test_substr -3 100 "${cfm}h${cr}90"
 test_substr -7 -2 "${cfg}${cbm}f${cr}78${cfm}gh${cr}"
 test_substr -6 -2 "78${cfm}gh${cr}"
 test_substr -7 -8 ""
-

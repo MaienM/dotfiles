@@ -28,14 +28,13 @@ declare -A PREVIEW_SYMBOLS
 : "${PREVIEW_SYMBOLS[title_left_corner]=}"
 : "${PREVIEW_SYMBOLS[title_right_corner]=}"
 
-
 # shellcheck source=../../functions/substring_escape
 source ~/.functions/substring_escape
 
 # Get the visible contents for a given pane, including escape codes.
 # printf '%s\n' "$output" will result in (mostly) identical output.
 capture_pane() {
-	tmux capture-pane -t "$1" -pe 
+	tmux capture-pane -t "$1" -pe
 }
 
 # Calculate the widths of the previews for a given width and amount of items to preview. Takes symbol[left_border],
@@ -54,9 +53,9 @@ calculate_widths() {
 	# Determine how many items can have this width before we have to step to a lower width.
 	itemsatmaxsize=$((width - (maxsize - 1) * items))
 
-	i=0;
+	i=0
 	size="$maxsize"
-	for ((i=0; i<$(($2)); i++)); do
+	for ((i = 0; i < $(($2)); i++)); do
 		printf '%s\n' "$size"
 		if [ "$i" -eq "$itemsatmaxsize" ]; then
 			size=$((size - 1))
@@ -67,7 +66,7 @@ calculate_widths() {
 # Repeat a character the given amount of times.
 repeat_char() {
 	local i
-	for ((i=0; i<=$(($1)); i++)); do
+	for ((i = 0; i <= $(($1)); i++)); do
 		printf '%s' "$2"
 	done
 }
@@ -100,16 +99,16 @@ render_preview() {
 	# Process arguments into ids & titles.
 	ids=()
 	titles=()
-	for ((i=0; i<$#; i+=1)); do
+	for ((i = 0; i < $#; i += 1)); do
 		arg="$((i + 1))"
 		arg="${!arg}"
-		ids[i]="${arg// *}"
+		ids[i]="${arg// */}"
 		titles[i]="${arg#${ids[$i]} }"
 	done
 
 	# Put all preview lines of all panes in a single array, back to back.
 	mapfile -t widths < <(calculate_widths "$columns" $#)
-	for ((i=0; i<$#; i+=1)); do
+	for ((i = 0; i < $#; i += 1)); do
 		mapfile -t -O$((i * lines)) previewlines < \
 			<(capture_pane "${ids[i]}" | tail_or_pad "${lines}" | cut_or_pad "${widths[i]}")
 	done
@@ -117,10 +116,10 @@ render_preview() {
 	# Titles are embeded in a single line.
 	symbol="${PREVIEW_SYMBOLS[topleft_corner]}"
 	bwidth="${swidths[left_border]}"
-	for ((i=0; i<$#; i+=1)); do
+	for ((i = 0; i < $#; i += 1)); do
 		printf '%s%s%s%s' "$symbol" "${PREVIEW_SYMBOLS[title_start]}" "${titles[i]}" "${PREVIEW_SYMBOLS[title_end]}" \
-		| cut_or_pad "$((widths[i] + bwidth))" "${PREVIEW_SYMBOLS[top_border]}" \
-		| tr -d '\n'
+			| cut_or_pad "$((widths[i] + bwidth))" "${PREVIEW_SYMBOLS[top_border]}" \
+			| tr -d '\n'
 		symbol="${PREVIEW_SYMBOLS[top_tsplit]}"
 		bwidth="${swidths[middle_border]}"
 	done
@@ -129,28 +128,28 @@ render_preview() {
 	# Render the below-title line, if the PREVIEW_SYMBOLS for it are defined.
 	if [ -n "${PREVIEW_SYMBOLS[title_border]}" ]; then
 		symbol="${PREVIEW_SYMBOLS[left_border]}"
-		for ((i=0; i<$#; i+=1)); do
+		for ((i = 0; i < $#; i += 1)); do
 			printf '%s' "$symbol"
 			printf '%s%s%s' \
 				"${PREVIEW_SYMBOLS[title_left_corner]}" \
 				"$(
 					repeat_char "$columns" "${PREVIEW_SYMBOLS[title_border]}" \
-					| substring_escape 0 "$(printf '%s' "${titles[i]}" | strip_escape | wc -m)"
+						| substring_escape 0 "$(printf '%s' "${titles[i]}" | strip_escape | wc -m)"
 				)" \
 				"${PREVIEW_SYMBOLS[title_right_corner]}" \
-			| cut_or_pad "${widths[i]}" \
-			| tr -d '\n'
+				| cut_or_pad "${widths[i]}" \
+				| tr -d '\n'
 			symbol="${PREVIEW_SYMBOLS[middle_border]}"
 		done
 		printf '%s\n' "${PREVIEW_SYMBOLS[right_border]}"
 	fi
 
 	# Render the actual contents, with separators.
-	for ((ln=0; ln<lines; ln+=1)); do
+	for ((ln = 0; ln < lines; ln += 1)); do
 		symbol="${PREVIEW_SYMBOLS[left_border]}"
-		for ((i=0; i<$#; i+=1)); do
+		for ((i = 0; i < $#; i += 1)); do
 			# shellcheck disable=SC2154
-			printf '%s%s' "$symbol" "${previewlines[i*lines+ln]}$color_reset"
+			printf '%s%s' "$symbol" "${previewlines[i * lines + ln]}$color_reset"
 			symbol="${PREVIEW_SYMBOLS[middle_border]}"
 		done
 		printf '%s\n' "${PREVIEW_SYMBOLS[right_border]}"
@@ -160,7 +159,7 @@ render_preview() {
 	if [ -n "${PREVIEW_SYMBOLS[bottom_border]}" ]; then
 		symbol="${PREVIEW_SYMBOLS[bottomleft_corner]}"
 		bwidth="${swidths[left_border]}"
-		for ((i=0; i<$#; i+=1)); do
+		for ((i = 0; i < $#; i += 1)); do
 			printf '%s' "$symbol" | cut_or_pad "$((widths[i] + bwidth))" "${PREVIEW_SYMBOLS[bottom_border]}" | tr -d '\n'
 			symbol="${PREVIEW_SYMBOLS[bottom_tsplit]}"
 			bwidth="${swidths[middle_border]}"
@@ -168,7 +167,6 @@ render_preview() {
 		printf '%s\n' "${PREVIEW_SYMBOLS[bottomright_corner]}"
 	fi
 }
-
 
 # Determine widths of the PREVIEW_SYMBOLS.
 declare -A swidths
@@ -179,7 +177,7 @@ done
 # Validate widths.
 assert_width() {
 	local width
-	for ((i=4; i<=$#; i+=1)); do
+	for ((i = 4; i <= $#; i += 1)); do
 		width="${swidths[${!i}]}"
 		if [ "$1" -ne "$width" ]; then
 			echo >&2 "$assertmessage width of symbol ${!i} ($width) $2."
@@ -212,7 +210,6 @@ if [ "${swidths[title_border]}" -ne 0 ]; then
 	assert_fixed 1 title_border
 fi
 
-
 if [ $# -lt 1 ]; then
 	echo >&2 "Must pass at least one tmux session/window/pane identifier."
 	exit 1
@@ -222,4 +219,3 @@ columns="${PREVIEW_COLUMNS:-${COLUMNS:-$(tput cols)}}"
 lines="${PREVIEW_LINES:-${LINES:-$(tput lines)}}"
 
 render_preview "$columns" "$lines" "$@"
-

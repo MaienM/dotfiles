@@ -33,17 +33,20 @@ prompt() {
 	reply_opts=$(echo "$opts" | tr '[:upper:]' '[:lower:]')
 	echo "$message [$opts]"
 	while true; do
-		reply=$(read_char reply; echo "$reply" | tr '[:upper:]' '[:lower:]')
+		reply=$(
+			read_char reply
+			echo "$reply" | tr '[:upper:]' '[:lower:]'
+		)
 		# shellcheck disable=SC2102
-		case $reply in 
+		case $reply in
 			[$reply_opts])
 				eval "$target=\"\$reply\""
-				return 0;
-			;;
+				return 0
+				;;
 			'')
 				eval "$target=\"\$default\""
 				return 0
-			;;
+				;;
 		esac
 	done
 }

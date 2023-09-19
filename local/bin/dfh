@@ -75,72 +75,72 @@ get_usage_color() {
 }
 
 (
-mapfile -t list_volume < <(get_mount_column source)
-mapfile -t list_mountpoint < <(get_mount_column target)
-mapfile -t list_used < <(get_mount_column used)
-mapfile -t list_available < <(get_mount_column avail)
-for i in {0..999}; do
-	[ "$i" -lt "${#list_volume[@]}" ] || break
+	mapfile -t list_volume < <(get_mount_column source)
+	mapfile -t list_mountpoint < <(get_mount_column target)
+	mapfile -t list_used < <(get_mount_column used)
+	mapfile -t list_available < <(get_mount_column avail)
+	for i in {0..999}; do
+		[ "$i" -lt "${#list_volume[@]}" ] || break
 
-	volume="${list_volume[$i]}"
-	mountpoint="${list_mountpoint[$i]}"
-	used="${list_used[$i]}"
-	total="$((list_used[i] + list_available[i]))"
+		volume="${list_volume[$i]}"
+		mountpoint="${list_mountpoint[$i]}"
+		used="${list_used[$i]}"
+		total="$((list_used[i] + list_available[i]))"
 
-	unset properties
-	declare -A properties
-
-	properties[used]="$used"
-	properties[total]="$total"
-	properties[mountpoint]="$mountpoint"
-	properties[pctused]="$(c "100 * used / total")"
-
-	printf '%s | %s | %s%s/%s (%.1f%%)%s\n' \
-		"$volume" \
-		"$mountpoint" \
-		"$(get_usage_color)" \
-		"$(ps used)" \
-		"$(ps total)" \
-		"$(p pctused)" \
-		"${color_reset}"
-done
-
-if ontarget command -v zfs > /dev/null 2>&1; then
-	mapfile -t volumes < <(ontarget zfs list -H -o name)
-	for volume in "${volumes[@]}"; do
 		unset properties
 		declare -A properties
 
-		while read -r prop value; do
-			properties+=(["$prop"]="$value")
-		done < <(ontarget zfs get -Hp -o property,value used,available,compressratio,usedbydataset,mountpoint "$volume")
-		properties[total]="$(c "used + available")"
+		properties[used]="$used"
+		properties[total]="$total"
+		properties[mountpoint]="$mountpoint"
 		properties[pctused]="$(c "100 * used / total")"
 
-		case "$(p mountpoint)" in
-			legacy) properties[mountpoint]="$(
-				ontarget mount \
-				| awk -v name="$volume" '{ if ($1 == name && $5 == "zfs") { print $3; exit } }'
-			)" ;;
-			none) properties[mountpoint]= ;;
-		esac
-
-		if [[ "$volume" = */* ]]; then
-			volume="$color_fg_black${volume%/*}$color_reset/${volume##*/}"
-		fi
-
-		printf '%s | %s | %s%s/%s (%.1f%%)%s | (%s self) | compression %.2fx, effective %s/%s\n' \
+		printf '%s | %s | %s%s/%s (%.1f%%)%s\n' \
 			"$volume" \
-			"$(p mountpoint)" \
+			"$mountpoint" \
 			"$(get_usage_color)" \
 			"$(ps used)" \
 			"$(ps total)" \
 			"$(p pctused)" \
-			"${color_reset}" \
-			"$(ps usedbydataset)" \
-			"$(p compressratio)" \
-			"$(cs "used * compressratio")" \
-			"$(cs "total * compressratio")"
+			"${color_reset}"
 	done
-fi
+
+	if ontarget command -v zfs > /dev/null 2>&1; then
+		mapfile -t volumes < <(ontarget zfs list -H -o name)
+		for volume in "${volumes[@]}"; do
+			unset properties
+			declare -A properties
+
+			while read -r prop value; do
+				properties+=(["$prop"]="$value")
+			done < <(ontarget zfs get -Hp -o property,value used,available,compressratio,usedbydataset,mountpoint "$volume")
+			properties[total]="$(c "used + available")"
+			properties[pctused]="$(c "100 * used / total")"
+
+			case "$(p mountpoint)" in
+				legacy) properties[mountpoint]="$(
+					ontarget mount \
+						| awk -v name="$volume" '{ if ($1 == name && $5 == "zfs") { print $3; exit } }'
+				)" ;;
+				none) properties[mountpoint]= ;;
+			esac
+
+			if [[ $volume == */* ]]; then
+				volume="$color_fg_black${volume%/*}$color_reset/${volume##*/}"
+			fi
+
+			printf '%s | %s | %s%s/%s (%.1f%%)%s | (%s self) | compression %.2fx, effective %s/%s\n' \
+				"$volume" \
+				"$(p mountpoint)" \
+				"$(get_usage_color)" \
+				"$(ps used)" \
+				"$(ps total)" \
+				"$(p pctused)" \
+				"${color_reset}" \
+				"$(ps usedbydataset)" \
+				"$(p compressratio)" \
+				"$(cs "used * compressratio")" \
+				"$(cs "total * compressratio")"
+		done
+	fi
 ) | column -t -s '|'

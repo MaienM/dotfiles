@@ -7,7 +7,7 @@
 
 	# Verify that the script is in ~/.local/bin/
 	script_path="$(command -v "$0")"
-	if ! [[ "$script_path" == "$HOME/.local/bin/"* ]]; then
+	if ! [[ $script_path == "$HOME/.local/bin/"* ]]; then
 		>&2 echo "Wrapper helper included from script that is not in ~/.local/bin/"
 		exit 1
 	fi

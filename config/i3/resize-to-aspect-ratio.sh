@@ -22,12 +22,12 @@ case "$ratio" in
 			echo >&2 "Cannot have a negative or zero in the ratio"
 			exit 1
 		fi
-	;;
+		;;
 
 	*)
 		echo >&2 "Invalid value ($ratio) for the ratio set, must be in the form of width:height (eg 4:3, 16:9)"
 		exit 1
-	;;
+		;;
 esac
 
 target="$2"
@@ -37,7 +37,7 @@ case "$target" in
 	*)
 		echo >&2 "Invalid value ($target) for the dimension to set, must be either 'width' or 'height'"
 		exit 1
-	;;
+		;;
 esac
 
 case "$(get_active_window_info | jq -r '.border')" in
@@ -51,4 +51,3 @@ case "$target" in
 	'height') ~/.config/i3/resize-exact.sh 0 "$target_size" ;;
 	'width') ~/.config/i3/resize-exact.sh "$target_size" 0 ;;
 esac
-

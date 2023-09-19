@@ -5,5 +5,5 @@
 set -o errexit -o pipefail
 
 sed 's!^\([^|]*\)|\(.*\)$!<span size="1">\1</span>\2!' \
-| rofi -dmenu -markup-rows "$@" \
-| sed 's/^<span size=.1.>\([^<]*\)<.*$/\1/'
+	| rofi -dmenu -markup-rows "$@" \
+	| sed 's/^<span size=.1.>\([^<]*\)<.*$/\1/'
