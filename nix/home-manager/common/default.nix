@@ -25,7 +25,7 @@
     bc
     delta
     direnv
-    exa
+    eza
     fzf
     git
     git-crypt

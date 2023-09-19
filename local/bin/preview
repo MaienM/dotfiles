@@ -5,7 +5,7 @@ if [ -z "$fn" ]; then
 	echo >&2 "Please pass a path to preview"
 	exit 1
 elif [ -d "$fn" ]; then
-	exa --color=always --long --group-directories-first --header --icons --git "$fn"
+	eza --color=always --long --group-directories-first --header --icons --git "$fn"
 elif [ -f "$fn" ]; then
 	case "$(file --brief "$fn")" in
 		*archive*|*compressed\ data*|'PE32 executable'*)
