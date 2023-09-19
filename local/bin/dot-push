@@ -1,10 +1,20 @@
 #!/usr/bin/env bash
 
-set -e errexit 
+set -o errexit -o pipefail -o nounset
 
 ssh "$1" '
 	set -e
 
+	if ! command -v git > /dev/null 2>&1; then
+		>&2 echo "git command is missing, aborting."
+		exit 1
+	fi
+
+	if ! [ -e dotfiles ]; then
+		echo "dotfiles does not exist, cloning now."
+		git clone https://github.com/MaienM/dotfiles
+	fi
+	
 	cd dotfiles
 
 	if ! [ "$(git rev-parse --abbrev-ref HEAD)" = master ]; then
@@ -15,19 +25,23 @@ ssh "$1" '
 		>&2 echo "There are uncomitted changes, aborting."
 		exit 1
 	fi
-	git branch desktop/master 2> /dev/null || true
+	if ! git show-ref --verify --quiet refs/heads/desktop/master > /dev/null 2>&1; then
+		echo "There is no desktop/master branch, creating it now."
+		git branch -c master desktop/master
+	fi
 	if ! [ "$(git rev-parse HEAD)" = "$(git rev-parse desktop/master)" ]; then
 		>&2 echo "There are local commits, aborting."
 		exit 1
 	fi
-
-	if ! git show-ref --verify --quiet refs/heads/desktop/master > /dev/null 2>&1; then
-		echo "There is no desktop/master branch, creating it now."
-		git checkout -b desktop/master
-		git checkout master
-	fi
 '
+
+if ! git remote get-url "$1" > /dev/null 2>&1; then
+	echo "There is no remote defined for this host yet, adding it now."
+	git remote add "$1" "$USER@$1:~/dotfiles"
+fi
+
 git push -f "$1" master:desktop/master
+
 ssh "$1" '
 	set -e
 
@@ -35,4 +49,5 @@ ssh "$1" '
 	git checkout desktop/master -B master
 	./local/bin/git-submodule-init
 '
+
 echo 'Remote dotfiles have been updated.'
