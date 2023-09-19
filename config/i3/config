@@ -268,12 +268,12 @@ exec --no-startup-id ~/.config/local/i3-once.sh
 ### Window assignments
 assign [class="^FML"] → $workspace1
 assign [class="^Minecraft"] → $workspace4
-assign [title="^NBTEdit"] → $workspace12
-assign [class="^discord$"] → $workspace10
-assign [class="^Slack$"] → $workspace10
-assign [instance="^crx_cifhbcnohmdccbgoicgdjpfamggdegmo$"] → $workspace10
+assign [title="^NBTEdit"] → $workspace10
+assign [class="^discord$"] → $workspace12
+assign [class="^Slack$"] → $workspace12
+assign [instance="^crx_cifhbcnohmdccbgoicgdjpfamggdegmo$"] → $workspace12
 assign [class="^Evolution$"] → $workspace3
-assign [instance="^.yubioath-flutter-wrapped$"] → $workspace10
+assign [instance="^.yubioath-flutter-wrapped$"] → $workspace12
 assign [title="^Citrix maximized probe window$"] → 99
 assign [class="^Wfica$"] → 99 # Citrix
 
@@ -301,7 +301,8 @@ for_window [instance="^.yubioath-flutter-wrapped$"] floating enable
 for_window [instance="^.yubioath-flutter-wrapped$"] resize set width 500px height 1000px
 for_window [instance="^.yubioath-flutter-wrapped$"] move position center
 for_window [title="^Certificaat voor authenticatie selecteren$"] floating enable # Citrix
-for_window [title="^Workrave$"] border pixel 1
 for_window [window_type="notification"] floating enable
+for_window [class="^Workrave$" title="^Workrave$"] border pixel 1
+for_window [class="^Workrave$" title="^Workrave$"] floating enable
 for_window [class="^Workrave$" title="^Workrave$"] move container to workspace $workspace10
 for_window [instance="^crx_cifhbcnohmdccbgoicgdjpfamggdegmo$"] fullscreen disable
