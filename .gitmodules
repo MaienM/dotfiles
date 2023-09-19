@@ -289,3 +289,6 @@
 [submodule "vim/bundle-nvim/lualine"]
 	path = vim/bundle-nvim/lualine
 	url = https://github.com/nvim-lualine/lualine.nvim
+[submodule "vim/bundle-nvim/rust-tools"]
+	path = vim/bundle-nvim/rust-tools
+	url = https://github.com/simrat39/rust-tools.nvim
