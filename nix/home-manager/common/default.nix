@@ -76,6 +76,7 @@
     # Language servers/tools.
     autoflake
     black
+    deadnix
     editorconfig-checker
     isort
     lua-language-server
@@ -83,6 +84,7 @@
     nodePackages.pyright
     rust-analyzer
     shellcheck
+    statix
     stylua
     zk
 
