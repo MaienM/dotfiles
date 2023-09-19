@@ -207,7 +207,7 @@
 	url = https://github.com/Misterio77/base16-polybar
 [submodule "config/base16/templates/rofi"]
 	path = config/base16/templates/rofi
-	url = https://gitlab.com/0xdec/base16-rofi
+	url = https://gitlab.com/jordiorlando/base16-rofi
 [submodule "config/base16/templates/shell"]
 	path = config/base16/templates/shell
 	url = https://github.com/tinted-theming/base16-shell

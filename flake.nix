@@ -24,10 +24,14 @@
     let
       dotfiles = ./.;
       pkgs = nixpkgs.legacyPackages.${system};
-      pkgs-force = import pkgs (pkgs.config // {
-        allowBroken = true;
-        allowUnsupportedSystem = true;
-      });
+      pkgs-force = import "${nixpkgs}" {
+        inherit system;
+        config = {
+          allowBroken = true;
+          allowUnfree = true;
+          allowUnsupportedSystem = true;
+        };
+      };
       pkgs-inputs = # { name = inputs.${name}.packages.${system} }
         builtins.mapAttrs
           (_: nixpkgs.lib.attrByPath [ "packages" system ] { })

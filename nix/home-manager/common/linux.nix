@@ -30,7 +30,7 @@
     mpv
     pavucontrol
     pkgs-force.discord # Marked incompatible with aarch64-linux.
-    pkgs-force.workrave # Marked broken.
+    workrave
 
   ];
 }
