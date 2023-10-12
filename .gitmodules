@@ -292,3 +292,6 @@
 [submodule "vim/bundle-nvim/rust-tools"]
 	path = vim/bundle-nvim/rust-tools
 	url = https://github.com/simrat39/rust-tools.nvim
+[submodule "config/base16/templates/kitty"]
+	path = config/base16/templates/kitty
+	url = https://github.com/kdrag0n/base16-kitty

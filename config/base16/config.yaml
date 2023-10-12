@@ -24,6 +24,10 @@ applications:
     templates:
       - input: ./templates/k9s/templates/default.mustache
         output: ~/.config/k9s/skin.yml
+  kitty:
+    templates:
+      - input: ./templates/kitty/templates/default-256.mustache
+        output: ~/.config/kitty/base16.conf
   polybar:
     templates:
       - input: ./templates/polybar/templates/default.mustache
