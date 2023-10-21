@@ -17,6 +17,7 @@ from dataclasses import dataclass, field
 from glob import glob
 from io import BytesIO, TextIOBase
 from pathlib import Path
+from random import choice
 from shutil import rmtree
 from subprocess import PIPE, STDOUT, run
 from sys import exit
@@ -624,7 +625,14 @@ def main():
 	parser = ArgumentParser()
 	parser.add_argument(
 		"name",
-		help="The name of the colorscheme to use, or 'picker' to select one interactively.",
+		help="""
+			In order:
+				- 'picker' to select a scheme interactively.
+				- 'random-light' to use a random scheme with a light background.
+				- 'random-dark' to use a random scheme with a dark background.
+				- An alias defined in the config.
+				- The name of a scheme.
+		""",
 	)
 	parser.add_argument(
 		"-d",
@@ -678,6 +686,24 @@ def main():
 			live.stop()
 			name = Picker(schemes).run()
 			live.start()
+		elif name == "random-light":
+			name = choice(schemes.list())
+		elif name == "random-light":
+			name = choice(
+				[
+					name
+					for name in schemes.list()
+					if schemes.get(name).base00.perceived_lightness > 50
+				]
+			)
+		elif name == "random-dark":
+			name = choice(
+				[
+					name
+					for name in schemes.list()
+					if schemes.get(name).base00.perceived_lightness < 50
+				]
+			)
 		else:
 			name = config.aliases.get(name, name)
 
