@@ -2,4 +2,4 @@
 
 # shellcheck disable=1091
 . nerdfonts_icons_all.sh
-set | grep '^i_' | grep "$@"
+set | grep '^i_' | grep "$@" | sed 's/$/ /'
