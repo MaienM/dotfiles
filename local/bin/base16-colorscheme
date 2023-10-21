@@ -8,6 +8,7 @@
 #!nix-shell -p python3.pkgs.requests
 #!nix-shell -p python3.pkgs.rich
 #!nix-shell -p python3.pkgs.ruamel-yaml
+#!nix-shell -p python3.pkgs.textual
 #!nix-shell -p python3.pkgs.toposort
 
 import logging
@@ -20,6 +21,7 @@ from shutil import rmtree
 from subprocess import PIPE, STDOUT, run
 from sys import exit
 from textwrap import dedent
+from typing import Any, Callable
 from zipfile import ZipFile
 
 import chevron
@@ -30,7 +32,9 @@ import ruamel.yaml
 from colour import Color
 from pydantic import validator
 from pydantic.dataclasses import dataclass as pydanticdataclass
+from rich.columns import Columns
 from rich.containers import Lines
+from rich.layout import Layout
 from rich.live import Live
 from rich.panel import Panel
 from rich.spinner import Spinner
@@ -40,6 +44,11 @@ from rich.syntax import ANSISyntaxTheme, Syntax
 from rich.table import Table
 from rich.text import Text
 from rich.traceback import Traceback
+from textual import on
+from textual.app import App, ComposeResult
+from textual.containers import Container
+from textual.widgets import Footer, OptionList, Static
+from textual.widgets.option_list import Option
 from toposort import toposort_flatten as toposort
 
 log = logging.getLogger()
@@ -296,6 +305,9 @@ class Schemes:
 		data = yaml_load_file(CACHE_DIR / self._index[name])
 		return Scheme(**data)
 
+	def list(self) -> list[str]:
+		return list(self._index.keys())
+
 	@classmethod
 	def _update_schemes(cls) -> None:
 		response = requests.get(cls.ZIP_URL)
@@ -486,6 +498,122 @@ class Preview(Styled):
 		super().__init__(grid, f"on {scheme.base00.hex_l}")
 
 
+class PickerEntry(Table):
+	def __init__(self, scheme: Scheme, name_width: int):
+		super().__init__(
+			box=None,
+			padding=0,
+			collapse_padding=True,
+			show_header=False,
+			show_footer=False,
+			show_edge=False,
+			pad_edge=False,
+			expand=True,
+		)
+
+		self.add_column(width=name_width + 2)
+		for i in range(1, 16):
+			self.add_column(ratio=1)
+
+		label = Text(
+			f" {scheme.scheme} ",
+			style=Style(color=scheme.base05.hex_l, bgcolor=scheme.base00.hex_l),
+		)
+
+		previews = []
+		for i in range(1, 16):
+			color = getattr(scheme, f"base{i:02X}")
+			previews.append(
+				Text(
+					style=Style(bgcolor=color.hex_l),
+					overflow="crop",
+				)
+			)
+
+		self.add_row(
+			label,
+			*previews,
+		)
+
+
+class SchemeOptionList(OptionList):
+	def __init__(self, schemes: Schemes):
+		super().__init__()
+
+		self.schemes = {name: schemes.get(name) for name in schemes.list()}
+		self.name_width = max(len(n) for n in schemes.list())
+		self.sort_alphabetical()
+
+	def sort_cycle(self):
+		if self.sort == "alphabetical":
+			self.sort_lightness()
+		else:
+			self.sort_alphabetical()
+
+	def sort_alphabetical(self):
+		self.sort = "alphabetical"
+		self._update_list(lambda pair: pair[0])
+
+	def sort_lightness(self):
+		self.sort = "lightness"
+		self._update_list(lambda pair: -pair[1].base00.perceived_lightness)
+
+	def _update_list(self, key: Callable[[tuple[str, Scheme]], Any]):
+		options = [
+			Option(
+				PickerEntry(scheme, self.name_width),
+				id=name,
+			)
+			for (name, scheme) in sorted(self.schemes.items(), key=key)
+		]
+		self.clear_options()
+		self.add_options(options)
+
+
+class Picker(App):
+	CSS = """
+		OptionList {
+			padding: 0;
+			margin-bottom: 18;
+			border: none;
+			height: 100%;
+		}
+	"""
+
+	BINDINGS = [
+		("ctrl+q", "quit", "Quit"),
+		("ctrl+s", "sort", "Change sort"),
+	]
+
+	def __init__(self, schemes: Schemes):
+		super().__init__()
+		self.schemes = schemes
+
+	def compose(self) -> ComposeResult:
+		with Container():
+			self.preview = Static()
+			self.preview.update(Preview(self.schemes.get(self.schemes.list()[0])))
+			yield self.preview
+
+			self.options = SchemeOptionList(self.schemes)
+			yield self.options
+		yield Footer()
+
+	def action_sort(self):
+		self.options.sort_cycle()
+
+	def on_mount(self):
+		self.dark = False
+
+	@on(OptionList.OptionHighlighted)
+	def on_highlight(self, event: OptionList.OptionHighlighted) -> None:
+		self.preview.update(Preview(self.schemes.get(event.option_id)))
+
+	@on(OptionList.OptionSelected)
+	def on_select(self, event: OptionList.OptionSelected) -> None:
+		self.app.exit(event.option_id)
+
+
 @dataclass
 class AppResult:
 	has_changes: bool = False
@@ -494,7 +622,10 @@ class AppResult:
 
 def main():
 	parser = ArgumentParser()
-	parser.add_argument("name")
+	parser.add_argument(
+		"name",
+		help="The name of the colorscheme to use, or 'picker' to select one interactively.",
+	)
 	parser.add_argument(
 		"-d",
 		"--dry-run",
@@ -526,7 +657,7 @@ def main():
 		parser.error("Cannot use --force-hooks and --dry-run at the same time.")
 
 	layout = Table.grid(padding=1, expand=True)
-	with Live(layout):
+	with Live(layout) as live:
 		# Show log output.
 		log_lines = LinesLogHandler()
 		log.addHandler(log_lines)
@@ -542,7 +673,14 @@ def main():
 		config = Config.load()
 		schemes = Schemes.init()
 
-		name = config.aliases.get(args.name, args.name)
+		name = args.name
+		if name == "picker":
+			live.stop()
+			name = Picker(schemes).run()
+			live.start()
+		else:
+			name = config.aliases.get(name, name)
+
 		scheme = schemes.get(name)
 		log.info(f"Using scheme [cyan]{name}[/].")
 
