@@ -486,6 +486,9 @@ def main():
 	parser.add_argument(
 		"-u", "--update", action="store_true", help="Update cached schemes."
 	)
+	parser.add_argument(
+		"-p", "--preview", action="store_true", help="Render the preview and quit."
+	)
 
 	args = parser.parse_args()
 	if args.force_hooks and args.skip_hooks:
@@ -516,6 +519,8 @@ def main():
 
 		# Show preview of the chosen scheme.
 		layout.add_row(Preview(scheme))
+		if args.preview:
+			return
 
 		# Sort the applications from the config so that ones with dependencies go after their dependencies.
 		app_order = toposort({k: v.dependsOn for k, v in config.applications.items()})
