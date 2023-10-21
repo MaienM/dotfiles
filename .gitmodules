@@ -118,8 +118,8 @@
 [submodule "tmux/bundle/continuum"]
 	path = tmux/bundle/continuum
 	url = https://github.com/tmux-plugins/tmux-continuum
-[submodule "vim/bundle/vim-test"]
-	path = vim/bundle/vim-test
+[submodule "vim/bundle-vim/vim-test"]
+	path = vim/bundle-vim/vim-test
 	url = https://github.com/janko-m/vim-test
 [submodule "vim/bundle/rainbow-parentheses"]
 	path = vim/bundle/rainbow-parentheses
@@ -295,3 +295,15 @@
 [submodule "config/base16/templates/kitty"]
 	path = config/base16/templates/kitty
 	url = https://github.com/kdrag0n/base16-kitty
+[submodule "vim/bundle-nvim/neotest"]
+	path = vim/bundle-nvim/neotest
+	url = https://github.com/nvim-neotest/neotest
+[submodule "vim/bundle-nvim/neotest-python"]
+	path = vim/bundle-nvim/neotest-python
+	url = https://github.com/nvim-neotest/neotest-python
+[submodule "vim/bundle-nvim/neotest-go"]
+	path = vim/bundle-nvim/neotest-go
+	url = https://github.com/nvim-neotest/neotest-go
+[submodule "vim/bundle-nvim/neotest-rust"]
+	path = vim/bundle-nvim/neotest-rust
+	url = https://github.com/rouge8/neotest-rust

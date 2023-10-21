@@ -1,7 +1,11 @@
-nmap <Leader>tt :TestNearest<CR>
+if has('nvim')
+	finish
+endif
+
+nmap <Leader>tc :TestNearest<CR>
 nmap <Leader>tf :TestFile<CR>
-nmap <Leader>ts :TestSuite<CR>
-nmap <Leader>tr :TestLast<CR>
+nmap <Leader>ta :TestSuite<CR>
+nmap <Leader>tt :TestLast<CR>
 nmap <Leader>gt :TestVisit<CR>
 
 if exists('g:gui_oni')
