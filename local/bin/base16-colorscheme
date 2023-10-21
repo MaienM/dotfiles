@@ -45,11 +45,11 @@ from toposort import toposort_flatten as toposort
 log = logging.getLogger()
 
 
-ICON_OK = "✔"
-ICON_NOTOK = "✖"
-ICON_SKIP = ""
-ICON_SAVE = ""
-ICON_RUN = ""
+ICON_OK = " "
+ICON_NOTOK = " "
+ICON_SKIP = " "
+ICON_SAVE = "󰆓 "
+ICON_RUN = " "
 
 
 CONFIG_DIR = Path.home() / ".config" / "base16"
