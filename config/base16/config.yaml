@@ -46,9 +46,9 @@ applications:
       - input: ./templates/custom/tmux.jinja
         output: ~/.tmux/base16.conf
     hook: tmux source ~/.tmux/base16.conf
-  vim:
+  neovim:
     templates:
-      - input: ./templates/custom/vim.mustache
+      - input: ./templates/custom/neovim.mustache
         output: ~/.vim/colors/base16.lua
   vifm:
     dependsOn:
