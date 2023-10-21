@@ -172,6 +172,34 @@ class SchemeColor(Color):
 			raise ValueError("must only contain hexadecimal characters")
 		return cls(f"#{value}")
 
+	@property
+	def perceived_lightness(self):
+		"""Get the perceived lightness of the color as a range 0 (black) to 100 (white)."""
+		# Based on https://stackoverflow.com/a/56678483.
+
+		# Step one: convert to decimals.
+		# self.{red,green,blue} are already decimals.
+
+		# Step two: convert to linear value.
+		def toLin(val):
+			if val <= 0.0405:
+				return val / 12.92
+			else:
+				return ((val + 0.055) / 1.055) ** 2.4
+
+		# Step three: calculate luminance.
+		luminance = (
+			0.2126 * toLin(self.red)
+			+ 0.7152 * toLin(self.green)
+			+ 0.0722 * toLin(self.blue)
+		)
+
+		# Step four: calculate perceived lightness.
+		if luminance <= (216 / 24389):
+			return luminance * (24389 / 27)
+		else:
+			return (luminance ** (1 / 3)) * 116 - 16
+
 
 @pydanticdataclass
 class Scheme:
@@ -221,6 +249,7 @@ class Scheme:
 					f"{name}-hsl-h": color.hue,
 					f"{name}-hsl-s": color.saturation,
 					f"{name}-hsl-l": color.luminance,
+					f"{name}-perceived-lightness": color.perceived_lightness,
 				}
 			)
 		return vars

@@ -21,32 +21,8 @@ require('base16-colorscheme').setup {
 	base0F = '#{{base0F-hex}}',
 }
 
--- Based on https://stackoverflow.com/a/56678483.
-local function lightness(r, g, b)
-	-- Step one (convert to decimals) is already done.
-
-	-- Step two: convert to linear value.
-	local function toLin(val)
-		if val <= 0.0405 then
-			return val / 12.92
-		else
-			return ((val + 0.055) / 1.055) ^ 2.4
-		end
-	end
-
-	-- Step three: find luminance.
-	local luminance = 0.2126 * toLin(r) + 0.7152 * toLin(g) + 0.0722 * toLin(b)
-
-	-- Step four: find perceived lightness.
-	if luminance <= (216 / 24389) then
-		return luminance * (24389 / 27)
-	else
-		return (luminance ^ (1 / 3)) * 116 - 16
-	end
-end
-
--- Calculate perceived lightness of background color to figure out if this is a light or dark theme.
-if lightness('0{{base00-dec-r}}' / 1, '0{{base00-dec-g}}' / 1, '0{{base00-dec-b}}' / 1) < 50 then
+-- Set background property based on the perceived lightness of the background color.
+if '0{{base00-perceived-lighness}}' / 1 < 50 then
 	vim.o.background = 'dark'
 else
 	vim.o.background = 'light'
