@@ -447,7 +447,9 @@ class PreviewColors(Panel):
 
 class Preview(Styled):
 	def __init__(self, scheme: Scheme):
-		grid = Table.grid(padding=(0, 1), pad_edge=True)
+		grid = Table.grid(padding=(0, 1), pad_edge=True, expand=True)
+		grid.add_column()
+		grid.add_column(ratio=1)
 		grid.add_row(
 			PreviewColors(scheme),
 			PreviewScript(scheme),
@@ -491,7 +493,7 @@ def main():
 	if args.force_hooks and args.dry_run:
 		parser.error("Cannot use --force-hooks and --dry-run at the same time.")
 
-	layout = Table.grid(padding=1)
+	layout = Table.grid(padding=1, expand=True)
 	with Live(layout):
 		# Show log output.
 		log_lines = LinesLogHandler()
