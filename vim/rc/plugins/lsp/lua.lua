@@ -1,26 +1,27 @@
-local runtime_path = vim.split(package.path, ';')
-table.insert(runtime_path, 'lua/?.lua')
-table.insert(runtime_path, 'lua/?/init.lua')
+require('neodev').setup {
+	pathStrict = true,
+}
 
 vim.g.mylsp.setup('lua_ls', {
 	settings = {
 		Lua = {
-			runtime = {
-				version = 'LuaJIT',
-				path = runtime_path,
-			},
-			diagnostics = {
-				globals = { 'vim' },
-			},
 			format = {
 				enable = false,
 			},
-			workspace = {
-				library = vim.api.nvim_get_runtime_file('', true),
-				checkThirdParty = false,
-			},
 			telemetry = {
 				enable = false,
+			},
+			workspace = {
+				library = {
+					---@diagnostic disable-next-line: param-type-mismatch
+					unpack(vim.fn.expand('~/.vim/bundle/*/lua', false, true)),
+					---@diagnostic disable-next-line: param-type-mismatch
+					unpack(vim.fn.expand('~/.vim/bundle-nvim/*/lua', false, true)),
+				},
+				ignoreDir = {
+					'.direnv',
+				},
+				checkThirdParty = false,
 			},
 		},
 	},
