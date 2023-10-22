@@ -34,6 +34,7 @@
     htop
     jq
     mimeo
+    moreutils
     nixpkgs-fmt
     nodejs
     p7zip
