@@ -25,6 +25,8 @@ action = skip
 action = skip
 [flake.lock]
 action = skip
+[statix.toml]
+action = skip
 
 [config]
 action = recurse

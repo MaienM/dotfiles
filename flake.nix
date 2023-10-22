@@ -69,7 +69,7 @@
 
       specialArgs = {
         inherit inputs dotfiles system pkgs-force pkgs-inputs pkgs-local;
-        stdenv = pkgs.stdenv;
+        inherit (pkgs) stdenv;
       };
     in
     {

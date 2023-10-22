@@ -1,7 +1,6 @@
 [*]
 indent_style = tab
 tab_width = 3
-max_line_length = 120
 
 [*.lua]
 quote_style = single
