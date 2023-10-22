@@ -237,6 +237,9 @@ bindsym $GUI+space $exec rofi -modi window -show window -show-icons
 bindsym $GUI+Shift+s $exec ~/.config/rofi/scripts/screenshot.sh
 bindsym $GUI+d $exec ~/.config/rofi/scripts/screenlayout.sh
 
+bindsym XF86AudioRaiseVolume $exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 2.5%+
+bindsym XF86AudioLowerVolume $exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 2.5%-
+
 # Media bindings. Designed to be used with a dedicated launchpad (see qmk repo)
 bindsym $Meh+XF86AudioLowerVolume $exec mpv-control playlist-prev
 bindsym $Meh+XF86AudioRaiseVolume $exec mpv-control playlist-next
