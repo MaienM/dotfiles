@@ -74,10 +74,10 @@ require('noice').setup {
 			}
 		end
 
-		local function view(view, filter)
+		local function view(name, filter)
 			return {
 				filter = filter,
-				view = view,
+				view = name,
 			}
 		end
 
@@ -126,6 +126,18 @@ require('noice').setup {
 
 			-- No information available (happens when no LSP hover information is available).
 			view('mini', { event = 'notify', kind = 'info', find = '^No information available$' }),
+
+			-- Status message that is (a) not very useful and (b) shown too frequently, especially when multiple files get (re)evaluated at once.
+			skip {
+				event = 'lsp',
+				kind = 'progress',
+				cond = function(message)
+					local client = vim.tbl_get(message.opts, 'progress', 'client')
+					local source = vim.tbl_get(message.opts, 'progress', 'message')
+					local title = vim.tbl_get(message.opts, 'progress', 'title')
+					return client == 'null-ls' and source == 'editorconfig_checker' and title == 'diagnostics_on_open'
+				end,
+			},
 		}
 	end)(),
 }
