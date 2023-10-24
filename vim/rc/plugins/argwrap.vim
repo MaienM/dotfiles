@@ -3,3 +3,4 @@ let g:argwrap_tail_comma = 1
 let g:argwrap_padded_braces = '{'
 
 map <silent> <Leader>w :ArgWrap<CR>
+map <silent> <Leader>W :ArgWrap<CR> :s/ //g<CR> :noh<CR>
