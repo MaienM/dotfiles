@@ -1,3 +1,5 @@
+root = true
+
 [*]
 indent_style = tab
 tab_width = 3
@@ -25,3 +27,10 @@ indent_size = 2
 indent_style = space
 tab_width = 2
 indent_size = 2
+
+[{*/bundle/**,config/*/bundle/**,vim/bundle-*/**,tmux/frozen/*,zsh/rc/completions/generated/*}]
+indent_style = unset
+tab_width = unset
+indent_size = unset
+quote_style = unset
+call_parentheses = unset
