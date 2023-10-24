@@ -6,8 +6,8 @@ fi
 
 # Use histdb to determine the autosuggestions based on previous commands in the current directory.
 _zsh_autosuggest_strategy_histdb_top() {
-   local query
-   suggestion="$(_histdb_query "
+	local query
+	suggestion="$(_histdb_query "
 		SELECT commands.argv
 		FROM history
 			LEFT JOIN commands ON history.command_id = commands.rowid

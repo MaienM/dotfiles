@@ -8,27 +8,17 @@ tab_width = 3
 quote_style = single
 call_parentheses = NoSingleTable
 
-[*.nix]
+[{*.adoc,*.nix,*.yaml,*.yml,flake.lock}]
 indent_style = space
 tab_width = 2
 indent_size = 2
 
-[flake.lock]
+[config/mimeo/associations.txt]
 indent_style = space
 tab_width = 2
 indent_size = 2
 
-[*.yml]
-indent_style = space
-tab_width = 2
-indent_size = 2
-
-[*.yaml]
-indent_style = space
-tab_width = 2
-indent_size = 2
-
-[{*/bundle/**,config/*/bundle/**,vim/bundle-*/**,tmux/frozen/*,zsh/rc/completions/generated/*}]
+[{*/bundle/**,config/*/bundle/**,tmux/frozen/*,vim/bundle-*/**,zsh/rc/completions/generated/*}]
 indent_style = unset
 tab_width = unset
 indent_size = unset

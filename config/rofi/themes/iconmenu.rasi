@@ -26,15 +26,15 @@ listview {
 
 element alternate.normal {
 	background-color: @normal-background;
-	text-color:       @normal-foreground;
+	text-color: @normal-foreground;
 }
 element alternate.urgent {
 	background-color: @urgent-background;
-	text-color:       @urgent-foreground;
+	text-color: @urgent-foreground;
 }
 element alternate.active {
 	background-color: @active-background;
-	text-color:       @active-foreground;
+	text-color: @active-foreground;
 }
 
 element {
