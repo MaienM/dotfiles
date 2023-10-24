@@ -4,51 +4,51 @@ aliases:
 applications:
   dircolors:
     templates:
-      - input: ./templates/dircolors/templates/default.mustache
-        output: ~/.config/base16/templates/dircolors/templates/build.py
-    hook: python ~/.config/base16/templates/dircolors/templates/build.py | dircolors > ~/.profile.d/50_dircolors.local
+      - input: ./bundle/dircolors/templates/default.mustache
+        output: ~/.config/base16/bundle/dircolors/templates/build.py
+    hook: python ~/.config/base16/bundle/dircolors/templates/build.py | dircolors > ~/.profile.d/50_dircolors.local
   envvars:
     templates:
-      - input: ./templates/custom/envvars.mustache
+      - input: ./templates/envvars.mustache
         output: ~/.profile.d/50_base16.local
   fzf:
     templates:
-      - input: ./templates/fzf/templates/default.mustache
+      - input: ./bundle/fzf/templates/default.mustache
         output: ~/.base16_theme_fzf
   i3:
     templates:
-      - input: ./templates/custom/i3.mustache
+      - input: ./templates/i3.mustache
         output: ~/.config/i3/config
     hook: i3-msg reload
   k9s:
     templates:
-      - input: ./templates/k9s/templates/default.mustache
+      - input: ./bundle/k9s/templates/default.mustache
         output: ~/.config/k9s/skin.yml
   kitty:
     templates:
-      - input: ./templates/kitty/templates/default-256.mustache
+      - input: ./bundle/kitty/templates/default-256.mustache
         output: ~/.config/kitty/base16.conf
   polybar:
     templates:
-      - input: ./templates/polybar/templates/default.mustache
+      - input: ./bundle/polybar/templates/default.mustache
         output: ~/.config/polybar/base16.ini
     hook: polybar-msg cmd restart
   rofi:
     templates:
-      - input: ./templates/rofi/templates/default.mustache
+      - input: ./bundle/rofi/templates/default.mustache
         output: ~/.config/rofi/theme.rasi
   shell:
     templates:
-      - input: ./templates/shell/templates/default.mustache
+      - input: ./bundle/shell/templates/default.mustache
         output: ~/.zsh/rc/base16.local.zsh
   tmux:
     templates:
-      - input: ./templates/custom/tmux.jinja
+      - input: ./templates/tmux.jinja
         output: ~/.tmux/base16.conf
     hook: tmux source ~/.tmux/base16.conf
   neovim:
     templates:
-      - input: ./templates/custom/neovim.mustache
+      - input: ./templates/neovim.mustache
         output: ~/.vim/colors/base16.lua
   vifm:
     dependsOn:
@@ -56,6 +56,6 @@ applications:
     hook: source ~/.profile.d/50_dircolors.local; vifm-convert-dircolors -e > ~/.config/vifm/base16.vifm
   xresources:
     templates:
-      - input: ./templates/xresources/templates/default.mustache
+      - input: ./bundle/xresources/templates/default.mustache
         output: ~/.Xresources.d/base16.local
     hook: xrdb -merge ~/.Xresources
