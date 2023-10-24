@@ -274,9 +274,9 @@
 [submodule "vim/bundle-nvim/treesitter-context"]
 	path = vim/bundle-nvim/treesitter-context
 	url = https://github.com/nvim-treesitter/nvim-treesitter-context
-[submodule "vim/bundle-nvim/null-ls"]
-	path = vim/bundle-nvim/null-ls
-	url = https://github.com/jose-elias-alvarez/null-ls.nvim
+[submodule "vim/bundle-nvim/none-ls"]
+	path = vim/bundle-nvim/none-ls
+	url = https://github.com/nvimtools/none-ls.nvim
 [submodule "vim/bundle-nvim/zk"]
 	path = vim/bundle-nvim/zk
 	url = https://github.com/mickael-menu/zk-nvim
