@@ -1,17 +1,9 @@
-/asdf/asdf/
-/asdf/plugins/*
-/asdf/plugins/python-venv/pyenv-virtualenv/
-/config/mpv/bundle/
-/config/rofi/base16
-/fzf/
-/opt/
-/proxyman/proxyman/
-/tmux/bundle/
-/vim/bundle-nvim/
-/vim/bundle-vim/
-/vim/bundle/*
-/zsh/bundle/
-
-!/asdf/plugins/python-venv/
-!/vim/bundle/ale-ignore/
-
+# git submodule foreach --quiet pwd | sed "s#^$PWD/##; s#\(bundle\(-[^/]\+\)\?\)/.*#\1#" | sort -u
+config/base16/bundle
+config/direnv/bundle
+config/mpv/bundle
+tmux/bundle
+vim/bundle
+vim/bundle-nvim
+vim/bundle-vim
+zsh/bundle
