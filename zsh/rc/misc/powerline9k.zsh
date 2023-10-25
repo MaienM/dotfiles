@@ -2,6 +2,7 @@ source ~/.zsh/bundle/powerlevel10k/config/p10k-lean.zsh
 
 # Segments.
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
+	kubecontext
 	dir
 	vcs
 	nix_shell_packages
