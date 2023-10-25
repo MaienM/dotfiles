@@ -100,6 +100,9 @@
 
   ];
 
+  # Make added fonts available with fontconfig.
+  fonts.fontconfig.enable = true;
+
   home.file = {
     # Link FZF paths in a way that is compatible with the structure set up by the manual install script.
     ".vim/bundle/fzf-base".source = "${pkgs.fzf}/share/vim-plugins/fzf/";
