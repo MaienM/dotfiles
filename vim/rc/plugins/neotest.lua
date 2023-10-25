@@ -85,17 +85,35 @@ neotest.setup {
 	},
 }
 
-vim.keymap.set('n', '<Leader>tc', neotest.run.run)
+vim.keymap.set('n', '<Leader>tc', neotest.run.run, {
+	desc = 'Run the test the cursor is currently in/on',
+})
 vim.keymap.set('n', '<Leader>tf', function()
 	neotest.run.run(vim.fn.expand('%'))
-end)
+end, {
+	desc = 'Run all tests in this file',
+})
 vim.keymap.set('n', '<Leader>ta', function()
 	neotest.run.run(vim.lsp.buf.list_workspace_folders()[1])
-end)
-vim.keymap.set('n', '<Leader>tt', neotest.run.run_last)
-vim.keymap.set('n', '<Leader>tA', neotest.run.attach)
-vim.keymap.set('n', '<Leader>tS', neotest.run.stop)
+end, {
+	desc = 'Run all tests in the project',
+})
+vim.keymap.set('n', '<Leader>tt', neotest.run.run_last, {
+	desc = 'Rerun the last run tests',
+})
+vim.keymap.set('n', '<Leader>tA', neotest.run.attach, {
+	desc = 'Attach to the running tests',
+})
+vim.keymap.set('n', '<Leader>tS', neotest.run.stop, {
+	desc = 'Stop the current test run',
+})
 
-vim.keymap.set('n', '<Leader>to', neotest.output_panel.toggle)
-vim.keymap.set('n', '<Leader>ts', neotest.summary.toggle)
-vim.keymap.set('n', '<Leader>tW', neotest.watch.toggle)
+vim.keymap.set('n', '<Leader>to', neotest.output_panel.toggle, {
+	desc = 'Toggle the output panel',
+})
+vim.keymap.set('n', '<Leader>ts', neotest.summary.toggle, {
+	desc = 'Toggle the summary pane',
+})
+vim.keymap.set('n', '<Leader>tW', neotest.watch.toggle, {
+	desc = 'Toggle watch mode',
+})

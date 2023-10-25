@@ -13,19 +13,46 @@ local function on_attach(client, bufnr)
 
 	local bufopts = { noremap = true, silent = true, buffer = bufnr }
 	-- Misc mappings.
-	vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+	vim.keymap.set('n', 'K', vim.lsp.buf.hover, {
+		desc = 'Show hover information',
+		unpack(bufopts),
+	})
 
 	-- [G]o-to mappings.
-	vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-	vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-	vim.keymap.set('n', '<Leader>gi', vim.lsp.buf.implementation, bufopts)
-	vim.keymap.set('n', '<Leader>gr', vim.lsp.buf.references, bufopts)
-	vim.keymap.set('n', '<Leader>go', vim.lsp.buf.document_symbol, bufopts)
-	vim.keymap.set('n', '<Leader>gO', vim.lsp.buf.workspace_symbol, bufopts)
+	vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {
+		desc = 'Go to definition',
+		unpack(bufopts),
+	})
+	vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, {
+		desc = 'Go to declaration',
+		unpack(bufopts),
+	})
+	vim.keymap.set('n', '<Leader>gi', vim.lsp.buf.implementation, {
+		desc = 'Go to implementation',
+		unpack(bufopts),
+	})
+	vim.keymap.set('n', '<Leader>gr', vim.lsp.buf.references, {
+		desc = 'Show references',
+		unpack(bufopts),
+	})
+	vim.keymap.set('n', '<Leader>go', vim.lsp.buf.document_symbol, {
+		desc = 'Show document outline',
+		unpack(bufopts),
+	})
+	vim.keymap.set('n', '<Leader>gO', vim.lsp.buf.workspace_symbol, {
+		desc = 'Search in workspace outline',
+		unpack(bufopts),
+	})
 
 	-- [A]ction mappings.
-	vim.keymap.set('n', '<Leader>aa', vim.lsp.buf.code_action, bufopts)
-	vim.keymap.set('v', '<Leader>aa', vim.lsp.buf.code_action, bufopts)
+	vim.keymap.set('n', '<Leader>aa', vim.lsp.buf.code_action, {
+		desc = 'Show actions',
+		unpack(bufopts),
+	})
+	vim.keymap.set('v', '<Leader>aa', vim.lsp.buf.code_action, {
+		desc = 'Show actions',
+		unpack(bufopts),
+	})
 
 	-- Autoformatting.
 	lspformat.on_attach(client, bufnr)

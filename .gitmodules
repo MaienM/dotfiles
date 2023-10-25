@@ -127,8 +127,8 @@
 [submodule "vim/bundle/editorconfig"]
 	path = vim/bundle/editorconfig
 	url = https://github.com/editorconfig/editorconfig-vim
-[submodule "vim/bundle/peekaboo"]
-	path = vim/bundle/peekaboo
+[submodule "vim/bundle-vim/peekaboo"]
+	path = vim/bundle-vim/peekaboo
 	url = https://github.com/junegunn/vim-peekaboo
 [submodule "vim/bundle/limelight"]
 	path = vim/bundle/limelight
@@ -310,3 +310,6 @@
 [submodule "vim/bundle-nvim/neodev"]
 	path = vim/bundle-nvim/neodev
 	url = https://github.com/folke/neodev.nvim
+[submodule "vim/bundle-nvim/which-key"]
+	path = vim/bundle-nvim/which-key
+	url = https://github.com/folke/which-key.nvim
