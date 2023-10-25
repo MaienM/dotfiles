@@ -18,6 +18,7 @@ for i in {0..2}; do
 done
 
 # Launch bars for all screens
+mkdir -p ~/.log
 mapfile -t monitors < <(xrandr --listmonitors | cut -d' ' -f6 | grep -E '^.+$')
 MONITOR="${monitors[0]}" polybar --log=info --reload primary > ~/.log/polybar 2>&1 &
 for monitor in "${monitors[@]:1}"; do
