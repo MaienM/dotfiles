@@ -23,7 +23,11 @@ mapfile -t messages < <(
 	echo 'Touch it, bring it, pay it, watch it, turn it, leave it, stop, format it'
 )
 
-socat - "UNIX-CONNECT:$XDG_RUNTIME_DIR/yubikey-touch-detector.socket" \
+socket="$XDG_RUNTIME_DIR/yubikey-touch-detector.socket"
+while ! [ -e "$socket" ]; do
+	sleep 1
+done
+socat - "UNIX-CONNECT:$socket" \
 	| while read -r -n5 message; do
 		case "$message" in
 			*_1)
