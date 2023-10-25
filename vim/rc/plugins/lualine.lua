@@ -73,6 +73,21 @@ local function location()
 	return string.format('%d/%d:%-2d', line, lines, col)
 end
 
+local macro = (function()
+	vim.opt.showmode = false
+	---@class NoiceStatus
+	---@field has fun():boolean
+	---@field get fun():string
+	local mode = require('noice').api.status.mode
+	return {
+		function()
+			local register = mode.get():gsub('recording ', '󰨜 ')
+			return register
+		end,
+		cond = mode.has,
+	}
+end)()
+
 require('lualine').setup {
 	options = {
 		theme = build_theme,
@@ -88,6 +103,7 @@ require('lualine').setup {
 	sections = {
 		lualine_a = {
 			'mode',
+			macro,
 		},
 		lualine_b = {
 			'branch',
