@@ -1,34 +1,24 @@
 #!/usr/bin/env python3
 
+import inspect
+import logging
+import stat
+import termios
+import tty
 from argparse import ArgumentParser, Namespace
 from collections.abc import Iterable
 from configparser import ConfigParser
 from dataclasses import dataclass
 from enum import Enum, auto
 from hashlib import sha256
-import inspect
-import logging
 from os import environ
 from pathlib import Path, PurePath
 from shlex import quote
 from shutil import which
-import stat
 from subprocess import run
-from sys import stdin, stdout, stderr
-import termios
+from sys import stderr, stdin, stdout
 from textwrap import dedent
-import tty
-from typing import (
-	Any,
-	Dict,
-	List,
-	NewType,
-	Optional,
-	Tuple,
-	Union,
-	overload,
-)
-
+from typing import Any, Dict, List, NewType, Optional, Tuple, Union, overload
 
 # {{{ Paths
 
