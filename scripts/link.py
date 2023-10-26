@@ -129,10 +129,10 @@ def read_char() -> str:
 	return c
 
 
-def which_nonlocal(command: str) -> Optional[str]:
+def which_nonlocal(args: "Args", command: str) -> Optional[str]:
 	path = environ["PATH"].split(":")
 
-	localbin = str(Path.home() / ".local" / "bin")
+	localbin = str(args.target / ".local" / "bin")
 	if localbin in path:
 		path.remove(localbin)
 
@@ -679,7 +679,7 @@ class Processor:
 
 		# Validate that all targets are actually something we can nest files under
 		for targetname in fc.targets[:]:
-			target = join(AbsoluteRealPath(Path.home()), targetname)
+			target = join(self.args.target, targetname)
 			tentry = self.fs.get(target, parent_none_is_none=True)
 			needs_mkdir = False
 			if tentry.type == VirtualFileType.FILE:
@@ -714,7 +714,7 @@ class Processor:
 	def apply_link(self, entry: VirtualFileInfo, fc: FileConfig) -> None:
 		symbolic = entry.real.type == VirtualFileType.DIRECTORY
 		for targetname in fc.targets:
-			target = join(AbsoluteRealPath(Path.home()), targetname)
+			target = join(self.args.target, targetname)
 			if self.should_link_be_created(entry, fc, target):
 				tentry = self.fs.get(target, parent_none_is_none=True)
 				# If the parent path is missing, create it now.
@@ -748,13 +748,10 @@ class Processor:
 
 		if (
 			fc.action == FileAction.WRAP_COMMAND
-			and which_nonlocal(target_path.name) is None
+			and which_nonlocal(self.args, target_path.name) is None
 		):
 			# Skip wrapper scripts if the executable being wrapped is not present.
 			return False
-
-		if self.args.assume_empty:
-			return True
 
 		if target.real.type == VirtualFileType.NONE:
 			# The target either doesn't exist, or is a broken symlink
@@ -843,8 +840,8 @@ class Processor:
 
 
 class Args(Namespace):
-	assume_empty: bool
 	overwrite: bool
+	target: AbsoluteRealPath
 	root: AbsoluteRealPath
 	config: AbsoluteRealPath
 	debug: bool
@@ -857,32 +854,39 @@ def parse_args() -> Args:
 		)
 	)
 	parser.add_argument(
-		"--assume-empty",
-		action="store_true",
-		help=(
-			"Pretend the home directory is empty. "
-			"Really only useful for testing, as the generated commands are likely to cause issues."
-		),
-	)
-	parser.add_argument(
 		"-y",
 		"--yes",
 		action="store_true",
 		dest="overwrite",
 		help="Assume yes to all overwrite prompts.",
 	)
+	parser.add_argument(
+		"-t",
+		"--target",
+		type=Path,
+		default=Path.home(),
+		help="The base directory that the links should be created in. Defaults to $HOME.",
+	)
 	root = Path(__file__).parent.parent.resolve()
-	parser.add_argument("-r", "--root", default=root, help=f"Path to the root folder.")
+	parser.add_argument(
+		"-r",
+		"--root",
+		default=root,
+		type=Path,
+		help=f"Path to the root folder.",
+	)
 	parser.add_argument(
 		"-c",
 		"--config",
-		default=Path(root, "scripts", "config"),
+		default=(root / "scripts" / "config"),
+		type=Path,
 		help="Path to the config.",
 	)
 	parser.add_argument(
 		"-o",
 		"--output",
 		default=(root / "cmds"),
+		type=Path,
 		help="Path to write the list of commands to.",
 	)
 	parser.add_argument(
