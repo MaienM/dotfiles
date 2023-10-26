@@ -1,25 +1,19 @@
 # Get the definition of an alias
 resolve_alias() {
-	local args name output retval
+	local name
 
-	args=(${(z)@})
-	name=${args[1]}
-	output=$(which "$name")
-	retval=$?
-	if [[ $retval -eq 0 ]] && [[ $output == "$name: aliased to "* ]]; then
-		# Got an alias definition back
-		resolve_alias ${output#$name: aliased to }  "${args[2,-1]}"
+	name=$1
+	if [ -n "${aliases[$name]}" ]; then
+		shift 1
+		resolve_alias ${aliases[$name]} "$@"
 	else
-		# The original input wasn't an alias, so return that
 		echo "$@"
 	fi
 }
 
 # Run an alias with sudo
 sudoa() {
-	local alias="$1"
-	shift 1
-	sudo zsh -c "exec ${aliases[$alias]} $(printf '%q ' "$@")"
+	sudo zsh -c "exec $(printf '%q ' $(resolve_alias "$@"))"
 }
 
 # Run a function with sudo
