@@ -3,16 +3,11 @@
 #!nix-shell -p python3
 #!nix-shell -p python3.pkgs.pytest
 
-from typing import (
-	Generator,
-	NamedTuple,
-	Set,
-)
-from pathlib import Path
 from os import mkfifo
+from pathlib import Path
+from typing import Generator, NamedTuple, Set
 
 import pytest
-
 from link import *
 
 
@@ -52,6 +47,7 @@ def mock_structure(tmp_path: Path) -> Generator[MockStructure, None, None]:
 		(tmp_path / "dir1" / "symA", tmp_path / "fileA"),
 		(tmp_path / "dir1" / "sym2", tmp_path / "dir2"),
 		(tmp_path / "symsymA", tmp_path / "symA"),
+		(tmp_path / "sym1", tmp_path / "dir1"),
 	]
 
 	for dir in dirs:
@@ -146,6 +142,23 @@ class TestVirtualFSGet(object):
 			real = entry.real
 			assert real is not entry
 			assert real.path == mock_structure.path / "fileA"
+			assert real.type == VirtualFileType.FILE
+			assert real.is_from_fs
+			assert real.links_to is None
+
+		def test_symlink_contents(
+			self, vfs: VirtualFS, mock_structure: MockStructure
+		) -> None:
+			entry = vfs.get(p(mock_structure.path / "sym1" / "file1A"))
+
+			assert entry.path == mock_structure.path / "sym1" / "file1A"
+			assert entry.type == VirtualFileType.FILE
+			assert entry.is_from_fs
+			assert entry.links_to is None
+
+			real = entry.real
+			assert real is not entry
+			assert real.path == mock_structure.path / "dir1" / "file1A"
 			assert real.type == VirtualFileType.FILE
 			assert real.is_from_fs
 			assert real.links_to is None
@@ -575,6 +588,7 @@ class TestVirtualFSGet(object):
 				mock_structure.path / "hardB",
 				mock_structure.path / "hard1B",
 				mock_structure.path / "symA",
+				mock_structure.path / "sym1",
 				mock_structure.path / "sym1A",
 				mock_structure.path / "sym11",
 				mock_structure.path / "symsymA",

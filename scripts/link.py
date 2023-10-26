@@ -322,13 +322,22 @@ class VirtualFileInfo:
 
 		Returns a VirtualFileInfo, with a type that is NOT VirtualFileType.SYMLINK.
 		"""
-		if self.type != VirtualFileType.SYMLINK:
+		if self.type == VirtualFileType.SYMLINK:
+			assert self.links_to is not None
+			try:
+				return self.fs.get(self.links_to).real
+			except VirtualFSError:
+				return VirtualFileInfo(
+					self.fs, self.links_to, VirtualFileType.NONE, True
+				)
+		elif self.path == self.path.parent:
 			return self
-		assert self.links_to is not None
-		try:
-			return self.fs.get(self.links_to).real
-		except VirtualFSError:
-			return VirtualFileInfo(self.fs, self.links_to, VirtualFileType.NONE, True)
+		else:
+			parent = self.fs.get(self.path.parent)
+			if parent is parent.real:
+				return self
+			else:
+				return self.fs.get(parent.real.path / self.path.name).real
 
 	@property
 	def real_path(self) -> AbsoluteRealPath:
@@ -757,7 +766,7 @@ class Processor:
 			# The target either doesn't exist, or is a broken symlink
 			return True
 
-		if entry.real == target.real or entry.real.samefile(target.real):
+		if entry.real is target.real or entry.real.samefile(target.real):
 			# The link is already present, so do nothing
 			return False
 
