@@ -1,4 +1,5 @@
 Xresources.d/*.local
+config/bat/themes/
 config/kitty/base16.conf
 config/mpv/scripts/
 config/mpv/watch_later/

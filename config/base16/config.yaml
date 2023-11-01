@@ -2,6 +2,11 @@ aliases:
   light: atelier-sulphurpool-light
   dark: solarflare
 applications:
+  bat:
+    templates:
+      - input: ./templates/bat.mustache
+        output: ~/.config/bat/themes/base16.tmTheme
+    hook: bat cache --build
   dircolors:
     templates:
       - input: ./bundle/dircolors/templates/default.mustache
