@@ -11,7 +11,33 @@ alias gitac='git amend-commit "$(fzf_run_preset "git:commit")"'
 
 # Log.
 alias gitlv='git log --pretty="tformat:%C(auto)%h %C(cyan)%<(14,mtrunc)%aN%C(auto)%d %C(auto)%s"'
-alias gitll='git log --pretty="format:%C(yellow)Commit %H%n%C(cyan)By %an <%ae> on %ad%n%+s%n%+b"  --name-status'
+gitll() {
+	git log \
+		--pretty="format:%C(yellow)Commit %H%n%C(cyan)AUTHOR:::%an <%ae>:::%ad:::%cn <%ce>:::%cd:::%Creset%n%+s%n%+b" \
+		--name-status \
+		--color=always \
+		"$@" \
+		| awk '{
+			if (match($0, /^(.*)AUTHOR:::(.*):::(.*):::(.*):::(.*):::(.*)$/, parts)) {
+				an = parts[2]
+				ad = parts[3]
+				cn = parts[4]
+				cd = parts[5]
+				if (an == cn && ad == cd) {
+					result = "By " an " on " ad
+				} else if (an == cn) {
+					result = "By " an " on " ad " and " cd
+				} else {
+					result = "Authored by " cn " on " cd
+					result = "Committed by " cn " on " cd
+				}
+				print parts[1] result parts[6]
+			} else {
+				print
+			}
+		}' \
+		| less
+}
 
 alias gitlvu='gitlv "@{push}.."'
 alias gitllu='gitll "@{push}.."'
