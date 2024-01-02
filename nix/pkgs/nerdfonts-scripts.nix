@@ -8,13 +8,13 @@ let
 in
 stdenv.mkDerivation rec {
   name = "nerdfonts-script";
-  version = "3.0.2";
+  version = "3.1.1";
   src = fetchFromGitHub {
     owner = "ryanoasis";
     repo = "nerd-fonts";
     rev = "v${version}";
     sparseCheckout = [ script_path ];
-    hash = "sha256-+2QqogNEkOjdkmx9ZRwNlFK8Kay7TgkKM/terROy5Uw=";
+    hash = "sha256-mBwJLjhreU/nO28F+/fHnCJEWjkLY0gQ7ppu+nb34cQ=";
   };
 
   buildInputs = [ pkgs.gnused ];
