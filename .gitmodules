@@ -313,3 +313,6 @@
 [submodule "vim/bundle-nvim/which-key"]
 	path = vim/bundle-nvim/which-key
 	url = https://github.com/folke/which-key.nvim
+[submodule "vim/bundle-nvim/trouble"]
+	path = vim/bundle-nvim/trouble
+	url = https://github.com/folke/trouble.nvim
