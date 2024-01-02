@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
 prog="$1"
+prog="${prog%/*}"
+
+cmd="$1"
+cmd="${cmd##*.}"
+cmd="${cmd##*/}"
+
 shift 1
-nix-shell --command "$(printf '%q ' "${prog##*.}" "$@")" -p "$prog"
+
+exec nix-shell --command "$(printf '%q ' "$cmd" "$@")" -p "$prog"
