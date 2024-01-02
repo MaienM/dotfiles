@@ -117,3 +117,20 @@ vim.keymap.set('n', '<Leader>ts', neotest.summary.toggle, {
 vim.keymap.set('n', '<Leader>tW', neotest.watch.toggle, {
 	desc = 'Toggle watch mode',
 })
+
+vim.api.nvim_create_autocmd({ 'VimEnter', 'ColorScheme' }, {
+	callback = function()
+		local colors = require('base16-colorscheme').colors
+		vim.cmd('highlight IndentBlanklineCharNormal guifg=' .. colors.base01 .. ' gui=nocombine')
+		vim.cmd('highlight IndentBlanklineCharCurrent guifg=' .. colors.base0D .. ' gui=nocombine')
+		vim.cmd('highlight NeotestPassed guifg=' .. colors.base0B)
+		vim.cmd('highlight NeotestFailed guifg=' .. colors.base08)
+		vim.cmd('highlight NeotestSkipped guifg=' .. colors.base03)
+		vim.cmd('highlight NeotestRunning guifg=' .. colors.base0C)
+		vim.cmd('highlight NeotestTarget guifg=' .. colors.base0E)
+		vim.cmd('highlight NeotestFocused gui=underline guifg=' .. colors.base0E)
+		vim.cmd('highlight NeotestFile guifg=' .. colors.base05)
+		vim.cmd('highlight NeotestDir guifg=' .. colors.base05)
+		vim.cmd('highlight NeotestNamespace guifg=' .. colors.base05)
+	end,
+})
