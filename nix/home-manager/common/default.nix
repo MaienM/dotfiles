@@ -48,6 +48,7 @@
     vifm
     xclip
     yamlfmt
+    yq
     zsh
 
     (writeShellApplication {
