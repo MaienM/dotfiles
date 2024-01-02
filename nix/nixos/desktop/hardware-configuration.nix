@@ -37,6 +37,11 @@
     fsType = "zfs";
   };
 
+  fileSystems."/home/maienm/Downloads" = {
+    device = "ssd/home/maienm/downloads";
+    fsType = "zfs";
+  };
+
   swapDevices = [
     {
       device = "/dev/disk/by-uuid/1ba08982-a50b-4b26-8da2-9bc604c4a806";
