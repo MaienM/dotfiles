@@ -28,7 +28,7 @@ applications:
   k9s:
     templates:
       - input: ./bundle/k9s/templates/default.mustache
-        output: ~/.config/k9s/skin.yml
+        output: ~/.config/k9s/skins/base16.yaml
   kitty:
     templates:
       - input: ./bundle/kitty/templates/default-256.mustache

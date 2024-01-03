@@ -1,5 +1,6 @@
 Xresources.d/*.local
 config/bat/themes/
+config/k9s/skins/
 config/kitty/base16.conf
 config/mpv/scripts/
 config/mpv/watch_later/
@@ -7,9 +8,9 @@ config/polybar/base16.ini
 config/rofi/theme.rasi
 private/
 profile.d/*.local
+tmux/base16.conf
 tmux/frozen/
 tmux/resurrect/
-tmux/base16.conf
 vim/.netrwhist
 vim/bundle/fzf-base
 vim/colors/
