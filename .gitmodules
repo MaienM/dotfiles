@@ -319,3 +319,6 @@
 [submodule "vim/bundle-nvim/rustaceanvim"]
 	path = vim/bundle-nvim/rustaceanvim
 	url = https://github.com/mrcjkb/rustaceanvim
+[submodule "vim/bundle-nvim/lsp-inlayhints"]
+	path = vim/bundle-nvim/lsp-inlayhints
+	url = https://github.com/lvimuser/lsp-inlayhints.nvim

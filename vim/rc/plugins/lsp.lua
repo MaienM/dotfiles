@@ -1,3 +1,4 @@
+local inlayhints = require('lsp-inlayhints')
 local lspconfig = require('lspconfig')
 local lspformat = require('lsp-format')
 local null_ls = require('null-ls')
@@ -56,6 +57,9 @@ local function on_attach(client, bufnr)
 
 	-- Autoformatting.
 	lspformat.on_attach(client, bufnr)
+
+	-- Inlay hints.
+	inlayhints.on_attach(client, bufnr)
 end
 
 -- General server setup.
@@ -91,6 +95,17 @@ end
 null_ls.reset_sources()
 null_ls.setup {
 	on_attach = on_attach,
+}
+
+-- Setup inlayhints.
+inlayhints.setup {
+	inlay_hints = {
+		type_hints = {
+			prefix = ': ',
+			remove_colon_start = true,
+			remove_colon_end = true,
+		},
+	},
 }
 
 -- Store in global var for use in other rc files.
