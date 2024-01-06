@@ -317,3 +317,6 @@
 [submodule "vim/bundle-nvim/trouble"]
 	path = vim/bundle-nvim/trouble
 	url = https://github.com/folke/trouble.nvim
+[submodule "vim/bundle-nvim/typescript-tools"]
+	path = vim/bundle-nvim/typescript-tools
+	url = https://github.com/pmizio/typescript-tools.nvim
