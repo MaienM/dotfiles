@@ -5,7 +5,16 @@ require('typescript-tools').setup {
 
 		vim.g.mylsp.on_attach(client, bufnr)
 	end,
-	settings = vim.g.mylsp.common_settings,
+	settings = vim.tbl_deep_extend('force', vim.g.mylsp.common_settings, {
+		tsserver_file_preferences = {
+			includeInlayParameterNameHints = 'all',
+			includeInlayEnumMemberValueHints = true,
+			includeInlayFunctionLikeReturnTypeHints = true,
+			includeInlayFunctionParameterTypeHints = true,
+			includeInlayPropertyDeclarationTypeHints = true,
+			includeInlayVariableTypeHints = true,
+		},
+	}),
 }
 
 local null_ls = require('null-ls')
