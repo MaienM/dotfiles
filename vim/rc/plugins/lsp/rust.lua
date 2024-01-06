@@ -1,6 +1,4 @@
-local rt = require('rust-tools')
-
-rt.setup {
+vim.g.rustaceanvim = {
 	server = {
 		on_attach = function(client, bufnr)
 			vim.g.mylsp.on_attach(client, bufnr)

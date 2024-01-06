@@ -289,10 +289,6 @@
 [submodule "vim/bundle-nvim/lualine"]
 	path = vim/bundle-nvim/lualine
 	url = https://github.com/nvim-lualine/lualine.nvim
-[submodule "vim/bundle-nvim/rust-tools"]
-	path = vim/bundle-nvim/rust-tools
-	url = https://github.com/MunifTanjim/rust-tools.nvim
-	branch = patched
 [submodule "config/base16/templates/kitty"]
 	path = config/base16/bundle/kitty
 	url = https://github.com/kdrag0n/base16-kitty
@@ -320,3 +316,6 @@
 [submodule "vim/bundle-nvim/typescript-tools"]
 	path = vim/bundle-nvim/typescript-tools
 	url = https://github.com/pmizio/typescript-tools.nvim
+[submodule "vim/bundle-nvim/rustaceanvim"]
+	path = vim/bundle-nvim/rustaceanvim
+	url = https://github.com/mrcjkb/rustaceanvim
