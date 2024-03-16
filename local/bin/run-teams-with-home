@@ -1,7 +1,9 @@
-#!/usr/bin/env -S NIXPKGS_ALLOW_UNFREE=1 nix-shell
+#!/usr/bin/env nix-shell
 #!nix-shell -i sh
-#!nix-shell -p google-chrome
+#!nix-shell -p chromium
 #!nix-shell -p nodejs
+
+# shellcheck shell=sh
 
 set -e
 
@@ -12,7 +14,7 @@ getid() {
 	for file in "$home"/.local/share/applications/chrome-*-Default.desktop; do
 		id="${file#*/chrome-}"
 		id="${id%-Default.desktop}"
-		if [ -n "$id" ] && [ -z "$(echo "$id" | tr -d '[a-z]')" ]; then
+		if [ -n "$id" ] && [ -z "$(echo "$id" | tr -d '[:lower:]')" ]; then
 			break
 		else
 			id=
@@ -24,10 +26,11 @@ getid
 if [ -z "$id" ]; then
 	echo "> First-time setup"
 
-	run-with-home "$home" google-chrome-stable \
+	run-with-home "$home" chromium \
 		--no-first-run \
 		--no-default-browser-check \
 		--no-initial-navigation \
+		--simulate-outdated-no-au='Tue, 31 Dec 2099 23:59:59 GMT' \
 		'https://teams.microsoft.com/' \
 		'https://chrome.google.com/webstore/detail/open-in-firefox/lmeddoobegbaiopohmpmmobpnpjifpii' \
 		'chrome-extension://lmeddoobegbaiopohmpmmobpnpjifpii/data/options/index.html'
@@ -51,12 +54,14 @@ run-with-home "$home" "$nativeclientdir/install.sh"
 getid
 if [ -n "$id" ]; then
 	echo "> Running..."
-	exec run-with-home "$home" google-chrome-stable \
+	exec run-with-home "$home" chromium \
 		--no-first-run \
 		--no-default-browser-check \
 		--no-initial-navigation \
+		--simulate-outdated-no-au='Tue, 31 Dec 2099 23:59:59 GMT' \
 		--app-id="$id" \
 		--start-fullscreen \
-		--install-chrome-app=
-	"$@"
+		"$@"
 fi
+
+# vi:ft=sh
