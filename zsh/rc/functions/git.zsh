@@ -189,9 +189,12 @@ gitcj() {
 alias gitp="git push"
 gitpb() {
 	local remote
-	remote="${1:-origin}"
-	[[ -n $1 ]] && shift
-	gitp --set-upstream "$@" "$remote" $(git rev-parse --abbrev-ref HEAD)
+	remote="origin"
+	if [ -n "$1" ] && ! [[ "$1" = -* ]]; then
+		remote="$1"
+		shift
+	fi
+	gitp --set-upstream --tags "$@" "$remote" "$(git rev-parse --abbrev-ref HEAD)"
 }
 
 # Work with multiple directories
