@@ -1,5 +1,8 @@
+local null_ls = require('null-ls')
+
 require('typescript-tools').setup {
 	on_attach = function(client, bufnr)
+		-- Formatting is handled with dprint & ESLint.
 		client.server_capabilities.documentFormattingProvider = false
 		client.server_capabilities.documentRangeFormattingProvider = false
 
@@ -17,10 +20,21 @@ require('typescript-tools').setup {
 	}),
 }
 
-local null_ls = require('null-ls')
--- null_ls.register(null_ls.builtins.code_actions.eslint_d)
--- null_ls.register(null_ls.builtins.diagnostics.eslint_d)
--- null_ls.register(null_ls.builtins.formatting.eslint_d)
+vim.g.mylsp.setup('eslint')
+null_ls.register {
+	method = null_ls.methods.FORMATTING,
+	filetypes = {},
+	generator = {
+		fn = function(params)
+			-- Run ESLint fix all as part of formatting.
+			local eslint_lsp_client = require('lspconfig.util').get_active_client_by_name(params.bufnr, 'eslint')
+			if eslint_lsp_client then
+				vim.cmd('EslintFixAll')
+			end
+		end,
+	},
+}
+
 -- null_ls.register(null_ls.builtins.formatting.dprint.with {
 -- 	extra_filetypes = { 'jsonc', 'json5' },
 -- })

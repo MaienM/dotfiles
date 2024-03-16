@@ -89,6 +89,7 @@
     shfmt
     statix
     stylua
+    vscode-langservers-extracted
     zk
 
   ];
