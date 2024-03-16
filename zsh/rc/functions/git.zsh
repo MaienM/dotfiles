@@ -19,19 +19,20 @@ gitll() {
 		"$@" \
 		| awk '{
 			if (match($0, /^(.*)AUTHOR:::(.*):::(.*):::(.*):::(.*):::(.*)$/, parts)) {
+				prefix = parts[1]
 				an = parts[2]
 				ad = parts[3]
 				cn = parts[4]
 				cd = parts[5]
+				suffix = parts[6]
 				if (an == cn && ad == cd) {
-					result = "By " an " on " ad
+					print prefix "By " an " on " ad suffix
 				} else if (an == cn) {
-					result = "By " an " on " ad " and " cd
+					print prefix "By " an " on " ad " and " cd suffix
 				} else {
-					result = "Authored by " cn " on " cd
-					result = "Committed by " cn " on " cd
+					print prefix "Authored by " an " on " ad  suffix
+					print prefix "Committed by " cn " on " cd suffix
 				}
-				print parts[1] result parts[6]
 			} else {
 				print
 			}
