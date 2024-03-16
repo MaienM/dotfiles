@@ -197,6 +197,19 @@ gitpb() {
 	gitp --set-upstream --tags "$@" "$remote" "$(git rev-parse --abbrev-ref HEAD)"
 }
 
+# Pull
+gitpu() {
+	local remote branch
+	remote="origin"
+	if [ -n "$1" ] && ! [[ "$1" = -* ]]; then
+		remote="$1"
+		shift
+	fi
+	branch="$(git rev-parse --abbrev-ref HEAD)"
+	git fetch
+	git checkout "remotes/$remote/$branch" -B "$branch"
+}
+
 # Work with multiple directories
 _gitdirlist() {
 	for dir in *(/); do
