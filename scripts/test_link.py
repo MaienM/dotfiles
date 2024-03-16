@@ -55,7 +55,7 @@ def mock_structure(tmp_path: Path) -> Generator[MockStructure, None, None]:
 	for file in files:
 		file.touch()
 	for target, source in hardlinks:
-		source.link_to(target)	# Becomes target.hardlink_to(source) in 3.10
+		source.link_to(target)  # Becomes target.hardlink_to(source) in 3.10
 	for target, source in symlinks:
 		target.symlink_to(source)
 
@@ -129,9 +129,7 @@ class TestVirtualFSGet(object):
 			assert real.is_from_fs
 			assert real.links_to is None
 
-		def test_double_symlink(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_double_symlink(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			entry = vfs.get(p(mock_structure.path / "symsymA"))
 
 			assert entry.path == mock_structure.path / "symsymA"
@@ -146,9 +144,7 @@ class TestVirtualFSGet(object):
 			assert real.is_from_fs
 			assert real.links_to is None
 
-		def test_symlink_contents(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_symlink_contents(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			entry = vfs.get(p(mock_structure.path / "sym1" / "file1A"))
 
 			assert entry.path == mock_structure.path / "sym1" / "file1A"
@@ -173,9 +169,7 @@ class TestVirtualFSGet(object):
 			assert entry.real is entry
 			assert entry.inode == (mock_structure.path / "fileB").stat().st_ino
 
-		def test_nested_file(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_nested_file(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			entry = vfs.get(p(mock_structure.path / "dir1" / "file1A"))
 
 			assert entry.path == mock_structure.path / "dir1" / "file1A"
@@ -184,9 +178,7 @@ class TestVirtualFSGet(object):
 			assert entry.links_to is None
 			assert entry.real is entry
 
-		def test_nested_symlink(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_nested_symlink(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			entry = vfs.get(p(mock_structure.path / "dir1" / "symA"))
 
 			assert entry.path == mock_structure.path / "dir1" / "symA"
@@ -201,27 +193,19 @@ class TestVirtualFSGet(object):
 			assert real.is_from_fs
 			assert real.links_to is None
 
-		def test_nested_missing(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_nested_missing(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(NotADirectoryError):
 				vfs.get(p(mock_structure.path / "dir3" / "file3A"))
 
-		def test_nested_missing_allowed(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
-			entry = vfs.get(
-				p(mock_structure.path / "dir3" / "file3A"), parent_none_is_none=True
-			)
+		def test_nested_missing_allowed(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
+			entry = vfs.get(p(mock_structure.path / "dir3" / "file3A"), parent_none_is_none=True)
 
 			assert entry.path == mock_structure.path / "dir3" / "file3A"
 			assert entry.type == VirtualFileType.NONE
 			assert entry.is_from_fs
 			assert entry.links_to is None
 
-		def test_parent_file(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_parent_file(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(NotADirectoryError):
 				vfs.get(p(mock_structure.path / "fileA" / "fileAA"))
 			with pytest.raises(NotADirectoryError):
@@ -230,9 +214,7 @@ class TestVirtualFSGet(object):
 					parent_none_is_none=True,
 				)
 
-		def test_broken_symlink(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_broken_symlink(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			path = mock_structure.path / "broken"
 			path.symlink_to(mock_structure.path / "does_not_exist")
 			mock_structure.expected_paths.add(path)
@@ -251,9 +233,7 @@ class TestVirtualFSGet(object):
 			assert real.is_from_fs
 			assert real.links_to is None
 
-		def test_broken_symlink_nested(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_broken_symlink_nested(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			path = mock_structure.path / "broken"
 			path.symlink_to(mock_structure.path / "does" / "not" / "exist")
 			mock_structure.expected_paths.add(path)
@@ -298,9 +278,7 @@ class TestVirtualFSGet(object):
 			with pytest.raises(NotADirectoryError):
 				vfs.get(p(mock_structure.path / "dir1" / "file1A"))
 
-		def test_lose_nested_changes(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_lose_nested_changes(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.mkdir(p(mock_structure.path / "dir2" / "dir21"))
 			vfs.delete(p(mock_structure.path / "dir2"))
 			with pytest.raises(NotADirectoryError):
@@ -321,9 +299,7 @@ class TestVirtualFSGet(object):
 			assert entry.links_to is None
 			assert entry.real is entry
 
-		def test_nested_file(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_nested_file(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.mkdir(p(mock_structure.path / "dir3"))
 			entry = vfs.get(p(mock_structure.path / "dir3" / "file3A"))
 
@@ -333,15 +309,11 @@ class TestVirtualFSGet(object):
 			assert entry.links_to is None
 			assert entry.real is entry
 
-		def test_parent_file(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_parent_file(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(NotADirectoryError):
 				vfs.mkdir(p(mock_structure.path / "fileA" / "dirA1"))
 
-		def test_parent_missing(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_parent_missing(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(NotADirectoryError):
 				vfs.mkdir(p(mock_structure.path / "dir3" / "dir31"))
 
@@ -361,9 +333,7 @@ class TestVirtualFSGet(object):
 			assert entry.type == VirtualFileType.SYMLINK
 
 		def test_link(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
-			vfs.link(
-				p(mock_structure.path / "sym1A"), p(mock_structure.path / "symsym1A")
-			)
+			vfs.link(p(mock_structure.path / "sym1A"), p(mock_structure.path / "symsym1A"))
 			entry = vfs.get(p(mock_structure.path / "symsym1A"))
 
 			assert entry.path == mock_structure.path / "symsym1A"
@@ -379,22 +349,16 @@ class TestVirtualFSGet(object):
 
 		def test_missing(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(FileNotFoundError):
-				vfs.link(
-					p(mock_structure.path / "dir3"), p(mock_structure.path / "sym3")
-				)
+				vfs.link(p(mock_structure.path / "dir3"), p(mock_structure.path / "sym3"))
 
-		def test_parent_file(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_parent_file(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(NotADirectoryError):
 				vfs.link(
 					p(mock_structure.path / "fileA"),
 					p(mock_structure.path / "fileA" / "fileAA"),
 				)
 
-		def test_parent_missing(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_parent_missing(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(NotADirectoryError):
 				vfs.link(
 					p(mock_structure.path / "fileA"),
@@ -403,15 +367,11 @@ class TestVirtualFSGet(object):
 
 		def test_exists(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(FileExistsError):
-				vfs.link(
-					p(mock_structure.path / "fileA"), p(mock_structure.path / "fileB")
-				)
+				vfs.link(p(mock_structure.path / "fileA"), p(mock_structure.path / "fileB"))
 
 	class TestSymlink(object):
 		def test_file(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
-			vfs.symlink(
-				p(mock_structure.path / "fileB"), p(mock_structure.path / "symB")
-			)
+			vfs.symlink(p(mock_structure.path / "fileB"), p(mock_structure.path / "symB"))
 			entry = vfs.get(p(mock_structure.path / "symB"))
 
 			assert entry.path == mock_structure.path / "symB"
@@ -427,9 +387,7 @@ class TestVirtualFSGet(object):
 			assert real.links_to is None
 
 		def test_dir(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
-			vfs.symlink(
-				p(mock_structure.path / "dir2"), p(mock_structure.path / "sym2")
-			)
+			vfs.symlink(p(mock_structure.path / "dir2"), p(mock_structure.path / "sym2"))
 			entry = vfs.get(p(mock_structure.path / "sym2"))
 
 			assert entry.path == mock_structure.path / "sym2"
@@ -445,9 +403,7 @@ class TestVirtualFSGet(object):
 			assert real.links_to is None
 
 		def test_symlink(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
-			vfs.symlink(
-				p(mock_structure.path / "sym1A"), p(mock_structure.path / "symsym1A")
-			)
+			vfs.symlink(p(mock_structure.path / "sym1A"), p(mock_structure.path / "symsym1A"))
 			entry = vfs.get(p(mock_structure.path / "symsym1A"))
 
 			assert entry.path == mock_structure.path / "symsym1A"
@@ -464,9 +420,7 @@ class TestVirtualFSGet(object):
 
 		def test_virtual(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.mkdir(p(mock_structure.path / "dir3"))
-			vfs.symlink(
-				p(mock_structure.path / "dir3"), p(mock_structure.path / "sym3")
-			)
+			vfs.symlink(p(mock_structure.path / "dir3"), p(mock_structure.path / "sym3"))
 			entry = vfs.get(p(mock_structure.path / "sym3"))
 
 			assert entry.path == mock_structure.path / "sym3"
@@ -483,22 +437,16 @@ class TestVirtualFSGet(object):
 
 		def test_missing(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(FileNotFoundError):
-				vfs.symlink(
-					p(mock_structure.path / "dir3"), p(mock_structure.path / "sym3")
-				)
+				vfs.symlink(p(mock_structure.path / "dir3"), p(mock_structure.path / "sym3"))
 
-		def test_parent_file(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_parent_file(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(NotADirectoryError):
 				vfs.symlink(
 					p(mock_structure.path / "dir1"),
 					p(mock_structure.path / "fileA" / "dirA1"),
 				)
 
-		def test_parent_missing(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_parent_missing(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(NotADirectoryError):
 				vfs.symlink(
 					p(mock_structure.path / "dir1"),
@@ -507,15 +455,11 @@ class TestVirtualFSGet(object):
 
 		def test_exists(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(FileExistsError):
-				vfs.symlink(
-					p(mock_structure.path / "dir1"), p(mock_structure.path / "dir2")
-				)
+				vfs.symlink(p(mock_structure.path / "dir1"), p(mock_structure.path / "dir2"))
 
 	class TestHardlink(object):
 		def test_file(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
-			vfs.hardlink(
-				p(mock_structure.path / "fileA"), p(mock_structure.path / "hardA")
-			)
+			vfs.hardlink(p(mock_structure.path / "fileA"), p(mock_structure.path / "hardA"))
 			entry = vfs.get(p(mock_structure.path / "hardA"))
 
 			assert entry.path == mock_structure.path / "hardA"
@@ -526,44 +470,28 @@ class TestVirtualFSGet(object):
 
 		def test_dir(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(PermissionError):
-				vfs.hardlink(
-					p(mock_structure.path / "dir2"), p(mock_structure.path / "hard2")
-				)
+				vfs.hardlink(p(mock_structure.path / "dir2"), p(mock_structure.path / "hard2"))
 
-		def test_symlink_file(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_symlink_file(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(PermissionError):
-				vfs.hardlink(
-					p(mock_structure.path / "symA"), p(mock_structure.path / "hardA")
-				)
+				vfs.hardlink(p(mock_structure.path / "symA"), p(mock_structure.path / "hardA"))
 
-		def test_symlink_dir(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_symlink_dir(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(PermissionError):
-				vfs.hardlink(
-					p(mock_structure.path / "sym11"), p(mock_structure.path / "hard11")
-				)
+				vfs.hardlink(p(mock_structure.path / "sym11"), p(mock_structure.path / "hard11"))
 
 		def test_missing(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(FileNotFoundError):
-				vfs.hardlink(
-					p(mock_structure.path / "dir3"), p(mock_structure.path / "hard3")
-				)
+				vfs.hardlink(p(mock_structure.path / "dir3"), p(mock_structure.path / "hard3"))
 
-		def test_parent_file(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_parent_file(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(NotADirectoryError):
 				vfs.hardlink(
 					p(mock_structure.path / "fileA"),
 					p(mock_structure.path / "fileA" / "fileAA"),
 				)
 
-		def test_parent_missing(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_parent_missing(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(NotADirectoryError):
 				vfs.hardlink(
 					p(mock_structure.path / "fileA"),
@@ -572,9 +500,7 @@ class TestVirtualFSGet(object):
 
 		def test_exists(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			with pytest.raises(FileExistsError):
-				vfs.hardlink(
-					p(mock_structure.path / "fileA"), p(mock_structure.path / "fileB")
-				)
+				vfs.hardlink(p(mock_structure.path / "fileA"), p(mock_structure.path / "fileB"))
 
 	class TestScandir(object):
 		def test_real_root(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
@@ -595,9 +521,7 @@ class TestVirtualFSGet(object):
 			}
 
 		def test_real_dir2(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
-			paths = {
-				entry.path for entry in vfs.scandir(p(mock_structure.path / "dir2"))
-			}
+			paths = {entry.path for entry in vfs.scandir(p(mock_structure.path / "dir2"))}
 
 			assert paths == {
 				mock_structure.path / "dir2" / "file2A",
@@ -611,39 +535,27 @@ class TestVirtualFSGet(object):
 			with pytest.raises(FileNotFoundError):
 				vfs.scandir(p(mock_structure.path / "dir3"))
 
-		def test_real_delete(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_real_delete(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.delete(p(mock_structure.path / "dir2" / "file2A"))
-			paths = {
-				entry.path for entry in vfs.scandir(p(mock_structure.path / "dir2"))
-			}
+			paths = {entry.path for entry in vfs.scandir(p(mock_structure.path / "dir2"))}
 
 			assert paths == set()
 
-		def test_real_mkdir(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_real_mkdir(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.mkdir(p(mock_structure.path / "dir2" / "dir22"))
-			paths = {
-				entry.path for entry in vfs.scandir(p(mock_structure.path / "dir2"))
-			}
+			paths = {entry.path for entry in vfs.scandir(p(mock_structure.path / "dir2"))}
 
 			assert paths == {
 				mock_structure.path / "dir2" / "file2A",
 				mock_structure.path / "dir2" / "dir22",
 			}
 
-		def test_real_symlink(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_real_symlink(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.symlink(
 				p(mock_structure.path / "fileA"),
 				p(mock_structure.path / "dir2" / "symA"),
 			)
-			paths = {
-				entry.path for entry in vfs.scandir(p(mock_structure.path / "dir2"))
-			}
+			paths = {entry.path for entry in vfs.scandir(p(mock_structure.path / "dir2"))}
 
 			assert paths == {
 				mock_structure.path / "dir2" / "file2A",
@@ -652,48 +564,34 @@ class TestVirtualFSGet(object):
 
 		def test_fake_dir(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.mkdir(p(mock_structure.path / "dir3"))
-			paths = {
-				entry.path for entry in vfs.scandir(p(mock_structure.path / "dir3"))
-			}
+			paths = {entry.path for entry in vfs.scandir(p(mock_structure.path / "dir3"))}
 
 			assert paths == set()
 
-		def test_fake_delete(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_fake_delete(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.mkdir(p(mock_structure.path / "dir3"))
 			vfs.mkdir(p(mock_structure.path / "dir3" / "dir31"))
 			vfs.delete(p(mock_structure.path / "dir3" / "dir31"))
-			paths = {
-				entry.path for entry in vfs.scandir(p(mock_structure.path / "dir3"))
-			}
+			paths = {entry.path for entry in vfs.scandir(p(mock_structure.path / "dir3"))}
 
 			assert paths == set()
 
-		def test_fake_mkdir(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_fake_mkdir(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.mkdir(p(mock_structure.path / "dir3"))
 			vfs.mkdir(p(mock_structure.path / "dir3" / "dir31"))
-			paths = {
-				entry.path for entry in vfs.scandir(p(mock_structure.path / "dir3"))
-			}
+			paths = {entry.path for entry in vfs.scandir(p(mock_structure.path / "dir3"))}
 
 			assert paths == {
 				mock_structure.path / "dir3" / "dir31",
 			}
 
-		def test_fake_symlink(
-			self, vfs: VirtualFS, mock_structure: MockStructure
-		) -> None:
+		def test_fake_symlink(self, vfs: VirtualFS, mock_structure: MockStructure) -> None:
 			vfs.mkdir(p(mock_structure.path / "dir3"))
 			vfs.symlink(
 				p(mock_structure.path / "fileA"),
 				p(mock_structure.path / "dir3" / "symA"),
 			)
-			paths = {
-				entry.path for entry in vfs.scandir(p(mock_structure.path / "dir3"))
-			}
+			paths = {entry.path for entry in vfs.scandir(p(mock_structure.path / "dir3"))}
 
 			assert paths == {
 				mock_structure.path / "dir3" / "symA",

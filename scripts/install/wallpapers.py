@@ -5,19 +5,15 @@
 
 import argparse
 import contextlib
-import http.cookiejar
 import os
 import os.path
-import re
 import time
 
 import requests
 
 
 COLLECTIONS_ENDPOINT = "https://wallhaven.cc/api/v1/collections/{username}"
-COLLECTION_CONTENTS_ENDPOINT = (
-	"https://wallhaven.cc/api/v1/collections/{collection.username}/{collection.id}"
-)
+COLLECTION_CONTENTS_ENDPOINT = "https://wallhaven.cc/api/v1/collections/{collection.username}/{collection.id}"
 APIKEY_ARG = "apikey"
 
 
@@ -40,9 +36,7 @@ class Collection(object):
 
 
 def parse_args():
-	parser = argparse.ArgumentParser(
-		description="Download wallpapers from wallhaven favorites."
-	)
+	parser = argparse.ArgumentParser(description="Download wallpapers from wallhaven favorites.")
 	parser.add_argument(
 		"-a",
 		"--api-key",
@@ -56,9 +50,7 @@ def parse_args():
 		aliases=("ls", "list"),
 		help="List all collections (favorites) of a given user.",
 	)
-	sparser.add_argument(
-		"username", help="The name of the user to list the collections of."
-	)
+	sparser.add_argument("username", help="The name of the user to list the collections of.")
 	sparser.set_defaults(func=list_collections)
 
 	sparser = subparsers.add_parser(
@@ -109,9 +101,7 @@ def download_collections(args):
 	urls = []
 	for collection in args.collection:
 		print(f"Grabbing URLs for collection {collection}.")
-		data = api(
-			format_url(COLLECTION_CONTENTS_ENDPOINT, args, collection=collection)
-		)
+		data = api(format_url(COLLECTION_CONTENTS_ENDPOINT, args, collection=collection))
 		urls += [w["path"] for w in data if "path" in w]
 
 	count = len(urls)

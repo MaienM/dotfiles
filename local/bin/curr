@@ -14,12 +14,12 @@ from currency_converter.__main__ import main as ccmain
 from requests import get
 
 
-CACHE_PATH = Path.home().joinpath('.cache', 'currency-rate.zip')
-CACHE_MAX_AGE = 60 * 60 * 12 # in seconds
+CACHE_PATH = Path.home().joinpath(".cache", "currency-rate.zip")
+CACHE_MAX_AGE = 60 * 60 * 12  # in seconds
 
 
 def update():
-	with get('http://www.ecb.int/stats/eurofxref/eurofxref-hist.zip') as new:
+	with get("http://www.ecb.int/stats/eurofxref/eurofxref-hist.zip") as new:
 		new.raise_for_status()
 		CACHE_PATH.write_bytes(new.content)
 
@@ -33,9 +33,9 @@ def main():
 		update()
 
 	# Inject the cache path into the argument list at the start, so that in case the user supplies a --file argument it will overwrite the one we pass in here.
-	sys.argv = sys.argv[:1] + ['--file', str(CACHE_PATH)] + sys.argv[1:]
+	sys.argv = sys.argv[:1] + ["--file", str(CACHE_PATH)] + sys.argv[1:]
 	ccmain()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 	main()

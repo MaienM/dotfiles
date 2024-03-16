@@ -5,7 +5,6 @@ Kitty kitten to run a kitty command wrapped in tmux passthrough.
 from os import environ
 
 import kitty.remote_control
-from kitty.boss import Boss
 
 ESCAPE = b"\x1b"
 ESCAPE_END = ESCAPE + b"\\"
