@@ -31,7 +31,7 @@ import pygments.token as pygtok
 import requests
 import ruamel.yaml
 from colour import Color
-from pydantic import validator
+from pydantic import field_validator
 from pydantic.dataclasses import dataclass as pydanticdataclass
 from rich.containers import Lines
 from rich.live import Live
@@ -171,7 +171,7 @@ class SchemeColor(Color):
 		yield cls.validate
 
 	@classmethod
-	def validate(cls, value):
+	def validate(cls, value, *a):
 		if not isinstance(value, str):
 			raise TypeError("string required")
 		elif len(value) != 6:
@@ -326,13 +326,13 @@ class Template:
 	input: Path
 	output: Path
 
-	@validator("input")
+	@field_validator("input")
 	def _resolve_input(cls, value):
 		if not isinstance(value, Path):
 			raise TypeError("must be a path")
 		return CONFIG_DIR / value
 
-	@validator("output")
+	@field_validator("output")
 	def _resolve_output(cls, value):
 		if not isinstance(value, Path):
 			raise TypeError("must be a path")
