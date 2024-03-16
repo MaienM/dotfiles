@@ -322,3 +322,6 @@
 [submodule "vim/bundle-nvim/lsp-inlayhints"]
 	path = vim/bundle-nvim/lsp-inlayhints
 	url = https://github.com/lvimuser/lsp-inlayhints.nvim
+[submodule "vim/bundle-nvim/none-ls-shellcheck"]
+	path = vim/bundle-nvim/none-ls-shellcheck
+	url = https://github.com/gbprod/none-ls-shellcheck.nvim

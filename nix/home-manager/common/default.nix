@@ -86,18 +86,10 @@
     nodePackages.pyright
     rust-analyzer
     shellcheck
+    shfmt
     statix
     stylua
     zk
-
-    (pkgs.shfmt.overrideAttrs (_: {
-      src = pkgs.fetchFromGitHub {
-        owner = "maienm";
-        repo = "sh";
-        rev = "ec47f1c8061b37a99c62ad2bfa4a97a948d983ef";
-        sha256 = "sha256-NxxY5cP055FBCzJwOZ1omt++qIvwpI1YYEWyIWim14Y=";
-      };
-    }))
 
   ];
 
