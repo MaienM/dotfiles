@@ -118,6 +118,9 @@
         [ "${config.home.homeDirectory}/.nix-profile/bin/pinentry-auto" ]
         (builtins.readFile /${dotfiles}/gnupg/gpg-agent.conf);
     };
+
+    # Make mpv use yt-dlp.
+    ".config/mpv/youtube-dl".source = "${pkgs-local.yt-dlp}/bin/yt-dlp";
   };
 
   # Autostart new user systemd services.
