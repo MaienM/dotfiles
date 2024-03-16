@@ -80,6 +80,7 @@
     editorconfig-checker
     lua-language-server
     nil
+    nodePackages.bash-language-server
     nodePackages.pyright
     ruff
     ruff-lsp
