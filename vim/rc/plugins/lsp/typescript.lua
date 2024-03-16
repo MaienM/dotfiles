@@ -34,7 +34,3 @@ null_ls.register {
 		end,
 	},
 }
-
--- null_ls.register(null_ls.builtins.formatting.dprint.with {
--- 	extra_filetypes = { 'jsonc', 'json5' },
--- })
