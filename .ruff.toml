@@ -1,0 +1,11 @@
+line-length = 120
+indent-width = 3
+
+[format]
+indent-style = "tab"
+docstring-code-format = true
+
+[lint]
+select = [
+    "I001",
+]

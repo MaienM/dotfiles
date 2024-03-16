@@ -76,14 +76,13 @@
     tree-sitter
 
     # Language servers/tools.
-    autoflake
-    black
     deadnix
     editorconfig-checker
-    isort
     lua-language-server
     nil
     nodePackages.pyright
+    ruff
+    ruff-lsp
     rust-analyzer
     shellcheck
     shfmt

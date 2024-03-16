@@ -138,6 +138,9 @@ require('noice').setup {
 					return client == 'null-ls' and source == 'editorconfig_checker' and title == 'diagnostics_on_open'
 				end,
 			},
+
+			-- Ruff format message. This is run as part of formatting, so this appears on every save.
+			skip(filter_msg('Workspace edit Ruff: Format imports')),
 		}
 	end)(),
 }
