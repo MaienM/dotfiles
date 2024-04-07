@@ -18,7 +18,7 @@ applications:
         output: ~/.profile.d/50_base16.local
   fzf:
     templates:
-      - input: ./bundle/fzf/templates/default.mustache
+      - input: ./bundle/fzf/templates/base16-default.mustache
         output: ~/.base16_theme_fzf
   i3:
     templates:
