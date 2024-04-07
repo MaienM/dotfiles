@@ -196,24 +196,27 @@
 [submodule "vim/bundle-nvim/indent-blankline"]
 	path = vim/bundle-nvim/indent-blankline
 	url = https://github.com/lukas-reineke/indent-blankline.nvim
+[submodule "config/base16/bundle/kitty"]
+	path = config/base16/bundle/kitty
+	url = https://github.com/kdrag0n/base16-kitty
 [submodule "config/base16/bundle/fzf"]
 	path = config/base16/bundle/fzf
-	url = https://github.com/fnune/base16-fzf
+	url = https://github.com/tinted-theming/tinted-fzf
 [submodule "config/base16/bundle/k9s"]
 	path = config/base16/bundle/k9s
 	url = https://github.com/krgn/base16-k9s
 [submodule "config/base16/bundle/polybar"]
 	path = config/base16/bundle/polybar
-	url = https://github.com/Misterio77/base16-polybar
+	url = https://github.com/tinted-theming/tinted-polybar
 [submodule "config/base16/bundle/rofi"]
 	path = config/base16/bundle/rofi
-	url = https://gitlab.com/jordiorlando/base16-rofi
+	url = https://github.com/tinted-theming/base16-rofi
 [submodule "config/base16/bundle/shell"]
 	path = config/base16/bundle/shell
-	url = https://github.com/tinted-theming/base16-shell
+	url = https://github.com/tinted-theming/tinted-shell
 [submodule "config/base16/bundle/xresources"]
 	path = config/base16/bundle/xresources
-	url = https://github.com/base16-project/base16-xresources
+	url = https://github.com/tinted-theming/base16-xresources
 [submodule "config/base16/bundle/dircolors"]
 	path = config/base16/bundle/dircolors
 	url = https://github.com/MaienM/base16-gnu-dircolors.git
@@ -289,9 +292,6 @@
 [submodule "vim/bundle-nvim/lualine"]
 	path = vim/bundle-nvim/lualine
 	url = https://github.com/nvim-lualine/lualine.nvim
-[submodule "config/base16/templates/kitty"]
-	path = config/base16/bundle/kitty
-	url = https://github.com/kdrag0n/base16-kitty
 [submodule "vim/bundle-nvim/neotest"]
 	path = vim/bundle-nvim/neotest
 	url = https://github.com/nvim-neotest/neotest
