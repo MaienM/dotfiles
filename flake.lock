@@ -41,6 +41,43 @@
         "type": "github"
       }
     },
+    "drduh": {
+      "inputs": {
+        "drduhConfig": "drduhConfig",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1711390170,
+        "narHash": "sha256-FW6sJlokHuMXfh+hKYhEyHf81gYp1qzj4JNltpIsTr4=",
+        "owner": "drduh",
+        "repo": "YubiKey-Guide",
+        "rev": "c1199cbcf8c7693b4a661fd86b0394ce66c96004",
+        "type": "github"
+      },
+      "original": {
+        "owner": "drduh",
+        "repo": "YubiKey-Guide",
+        "type": "github"
+      }
+    },
+    "drduhConfig": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1697417581,
+        "narHash": "sha256-R45L/Xv3z0lJhGt781wDbjaq1qc+sGTmsUt+XHwgf4A=",
+        "owner": "drduh",
+        "repo": "config",
+        "rev": "8c21617100795fea2313656abdf25f93b98fdc30",
+        "type": "github"
+      },
+      "original": {
+        "owner": "drduh",
+        "repo": "config",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "locked": {
         "lastModified": 1688025799,
@@ -195,6 +232,7 @@
       "inputs": {
         "apple-silicon": "apple-silicon",
         "darwin": "darwin",
+        "drduh": "drduh",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "neovim": "neovim",
