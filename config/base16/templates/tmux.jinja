@@ -97,12 +97,13 @@ set -g window-status-format "{{concat(
 		concat('#[default,fg=', base_background, ',noreverse]'),
 		concat('#[default,fg=', base_background, ',reverse]'),
 	),
-	concat (
+	concat(
 		'#[default,noreverse] #I',
 		ternary('window_activity_flag', ' 󰦨', ''),
 		ternary('window_bell_flag', ' 󰂜', ''),
 		ternary('window_silence_flag', ' 󰪓', ''),
 		ternary('window_zoomed_flag', ' 󰍉', ''),
+		ternary('synchronize-panes', ' 󰓦', ''),
 		' ',
 		relative_to_current('◆', '', ''),
 		' #W ',
