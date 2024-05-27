@@ -207,7 +207,7 @@
 	url = https://github.com/krgn/base16-k9s
 [submodule "config/base16/bundle/polybar"]
 	path = config/base16/bundle/polybar
-	url = https://github.com/tinted-theming/tinted-polybar
+	url = https://github.com/tinted-theming/base16-polybar
 [submodule "config/base16/bundle/rofi"]
 	path = config/base16/bundle/rofi
 	url = https://github.com/tinted-theming/base16-rofi
@@ -325,3 +325,6 @@
 [submodule "vim/bundle-nvim/none-ls-shellcheck"]
 	path = vim/bundle-nvim/none-ls-shellcheck
 	url = https://github.com/gbprod/none-ls-shellcheck.nvim
+[submodule "vim/bundle-nvim/nvim-nio"]
+	path = vim/bundle-nvim/nvim-nio
+	url = https://github.com/nvim-neotest/nvim-nio
