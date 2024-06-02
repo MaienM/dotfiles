@@ -90,7 +90,10 @@ in
     isNormalUser = true;
     hashedPassword = secrets.userPassword;
     shell = pkgs.zsh;
-    extraGroups = [ "wheel" ];
+    extraGroups = [
+      "wheel" # sudo
+      "dialout" # serial devices
+    ];
   };
 
   # Setup GPG.
