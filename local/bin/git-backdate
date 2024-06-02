@@ -37,5 +37,5 @@ fi
 targetdate="$(date --date="$targetdate" +%FT%T%Z)"
 
 # Set the new date.
-echo "> Changing date from $currentdate to $targetdate"
-GIT_COMMITTER_DATE="$targetdate" git commit --amend --date="$targetdate" -C "$COMMIT"
+echo "> Changing date to $targetdate"
+GIT_COMMITTER_DATE="$targetdate" git commit --amend --date="$targetdate" -C "$COMMIT" --allow-empty
