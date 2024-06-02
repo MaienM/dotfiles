@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=1091
 . commands_require
 commands_require polybar 2> /dev/null || exit 0
 
