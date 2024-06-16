@@ -54,6 +54,20 @@
 	skip_display = true
 	history_ignore = true
 
+[maestral-restart]
+	appname = Maestral
+	body = Please restart to continue syncing
+	skip_display = true
+	history_ignore = true
+	enable = false
+
+[maestral-move-folder]
+	appname = Maestral
+	body = Please move the Dropbox folder back to its original location or restart Maestral to set up a new folder.
+	skip_display = true
+	history_ignore = true
+	enable = false
+
 [screenshot]
 	appname = screenshot
 	icon_position = top
