@@ -18,12 +18,17 @@ get_child_pids() {
 }
 
 full_command() {
-	get_child_pids "$PANE_PID" \
-		| xargs --no-run-if-empty ps -wwo pid=,stat= -p \
-		| grep '+\s*$' \
-		| awk '{ print $1 }' \
-		| xargs --no-run-if-empty ps -wwo command= \
-		| tail -n1
+	pid="$(
+		get_child_pids "$PANE_PID" \
+			| xargs --no-run-if-empty ps -wwo pid=,stat= -p \
+			| grep '+\s*$' \
+			| awk '{ print $1 }' \
+			| xargs --no-run-if-empty ps -wwo pid= \
+			| tail -n1 \
+			| tr -d '[:space:]'
+	)"
+	mapfile -t -d '' args < "/proc/${pid## }/cmdline"
+	printf '%q ' "${args[@]}"
 }
 
 main() {
