@@ -44,7 +44,7 @@ applications:
         output: ~/.config/rofi/theme.rasi
   shell:
     templates:
-      - input: ./bundle/shell/templates/default.mustache
+      - input: ./bundle/shell/templates/base16.mustache
         output: ~/.zsh/rc/base16.local.zsh
   tmux:
     templates:
