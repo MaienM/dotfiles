@@ -273,6 +273,7 @@ assign [class="^FML"] → $workspace1
 assign [class="^Minecraft"] → $workspace4
 assign [title="^NBTEdit"] → $workspace10
 assign [class="^discord$"] → $workspace12
+assign [class="^steam$"] → workspace7
 assign [class="^Slack$"] → $workspace12
 assign [instance="^crx_cifhbcnohmdccbgoicgdjpfamggdegmo$"] → $workspace12
 assign [class="^Evolution$"] → $workspace3
@@ -282,18 +283,18 @@ assign [class="^Wfica$"] → 99 # Citrix
 
 ### Window rules
 for_window [class="^Antimicro$"] floating enable
-for_window [class="^Google-chrome$" title="^Tabs Outliner$"] move container to workspace 22
+for_window [class="^Google-chrome$" title="^Tabs Outliner$"] move container to workspace 24
 for_window [class="^Minecraft"] fullscreen enable
-for_window [class="^Steam$" title="^Friends list$"] floating enable
-for_window [class="^Steam$" title="^Steam - News"] close
-for_window [class="^Steam$" title="^Steam Guard"] floating enable
+for_window [class="^steam$" title="^Friends list$"] floating enable
+for_window [class="^steam$" title="^Steam - News"] close
+for_window [class="^steam$" title="^Steam Guard"] floating enable
 for_window [class="^cadence\.py$"] floating enable
 for_window [class="^calibre$" floating] resize set width 70ppt height 70ppt
 for_window [class="^calibre$" title="^Edit Metadata"] resize set width 80ppt height 80ppt
 for_window [class="^calibre$"] move position center
 for_window [class="^feh$"] floating enable
 for_window [class="^firefox$" title="^Extension: \(Tabs Outliner\)"] floating disable
-for_window [class="^firefox$" title="^Extension: \(Tabs Outliner\)"] move container to workspace 22
+for_window [class="^firefox$" title="^Extension: \(Tabs Outliner\)"] move container to workspace 24
 for_window [class="^java$"] floating enable
 for_window [class="^kicad$" title="^Symbol Library Briwser"] floating enable
 for_window [class="^mpv$" workspace="^(?!$workspace8).*$"] move container to workspace $workspace11
@@ -309,3 +310,4 @@ for_window [class="^Workrave$" title="^Workrave$"] border pixel 1
 for_window [class="^Workrave$" title="^Workrave$"] floating enable
 for_window [class="^Workrave$" title="^Workrave$"] move container to workspace $workspace10
 for_window [instance="^crx_cifhbcnohmdccbgoicgdjpfamggdegmo$"] fullscreen disable
+for_window [class='^chromium-browser$' title='^PiKVM'] floating enable
