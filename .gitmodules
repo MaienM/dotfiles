@@ -199,9 +199,6 @@
 [submodule "config/base16/bundle/fzf"]
 	path = config/base16/bundle/fzf
 	url = https://github.com/tinted-theming/tinted-fzf
-[submodule "config/base16/bundle/k9s"]
-	path = config/base16/bundle/k9s
-	url = https://github.com/krgn/base16-k9s
 [submodule "config/base16/bundle/polybar"]
 	path = config/base16/bundle/polybar
 	url = https://github.com/tinted-theming/base16-polybar

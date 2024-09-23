@@ -27,7 +27,7 @@ applications:
     hook: i3-msg reload
   k9s:
     templates:
-      - input: ./bundle/k9s/templates/default.mustache
+      - input: ./templates/k9s.mustache.yaml
         output: ~/.config/k9s/skins/base16.yaml
   kitty:
     templates:
