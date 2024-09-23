@@ -81,7 +81,7 @@
     lua-language-server
     nil
     nodePackages.bash-language-server
-    nodePackages.pyright
+    pyright
     ruff
     ruff-lsp
     rust-analyzer
