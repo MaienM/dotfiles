@@ -26,11 +26,18 @@
     # Applications.
     chromium
     feh
-    firefox
+    firefoxpwa
     mpv
     pavucontrol
     pkgs-force.discord # Marked incompatible with aarch64-linux.
     workrave
 
   ];
+
+  programs.firefox = {
+    enable = true;
+    nativeMessagingHosts = with pkgs; [
+      firefoxpwa
+    ];
+  };
 }
