@@ -49,6 +49,14 @@
           sudo nixos-rebuild --flake "$HOME/dotfiles#''${HOSTNAME:-$(hostname)}" "$@"
         '';
       };
+      dot-channel-sync = pkgs.writeShellApplication {
+        name = "dot-channel-sync";
+        runtimeInputs = [ pkgs.nix ];
+        text = ''
+          nix-channel --add https://github.com/NixOS/nixpkgs/archive/${inputs.nixpkgs.rev}.tar.gz nixpkgs
+          nix-channel --update nixpkgs
+        '';
+      };
       dot-darwin-rebuild =
         if pkgs-inputs.darwin ? "darwin-rebuild" && pkgs-inputs.darwin.darwin-rebuild.meta.available
         then
@@ -79,7 +87,7 @@
         inherit (pkgs) nixos-rebuild;
         inherit (pkgs-inputs.darwin) darwin-rebuild;
         inherit (pkgs-inputs.home-manager) home-manager;
-        inherit dot-nixos-rebuild dot-darwin-rebuild dot-home-manager;
+        inherit dot-nixos-rebuild dot-channel-sync dot-darwin-rebuild dot-home-manager;
 
         nixosConfigurations = {
           MICHON-PC = nixpkgs.lib.nixosSystem {
@@ -147,6 +155,7 @@
       devShell = pkgs.mkShell {
         buildInputs = with pkgs; [
           dot-nixos-rebuild
+          dot-channel-sync
           dot-darwin-rebuild
           dot-home-manager
 
