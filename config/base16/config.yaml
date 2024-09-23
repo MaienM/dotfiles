@@ -4,7 +4,7 @@ aliases:
 applications:
   bat:
     templates:
-      - input: ./templates/bat.mustache
+      - input: ./templates/bat.mustache.xml
         output: ~/.config/bat/themes/base16.tmTheme
     hook: bat cache --build
   dircolors:
@@ -53,7 +53,7 @@ applications:
     hook: tmux source ~/.tmux/base16.conf
   neovim:
     templates:
-      - input: ./templates/neovim.mustache
+      - input: ./templates/neovim.mustache.lua
         output: ~/.vim/colors/base16.lua
   vifm:
     dependsOn:

@@ -342,10 +342,10 @@ class Template:
 		return value
 
 	def render(self, scheme: Scheme, dry_run: bool = False) -> bool:
-		if self.input.suffix == ".mustache":
+		if self.input.suffixes[0] == ".mustache":
 			with open(self.input, "r") as f:
 				rendered = chevron.render(f, scheme.vars)
-		elif self.input.suffix == ".jinja":
+		elif self.input.suffixes[0] == ".jinja":
 			with open(self.input, "r") as f:
 				rendered = jinja2.Template(f.read()).render({k.replace("-", "_"): v for k, v in scheme.vars.items()})
 		else:
