@@ -123,6 +123,11 @@ in
     dockerCompat = true;
   };
 
+  # Enable automatically mounting external storage when it is plugged in.
+  services.devmon.enable = true;
+  services.udisks2.enable = true;
+  programs.fuse.userAllowOther = true;
+
   # Rootless flashing of QMK boards.
   hardware.keyboard.qmk.enable = true;
 
