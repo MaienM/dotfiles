@@ -61,6 +61,6 @@ applications:
     hook: source ~/.profile.d/50_dircolors.local; vifm-convert-dircolors -e > ~/.config/vifm/base16.vifm
   xresources:
     templates:
-      - input: ./bundle/xresources/templates/default.mustache
+      - input: ./bundle/xresources/templates/base16.mustache
         output: ~/.Xresources.d/base16.local
     hook: xrdb -merge ~/.Xresources
