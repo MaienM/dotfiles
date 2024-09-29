@@ -22,6 +22,7 @@
 [interactive]
 	diffFilter = delta --color-only --features=interactive
 [delta]
+	max-line-length = 1000000
 	syntax-theme = base16-256
 	features = line-numbers decorations
 	plus-style = green
