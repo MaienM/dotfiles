@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+running=2
+while true; do
+	sleep 1
+	count="$(i3-msg -t get_tree | jq '[recurse(.nodes[]) | select(.focused) | select(.fullscreen_mode > 0)] | length')"
+	if [ "$count" -gt 0 ]; then
+		if [ "$running" -ne 0 ]; then
+			systemctl --user stop synergy.service
+			running=0
+		fi
+	else
+		if [ "$running" -ne 1 ]; then
+			systemctl --user start synergy.service
+			running=1
+		fi
+	fi
+done
