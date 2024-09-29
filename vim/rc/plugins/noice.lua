@@ -117,6 +117,7 @@ require('noice').setup {
 			view('mini', filter_msg('^1 line less;')),
 			view('mini', filter_msg('^Already at newest change$')),
 			view('mini', filter_msg('^Already at oldest change$')),
+			skip(filter_msg('^Writing undo file:')),
 
 			-- Pattern not found.
 			view('mini', filter_error(486)),
