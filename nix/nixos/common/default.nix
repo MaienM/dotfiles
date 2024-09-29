@@ -54,7 +54,7 @@ in
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.windowManager.i3.enable = true;
-  hardware.opengl.enable = true;
+  hardware.graphics.enable = true;
 
   # Needed for a number of applications to manage settings.
   programs.dconf.enable = true;

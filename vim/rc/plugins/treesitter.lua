@@ -8,7 +8,9 @@ require('nvim-treesitter.configs').setup {
 		'markdown',
 		'markdown_inline',
 	},
+	ignore_install = {},
 	auto_install = true,
+	sync_install = false,
 
 	highlight = {
 		enable = true,
@@ -19,9 +21,10 @@ require('nvim-treesitter.configs').setup {
 	indent = {
 		enable = true,
 	},
+	modules = {},
 }
 
 vim.opt.foldmethod = 'expr'
-vim.opt.foldexpr = require('nvim-treesitter').foldexpr
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 
 require('treesitter-context').setup()
