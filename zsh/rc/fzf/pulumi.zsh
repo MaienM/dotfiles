@@ -10,17 +10,17 @@ _fzf_pipeline_pulumi_stack_urn_source() {
 	jq -r '
 		.checkpoint | (.latest // .Latest) | .resources[] |
 		.name = (.urn | split("::") | last) |
-		.info = @sh "\(.urn) \(.id) \(.type) \(.name)" |
+		.info = @sh "\(.urn) \(.type) \(.name)" |
 		"\(.info | @sh) \(.type) \(.name)"
 	' \
-	< "$HOME/.pulumi/stacks/$stack.json"
+	< "$HOME/.pulumi/stacks/$stack.json" \
+	| sort -u
 }
 _fzf_pipeline_pulumi_stack_urn_preview() {
 	info=("${(z)${(Q)1}}")
 	echo "Type: ${(Q)info[3]}"
 	echo "Name: ${(Q)info[4]}"
 	echo "URN:  ${(Q)info[1]}"
-	echo "ID:   ${(Q)info[2]}"
 }
 _fzf_pipeline_pulumi_stack_urn_target() {
 	info=("${(z)${(Q)1}}")
