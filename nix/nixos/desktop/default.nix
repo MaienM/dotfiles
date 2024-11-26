@@ -34,7 +34,7 @@
 
   # Use Nvidia drivers.
   services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia.open = true;
+  hardware.nvidia.open = false;
 
   # Installed here instead of via home-manager as these need system-level workarounds.
   programs.steam.enable = true;
