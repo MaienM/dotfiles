@@ -11,7 +11,9 @@
   home.packages = with pkgs; [
 
     # Applications.
+    bambu-studio
     minigalaxy
+    prismlauncher
     qpwgraph
 
   ];
