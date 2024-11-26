@@ -29,6 +29,7 @@
     fzf
     git
     git-crypt
+    git-filter-repo
     git-lfs
     gnupg
     htop
