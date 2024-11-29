@@ -1,7 +1,9 @@
 " Apply the base16 theme.
 if &t_Co > 2 || has('gui_running')
 	set t_Co=256
-	set guioptions=0
+	if !has('nvim')
+		set guioptions=0
+	endif
 	let base16colorspace=256
 	if has('termguicolors')
 		set termguicolors

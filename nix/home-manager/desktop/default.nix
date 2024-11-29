@@ -7,7 +7,9 @@
   custom.allowUnfreeList = [
     "steam-original"
     "steam-run"
+    "steam-unwrapped"
   ];
+
   home.packages = with pkgs; [
 
     # Applications.

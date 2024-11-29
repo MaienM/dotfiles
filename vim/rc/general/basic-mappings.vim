@@ -37,7 +37,9 @@ nnoremap H ^
 nnoremap L $
 
 " F5 to exit paste mode.
-set pastetoggle=<F5>
+if !has('nvim')
+	set pastetoggle=<F5>
+endif
 
 " Mapping to use a temp file as 'clipboard', in case other clipboards don't want to cooperate.
 vmap <Leader><Leader>y :w! /tmp/vitmp<CR>

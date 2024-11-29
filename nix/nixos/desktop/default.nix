@@ -1,6 +1,7 @@
 { lib, pkgs, ... }:
 {
   imports = [
+    ./build-machine-macbook.nix
     ./hardware-configuration.nix
     ./persist.nix
   ];
@@ -26,10 +27,11 @@
     # Nvidia drivers.
     "nvidia-settings"
     "nvidia-x11"
-    # Steam (installed via home-manager).
+    # Steam.
     "steam"
     "steam-original"
     "steam-run"
+    "steam-unwrapped"
   ];
 
   # Use Nvidia drivers.

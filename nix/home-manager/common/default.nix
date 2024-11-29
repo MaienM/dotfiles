@@ -70,9 +70,9 @@
     })
 
     # Neovim.
-    (if pkgs.system == "aarch64-darwin" then pkgs-inputs.neovim-darwin else pkgs-inputs.neovim).neovim
+    pkgs-inputs.neovim.neovim
     gcc # Needed for treesitter to compile parsers.
-    nodePackages.neovim
+    neovim-node-client
     python3.pkgs.pynvim
     tree-sitter
 
@@ -84,7 +84,6 @@
     nodePackages.bash-language-server
     pyright
     ruff
-    ruff-lsp
     rust-analyzer
     shellcheck
     shfmt

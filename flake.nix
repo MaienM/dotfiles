@@ -15,9 +15,6 @@
     neovim.url = "github:nix-community/neovim-nightly-overlay";
     neovim.inputs.nixpkgs.follows = "nixpkgs";
 
-    neovim-darwin.url = "github:neovim/neovim/c54592bfdacf08823a03d5aa251f49b906f3157d?dir=contrib";
-    neovim-darwin.inputs.flake-utils.follows = "flake-utils";
-
     drduh.url = "github:drduh/YubiKey-Guide";
     drduh.inputs.nixpkgs.follows = "nixpkgs";
   };

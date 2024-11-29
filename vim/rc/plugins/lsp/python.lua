@@ -15,7 +15,7 @@ vim.g.mylsp.setup('pyright', {
 	},
 })
 
-vim.g.mylsp.setup('ruff_lsp', {
+vim.g.mylsp.setup('ruff', {
 	on_attach = function(client, bufnr)
 		--  Disable hover provider as we use pyright for that.
 		client.server_capabilities.hoverProvider = false
@@ -29,8 +29,8 @@ null_ls.register {
 	generator = {
 		fn = function(params)
 			-- Sort imports as part of formatting.
-			local ruff_lsp_client = require('lspconfig.util').get_active_client_by_name(params.bufnr, 'ruff_lsp')
-			ruff_lsp_client.request('workspace/executeCommand', {
+			local ruff_client = require('lspconfig.util').get_active_client_by_name(params.bufnr, 'ruff')
+			ruff_client.request('workspace/executeCommand', {
 				command = 'ruff.applyOrganizeImports',
 				arguments = {
 					{ uri = vim.uri_from_bufnr(params.bufnr) },
