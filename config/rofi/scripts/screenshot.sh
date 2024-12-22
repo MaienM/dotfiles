@@ -51,11 +51,11 @@ while [ $delay -gt 0 ]; do
 	: $((delay -= 1))
 done
 
-tmp="$(mktemp --suffix '.png')"
+tmp="$(mktemp --suffix '.png' --tmpdir=/tmp)"
 echo notify-error "${cmd[@]}" "$tmp"
 notify-error "${cmd[@]}" "$tmp"
 
-fn="$screenshotdir/$(date +'%Y-%m-%dT%H:%M:%S%z')-$(identify -format '%wx%h' "$tmp").png"
+fn="$screenshotdir/$(date +'%Y-%m-%dT%H-%M-%S%z')-$(identify -format '%wx%h' "$tmp").png"
 mv "$tmp" "$fn"
 
 printf '%s' "$fn" | xclip -selection Clipboard
