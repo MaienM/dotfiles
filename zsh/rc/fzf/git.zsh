@@ -127,7 +127,11 @@ alias _fzf_pipeline_git_tag_preview='_fzf_pipeline_git_commit_preview'
 _fzf_pipeline_git_stash_source() {
 	git stash list --pretty=format:"%H ${color_fg_yellow}%gd$color_reset %s" "$@"
 }
-alias _fzf_pipeline_git_stash_preview='_fzf_pipeline_git_commit_preview'
+_fzf_pipeline_git_stash_preview() {
+	stash="${(Q)1}"
+	git show "$stash"
+	git diff "$stash~1..$stash"
+}
 
 # Reflog
 _fzf_pipeline_git_reflog_source() {
