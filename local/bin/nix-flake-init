@@ -29,5 +29,5 @@ if [ -f flake.nix ]; then
 	exit 1
 else
 	generate_flake
-	nixpkgs-fmt flake.nix
+	nixfmt flake.nix
 fi

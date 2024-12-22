@@ -36,7 +36,7 @@
     jq
     mimeo
     moreutils
-    nixpkgs-fmt
+    nixfmt-rfc-style
     nodejs
     p7zip
     pkgs-local.cached-nix-shell
