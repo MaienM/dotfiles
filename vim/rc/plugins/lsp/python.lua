@@ -24,8 +24,11 @@ vim.g.mylsp.setup('ruff', {
 	end,
 })
 null_ls.register {
+	name = "ruff-imports",
 	method = null_ls.methods.FORMATTING,
-	filetypes = { 'python' },
+	filetypes = {
+		['python'] = true,
+	},
 	generator = {
 		fn = function(params)
 			-- Sort imports as part of formatting.

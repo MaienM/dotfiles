@@ -22,8 +22,12 @@ require('typescript-tools').setup {
 
 vim.g.mylsp.setup('eslint')
 null_ls.register {
+	name = "eslint",
 	method = null_ls.methods.FORMATTING,
-	filetypes = {},
+	filetypes = {
+		["javascript"] = true,
+		["typescript"] = true,
+	},
 	generator = {
 		fn = function(params)
 			-- Run ESLint fix all as part of formatting.

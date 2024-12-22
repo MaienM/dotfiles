@@ -6,7 +6,7 @@ if next(vim.fn['xolox#misc#path#which']('dprint')) ~= nil then
 		filetypes = {
 			'jsonc',
 			'json5',
-			unpack(require('lspconfig.server_configurations.dprint').default_config.filetypes),
+			unpack(require('lspconfig.configs.dprint').default_config.filetypes),
 		},
 	})
 end
