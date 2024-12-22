@@ -1,9 +1,10 @@
-{ config
-, dotfiles
-, inputs
-, lib
-, pkgs
-, ...
+{
+  config,
+  dotfiles,
+  inputs,
+  lib,
+  pkgs,
+  ...
 }:
 let
   secrets = builtins.fromJSON (builtins.readFile ./secret.json);

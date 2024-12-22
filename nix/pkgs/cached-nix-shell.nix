@@ -1,7 +1,8 @@
-{ pkgs
+{
+  pkgs,
 }:
-if pkgs.cached-nix-shell.meta.available
-then pkgs.cached-nix-shell
+if pkgs.cached-nix-shell.meta.available then
+  pkgs.cached-nix-shell
 else
   pkgs.writeShellApplication {
     name = "cached-nix-shell";

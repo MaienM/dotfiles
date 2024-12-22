@@ -1,7 +1,8 @@
-{ pkgs
-, stdenv
-, fetchFromGitHub
-, prefix ? "nerdfonts_icons_"
+{
+  pkgs,
+  stdenv,
+  fetchFromGitHub,
+  prefix ? "nerdfonts_icons_",
 }:
 let
   script_path = "bin/scripts/lib";
@@ -19,12 +20,14 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ pkgs.gnused ];
   buildPhase = ''
-    ${if version != pkgs.nerdfonts.version
-      then ''
-        >&2 echo "${name} is out of date with base nerdfonts package (is ${version}, should be ${pkgs.nerdfonts.version}), please update it.";
-        exit 1
-      ''
-      else ""
+    ${
+      if version != pkgs.nerdfonts.version then
+        ''
+          >&2 echo "${name} is out of date with base nerdfonts package (is ${version}, should be ${pkgs.nerdfonts.version}), please update it.";
+          exit 1
+        ''
+      else
+        ""
     }
 
     cd "${script_path}"

@@ -1,6 +1,7 @@
-{ pkgs
-, stdenv
-, ...
+{
+  pkgs,
+  stdenv,
+  ...
 }:
 {
   imports = [

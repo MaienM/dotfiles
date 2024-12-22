@@ -1,11 +1,12 @@
-{ config
-, dotfiles
-, lib
-, pkgs
-, pkgs-inputs
-, pkgs-local
-, stdenv
-, ...
+{
+  config,
+  dotfiles,
+  lib,
+  pkgs,
+  pkgs-inputs,
+  pkgs-local,
+  stdenv,
+  ...
 }:
 {
   imports = [
@@ -16,7 +17,9 @@
   home.stateVersion = "22.11";
 
   home.username = lib.mkDefault "maienm";
-  home.homeDirectory = lib.mkDefault "/${if stdenv.isDarwin then "/Users" else "home"}/${config.home.username}";
+  home.homeDirectory = lib.mkDefault "/${
+    if stdenv.isDarwin then "/Users" else "home"
+  }/${config.home.username}";
 
   home.packages = with pkgs; [
 
@@ -106,10 +109,9 @@
     # Setup gpg-agent config.
     # TODO: Once I figure out how I want to handle secrets check if that can also solve this problem.
     ".gnupg/gpg-agent.conf" = {
-      text = builtins.replaceStrings
-        [ "pinentry-auto" ]
-        [ "${config.home.homeDirectory}/.nix-profile/bin/pinentry-auto" ]
-        (builtins.readFile /${dotfiles}/gnupg/gpg-agent.conf);
+      text = builtins.replaceStrings [ "pinentry-auto" ] [
+        "${config.home.homeDirectory}/.nix-profile/bin/pinentry-auto"
+      ] (builtins.readFile /${dotfiles}/gnupg/gpg-agent.conf);
     };
 
     # Make mpv use yt-dlp.

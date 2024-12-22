@@ -1,4 +1,10 @@
-{ config, lib, pkgs, pkgs-local, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgs-local,
+  ...
+}:
 with lib;
 let
   cfg = config.services.VPNStatus;
@@ -14,7 +20,7 @@ in
       example = true;
       description = ''
         Automatically (re)start VPNStatus.
-        
+
         Disabled by default for now as it appears to cause the active window to lose focus every ThrottleInterval (30)
         seconds.
       '';

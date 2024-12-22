@@ -1,5 +1,6 @@
 { pkgs, ... }:
-with pkgs; {
+with pkgs;
+{
   VPNStatus = callPackage ./VPNStatus.nix { };
   cached-nix-shell = callPackage ./cached-nix-shell.nix { };
   leveldb-cli = callPackage ./leveldb-cli.nix { };

@@ -1,4 +1,9 @@
-{ pkgs, pkgs-force, pkgs-local, ... }:
+{
+  pkgs,
+  pkgs-force,
+  pkgs-local,
+  ...
+}:
 {
   xsession = {
     enable = true;

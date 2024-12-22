@@ -7,7 +7,11 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = [ "usb_storage" "usbhid" "sdhci_pci" ];
+  boot.initrd.availableKernelModules = [
+    "usb_storage"
+    "usbhid"
+    "sdhci_pci"
+  ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
