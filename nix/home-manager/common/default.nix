@@ -63,14 +63,11 @@
 
     # Applications.
     kitty
-    pkgs-local.nerdfonts-scripts
 
-    (nerdfonts.override {
-      fonts = [
-        "FiraCode"
-        "NerdFontsSymbolsOnly"
-      ];
-    })
+    # Fonts.
+    nerd-fonts.fira-code
+    nerd-fonts.symbols-only
+    pkgs-local.nerdfonts-scripts
 
     # Neovim.
     pkgs-inputs.neovim.neovim
@@ -109,9 +106,13 @@
     # Setup gpg-agent config.
     # TODO: Once I figure out how I want to handle secrets check if that can also solve this problem.
     ".gnupg/gpg-agent.conf" = {
-      text = builtins.replaceStrings [ "pinentry-auto" ] [
-        "${config.home.homeDirectory}/.nix-profile/bin/pinentry-auto"
-      ] (builtins.readFile /${dotfiles}/gnupg/gpg-agent.conf);
+      text =
+        builtins.replaceStrings
+          [ "pinentry-auto" ]
+          [
+            "${config.home.homeDirectory}/.nix-profile/bin/pinentry-auto"
+          ]
+          (builtins.readFile /${dotfiles}/gnupg/gpg-agent.conf);
     };
 
     # Make mpv use yt-dlp.

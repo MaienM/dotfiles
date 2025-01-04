@@ -21,9 +21,9 @@ stdenv.mkDerivation rec {
   buildInputs = [ pkgs.gnused ];
   buildPhase = ''
     ${
-      if version != pkgs.nerdfonts.version then
+      if version != pkgs.nerd-font-patcher.version then
         ''
-          >&2 echo "${name} is out of date with base nerdfonts package (is ${version}, should be ${pkgs.nerdfonts.version}), please update it.";
+          >&2 echo "${name} is out of date with base nerdfonts package (is ${version}, should be ${pkgs.nerd-font-patcher.version}), please update it.";
           exit 1
         ''
       else
