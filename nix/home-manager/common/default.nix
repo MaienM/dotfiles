@@ -21,6 +21,9 @@
     if stdenv.isDarwin then "/Users" else "home"
   }/${config.home.username}";
 
+  custom.allowUnfreeList = [
+    "symbola"
+  ];
   home.packages = with pkgs; [
 
     # CLI.
@@ -68,6 +71,7 @@
     nerd-fonts.fira-code
     nerd-fonts.symbols-only
     pkgs-local.nerdfonts-scripts
+    symbola
 
     # Neovim.
     pkgs-inputs.neovim.neovim
