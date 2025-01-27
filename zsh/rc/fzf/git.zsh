@@ -66,9 +66,7 @@ _fzf_pipeline_git_commit_source() {
 	git log --pretty=format:"%H ${color_fg_yellow}%h$color_reset %s" "$@"
 }
 _fzf_pipeline_git_commit_preview() {
-	git show --no-patch "$1"
-	echo
-	git stash show --name-status "$1"
+	git show --name-status "$1"
 }
 
 # Branches
