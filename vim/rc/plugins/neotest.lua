@@ -19,7 +19,7 @@ neotest.setup {
 		require('neotest-python') {
 			dap = { justMyCode = false },
 		},
-		require('neotest-rust'),
+		require('rustaceanvim.neotest'),
 	},
 	consumers = {
 		notify = function(client)

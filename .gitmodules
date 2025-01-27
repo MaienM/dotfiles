@@ -295,9 +295,6 @@
 [submodule "vim/bundle-nvim/neotest-go"]
 	path = vim/bundle-nvim/neotest-go
 	url = https://github.com/nvim-neotest/neotest-go
-[submodule "vim/bundle-nvim/neotest-rust"]
-	path = vim/bundle-nvim/neotest-rust
-	url = https://github.com/rouge8/neotest-rust
 [submodule "vim/bundle-nvim/neodev"]
 	path = vim/bundle-nvim/neodev
 	url = https://github.com/folke/neodev.nvim
